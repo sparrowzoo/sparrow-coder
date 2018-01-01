@@ -76,7 +76,11 @@ public class EnvironmentContext {
     }
 
     public String getTableConfigPath(String originTableName) {
-        return tableConfig + File.separator + originTableName + File.separator + "sparrow_table_config.properties";
+        return tableConfig + File.separator + "table_template_config" + File.separator + originTableName+".properties";
+    }
+
+    public String getTableCreateDDLPath(String originTableName) {
+        return tableConfig + File.separator + "ddl" + File.separator + originTableName+".sql";
     }
 
     public String getPackage(PACKAGE_KEY package_key) {

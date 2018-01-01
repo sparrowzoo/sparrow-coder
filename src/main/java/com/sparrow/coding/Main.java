@@ -2,6 +2,7 @@ package com.sparrow.coding;
 
 import com.sparrow.orm.AbstractEntityManagerAdapter;
 import com.sparrow.orm.SparrowEntityManager;
+import com.sparrow.utility.FileUtility;
 
 /**
  * Created by harry on 18/11/16.
@@ -66,8 +67,8 @@ public class Main {
         }
 
         if ("-ct".equals(args[0]) || "-createDDL".equals(args[0])) {
-            AbstractEntityManagerAdapter managerAdapter = new SparrowEntityManager(po);
-            System.out.println(managerAdapter.getCreateDDL());
+            codeGenerator.generaCreateDDL(po);
+            System.exit(0);
         }
 
     }
