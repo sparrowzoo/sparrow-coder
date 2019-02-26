@@ -1,0 +1,18 @@
+<class name="a$lowerTableName">
+		<action name="/$lowerTableName/manage.jsp" method="manage"
+			login="2"/>
+		<action name="/$lowerTableName/new.jsp" method="load"
+			login="2"/>
+		<action name="/$lowerTableName/save.do" validatePrivilege="true"
+			method="save" login="2">
+			<result name="direction">/$lowerTableName/manage.jsp</result>
+		</action>
+		<action name="/$lowerTableName/delete.do" login="2"
+			validatePrivilege="true" method="delete"/>
+
+		<action name="/$lowerTableName/enable.do" login="2"
+			validatePrivilege="true" method="enable"/>
+
+		<action name="/$lowerTableName/disable.do" login="2"
+			validatePrivilege="true" method="disable"/>
+	</class>

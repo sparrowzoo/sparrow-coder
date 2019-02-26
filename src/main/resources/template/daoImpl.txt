@@ -1,0 +1,8 @@
+package $package_impl_dao;
+import $package_po.$class_po;
+import $package_dao.$class_dao;
+import com.sparrow.orm.template.impl.ORMStrategy;
+
+public class $class_impl_dao extends ORMStrategy<$class_po,$primary_type> implements $class_dao {
+
+}

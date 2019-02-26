@@ -1,0 +1,102 @@
+package $package_impl_service;
+
+import $package_po.$class_po;
+import com.sparrow.exception.BusinessException;
+import java.util.List;
+import com.sparrow.support.protocol.pager.PagerSearch;
+import com.sparrow.enums.STATUS_RECORD;
+import com.sparrow.constant.SPARROW_ERROR;
+import com.sparrow.constant.SPARROW_ERROR_TYPE;
+import $package_dao.$class_dao;
+import $package_service.$class_service;
+import com.sparrow.support.ErrorSupport;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
+public class $class_impl_service implements $class_service {
+
+	Logger logger = LoggerFactory.getLogger($class_impl_service.class);
+	private $class_dao $object_dao;
+
+	public void set$class_dao($class_dao $object_dao) {
+		this.$object_dao = $object_dao;
+	}
+
+	@Override
+	 public Integer delete$table_name($primary_type $primary_property_name)throws BusinessException{
+				try {
+                    SQLHelper helper = SQLHelperFactory.createWithoutAlias();
+                    helper.in("m$lowerTableName.$lowerTableNameId", $id);
+                    return this.d$lowerTableName.delete(helper);
+                } catch (Exception ex) {
+                    logger.error(ex);
+                     throw new BusinessException(SPARROW_ERROR.SYSTEM_SERVER_ERROR);
+                }
+	}
+
+	@Override
+	public Integer disable$table_name($primary_type $primary_property_name)throws BusinessException  {
+				try {
+                    this.$object_dao.changeStatus($primary_property_name,
+                            STATUS_RECORD.DISABLE);
+                } catch (Exception ex) {
+                    logger.error(ex);
+                     throw new BusinessException(SPARROW_ERROR.SYSTEM_SERVER_ERROR);
+                }
+	}
+
+	@Override
+	public Integer enable$table_name($primary_type $primary_property_name)throws BusinessException {
+						try {
+                           this.$object_dao.changeStatus($primary_property_name,
+                                    STATUS_RECORD.ENABLE);
+                        } catch (Exception ex) {
+                            logger.error(ex);
+                             throw new BusinessException(SPARROW_ERROR.SYSTEM_SERVER_ERROR);
+                        }
+	}
+
+	@Override
+	public Integer save$table_name($class_po $object_po)throws BusinessException  {
+		 	 try {
+		 	            Timestamp timestamp=new Timestamp(System.currentTimeMillis());
+                        $object_dao.setUpdateTime(timestamp);
+
+                        if ($object_po.get$upper_primary_property_name() == null) {
+                            $object_po.setCreateTime(timestamp);
+                            this.$object_dao.insert(m$lowerTableName);
+                        } else {
+                            this.$object_dao.update(m$lowerTableName);
+                        }
+
+                    } catch (Exception ex) {
+                        logger.error(ex);
+                        ErrorSupport sparrow_error_type;
+                        if ( $object_po.get$upper_primary_property_name() == null) {
+                              throw new BusinessException(SPARROW_ERROR.GLOBAL_DB_ADD_ERROR);
+                        } else {
+                             throw new BusinessException(SPARROW_ERROR.GLOBAL_DB_UPDATE_ERROR);
+                        }
+                    }
+	}
+
+    @Override
+    public List<$class_po> query$table_name(PagerSearch query)throws BusinessException {
+        try {
+            return this.$object_dao.getList(query);
+        } catch (Exception e) {
+            logger.error(e);
+            throw new BusinessException(SPARROW_ERROR. GLOBAL_DB_LOAD_ERROR);
+        }
+    }
+
+	@Override
+    public $class_po get$table_name($primary_type $primary_property_name)throws BusinessException{
+        try {
+            return this.$object_dao.getEntity($primary_property_name);
+        } catch (Exception e) {
+            logger.error(e);
+            throw new BusinessException(SPARROW_ERROR. GLOBAL_DB_LOAD_ERROR);
+        }
+    }
+}

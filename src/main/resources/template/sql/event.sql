@@ -1,0 +1,21 @@
+CREATE TABLE `event_%1$s` (
+  `event_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT     COMMENT 'id',
+  `user_id` int(10) UNSIGNED NOT NULL DEFAULT '0'         COMMENT '用户id',
+  `user_type` varchar(10) NOT NULL DEFAULT ''             COMMENT '用户类型',
+  `business_id` int(10) NOT NULL DEFAULT '0'              COMMENT '业务id',
+  `business_type` varchar(20) NOT NULL DEFAULT ''         COMMENT '业务类型',
+  `event` varchar(20) NOT NULL DEFAULT ''                 COMMENT '事件',
+  `status` varchar(20) NOT NULL DEFAULT ''                COMMENT '状态',
+  `create_user_id`  int(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '创建人',
+  `create_time` timestamp NULL DEFAULT NULL               COMMENT '创建时间',
+  `update_user_id` INT (11) UNSIGNED NOT NULL DEFAULT 0   COMMENT '更新人id',
+  `update_time` TIMESTAMP  NULL DEFAULT NULL              COMMENT '更新时间',
+  `times` int(10) unsigned NOT NULL DEFAULT '0'           COMMENT '操作次数',
+  `ip` varchar(20) NOT NULL DEFAULT ''                    COMMENT 'ip',
+  `website` varchar(20) NOT NULL DEFAULT ''               COMMENT 'website',
+  `device` varchar(20) NOT NULL DEFAULT ''                COMMENT '设备',
+  `device_id` varchar(20) NOT NULL DEFAULT ''             COMMENT '设备id',
+  `device_model` varchar(20) NOT NULL DEFAULT ''          COMMENT '设备模型',
+  `content` varchar(200) NOT NULL DEFAULT ''              COMMENT '日志内容',
+  PRIMARY KEY (`event_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=731 DEFAULT CHARSET=utf8;

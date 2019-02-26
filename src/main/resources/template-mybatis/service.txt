@@ -1,0 +1,17 @@
+package $group.$package_service;
+import java.util.List;
+import $group.$package_entity.$class_entity;
+
+/**
+ * Created by $author on $date.
+ */
+public interface $class_service {
+
+    Long add$table_name($class_entity $object_entity);
+
+    $class_entity get$table_name(Long id);
+
+    Integer modify$table_name($table_name $object_entity);
+
+    Integer delete$table_name(Long id);
+}

@@ -1,0 +1,62 @@
+package $package_service;
+
+import $package_po.$class_po;
+import com.sparrow.exception.BusinessException;
+import java.util.List;
+import com.sparrow.support.protocol.pager.PagerSearch;
+
+public interface $class_service{
+
+	/**
+	 * physical delete $table_name
+	 *
+	 * @author $author $date
+	 * @param $primary_property_name $primary_property_name
+	 * @return affect count
+	 */
+	Integer delete$table_name($primary_type $primary_property_name)throws BusinessException ;
+
+	/**
+	 * logic delete disable $table_name
+	 * 
+	 * @author $author  $date
+	 * @param $primary_property_name $primary_property_name
+	 * @return affect count
+	 */
+	Integer disable$table_name($primary_type $primary_property_name)throws BusinessException ;
+
+	/**
+	 * enable $table_name
+	 * @author $author  $date
+	 * @param $primary_property_name $primary_property_name
+	 *@return affect count
+	 */
+	Integer enable$table_name($primary_type $primary_property_name)throws BusinessException ;
+
+	/**
+	 * save $table_name
+	 * 
+	 * @author $author $date
+	 * @param $object_po $object_po
+	 * @return affect count
+	 */
+	Integer save$table_name($class_po $object_po)throws BusinessException ;
+	
+	/**
+	 * query $table_name
+	 * 
+	 * @author $author $date
+	 * @param query query
+	 * @return List<$class_po>
+	 */
+	List<$class_po> query$table_name(PagerSearch query)throws BusinessException ;
+	
+	/**
+	 * get $table_name
+	 * 
+	 * @author $author $date
+	 * @param $primary_property_name $primary_property_name
+	 * @return $class_po
+	 */
+	$class_po get$table_name($primary_type $primary_property_name)throws BusinessException ;
+}

@@ -1,0 +1,9 @@
+﻿					  </table>
+					  <input type="button" class="button"  id="btnSubmit" onclick="v.getValidateResult($tableNameInfo);" value="提交"/>
+					  <input type="button" class="button" onclick="window.location.href='manage.jsp';" value="返回"/>
+					</div>
+				</div>
+				</div>
+		 </form>
+	</body>
+</html>

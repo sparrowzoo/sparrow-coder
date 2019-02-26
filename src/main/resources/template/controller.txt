@@ -1,0 +1,130 @@
+package $group.$package_path.action;
+
+import $group.$package_path.service.S$tableName;
+import $group.$package_path.entity.M$tableName;
+import com.sparrow.code.service.SCode;
+import ACTION_RESULT_KEY;
+import CONFIG_KEY_DB;
+import SYS_OBJECT_NAME;
+import com.sparrow.core.ApplicationContext;
+import com.sparrow.support.Result;
+import Pager;
+import StringUtility;
+import com.sparrow.web.support.ActionSupport;
+import com.sparrow.orm.SQLHelper;
+import com.sparrow.orm.SQLHelperFactory;
+import java.util.List;
+import com.sparrow.mvc.RequestParameters;
+
+/**
+ * $displayName事件类
+ * 
+ * @author zhanglizhi
+ * @date $date
+ * @version 1.0
+ */
+public class A$tableName extends ActionSupport {
+	/**
+	 * $displayName业务对象
+	 */
+	private S$tableName s$lowerTableName;
+	
+	public void setS$lowerTableName(S$tableName s$lowerTableName) {
+		this.s$lowerTableName = s$lowerTableName;
+	}
+
+      private SCode scode;
+
+      public A$tableName(){
+          this.scode=ApplicationContext.getContainer().getBean(SYS_OBJECT_NAME.CODE_SERVER);
+      }
+	/**
+	 * 加载$displayName实体
+	 * 
+	 * @author zhanglizhi
+	 * @date $date
+	 * @version 1.0
+	 */
+	@RequestParameters(names = "$lowerTableNameId")
+	public void load(Long $lowerTableNameId) {
+		if (!StringUtility.isNullOrEmpty($lowerTableNameId)) {
+            this.put(this.s$lowerTableName.get$tableName($lowerTableNameId));
+		}
+	}
+
+	/**
+	 * 加载$displayName表格列表
+	 * 
+	 * @author zhanglizhi
+	 * @date $date
+	 * @version 1.0
+	 */
+	  @RequestParameters(names = "m$lowerTableName,currentPageIndex")
+	public void manage(M$tableName m$lowerTableName, Integer currentPageIndex)
+	{
+					SQLHelper helper = SQLHelperFactory.create();
+                    String pageSize = this.scode.getValueByCode(CONFIG_KEY_DB.PAGESIZE);
+                    helper.setPager(new Pager(currentPageIndex, Integer.valueOf(pageSize)));
+                    helper.addOrderClause("m$lowerTableName.updateTime", ORDER.DESC);
+                    List<M$tableName>$lowerTableNameList = this.s$lowerTableName.get$tableNameList(helper);
+                    this.grid("grv$tableNameList",$lowerTableNameList, helper);
+	}
+
+	/**
+	 * 保存$displayName
+	 * 
+	 * @author zhanglizhi
+	 * @date $date
+	 * @version 1.0
+	 * @return
+	 */
+	 @RequestParameters(names = "m$lowerTableName")
+	public String save(M$tableName m$lowerTableName)
+	{
+		 		    this.s$lowerTableName.save$tableName(m$lowerTableName);
+                    return ACTION_RESULT_KEY.TRANSIT;
+
+	}
+
+	/**
+	 * 启用$displayName
+	 * 
+	 * @author zhanglizhi
+	 * @date $date
+	 * @version 1.0
+	 * @return
+	 */
+	 @RequestParameters(names = "$lowerTableNameId")
+	public String enable(String $lowerTableNameId) {
+		 		this.s$lowerTableName.enable$tableName($lowerTableNameId);
+                return ACTION_RESULT_KEY.TRANSIT;
+	}
+
+	/**
+	 * 禁用$displayName
+	 * 
+	 * @author zhanglizhi
+	 * @date $date
+	 * @version 1.0
+	 * @return
+	 */
+	@RequestParameters(names = "$lowerTableNameId")
+	public String disable(String $lowerTableNameId) {
+		this.s$lowerTableName.disable$tableName($lowerTableNameId);
+        return ACTION_RESULT_KEY.TRANSIT;
+    }
+
+	/**
+	 * 删除$displayName
+	 * 
+	 * @author zhanglizhi
+	 * @date $date
+	 * @version 1.0
+	 * @return
+	 */
+	  @RequestParameters(names = "$lowerTableNameId")
+	public String delete(String $lowerTableNameId) {
+		 	this.s$lowerTableName.delete$tableName($lowerTableNameId);
+            return ACTION_RESULT_KEY.TRANSIT;
+       }
+}
