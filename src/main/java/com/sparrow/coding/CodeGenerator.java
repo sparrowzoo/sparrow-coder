@@ -45,23 +45,7 @@ public class CodeGenerator {
         tableConfig.write(PACKAGE_KEY.CONTROLLER);
     }
 
-//    public void generateDSALevelCode() {
-//
-//
-//        String bean = FileUtility.getInstance().readFileContent(
-//                templatePath + "/beans.txt");
-//
-//        bean = StringUtility.replace(bean, context);
-//
-//        String actionConfig = FileUtility.getInstance().readFileContent(
-//                templatePath + "/action.config.txt");
-//
-//        actionConfig = StringUtility.replace(actionConfig, context);
-//        System.out.println(bean);
-//        System.out.println(actionConfig);
-//    }
-
-    public void writeTableConfig(Class po)
+    public void generateTableTemplate(Class po)
         throws Exception {
         EnvironmentContext.TableConfig tableConfig = environmentContext.new TableConfig(po);
         EntityManager entityManager = tableConfig.getEntityManager();
