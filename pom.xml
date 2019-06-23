@@ -27,6 +27,10 @@
         </dependency>
         <dependency>
             <groupId>com.sparrow</groupId>
+            <artifactId>sparrow-protocol</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sparrow</groupId>
             <artifactId>sparrow-orm</artifactId>
             <version>${sparrow_orm_version}</version>
         </dependency>

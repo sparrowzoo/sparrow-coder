@@ -2,10 +2,10 @@ package com.sparrow.coding.config;
 
 import com.sparrow.coding.support.enums.PACKAGE_KEY;
 import com.sparrow.coding.support.enums.REPLACE_KEY;
-import com.sparrow.constant.CONSTANT;
-import com.sparrow.constant.magic.SYMBOL;
 import com.sparrow.orm.EntityManager;
 import com.sparrow.orm.SparrowEntityManager;
+import com.sparrow.protocol.constant.CONSTANT;
+import com.sparrow.protocol.constant.magic.SYMBOL;
 import com.sparrow.support.EnvironmentSupport;
 import com.sparrow.utility.DateTimeUtility;
 import com.sparrow.utility.FileUtility;

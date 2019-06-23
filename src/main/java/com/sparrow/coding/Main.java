@@ -19,6 +19,7 @@ public class Main {
         System.out.printf("controller:      [-c |-controller]   args=po\n");
         System.out.printf("table template:  [-t |-template]     args=po\n");
         System.out.printf("create ddl:      [-ct|-createDDL]    args=po\n");
+        System.out.printf("assemble:        [-a |-assemble]     args=pojo,pojo\n");
     }
 
     public static void main(String[] args) throws Exception {
@@ -35,6 +36,8 @@ public class Main {
         Class po = Class.forName(args[1]);
 
         CodeGenerator codeGenerator = new CodeGenerator();
+
+        GenerateAssembleCode generateAssembleCode=new GenerateAssembleCode();
         if ("-d".equalsIgnoreCase(args[0]) || "-dao".equalsIgnoreCase(args[0])) {
 
             codeGenerator.dao(po);
@@ -71,5 +74,12 @@ public class Main {
             System.exit(0);
         }
 
+        if ("-a".equals(args[0]) || "-assemble".equals(args[0])) {
+            Class source=Class.forName(args[1]);
+            Class dest=Class.forName(args[2]);
+            StringBuilder code= generateAssembleCode.generate(dest,source);
+            System.err.println(code);
+            System.exit(0);
+        }
     }
 }

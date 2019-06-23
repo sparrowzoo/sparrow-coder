@@ -1,5 +1,6 @@
 package com.sparrow.coding;
 
+import com.sparrow.protocol.constant.CONSTANT;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -7,8 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
-
-import com.sparrow.constant.CONSTANT;
 import com.sparrow.support.EnvironmentSupport;
 import com.sparrow.utility.FileUtility;
 import sun.misc.JarFilter;
