@@ -51,7 +51,9 @@ public class CodeGenerator {
         EnvironmentContext.TableConfig tableConfig = environmentContext.new TableConfig(po);
         AbstractEntityManagerAdapter managerAdapter = new SparrowEntityManager(po);
         String tablePath = this.environmentContext.getTableCreateDDLPath(tableConfig.getOriginTableName());
-        FileUtility.getInstance().writeFile(tablePath, managerAdapter.getCreateDDL());
+        String sql=managerAdapter.getCreateDDL();
+        System.err.println(sql);
+        FileUtility.getInstance().writeFile(tablePath,sql);
         System.err.printf(String.format("table create ddl write to %s\n", tablePath));
     }
 
