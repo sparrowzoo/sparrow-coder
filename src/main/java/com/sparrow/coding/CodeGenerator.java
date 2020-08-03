@@ -2,12 +2,10 @@ package com.sparrow.coding;
 
 import com.sparrow.coding.config.EnvironmentContext;
 import com.sparrow.coding.support.enums.PACKAGE_KEY;
-import com.sparrow.orm.AbstractEntityManagerAdapter;
-import com.sparrow.orm.EntityManager;
-import com.sparrow.orm.Field;
+import com.sparrow.orm.*;
 
-import com.sparrow.orm.SparrowEntityManager;
 import com.sparrow.utility.FileUtility;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -47,18 +45,37 @@ public class CodeGenerator {
         tableConfig.write(PACKAGE_KEY.CONTROLLER);
     }
 
+    public void generaCreateNDDL(String originTableName, Integer n,boolean create){
+        String originTableFullPath = environmentContext.getTableCreateDDLPath(originTableName);
+        String originTableContent = FileUtility.getInstance().readFileContent(originTableFullPath);
+        for (int i = 0; i < n; i++) {
+            String tempSql = String.format(originTableContent, i);
+            if(create) {
+                try {
+                    JDBCTemplate.getInstance().executeUpdate(tempSql);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            String destTablePath =environmentContext.getSplitTableCreateDDLPath(originTableName,i);
+            FileUtility.getInstance().writeFile(destTablePath, tempSql);
+            System.err.print(String.format("table create ddl write to %s\n", destTablePath));
+        }
+    }
+
     public void generaCreateDDL(Class po) throws IOException {
         EnvironmentContext.TableConfig tableConfig = environmentContext.new TableConfig(po);
         AbstractEntityManagerAdapter managerAdapter = new SparrowEntityManager(po);
         String tablePath = this.environmentContext.getTableCreateDDLPath(tableConfig.getOriginTableName());
-        String sql=managerAdapter.getCreateDDL();
+        String sql = managerAdapter.getCreateDDL();
         System.err.println(sql);
-        FileUtility.getInstance().writeFile(tablePath,sql);
+        FileUtility.getInstance().writeFile(tablePath, sql);
         System.err.printf(String.format("table create ddl write to %s\n", tablePath));
     }
 
     public void generateTableTemplate(Class po)
-        throws Exception {
+            throws Exception {
         EnvironmentContext.TableConfig tableConfig = environmentContext.new TableConfig(po);
         EntityManager entityManager = tableConfig.getEntityManager();
         String originTableName = tableConfig.getOriginTableName();
@@ -81,7 +98,7 @@ public class CodeGenerator {
             sb.append("\n#############################################################\n");
         }
 
-        String tableConfigPath = this.environmentContext.getTableConfigPath(tableConfig.getOriginTableName());
+        String tableConfigPath = this.environmentContext.getTableTemplateConfigPath(tableConfig.getOriginTableName());
         FileUtility.getInstance().writeFile(tableConfigPath, sb.toString());
         System.err.printf(String.format("table template write to %s\n", tableConfigPath));
     }

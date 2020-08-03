@@ -9,8 +9,8 @@ source /etc/profile
 #
 # SPARROW_CODER_HOME        home path can't null
 # SPARROW_CODER             jar name default sparrow-coder-1.0.jar
-# SPARROW_DEFAULT           db config file
-# SPARROW_CONFIG_PATH       sparrow template config path
+# SPARROW_DEFAULT           db pool config file
+# SPARROW_CONFIG_PATH       sparrow template config path default is "template"
 # SPARROW_TABLE_CONFIG      sparrow table config file path e.g  resources/sparrow_table_config.properties
 #
 

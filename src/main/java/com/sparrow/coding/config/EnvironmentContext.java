@@ -43,7 +43,6 @@ public class EnvironmentContext {
     private FileUtility fileUtility = FileUtility.getInstance();
 
     public EnvironmentContext() throws IOException {
-
         this.tableConfig = System.getenv("SPARROW_TABLE_CONFIG");
         if (StringUtility.isNullOrEmpty(tableConfig)) {
             System.err.println("ERROR please set [Environment Variable] 'SPARROW_TABLE_CONFIG'");
@@ -75,12 +74,16 @@ public class EnvironmentContext {
         return this.author;
     }
 
-    public String getTableConfigPath(String originTableName) {
-        return tableConfig + File.separator + "table_template_config" + File.separator + originTableName+".properties";
+    public String getTableTemplateConfigPath(String originTableName) {
+        return tableConfig + File.separator + "table_template_config" + File.separator + originTableName + ".properties";
     }
 
     public String getTableCreateDDLPath(String originTableName) {
-        return tableConfig + File.separator + "ddl" + File.separator + originTableName+".sql";
+        return tableConfig + File.separator + "ddl" + File.separator + originTableName + ".sql";
+    }
+
+    public String getSplitTableCreateDDLPath(String originTableName, int i) {
+        return tableConfig + File.separator + "ddl" + File.separator + originTableName + File.separator + i + ".sql";
     }
 
     public String getPackage(PACKAGE_KEY package_key) {
@@ -101,7 +104,7 @@ public class EnvironmentContext {
 
     public String readConfigContent(String configFile) {
         return FileUtility.getInstance().readFileContent(
-            EnvironmentSupport.getInstance().getFileInputStreamInCache(this.configPath + File.separator + configFile), CONSTANT.CHARSET_UTF_8);
+                EnvironmentSupport.getInstance().getFileInputStreamInCache(this.configPath + File.separator + configFile), CONSTANT.CHARSET_UTF_8);
     }
 
     public String readManageStart() {
@@ -153,7 +156,7 @@ public class EnvironmentContext {
         }
 
         public String getFullPackage(PACKAGE_KEY key) {
-          return fileUtility.replacePath(poPackage, PACKAGE_KEY.PO.name(), getPackage(key),".");
+            return fileUtility.replacePath(poPackage, PACKAGE_KEY.PO.name(), getPackage(key), ".");
         }
 
         private String getDisplayValue(String fieldName, String key, String defaultValue) {
@@ -219,8 +222,8 @@ public class EnvironmentContext {
             this.originTableName = originTableName;
 
             this.tableProperties = new Properties();
-            File tablePropertyFile=new File(getTableConfigPath(this.originTableName));
-            if(tablePropertyFile.exists()) {
+            File tablePropertyFile = new File(getTableTemplateConfigPath(this.originTableName));
+            if (tablePropertyFile.exists()) {
                 tableProperties.load(new FileInputStream(tablePropertyFile));
             }
 
@@ -235,12 +238,12 @@ public class EnvironmentContext {
             context.put(REPLACE_KEY.$lower_table_name.name(), StringUtility.setFirstByteLowerCase(tableName));
             context.put(REPLACE_KEY.$display_name.name(), tableDisplayName);
             context.put(REPLACE_KEY.$date.name(), DateTimeUtility
-                .getFormatCurrentTime("yyyy-MM-dd HH:mm:ss"));
+                    .getFormatCurrentTime("yyyy-MM-dd HH:mm:ss"));
             context.put(REPLACE_KEY.$author.name(), getAuthor());
 
             context.put(REPLACE_KEY.$package_po.name(), poPackage);
 
-            context.put(REPLACE_KEY.$package_dao.name(),this.getFullPackage(PACKAGE_KEY.DAO));
+            context.put(REPLACE_KEY.$package_dao.name(), this.getFullPackage(PACKAGE_KEY.DAO));
             context.put(REPLACE_KEY.$package_impl_dao.name(), this.getFullPackage(PACKAGE_KEY.DAO_IMPL));
             context.put(REPLACE_KEY.$package_service.name(), this.getFullPackage(PACKAGE_KEY.SERVICE));
             context.put(REPLACE_KEY.$package_impl_service.name(), this.getFullPackage(PACKAGE_KEY.SERVICE_IMPL));
@@ -249,24 +252,24 @@ public class EnvironmentContext {
             context.put(REPLACE_KEY.$class_po.name(), getClassName(PACKAGE_KEY.PO, tableName));
             context.put(REPLACE_KEY.$class_dao.name(), getClassName(PACKAGE_KEY.DAO, tableName));
             context.put(REPLACE_KEY.$class_impl_dao.name(),
-                getClassName(PACKAGE_KEY.DAO_IMPL, tableName));
+                    getClassName(PACKAGE_KEY.DAO_IMPL, tableName));
             context.put(REPLACE_KEY.$class_service.name(),
-                getClassName(PACKAGE_KEY.SERVICE, tableName));
+                    getClassName(PACKAGE_KEY.SERVICE, tableName));
             context.put(REPLACE_KEY.$class_impl_service.name(), getClassName(PACKAGE_KEY.SERVICE_IMPL, tableName));
             context.put(REPLACE_KEY.$class_controller.name(), getClassName(PACKAGE_KEY.CONTROLLER, tableName));
 
             context.put(REPLACE_KEY.$object_po.name(),
-                StringUtility.setFirstByteLowerCase(context.get(REPLACE_KEY.$class_po.name())));
+                    StringUtility.setFirstByteLowerCase(context.get(REPLACE_KEY.$class_po.name())));
 
             context.put(REPLACE_KEY.$object_dao.name(),
-                StringUtility.setFirstByteLowerCase(context.get(REPLACE_KEY.$class_dao.name())));
+                    StringUtility.setFirstByteLowerCase(context.get(REPLACE_KEY.$class_dao.name())));
 
             context.put(REPLACE_KEY.$object_service.name(),
-                StringUtility.setFirstByteLowerCase(context.get(REPLACE_KEY.$class_service.name())));
+                    StringUtility.setFirstByteLowerCase(context.get(REPLACE_KEY.$class_service.name())));
 
             context.put(REPLACE_KEY.$primary_property_name.name(), primaryPropertyName);
             context.put(REPLACE_KEY.$upper_primary_property_name.name(), StringUtility.setFirstByteUpperCase(primaryPropertyName));
-            context.put(REPLACE_KEY.$primary_type.name(),entityManager.getPrimary().getType().getSimpleName());
+            context.put(REPLACE_KEY.$primary_type.name(), entityManager.getPrimary().getType().getSimpleName());
             context.put(REPLACE_KEY.$sql_insert.name(), entityManager.getInsert());
             context.put(REPLACE_KEY.$sql_delete.name(), entityManager.getDelete());
             context.put(REPLACE_KEY.$sql_update.name(), entityManager.getUpdate());
@@ -287,14 +290,14 @@ public class EnvironmentContext {
 
 
             String fullPath = currentPath + File.separator + "src" +
-                File.separator + "main" +
-                File.separator + "java" +
-                File.separator
-                + this.getFullPackage(k).replace(SYMBOL.DOT,File.separator);
+                    File.separator + "main" +
+                    File.separator + "java" +
+                    File.separator
+                    + this.getFullPackage(k).replace(SYMBOL.DOT, File.separator);
 
             String className = getClassName(k, getTableName());
             FileUtility.getInstance().writeFile(fullPath + File.separator + className + extension,
-                content);
+                    content);
         }
     }
 }
