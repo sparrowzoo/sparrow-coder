@@ -9,8 +9,6 @@ import com.sparrow.utility.FileUtility;
  * Created by harry on 2015/5/11.
  */
 public class GenerateSql {
-    private final static String ATTENTION_USER="attentionUser.sql";
-    private final static String FANS_USER="fansUser.sql";
     private final static String EVENT="event.sql";
 
     public static void main(String[] args) {

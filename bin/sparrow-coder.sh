@@ -14,8 +14,8 @@ source /etc/profile
 # SPARROW_TABLE_CONFIG      sparrow table config file path e.g  resources/sparrow_table_config.properties
 #
 
-
-class_path=../target/classes
+# convert to absolute for windows(git bath) compatibility
+class_path=$(cd ../target/classes;pwd)
 sparrow_coder_name=sparrow-coder-all.jar
 
 [ -n "$SPARROW_CODER" ] && sparrow_coder_name=$SPARROW_CODER
