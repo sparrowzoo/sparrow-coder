@@ -5,6 +5,7 @@ import com.sparrow.coding.support.enums.PACKAGE_KEY;
 import com.sparrow.orm.*;
 
 import com.sparrow.utility.FileUtility;
+import com.sparrow.utility.StringUtility;
 
 import java.io.IOException;
 import java.util.Map;
@@ -45,20 +46,25 @@ public class CodeGenerator {
         tableConfig.write(PACKAGE_KEY.CONTROLLER);
     }
 
-    public void generaCreateNDDL(String originTableName, Integer n,boolean create){
+    public void generaCreateNDDL(String originTableName, Integer n, boolean create) {
         String originTableFullPath = environmentContext.getTableCreateDDLPath(originTableName);
         String originTableContent = FileUtility.getInstance().readFileContent(originTableFullPath);
         for (int i = 0; i < n; i++) {
             String tempSql = String.format(originTableContent, i);
-            if(create) {
+            if (create) {
                 try {
-                    JDBCTemplate.getInstance().executeUpdate(tempSql);
+                    String[] ddlArray = tempSql.split(";");
+                    for (String ddl : ddlArray) {
+                        if (!StringUtility.isNullOrEmpty(ddl)) {
+                            JDBCTemplate.getInstance().executeUpdate(ddl);
+                        }
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            String destTablePath =environmentContext.getSplitTableCreateDDLPath(originTableName,i);
+            String destTablePath = environmentContext.getSplitTableCreateDDLPath(originTableName, i);
             FileUtility.getInstance().writeFile(destTablePath, tempSql);
             System.err.print(String.format("table create ddl write to %s\n", destTablePath));
         }

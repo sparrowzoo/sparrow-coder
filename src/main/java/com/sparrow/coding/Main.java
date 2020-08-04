@@ -1,5 +1,8 @@
 package com.sparrow.coding;
 
+import com.sparrow.container.Container;
+import com.sparrow.core.spi.ApplicationContext;
+
 /**
  * Created by harry on 18/11/16.
  */
@@ -20,7 +23,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-        args="-ctn event 2 -c".split(" ");
+//        args = "-ctn event 2 -c".split(" ");
         if (args.length == 0 || "--help".equals(args[0])) {
             useage();
             System.exit(0);
@@ -34,6 +37,8 @@ public class Main {
         CodeGenerator codeGenerator = new CodeGenerator();
 
         if ("-ctn".equals(args[0]) || "-createDDL-n".equals(args[0])) {
+            Container container = ApplicationContext.getContainer();
+            container.init();
             if (args.length == 3) {
                 codeGenerator.generaCreateNDDL(args[1], Integer.valueOf(args[2]), false);
             } else if (args.length == 4 && args[3].equalsIgnoreCase("-c")) {
@@ -81,7 +86,6 @@ public class Main {
             codeGenerator.generaCreateDDL(po);
             System.exit(0);
         }
-
 
 
         if ("-a".equals(args[0]) || "-assemble".equals(args[0])) {

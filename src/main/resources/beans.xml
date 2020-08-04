@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE beans PUBLIC "-//sparrow Framework//DTD ioc Configuration//EN"
-        "http://www.sparrowzoo.com/dtds/beanFactory.dtd">
+        "http://www.sparrowzoo.com/dtds/beans.dtd">
 <beans>
-    <bean name="sparrow_default" class="com.sparrow.datasource.ConnectionPool" constructor-arg="sparrow_default"/>
+    <bean name="dataSourceFactory" class="com.sparrow.datasource.DataSourceFactoryImpl">
+        <constructor-arg index="1" name="initDatasourceKeys" value="sparrow_default"/>
+    </bean>
+    <bean name="sparrow_default" class="com.sparrow.datasource.ConnectionPool">
+        <property name="dataSourceFactory" ref="dataSourceFactory"/>
+    </bean>
+    <bean name="connectionContextHolder" class="com.sparrow.datasource.ConnectionContextHolderImpl">
+        <property name="dataSourceFactory" ref="dataSourceFactory"/>
+    </bean>
 </beans>
