@@ -11,7 +11,7 @@ public class Main {
         System.out.printf("usage:\n");
         System.out.printf("sparrow-coder.sh [OPTION] [args]\n");
         System.out.printf("OPTION:\n");
-        System.out.printf("DAO:             [-d |-dao]          args=po\n");
+        System.out.printf("dao:             [-d |-dao]          args=po\n");
         System.out.printf("daoImpl:         [-di|-daoImpl]      args=po\n");
         System.out.printf("service:         [-s |-service]      args=po\n");
         System.out.printf("serviceImpl:     [-si|-serviceImpl]  args=po\n");
@@ -77,18 +77,18 @@ public class Main {
             System.exit(0);
         }
 
-        if ("-t".equals(args[0]) || "-template".equals(args[0])) {
+        if ("-t".equals(args[0]) || "-template".equalsIgnoreCase(args[0])) {
             codeGenerator.generateTableTemplate(po);
             System.exit(0);
         }
 
-        if ("-ct".equals(args[0]) || "-createDDL".equals(args[0])) {
+        if ("-ct".equals(args[0]) || "-createDDL".equalsIgnoreCase(args[0])) {
             codeGenerator.generaCreateDDL(po);
             System.exit(0);
         }
 
 
-        if ("-a".equals(args[0]) || "-assemble".equals(args[0])) {
+        if ("-a".equals(args[0]) || "-assemble".equalsIgnoreCase(args[0])) {
             Class source = Class.forName(args[1]);
             Class dest = Class.forName(args[2]);
             StringBuilder code = generateAssembleCode.generate(dest, source);
