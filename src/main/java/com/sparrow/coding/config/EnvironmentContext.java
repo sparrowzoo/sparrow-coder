@@ -60,14 +60,18 @@ public class EnvironmentContext {
             configPath = "/template-mybatis";
             configStream = this.environmentSupport.getFileInputStreamInCache("/template-mybatis/config.properties");
         } else {
-            configStream = new FileInputStream(new File(configPath + File.separator + "config.properties"));
+            configStream = new FileInputStream(new File(configPath + "/config.properties"));
         }
 
         this.configPath = configPath;
         Properties config = new Properties();
         config.load(configStream);
+        if (configStream == null) {
+            System.err.println("template config file can't read");
+        }
         this.config = config;
         this.author = config.getProperty(CONFIG.AUTHOR);
+        System.out.printf("author is %s\n", this.author);
     }
 
     public String getAuthor() {
@@ -103,8 +107,13 @@ public class EnvironmentContext {
     }
 
     public String readConfigContent(String configFile) {
-        return FileUtility.getInstance().readFileContent(
-                EnvironmentSupport.getInstance().getFileInputStreamInCache(this.configPath + File.separator + configFile), CONSTANT.CHARSET_UTF_8);
+        String configFilePath = this.configPath + "/" + configFile;
+        System.err.printf("config file path is [%s]\n", configFilePath);
+        InputStream inputStream = EnvironmentSupport.getInstance().getFileInputStreamInCache(configFilePath);
+        if (inputStream == null) {
+            System.err.printf("[%s] can't read\n", configFilePath);
+        }
+        return FileUtility.getInstance().readFileContent(inputStream, CONSTANT.CHARSET_UTF_8);
     }
 
     public String readManageStart() {
@@ -173,7 +182,7 @@ public class EnvironmentContext {
         }
 
         public String getTableName() {
-            return tableProperties.getProperty("table_name");
+            return StringUtility.setFirstByteUpperCase(StringUtility.underlineToHump(this.originTableName));
         }
 
         public String getDisplayName() {
@@ -222,9 +231,12 @@ public class EnvironmentContext {
             this.originTableName = originTableName;
 
             this.tableProperties = new Properties();
-            File tablePropertyFile = new File(getTableTemplateConfigPath(this.originTableName));
+            String tableTemplateConfigPath = getTableTemplateConfigPath(this.originTableName);
+            File tablePropertyFile = new File(tableTemplateConfigPath);
             if (tablePropertyFile.exists()) {
                 tableProperties.load(new FileInputStream(tablePropertyFile));
+            } else {
+                System.err.printf("table template config not exist [%s] \n", tableTemplateConfigPath);
             }
 
             String tableName = this.getTableName();
@@ -274,13 +286,14 @@ public class EnvironmentContext {
             context.put(REPLACE_KEY.$sql_delete.name(), entityManager.getDelete());
             context.put(REPLACE_KEY.$sql_update.name(), entityManager.getUpdate());
             context.put(REPLACE_KEY.$field_list.name(), entityManager.getFields());
-            //context.put(REPLACE_KEY.$sql_query_one.name(), entityManager.ge);
+            //context.put(REPLACE_KEY.$sql_query_one.name(), entityManager);
             //context.put(REPLACE_KEY.$result_map.name(), entityManager.toString());
             return context;
         }
 
         public void write(PACKAGE_KEY k) {
             String currentPath = EnvironmentSupport.getInstance().getApplicationSourcePath();
+            System.err.printf("current path is [%s]\n", currentPath);
             String content = readConfigContent(k.getTemplate());
             content = StringUtility.replace(content.trim(), this.placeHolder);
             String extension = ".java";

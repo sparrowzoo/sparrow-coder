@@ -1,5 +1,5 @@
 package $package_dao;
-import com.sparrow.support.db.DaoSupport;
+import com.sparrow.protocol.db.DaoSupport;
 import $package_po.$class_po;
 
 public interface $class_dao extends DaoSupport<$class_po,$primary_type> {

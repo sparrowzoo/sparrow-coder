@@ -8,18 +8,18 @@ import com.sparrow.core.spi.ApplicationContext;
  */
 public class Main {
     private static void useage() {
-        System.out.printf("usage:\n");
-        System.out.printf("sparrow-coder.sh [OPTION] [args]\n");
-        System.out.printf("OPTION:\n");
-        System.out.printf("dao:             [-d |-dao]          args=po\n");
-        System.out.printf("daoImpl:         [-di|-daoImpl]      args=po\n");
-        System.out.printf("service:         [-s |-service]      args=po\n");
-        System.out.printf("serviceImpl:     [-si|-serviceImpl]  args=po\n");
-        System.out.printf("controller:      [-c |-controller]   args=po\n");
-        System.out.printf("table template:  [-t |-template]     args=po\n");
-        System.out.printf("create ddl:      [-ct|-createDDL]    args=po\n");
-        System.out.printf("create ddl-n:    [-ctn|-createDDL-n] args=src-table-name,n -c\n");
-        System.out.printf("assemble:        [-a |-assemble]     args=pojo,pojo\n");
+        System.out.println("usage:");
+        System.out.println("sparrow-coder.sh [OPTION] [args]");
+        System.out.println("OPTION:");
+        System.out.println("dao:             [-d |-dao]          args=po");
+        System.out.println("daoImpl:         [-di|-daoImpl]      args=po");
+        System.out.println("service:         [-s |-service]      args=po");
+        System.out.println("serviceImpl:     [-si|-serviceImpl]  args=po");
+        System.out.println("controller:      [-c |-controller]   args=po");
+        System.out.println("table template:  [-t |-template]     args=po");
+        System.out.println("create ddl:      [-ct|-createDDL]    args=po");
+        System.out.println("create ddl-n:    [-ctn|-createDDL-n] args=src-table-name,n -c");
+        System.out.println("assemble:        [-a |-assemble]     args=pojo,pojo");
     }
 
     public static void main(String[] args) throws Exception {
@@ -52,7 +52,6 @@ public class Main {
 
         GenerateAssembleCode generateAssembleCode = new GenerateAssembleCode();
         if ("-d".equalsIgnoreCase(args[0]) || "-dao".equalsIgnoreCase(args[0])) {
-
             codeGenerator.dao(po);
             System.exit(0);
         }
