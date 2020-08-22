@@ -4,6 +4,7 @@ import com.sparrow.coding.config.EnvironmentContext;
 import com.sparrow.coding.support.enums.PACKAGE_KEY;
 import com.sparrow.orm.*;
 
+import com.sparrow.protocol.constant.CONSTANT;
 import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
 
@@ -50,7 +51,7 @@ public class CodeGenerator {
         String originTableFullPath = environmentContext.getTableCreateDDLPath(originTableName);
         String originTableContent = FileUtility.getInstance().readFileContent(originTableFullPath);
         for (int i = 0; i < n; i++) {
-            String tempSql = String.format(originTableContent, i);
+            String tempSql =originTableContent.replace(CONSTANT.TABLE_SUFFIX, "_"+i);
             if (create) {
                 try {
                     String[] ddlArray = tempSql.split(";");
