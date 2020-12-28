@@ -31,7 +31,7 @@ public class MavenInstall {
 
     private static void installJarToMaven(File file) {
         String fileName = file.getName();
-        String jarName = FileUtility.getInstance().getFileName(fileName);
+        String jarName = FileUtility.getInstance().getFileNameProperty(fileName).getName();
         StringTokenizer strToken = new StringTokenizer(jarName, "-");
         String groupId = null;
         String artifactId = null;

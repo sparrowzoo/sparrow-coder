@@ -54,12 +54,6 @@
             <artifactId>sparrow-json</artifactId>
             <version>${sparrow_loader_version}</version>
         </dependency>
-
-        <dependency>
-            <artifactId>rbac-dao-api</artifactId>
-            <groupId>com.sparrow.rbac</groupId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
     </dependencies>
     <build>
         <finalName>sparrow-coder</finalName>
