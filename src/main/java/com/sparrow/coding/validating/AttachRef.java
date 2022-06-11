@@ -1,8 +1,7 @@
 package com.sparrow.coding.validating;
 
+import com.sparrow.protocol.MethodOrder;
 import com.sparrow.protocol.POJO;
-import com.sparrow.protocol.db.MethodOrder;
-
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

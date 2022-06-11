@@ -18,12 +18,14 @@ public class Main {
         System.out.println("controller:      [-c |-controller]   args=po");
         System.out.println("table template:  [-t |-template]     args=po");
         System.out.println("create ddl:      [-ct|-createDDL]    args=po");
-        System.out.println("create ddl-n:    [-ctn|-createDDL-n] args=src-table-name,n -c");
+        System.out.println("create ddl-n:    [-ctn|-createDDL-n] args=src-table-name,n -c(create into database)");
         System.out.println("assemble:        [-a |-assemble]     args=pojo,pojo");
     }
 
     public static void main(String[] args) throws Exception {
-//        args = "-ctn event 2 -c".split(" ");
+
+
+        //args = "-ctn event 2 -c".split(" ");
         if (args.length == 0 || "--help".equals(args[0])) {
             useage();
             System.exit(0);
