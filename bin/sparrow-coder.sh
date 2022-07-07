@@ -14,7 +14,7 @@ source /etc/profile
 #                           "template" is default template directory represent "sparrow" template
 #                           "template-mybatis" represent "mybatis" template
 #                           other template directory e.g.. /data/dao/template
-# SPARROW_TABLE_CONFIG      sparrow table config file path e.g  resources/sparrow_table_config.properties
+# SPARROW_TABLE_CONFIG      sparrow table config file path e.g
 #
 
 # convert to absolute for windows(git bath) compatibility

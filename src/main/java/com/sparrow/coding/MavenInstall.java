@@ -1,6 +1,8 @@
 package com.sparrow.coding;
 
-import com.sparrow.protocol.constant.CONSTANT;
+import com.sparrow.protocol.constant.Constant;
+import com.sparrow.support.EnvironmentSupport;
+import com.sparrow.utility.FileUtility;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -8,8 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
-import com.sparrow.support.EnvironmentSupport;
-import com.sparrow.utility.FileUtility;
 import sun.misc.JarFilter;
 
 /**
@@ -67,7 +67,7 @@ public class MavenInstall {
 
     private static void printResult(Process process) throws IOException {
         InputStream is = process.getInputStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(is, CONSTANT.CHARSET_UTF_8));
+        BufferedReader br = new BufferedReader(new InputStreamReader(is, Constant.CHARSET_UTF_8));
         String lineStr;
         while ((lineStr = br.readLine()) != null) {
             System.out.println(lineStr);

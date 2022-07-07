@@ -4,13 +4,12 @@ import com.sparrow.coding.support.enums.PACKAGE_KEY;
 import com.sparrow.coding.support.enums.REPLACE_KEY;
 import com.sparrow.orm.EntityManager;
 import com.sparrow.orm.SparrowEntityManager;
-import com.sparrow.protocol.constant.CONSTANT;
-import com.sparrow.protocol.constant.magic.SYMBOL;
+import com.sparrow.protocol.constant.Constant;
+import com.sparrow.protocol.constant.magic.Symbol;
 import com.sparrow.support.EnvironmentSupport;
 import com.sparrow.utility.DateTimeUtility;
 import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -113,7 +112,7 @@ public class EnvironmentContext {
         if (inputStream == null) {
             System.err.printf("[%s] can't read\n", configFilePath);
         }
-        return FileUtility.getInstance().readFileContent(inputStream, CONSTANT.CHARSET_UTF_8);
+        return FileUtility.getInstance().readFileContent(inputStream, Constant.CHARSET_UTF_8);
     }
 
     public String readManageStart() {
@@ -160,7 +159,7 @@ public class EnvironmentContext {
         private EntityManager entityManager;
 
         public TableConfig(Class po) throws IOException {
-            this.poPackage = po.getName().substring(0, po.getName().lastIndexOf(SYMBOL.DOT));
+            this.poPackage = po.getName().substring(0, po.getName().lastIndexOf(Symbol.DOT));
             this.placeHolder = getPlaceHolder(po);
         }
 
@@ -306,7 +305,7 @@ public class EnvironmentContext {
                     File.separator + "main" +
                     File.separator + "java" +
                     File.separator
-                    + this.getFullPackage(k).replace(SYMBOL.DOT, File.separator);
+                    + this.getFullPackage(k).replace(Symbol.DOT, File.separator);
 
             String className = getClassName(k, getTableName());
             FileUtility.getInstance().writeFile(fullPath + File.separator + className + extension,
