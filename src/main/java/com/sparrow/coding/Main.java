@@ -26,7 +26,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
 
-        args = "-ct com.sparrow.coding.validating.Attach".split(" ");
+        //args = "-ct com.sparrow.coding.validating.Attach".split(" ");
         if (args.length == 0 || "--help".equals(args[0])) {
             useage();
             System.exit(0);
