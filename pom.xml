@@ -32,35 +32,27 @@
         <dependency>
             <groupId>com.sparrow</groupId>
             <artifactId>sparrow-orm</artifactId>
-            <version>${sparrow_orm_version}</version>
         </dependency>
         <dependency>
             <groupId>com.sparrow</groupId>
             <artifactId>sparrow-container</artifactId>
-            <version>${sparrow_container_version}</version>
         </dependency>
         <dependency>
             <groupId>com.sparrow</groupId>
             <artifactId>sparrow-data-source</artifactId>
-            <version>${sparrow_data_source_version}</version>
         </dependency>
         <dependency>
             <groupId>com.sparrow</groupId>
             <artifactId>sparrow-loader</artifactId>
-            <version>${sparrow_loader_version}</version>
         </dependency>
         <dependency>
             <groupId>com.sparrow</groupId>
             <artifactId>sparrow-json</artifactId>
-            <version>${sparrow_loader_version}</version>
         </dependency>
     </dependencies>
     <build>
         <finalName>sparrow-coder</finalName>
-
-
         <plugins>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>

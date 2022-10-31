@@ -43,7 +43,7 @@ public class AttachRef implements POJO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "int(11) UNSIGNED AUTO_INCREMENT")
+    @Column(name = "id", columnDefinition = "int(11) UNSIGNED")
     @MethodOrder(order = 1)
     public Long getId() {
         return id;
