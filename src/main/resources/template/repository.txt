@@ -1,0 +1,24 @@
+package $package_repository;
+import $package_bo.$table_nameBO;
+import $package_param.$table_nameParam;
+import $package_query.$table_nameQuery;
+import java.util.List;
+
+
+
+public interface $table_nameRepository {
+    Long save($table_nameParam appParam);
+
+    int delete(String $lower_table_nameIds);
+
+    int disable(String $lower_table_nameIds);
+
+    int enable(String $lower_table_nameIds);
+
+    $table_nameBO get$table_name(Long $lower_table_nameId);
+
+    List<$table_nameBO> query$table_names($table_nameQuery $object_poQuery);
+
+    Long get$table_nameCount($table_nameQuery $object_poQuery);
+
+}

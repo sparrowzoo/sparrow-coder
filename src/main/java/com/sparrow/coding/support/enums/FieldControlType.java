@@ -1,6 +1,6 @@
 package com.sparrow.coding.support.enums;
 
-public enum FIELD_CONTROL_TYPE {
+public enum FieldControlType {
 
 	TextField("txt"),
 
@@ -36,7 +36,7 @@ public enum FIELD_CONTROL_TYPE {
 
 	private String prefix;
 
-	FIELD_CONTROL_TYPE(String prefix) {
+	FieldControlType(String prefix) {
 		this.prefix = prefix;
 	}
 

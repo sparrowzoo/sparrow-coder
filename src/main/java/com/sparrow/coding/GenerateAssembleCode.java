@@ -5,9 +5,6 @@ import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.TreeSet;
 
-/**
- * Created by harry on 2016/12/29.
- */
 public class GenerateAssembleCode {
 
     public StringBuilder generate(Class dest, Class src) {

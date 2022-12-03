@@ -1,0 +1,77 @@
+package $package_data_converter;
+
+import com.sparrow.protocol.enums.StatusRecord;
+import $package_bo.$table_nameBO;
+import com.sparrow.security.po.$table_name;
+import $package_param.$table_nameParam;
+import com.sparrow.support.converter.PO2BOConverter;
+import com.sparrow.support.converter.Param2POConverter;
+import com.sparrow.utility.BeanUtility;
+import java.util.ArrayList;
+import java.util.List;
+import javax.inject.Named;
+
+@Named
+public class $table_nameConverter implements Param2POConverter<$table_nameParam, $table_name>, PO2BOConverter<$table_nameBO, $table_name> {
+   
+   
+    public Pager$table_nameQuery toDbPagerQuery($table_nameQuery $object_poQuery) {
+           if ($object_poQuery == null) {
+               Pager$table_nameQuery pager$table_nameQuery = new Pager$table_nameQuery();
+               pager$table_nameQuery.setPager(new PagerQuery());
+               return pager$table_nameQuery;
+           }
+           PagerQuery pagerQuery = new PagerQuery($object_poQuery.getPageSize(), $object_poQuery.getCurrentPageIndex());
+           Pager$table_nameQuery pager$table_nameQuery = new Pager$table_nameQuery();
+           this.fullProperties($object_poQuery, pager$table_nameQuery);
+           pager$table_nameQuery.setPager(pagerQuery);
+           return pager$table_nameQuery;
+       }
+   
+       private void fullProperties($table_nameQuery $object_poQuery, Count$table_nameQuery count$table_nameQuery) {
+           if ($object_poQuery == null) {
+               return;
+           }
+           count$table_nameQuery.set$table_nameName($object_poQuery.get$table_nameName());
+           count$table_nameQuery.setBeginDate($object_poQuery.getBeginDate());
+           count$table_nameQuery.setEndDate($object_poQuery.getEndDate());
+       }
+   
+       public Count$table_nameQuery toDbCountQuery($table_nameQuery $object_poQuery) {
+           Count$table_nameQuery count$table_nameQuery = new Count$table_nameQuery();
+           if ($object_poQuery == null) {
+               return count$table_nameQuery;
+           }
+           this.fullProperties($object_poQuery, count$table_nameQuery);
+           return count$table_nameQuery;
+       }
+
+
+    @Override public $table_name param2po($table_nameParam param) {
+        $table_name $object_po = new $table_name();
+        BeanUtility.copyProperties(param, $object_po);
+        $object_po.setCreateTime(System.currentTimeMillis());
+        $object_po.setUpdateTime($object_po.getCreateTime());
+        $object_po.setCreateUserId(0L);
+        $object_po.setUpdateUserId(0L);
+        $object_po.setStatus(StatusRecord.ENABLE);
+        if ($object_po.getRemark() == null) {
+            $object_po.setRemark("");
+        }
+        return $lower_table_name;
+    }
+
+    @Override public $table_nameBO po2bo($table_name $object_po) {
+        $table_nameBO $object_poBO = new $table_nameBO();
+        BeanUtility.copyProperties($object_po, $object_poBO);
+        return $object_poBO;
+    }
+
+    @Override public List<$table_nameBO> poList2BoList(List<$table_name> list) {
+        List<$table_nameBO> $object_poBos = new ArrayList<>(list.size());
+        for ($table_name $object_po : list) {
+            $object_poBos.add(this.po2bo($object_po));
+        }
+        return $object_poBos;
+    }
+}

@@ -1,0 +1,61 @@
+package $package_repository_impl;
+
+import com.sparrow.protocol.dao.StatusCriteria;
+import com.sparrow.protocol.enums.StatusRecord;
+import com.sparrow.security.admin.dao.$table_nameDAO;
+import com.sparrow.security.admin.infrastructure.persistence.data.converter.$table_nameConverter;
+import com.sparrow.security.po.$table_name;
+import com.sparrow.security.admin.bo.$table_nameBO;
+import com.sparrow.security.admin.protocol.param.$table_nameParam;
+import com.sparrow.security.admin.repository.$table_nameRepository;
+import com.sparrow.security.admin.protocol.query.$table_nameQuery;
+import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+@Named
+public class $table_nameRepositoryImpl implements $table_nameRepository {
+    @Inject
+    private $table_nameConverter $object_poConverter;
+
+    @Inject
+    private $table_nameDAO $object_poDao;
+
+    @Override public Long save($table_nameParam $object_poParam) {
+        $table_name $object_po = this.$object_poConverter.param2po($object_poParam);
+        if ($object_po.get$table_nameId() != null) {
+            this.$object_poDao.update($object_po);
+            return $object_po.get$table_nameId();
+        }
+        return this.$object_poDao.insert($object_po);
+    }
+
+    @Override public int delete(String $object_poIds) {
+        StatusCriteria statusCriteria = new StatusCriteria($object_poIds, StatusRecord.DESTROYED);
+        return this.$object_poDao.changeStatus(statusCriteria);
+    }
+
+    @Override public int disable(String $object_poIds) {
+        StatusCriteria statusCriteria = new StatusCriteria($object_poIds, StatusRecord.DISABLE);
+        return this.$object_poDao.changeStatus(statusCriteria);
+    }
+
+    @Override public int enable(String $object_poIds) {
+        StatusCriteria statusCriteria = new StatusCriteria($object_poIds, StatusRecord.ENABLE);
+        return this.$object_poDao.changeStatus(statusCriteria);
+    }
+
+    @Override public $table_nameBO get$table_name(Long $object_poId) {
+        $table_name $object_po = this.$object_poDao.getEntity($object_poId);
+        return this.$object_poConverter.po2bo($object_po);
+    }
+
+    @Override public List<$table_nameBO> query$table_names($table_nameQuery $object_poQuery) {
+        List<$table_name> $object_poList = this.$object_poDao.query$table_names(this.$object_poConverter.toDbPagerQuery($object_poQuery));
+        return this.$object_poConverter.poList2BoList($object_poList);
+    }
+
+    @Override public Long get$table_nameCount($table_nameQuery $object_poQuery) {
+        return this.$object_poDao.count$table_name(this.$object_poConverter.toDbCountQuery($object_poQuery));
+    }
+}

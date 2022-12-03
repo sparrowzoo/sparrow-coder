@@ -1,6 +1,13 @@
 package $package_dao;
-import com.sparrow.protocol.db.DaoSupport;
-import $package_po.$class_po;
 
-public interface $class_dao extends DaoSupport<$class_po,$primary_type> {
+import com.sparrow.protocol.dao.DaoSupport;
+import $package_query.Count$table_nameQuery;
+import $package_query.Pager$table_nameQuery;
+import $package_po.$table_name;
+import java.util.List;
+
+public interface $table_nameDAO extends DaoSupport<$table_name, Long> {
+    List<$table_name> query$table_names(Pager$table_nameQuery $object_poPagerQuery);
+
+    Long count$table_name(Count$table_nameQuery count$table_nameQuery);
 }

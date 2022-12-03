@@ -1,14 +1,13 @@
 package com.sparrow.coding.support.enums;
 
-public enum REPLACE_KEY {
+public enum PlaceholderKey {
     /**
      * e.g. @author harry
      */
     $author,
 
     /**
-     * origin table name
-     * e.g a_user
+     * origin table name e.g a_user
      */
     $origin_table_name,
 
@@ -18,8 +17,7 @@ public enum REPLACE_KEY {
     $table_name,
 
     /**
-     * first case lower table name
-     * e.g user
+     * first case lower table name e.g user
      */
     $lower_table_name,
 
@@ -29,6 +27,32 @@ public enum REPLACE_KEY {
     $package_po,
 
     /**
+     * po: e.g com.sparrow.user.bo
+     */
+    $package_bo,
+
+    /**
+     * po: e.g com.sparrow.user.param
+     */
+    $package_param,
+
+    /**
+     * po: e.g com.sparrow.user.query
+     */
+    $package_query,
+
+    /**
+     * po: e.g com.sparrow.user.dto
+     */
+    $package_dto,
+
+
+    /**
+     * po: e.g com.sparrow.user.vo
+     */
+    $package_vo,
+
+    /**
      * dao e.g com.sparrow.user.dao
      */
     $package_dao,
@@ -36,17 +60,27 @@ public enum REPLACE_KEY {
     /**
      * dao impl e.g com.sparrow.user.dao.impl
      */
-    $package_impl_dao,
+    $package_dao_impl,
+
+    /**
+     * dao e.g com.sparrow.user.repository
+     */
+    $package_repository,
+
+    /**
+     * dao impl e.g com.sparrow.user.dao.repository.impl
+     */
+    $package_repository_impl,
+
+
+    $package_data_converter,
+
+    $package_assemble,
 
     /**
      * service e.g com.sparrow.user.service
      */
     $package_service,
-
-    /**
-     * service impl e.g com.sparrow.user.service.impl
-     */
-    $package_impl_service,
 
     /**
      * controller e.g com.sparrow.user.controller
@@ -69,14 +103,19 @@ public enum REPLACE_KEY {
     $class_service,
 
     /**
+     * Repository
+     */
+    $class_repository,
+
+    /**
+     * Repository impl
+     */
+    $class_repositoryImpl,
+
+    /**
      * UserDaoImpl
      */
     $class_impl_dao,
-
-    /**
-     * UserServiceImpl
-     */
-    $class_impl_service,
 
     /**
      * UserController
@@ -101,8 +140,7 @@ public enum REPLACE_KEY {
     $display_name,
 
     /**
-     * object po name e.g
-     * private User user (user is object name)
+     * object po name e.g private User user (user is object name)
      */
     $object_po,
 

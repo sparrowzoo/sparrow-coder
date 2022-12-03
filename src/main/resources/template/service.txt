@@ -1,62 +1,63 @@
 package $package_service;
 
-import $package_po.$class_po;
-import com.sparrow.exception.BusinessException;
+import com.sparrow.exception.Asserts;
+import com.sparrow.protocol.BusinessException;
+import com.sparrow.protocol.ListRecordTotalBO;
+import com.sparrow.security.admin.bo.$table_nameBO;
+import com.sparrow.security.admin.repository.$table_nameRepository;
+import com.sparrow.security.admin.support.suffix.$table_nameSuffix;
+import com.sparrow.security.admin.protocol.enums.SecurityAdminError;
+import com.sparrow.security.admin.protocol.param.$table_nameParam;
+import com.sparrow.security.admin.protocol.query.$table_nameQuery;
+import com.sparrow.utility.StringUtility;
 import java.util.List;
-import com.sparrow.support.protocol.pager.PagerSearch;
+import javax.inject.Inject;
+import javax.inject.Named;
 
-public interface $class_service{
+@Named
+public class $table_nameService {
+    @Inject
+    private $table_nameRepository $object_poRepository;
 
-	/**
-	 * physical delete $table_name
-	 *
-	 * @author $author $date
-	 * @param $primary_property_name $primary_property_name
-	 * @return affect count
-	 */
-	Integer delete$table_name($primary_type $primary_property_name)throws BusinessException ;
+    private void validateSave$table_name($table_nameParam $object_poParam) throws BusinessException {
+        Asserts.isTrue(StringUtility.isNullOrEmpty($object_poParam.get$table_nameName()), SecurityAdminError.GROUP_NAME_IS_EMPTY, $table_nameSuffix.GROUP_NAME);
+    }
 
-	/**
-	 * logic delete disable $table_name
-	 * 
-	 * @author $author  $date
-	 * @param $primary_property_name $primary_property_name
-	 * @return affect count
-	 */
-	Integer disable$table_name($primary_type $primary_property_name)throws BusinessException ;
+    public Long save$table_name($table_nameParam $object_poParam) throws BusinessException {
+        this.validateSave$table_name($object_poParam);
+        return this.$object_poRepository.save($object_poParam);
+    }
 
-	/**
-	 * enable $table_name
-	 * @author $author  $date
-	 * @param $primary_property_name $primary_property_name
-	 *@return affect count
-	 */
-	Integer enable$table_name($primary_type $primary_property_name)throws BusinessException ;
+    public Integer delete$table_name(String $object_poIds) throws BusinessException {
+        Asserts.isTrue(StringUtility.isNullOrEmpty($object_poIds), SecurityAdminError.$table_name_ID_IS_EMPTY);
+        return this.$object_poRepository.delete($object_poIds);
+    }
 
-	/**
-	 * save $table_name
-	 * 
-	 * @author $author $date
-	 * @param $object_po $object_po
-	 * @return affect count
-	 */
-	Integer save$table_name($class_po $object_po)throws BusinessException ;
-	
-	/**
-	 * query $table_name
-	 * 
-	 * @author $author $date
-	 * @param query query
-	 * @return List<$class_po>
-	 */
-	List<$class_po> query$table_name(PagerSearch query)throws BusinessException ;
-	
-	/**
-	 * get $table_name
-	 * 
-	 * @author $author $date
-	 * @param $primary_property_name $primary_property_name
-	 * @return $class_po
-	 */
-	$class_po get$table_name($primary_type $primary_property_name)throws BusinessException ;
+    public Integer enable$table_name(String $object_poIds) throws BusinessException {
+        Asserts.isTrue(StringUtility.isNullOrEmpty($object_poIds), SecurityAdminError.$table_name_ID_IS_EMPTY);
+        return this.$object_poRepository.enable($object_poIds);
+    }
+
+    public Integer disable$table_name(String $object_poIds) throws BusinessException {
+        Asserts.isTrue(StringUtility.isNullOrEmpty($object_poIds), SecurityAdminError.$table_name_ID_IS_EMPTY);
+        return this.$object_poRepository.disable($object_poIds);
+    }
+
+    public ListRecordTotalBO<$table_nameBO> queryAll$table_name() {
+        return query$table_name(null);
+    }
+
+    public ListRecordTotalBO<$table_nameBO> query$table_name($table_nameQuery $object_poQuery) {
+        Long totalRecord = this.$object_poRepository.get$table_nameCount($object_poQuery);
+        List<$table_nameBO> $object_poBoList = null;
+        if (totalRecord > 0) {
+            $object_poBoList = this.$object_poRepository.query$table_names($object_poQuery);
+        }
+        return new ListRecordTotalBO<>($object_poBoList, totalRecord);
+    }
+
+    public $table_nameBO get$table_name(Long $object_poId) throws BusinessException {
+        Asserts.isTrue($object_poId == null, SecurityAdminError.$object_po_IS_EMPTY);
+        return this.$object_poRepository.get$table_name($object_poId);
+    }
 }

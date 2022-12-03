@@ -12,10 +12,17 @@ public class Main {
         System.out.println("usage:");
         System.out.println("sparrow-coder.sh [OPTION] [args]");
         System.out.println("OPTION:");
+        System.out.println("bo:              [-b |-bo]           args=po");
+        System.out.println("param:           [-p |-param]        args=po");
+        System.out.println("q:               [-q |-query]        args=po");
+        System.out.println("vo:              [-v |-vo]           args=po");
+        System.out.println("cv:              [-cv|-converter]    args=po");
+
         System.out.println("dao:             [-d |-dao]          args=po");
         System.out.println("daoImpl:         [-di|-daoImpl]      args=po");
+        System.out.println("repository:      [-r |-repository]   args=po");
+        System.out.println("repositoryImpl:  [-ri|-repositoryImpl]args=po");
         System.out.println("service:         [-s |-service]      args=po");
-        System.out.println("serviceImpl:     [-si|-serviceImpl]  args=po");
         System.out.println("controller:      [-c |-controller]   args=po");
         System.out.println("table template:  [-t |-template]     args=po");
         System.out.println("create ddl:      [-ct|-createDDL]    args=po");
@@ -24,9 +31,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-
-
-        //args = "-ct com.sparrow.coding.validating.Attach".split(" ");
+       args = "-c com.sparrow.coding.validating.po.Forum".split(" ");
         if (args.length == 0 || "--help".equals(args[0])) {
             useage();
             System.exit(0);
@@ -51,11 +56,44 @@ public class Main {
         }
 
         Class po = Class.forName(args[1]);
-
-
         GenerateAssembleCode generateAssembleCode = new GenerateAssembleCode();
+        if ("-b".equalsIgnoreCase(args[0]) || "-bo".equalsIgnoreCase(args[0])) {
+            codeGenerator.bo(po);
+            System.exit(0);
+        }
+
+        if ("-p".equalsIgnoreCase(args[0]) || "-param".equalsIgnoreCase(args[0])) {
+            codeGenerator.param(po);
+            System.exit(0);
+        }
+
+        if ("-q".equalsIgnoreCase(args[0]) || "-query".equalsIgnoreCase(args[0])) {
+            codeGenerator.query(po);
+            System.exit(0);
+        }
+
+        if ("-a".equals(args[0]) || "-assemble".equalsIgnoreCase(args[0])) {
+            codeGenerator.assemble(po);
+            System.exit(0);
+        }
+
+        if ("-v".equalsIgnoreCase(args[0]) || "-vo".equalsIgnoreCase(args[0])) {
+            codeGenerator.vo(po);
+            System.exit(0);
+        }
+
+        if ("-cv".equalsIgnoreCase(args[0]) || "-converter".equalsIgnoreCase(args[0])) {
+            codeGenerator.converter(po);
+            System.exit(0);
+        }
+
         if ("-d".equalsIgnoreCase(args[0]) || "-dao".equalsIgnoreCase(args[0])) {
             codeGenerator.dao(po);
+            System.exit(0);
+        }
+
+        if ("-r".equalsIgnoreCase(args[0]) || "-repository".equalsIgnoreCase(args[0])) {
+            codeGenerator.repository(po);
             System.exit(0);
         }
 
@@ -64,13 +102,13 @@ public class Main {
             System.exit(0);
         }
 
-        if ("-s".contentEquals(args[0]) || "-service".equalsIgnoreCase(args[0])) {
-            codeGenerator.service(po);
+        if ("-ri".equalsIgnoreCase(args[0]) || "-repositoryImpl".equalsIgnoreCase(args[0])) {
+            codeGenerator.repositoryImpl(po);
             System.exit(0);
         }
 
-        if ("-si".contentEquals(args[0]) || "-serviceimpl".equalsIgnoreCase(args[0])) {
-            codeGenerator.serviceImpl(po);
+        if ("-s".contentEquals(args[0]) || "-service".equalsIgnoreCase(args[0])) {
+            codeGenerator.service(po);
             System.exit(0);
         }
 
@@ -89,13 +127,5 @@ public class Main {
             System.exit(0);
         }
 
-
-        if ("-a".equals(args[0]) || "-assemble".equalsIgnoreCase(args[0])) {
-            Class source = Class.forName(args[1]);
-            Class dest = Class.forName(args[2]);
-            StringBuilder code = generateAssembleCode.generate(dest, source);
-            System.err.println(code);
-            System.exit(0);
-        }
     }
 }

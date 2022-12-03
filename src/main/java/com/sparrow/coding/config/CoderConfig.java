@@ -6,26 +6,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class CONFIG {
+public class CoderConfig {
 	public static String AUTHOR="author";
-	public static String LANGUAGE_JS_PATH = "language_js_path";
-	public static String JS_PATH = "js_path";
-	public static String VIEW_PATH = "view_path";
-	public static String CSS_PATH = "css_path";
-
+	public static String FULL_TABLE_NAME="full_table_name";
 	public static String RESOURCE_WORKSPACE="resource_workspace";
 	public static String WORKSPACE="workspace";
-	public static String API_MODULE="api_module";
-	public static String IMPL_MODULE="impl_module";
-	public static String GROUP="group";
-	public static String WEB_GROUP="web_group";
-	public static String PACKAGE_PREFIX="package_";
-	public static String CLASS_PREFIX="class_";
-	public static String CENTER_PROJECT="center_project";
-	public static String WEB_PROJECT="web_project";
-	public static String FULL_TABLE_NAME="full_table_name";
-	public static String TABLE_PREFIX="table_prefix";
-	public static String TABLE_NAME_SPLIT="table_name_split";
+
+	public static String LANGUAGE_JS_PATH = "language_js_path";
+	public static String JS_PATH = "js_path";
+	public static String VIEW_TEMPLATE = "view_template";
+	public static String CSS_PATH = "css_path";
+
+	public static String MODULE_PREFIX="module.";
+	public static String PACKAGE_PREFIX="package.";
+	public static String CLASS_PREFIX="class.";
+
+	public static String MODULE_PARENT_ADMIN="parent.admin";
+	public static String PROJECT="project";
+
+
+
+
 
 
 	public static Map<String, Map<VALIDATE_TYPE, String>> validate_error_msg = new HashMap<String, Map<VALIDATE_TYPE, String>>() {
@@ -40,7 +41,7 @@ public class CONFIG {
 					this.put(VALIDATE_TYPE.MOBILE, "手机号码格式错误");
 					this.put(VALIDATE_TYPE.NAME_ROLE,
 							"请输入6-20个字符字母、数字或下划线<br/>推荐字母+数字组合的用户名。");
-					this.put(VALIDATE_TYPE.NULL, "$diaplayName不允许为空");
+					this.put(VALIDATE_TYPE.NULL, "$displayNasme不允许为空");
 					this.put(VALIDATE_TYPE.TELEPHONE, "电话号码格式错误");
 					this.put(VALIDATE_TYPE.WORD, "请输入汉字");
 				}
@@ -64,7 +65,7 @@ public class CONFIG {
 					this.put(VALIDATE_TYPE.MOBILE, "请输入11位手机号码 例:13581571234");
 					this.put(VALIDATE_TYPE.NAME_ROLE,
 							"请输入6-20个字符字母、数字或下划线<br/>推荐字母+数字组合的用户名。例:zh_2014");
-					this.put(VALIDATE_TYPE.NULL, "请输入$diaplayName");
+					this.put(VALIDATE_TYPE.NULL, "请输入$displayName");
 					this.put(VALIDATE_TYPE.TELEPHONE, "请输入电话号码 例:010-69107890");
 					this.put(VALIDATE_TYPE.WORD, "请输入汉字");
 					this.put(VALIDATE_TYPE.ALLOW_INPUT_OPTION,
@@ -75,11 +76,7 @@ public class CONFIG {
 	};
 
 	public static Map<VALIDATE_TYPE, String> validate_field = new HashMap<VALIDATE_TYPE, String>() {
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
-
 		{
 			this.put(VALIDATE_TYPE.EMAIL, "emailError");
 			this.put(VALIDATE_TYPE.EQUAL, "noEqualError");

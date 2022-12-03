@@ -1,4 +1,4 @@
-package com.sparrow.coding.validating;
+package com.sparrow.coding.validating.po;
 
 import com.sparrow.protocol.MethodOrder;
 import com.sparrow.protocol.POJO;
