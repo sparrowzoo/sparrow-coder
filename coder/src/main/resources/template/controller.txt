@@ -1,0 +1,97 @@
+package $package_controller;
+
+import $package_assemble.$table_nameAssemble;
+import $package_vo.$table_nameVO;
+import com.sparrow.protocol.BusinessException;
+import $package_bo.$table_nameBO;
+import $package_param.$table_nameParam;
+import $package_query.$table_nameQuery;
+import $package_service.$table_nameService;
+import com.sparrow.protocol.BusinessException;
+import com.sparrow.protocol.ListRecordTotalBO;
+import com.sparrow.protocol.pager.SimplePager;
+import com.sparrow.servlet.ServletContainer;
+import com.sparrow.spring.starter.ModelAndViewUtils;
+import com.sparrow.support.pager.HtmlPagerResult;
+import javax.inject.Inject;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
+@RestController
+@RequestMapping("$object_po")
+public class $table_nameController {
+
+    @Inject
+    private $table_nameService $object_poService;
+
+    @Inject
+    private $table_nameAssemble $object_poControllerAssemble;
+    
+    
+    @Inject
+    private ServletContainer servletContainer;
+    
+    @GetMapping("manage")
+    public ModelAndView loadAll$table_names() {
+            $table_nameBatchOperateParam batchOperateParam = ($table_nameBatchOperateParam) ModelAndViewUtils.flash("query");
+            if (batchOperateParam != null) {
+                return this.query$table_names(batchOperateParam);
+            }
+            SimplePager simplePager = new SimplePager();
+            ListRecordTotalBO<$table_nameBO> $object_poListTotalRecord = this.$object_poService.queryAll$table_name();
+            HtmlPagerResult<$table_nameVO> pager = this.$object_poControllerAssemble.assembleHtmlPager($object_poListTotalRecord, simplePager);
+            ModelAndView mv = new ModelAndView("/$object_po/manage");
+            mv.addObject("pager", pager);
+            return mv;
+        }
+    
+        private ModelAndView query$table_names($table_nameQuery $object_poQuery) {
+            ListRecordTotalBO<$table_nameBO> $object_poListTotalRecord = this.$object_poService.query$table_name($object_poQuery);
+            HtmlPagerResult<$table_nameVO> pager = this.$object_poControllerAssemble.assembleHtmlPager($object_poListTotalRecord, $object_poQuery);
+            ModelAndView mv = new ModelAndView("/$object_po/manage");
+            mv.addObject("pager", pager);
+            mv.addObject("query", $object_poQuery);
+            return mv;
+        }
+    
+        @PostMapping("search.do")
+        public ModelAndView search($table_nameQuery $object_poQuery) {
+            return this.query$table_names($object_poQuery);
+        }
+    
+        @PostMapping("save")
+        public ModelAndView save$table_name($table_nameParam $object_poParam) throws BusinessException {
+            try {
+                $object_poService.save$table_name($object_poParam);
+                return ModelAndViewUtils.redirect("/$object_po/manage");
+            } catch (Exception e) {
+                //失败回显
+                this.servletContainer.getRequest().setAttribute("$object_po", this.$object_poControllerAssemble.paramAssembleVO($object_poParam));
+                throw e;
+            }
+        }
+
+    @GetMapping("get")
+    public $table_nameVO get$table_name(Long $object_poId) throws BusinessException {
+        $table_nameBO $object_poBo = this.$object_poService.get$table_name($object_poId);
+        return this.$object_poControllerAssemble.boAssembleVO($object_poBo);
+    }
+
+    @PostMapping("delete")
+    public Integer delete$table_name(String $object_poIds) throws BusinessException {
+        return this.$object_poService.delete$table_name($object_poIds);
+    }
+
+    @PostMapping("enable")
+    public Integer enable$table_name(String $object_poIds) throws BusinessException {
+        return this.$object_poService.enable$table_name($object_poIds);
+    }
+
+    @PostMapping("disable")
+    public Integer disable$table_name(String $object_poIds) throws BusinessException {
+        return this.$object_poService.disable$table_name($object_poIds);
+    }
+}
