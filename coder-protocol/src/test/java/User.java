@@ -1,16 +1,16 @@
 import com.sparrow.coding.protocol.ControlType;
 import com.sparrow.coding.protocol.Form;
+import com.sparrow.coding.protocol.validate.AllowInputCharLengthValidator;
 import com.sparrow.coding.protocol.validate.AllowOptionsValidator;
+import com.sparrow.coding.protocol.validate.ChineseCharactersValidator;
 import com.sparrow.coding.protocol.validate.DigitalValidator;
 import com.sparrow.coding.protocol.validate.EmailValidator;
 import com.sparrow.coding.protocol.validate.EqualValidator;
 import com.sparrow.coding.protocol.validate.IdCardValidator;
 import com.sparrow.coding.protocol.validate.MobileValidator;
-import com.sparrow.coding.protocol.validate.NoneValidator;
+import com.sparrow.coding.protocol.validate.NullValidator;
 import com.sparrow.coding.protocol.validate.TelValidator;
-import com.sparrow.coding.protocol.validate.AllowInputCharLengthValidator;
 import com.sparrow.coding.protocol.validate.UserNameRuleValidator;
-import com.sparrow.coding.protocol.validate.ChineseCharactersValidator;
 
 public class User {
     @Form(text = "用户名", type = ControlType.INPUT_TEXT, validate = UserNameRuleValidator.class)
@@ -18,7 +18,8 @@ public class User {
         , nullError = "请输入6-20个字符的用户名")
     private String userName;
 
-    @Form(text = "密码", type = ControlType.INPUT_PASSWORD, validate = NoneValidator.class)
+    @Form(text = "密码", type = ControlType.INPUT_PASSWORD, validate = NullValidator.class)
+    @NullValidator
     private String password;
 
     @Form(text = "状态", type = ControlType.INPUT_TEXT, validate = AllowOptionsValidator.class)
