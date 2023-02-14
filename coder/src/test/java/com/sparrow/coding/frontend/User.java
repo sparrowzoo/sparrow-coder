@@ -1,3 +1,5 @@
+package com.sparrow.coding.frontend;
+
 import com.sparrow.coding.protocol.ControlType;
 import com.sparrow.coding.protocol.Form;
 import com.sparrow.coding.protocol.validate.AllowInputCharLengthValidator;
@@ -18,8 +20,8 @@ public class User {
         , nullError = "请输入6-20个字符的用户名")
     private String userName;
 
-    @Form(text = "密码", type = ControlType.INPUT_PASSWORD, validate = NullValidator.class)
-    @NullValidator
+    @Form(text = "密码", type = ControlType.INPUT_PASSWORD)
+    @NullValidator(prompt = "请输入密码", nullError = "用户密码不允许为空", allowNull = false, minLength = 6, maxLength = 20, lengthError = "密码要求6-20位字符")
     private String password;
 
     @Form(text = "状态", type = ControlType.INPUT_TEXT, validate = AllowOptionsValidator.class)
@@ -75,7 +77,7 @@ public class User {
     @AllowInputCharLengthValidator(maxAllowCharLength = 512, allowCharLengthShowControlId = "spanAllowCharLength")
     private String remark;
 
-    @Form(text = "真实姓名",type = ControlType.INPUT_TEXT,validate = ChineseCharactersValidator.class)
+    @Form(text = "真实姓名", type = ControlType.INPUT_TEXT, validate = ChineseCharactersValidator.class)
     @ChineseCharactersValidator
     private String name;
 }

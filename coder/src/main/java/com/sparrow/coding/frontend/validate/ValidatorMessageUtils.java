@@ -1,7 +1,5 @@
 package com.sparrow.coding.frontend.validate;
 
-import com.sparrow.utility.StringUtility;
-
 public class ValidatorMessageUtils {
     private static final String ERROR_PREFIX = "error";
 
@@ -18,19 +16,21 @@ public class ValidatorMessageUtils {
      * }
      * </pre>
      * 对应txtAppName:{
+     *
      * @param controlPrefix
      * @return
      */
     public static String getFieldKey(String controlPrefix, String upperFieldName) {
-        return String.format("%s:{", controlPrefix + upperFieldName);
+        return String.format("%s:{\n", controlPrefix + upperFieldName);
     }
 
     /**
      * 对应 errorCtrlId : 'errorAppName',
+     *
      * @return
      */
     public static String getErrorCtrlId(String upperFieldName) {
-        return String.format("errorCtrlId : '%s',", ERROR_PREFIX + upperFieldName);
+        return String.format("\"errorCtrlId\" : '%s',\n", ERROR_PREFIX + upperFieldName);
     }
 
     /**
@@ -41,7 +41,7 @@ public class ValidatorMessageUtils {
      * @return
      */
     public static String formatMessage(String key, String message) {
-        return String.format("%1$s : '%2$s',", key, message);
+        return String.format("\"%1$s\" : '%2$s',\n", key, message);
     }
 
     /**
@@ -52,10 +52,15 @@ public class ValidatorMessageUtils {
      * @return
      */
     public static String formatMessage(String key, Integer digital) {
-        return String.format("%1$s : %2$s,", key, digital);
+        return String.format("\"%1$s\" : %2$s,\n", key, digital);
     }
 
     public static String formatMessage(String key, Boolean digital) {
-        return String.format("%1$s : %2$s,", key, digital);
+        return String.format("\"%1$s\" : %2$s,\n", key, digital);
+    }
+
+    public static void finish(StringBuilder sb) {
+        sb.deleteCharAt(sb.length() - 2);
+        sb.append("}\n");
     }
 }

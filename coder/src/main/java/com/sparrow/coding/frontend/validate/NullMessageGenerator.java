@@ -16,7 +16,6 @@ public class NullMessageGenerator implements ValidatorMessageGenerator<NullValid
         String maxLength = ValidatorMessageUtils.formatMessage("maxLength", validator.maxLength());
         String lengthError = ValidatorMessageUtils.formatMessage("lengthError", validator.lengthError());
         String allowNull = ValidatorMessageUtils.formatMessage("allowNull", validator.allowNull());
-        String defaultValue = ValidatorMessageUtils.formatMessage("defaultValue", validator.defaultValue());
 
         StringBuilder sb = new StringBuilder();
         sb.append(validatorKey);
@@ -27,7 +26,11 @@ public class NullMessageGenerator implements ValidatorMessageGenerator<NullValid
         sb.append(maxLength);
         sb.append(lengthError);
         sb.append(allowNull);
-        sb.append(defaultValue);
+        if (!StringUtility.isNullOrEmpty(validator.defaultValue())) {
+            String defaultValue = ValidatorMessageUtils.formatMessage("defaultValue", validator.defaultValue());
+            sb.append(defaultValue);
+        }
+        ValidatorMessageUtils.finish(sb);
         return sb.toString();
     }
 }
