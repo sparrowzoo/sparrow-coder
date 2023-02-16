@@ -29,7 +29,4 @@ public @interface EmailValidator {
     String setError() default "电子邮箱已存在,请换用其它电子邮件。没有电子邮箱?推荐使用<a target=\"_blank\" unselectable=\"on\" href=\"http://reg.email.163.com/mailregAll/reg0.jsp?from='+$.url.root+'\">网易</a>邮箱。'";
 
     int parentLevel() default 1;
-
-    String methodName() default "isEmail";
-
 }

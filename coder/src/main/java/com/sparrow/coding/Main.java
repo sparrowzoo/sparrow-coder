@@ -2,6 +2,7 @@ package com.sparrow.coding;
 
 import com.sparrow.container.Container;
 import com.sparrow.container.ContainerBuilder;
+import com.sparrow.container.impl.SparrowContainer;
 import com.sparrow.core.spi.ApplicationContext;
 
 /**
@@ -32,6 +33,10 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 //       args = "-c com.sparrow.coding.validating.po.Forum".split(" ");
+        Container container = ApplicationContext.getContainer();
+        container.init(new ContainerBuilder().initController(false)
+            .initInterceptor(false));
+
         if (args.length == 0 || "--help".equals(args[0])) {
             useage();
             System.exit(0);
@@ -45,8 +50,7 @@ public class Main {
         CodeGenerator codeGenerator = new CodeGenerator();
 
         if ("-ctn".equals(args[0]) || "-createDDL-n".equals(args[0])) {
-            Container container = ApplicationContext.getContainer();
-            container.init(new ContainerBuilder());
+
             if (args.length == 3) {
                 codeGenerator.generaCreateNDDL(args[1], Integer.valueOf(args[2]), false);
             } else if (args.length == 4 && args[3].equalsIgnoreCase("-c")) {
@@ -126,6 +130,5 @@ public class Main {
             codeGenerator.generaCreateDDL(po);
             System.exit(0);
         }
-
     }
 }

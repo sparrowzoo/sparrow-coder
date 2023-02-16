@@ -1,6 +1,9 @@
 package com.sparrow.coding.frontend.validate;
 
 import com.sparrow.coding.api.ValidatorMessageGenerator;
+import com.sparrow.coding.frontend.ValidatorRegistry;
+import com.sparrow.container.Container;
+import com.sparrow.container.ContainerAware;
 import com.sparrow.utility.StringUtility;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -8,10 +11,16 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.util.Map;
 
-public class AbstractValidatorMessageGenerator<T extends Annotation> implements ValidatorMessageGenerator<T> {
+public abstract class AbstractValidatorMessageGenerator<T extends Annotation> implements ValidatorMessageGenerator<T>, ContainerAware {
+
+    private ValidatorRegistry registry = ValidatorRegistry.getInstance();
+
     private static final String ERROR_PREFIX = "error";
 
-    private static final String DEFAULT_VALUE = "defaultValue";
+    protected static final String DEFAULT_VALUE = "defaultValue";
+
+    public AbstractValidatorMessageGenerator() {
+    }
 
     /**
      * 生成示例
@@ -50,9 +59,13 @@ public class AbstractValidatorMessageGenerator<T extends Annotation> implements 
      * @param message
      * @return
      */
-    private String formatMessage(String key, Object message) {
+    protected String formatMessage(String key, Object message) {
         if (message instanceof String) {
             return String.format("\"%1$s\" : '%2$s',\n", key, message);
+        }
+        if (message instanceof String[]) {
+            String[] array = (String[]) message;
+            return String.format("\"%1$s\" : [%2$s],\n", key, StringUtility.join(array, ',', null));
         }
         return String.format("\"%1$s\" : %2$s,\n", key, message);
     }
@@ -64,13 +77,13 @@ public class AbstractValidatorMessageGenerator<T extends Annotation> implements 
 
     protected void appendDefaultValue(StringBuilder sb, Map<String, Object> maps) {
         Object defaultValue = maps.get(DEFAULT_VALUE);
-        if (defaultValue != null) {
+        if (defaultValue != null && !defaultValue.equals("")) {
             sb.append(this.formatMessage("defaultValue", defaultValue));
         }
     }
 
     @Override public String generateValidateMessage(String fieldName, String controlPrefix,
-        T validator) throws NoSuchFieldException, IllegalAccessException {
+        Annotation validator) throws NoSuchFieldException, IllegalAccessException {
         String upperFieldName = StringUtility.setFirstByteUpperCase(fieldName);
         String validatorKey = this.getFieldKey(controlPrefix, upperFieldName);
         String errorCtrlId = this.getErrorCtrlId(upperFieldName);
@@ -82,10 +95,17 @@ public class AbstractValidatorMessageGenerator<T extends Annotation> implements 
         memberValues.setAccessible(true);
         Map<String, Object> maps = (Map<String, Object>) memberValues.get(invocationHandler);
         for (String key : maps.keySet()) {
+            if (key.equals(DEFAULT_VALUE)) {
+                continue;
+            }
             sb.append(this.formatMessage(key, maps.get(key)));
         }
         this.appendDefaultValue(sb, maps);
         this.finish(sb);
         return sb.toString();
+    }
+
+    @Override public void aware(Container container, String s) {
+        this.registry.registry(this);
     }
 }

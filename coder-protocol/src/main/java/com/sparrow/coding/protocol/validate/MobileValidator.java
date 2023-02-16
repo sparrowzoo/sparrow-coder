@@ -1,5 +1,14 @@
 package com.sparrow.coding.protocol.validate;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+@Target({METHOD, FIELD})
+@Retention(RUNTIME)
 public @interface MobileValidator {
     String prompt() default "请输入手机号码";
 
@@ -16,7 +25,4 @@ public @interface MobileValidator {
     String lengthError() default "请输入11位手机号码";
 
     int parentLevel() default 1;
-
-    String methodName() default "isMobile";
-
 }

@@ -1,5 +1,14 @@
 package com.sparrow.coding.protocol.validate;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+@Target({METHOD, FIELD})
+@Retention(RUNTIME)
 public @interface TelValidator {
     String prompt() default "请输入电话号码";
 
@@ -16,7 +25,4 @@ public @interface TelValidator {
     String lengthError() default "电话号码长度在7-12位之间";
 
     int parentLevel() default 1;
-
-    String methodName() default "isTel";
-
 }

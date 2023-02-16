@@ -24,7 +24,5 @@ public @interface UserNameRuleValidator {
 
     String setError() default "用户名已被注册,请您换一个用户名。";
 
-    String methodName() default "isUserNameRule";
-
     int parentLevel() default 1;
 }

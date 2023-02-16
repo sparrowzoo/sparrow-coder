@@ -15,6 +15,7 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <javax.servlet_api_version>3.0.1</javax.servlet_api_version>
     </properties>
 
     <dependencies>
@@ -32,6 +33,12 @@
         <dependency>
             <groupId>com.sparrowzoo</groupId>
             <artifactId>sparrow-protocol</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet_api_version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.sparrowzoo</groupId>

@@ -8,7 +8,6 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Inherited
 @Target({METHOD, FIELD})
 @Retention(RUNTIME)
 public @interface NullValidator {
@@ -25,6 +24,4 @@ public @interface NullValidator {
     String lengthError() default "";
 
     String defaultValue() default "";
-
-    String methodName() default "isNull";
 }
