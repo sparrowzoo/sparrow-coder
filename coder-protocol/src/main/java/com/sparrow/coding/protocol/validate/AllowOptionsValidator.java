@@ -5,4 +5,6 @@ public @interface AllowOptionsValidator {
     String[] options() default {};
 
     String defaultValue() default "";
+
+    String methodName() default "allowInputOption";
 }

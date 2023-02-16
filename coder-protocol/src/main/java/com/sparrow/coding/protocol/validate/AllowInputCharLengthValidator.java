@@ -8,4 +8,5 @@ public @interface AllowInputCharLengthValidator {
     String allowCharLengthShowControlId() default "spanAllowCharLength";
 
     boolean allowNull() default true;
+
 }

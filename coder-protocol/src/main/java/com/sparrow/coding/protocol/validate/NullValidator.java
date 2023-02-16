@@ -25,4 +25,6 @@ public @interface NullValidator {
     String lengthError() default "";
 
     String defaultValue() default "";
+
+    String methodName() default "isNull";
 }

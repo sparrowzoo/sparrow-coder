@@ -16,4 +16,7 @@ public @interface TelValidator {
     String lengthError() default "电话号码长度在7-12位之间";
 
     int parentLevel() default 1;
+
+    String methodName() default "isTel";
+
 }

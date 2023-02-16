@@ -1,5 +1,15 @@
 package com.sparrow.coding.protocol.validate;
 
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+@Target({METHOD, FIELD})
+@Retention(RUNTIME)
 public @interface EmailValidator {
 
     String prompt() default "输入您的E-MAIL,方便您日后找回密码。没有电子邮箱?推荐使用<a target=\"_blank\" unselectable=\"on\" style=\"color:#ff9900;\" href=\"http://reg.email.163.com/mailregAll/reg0.jsp?from='+$.url.root+'\">网易</a>邮箱。'";
@@ -19,4 +29,7 @@ public @interface EmailValidator {
     String setError() default "电子邮箱已存在,请换用其它电子邮件。没有电子邮箱?推荐使用<a target=\"_blank\" unselectable=\"on\" href=\"http://reg.email.163.com/mailregAll/reg0.jsp?from='+$.url.root+'\">网易</a>邮箱。'";
 
     int parentLevel() default 1;
+
+    String methodName() default "isEmail";
+
 }

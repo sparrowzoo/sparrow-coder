@@ -34,13 +34,7 @@ public class User {
     private String age;
 
     @Form(text = "E-mail", type = ControlType.INPUT_TEXT, validate = EmailValidator.class)
-    @EmailValidator(
-        prompt = "请输入邮箱",
-        emailError = "邮箱格式输入错误",
-        minLength = 10,
-        maxLength = 255,
-        lengthError = "邮箱长度必须>=10 并且<255",
-        setError = "邮箱已存在")
+    @EmailValidator(prompt = "请输入邮箱", emailError = "邮箱格式输入错误", minLength = 10, maxLength = 255, lengthError = "邮箱长度必须>=10 并且<255", setError = "邮箱已存在")
     private String email;
 
     @Form(text = "确认密码", type = ControlType.INPUT_PASSWORD, validate = EqualValidator.class)

@@ -16,4 +16,7 @@ public @interface MobileValidator {
     String lengthError() default "请输入11位手机号码";
 
     int parentLevel() default 1;
+
+    String methodName() default "isMobile";
+
 }

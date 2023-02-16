@@ -25,4 +25,6 @@ public @interface DigitalValidator {
 
     //如何是int 的最小值，说明用户未配置默认值
     int defaultValue() default Integer.MIN_VALUE;
+
+    String methodName() default "isDigital";
 }

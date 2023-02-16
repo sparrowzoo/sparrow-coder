@@ -13,4 +13,7 @@ public @interface ChineseCharactersValidator {
     int maxLength() default 100;
 
     String lengthError() default "请输入1~100个汉字";
+
+    String methodName() default "isChineseCharacters";
+
 }

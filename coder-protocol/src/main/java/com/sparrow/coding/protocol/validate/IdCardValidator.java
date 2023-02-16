@@ -17,4 +17,7 @@ public @interface IdCardValidator {
     String lengthError() default "请输入18位身份证号码";
 
     int parentLevel() default 1;
+
+    String methodName() default "isIdCard";
+
 }
