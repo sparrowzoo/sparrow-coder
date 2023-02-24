@@ -7,19 +7,19 @@ public enum PlaceholderKey {
     $author,
 
     /**
-     * origin table name e.g a_user
+     * origin table name e.g user_address
      */
     $origin_table_name,
 
     /**
-     * e.g user or User
+     * e.g UserAddress
      */
-    $table_name,
+    $persistence_class_name,
 
     /**
-     * first case lower table name e.g user
+     * first case lower table name e.g userAddress
      */
-    $lower_table_name,
+    $persistence_object_name,
 
     /**
      * po: e.g com.sparrow.user.po
@@ -131,16 +131,6 @@ public enum PlaceholderKey {
     $upper_primary_property_name,
 
     $primary_type,
-
-    /**
-     * display name e.g 用户名
-     */
-    $display_name,
-
-    /**
-     * object po name e.g private User user (user is object name)
-     */
-    $object_po,
 
     /**
      * userDao

@@ -14,6 +14,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface Form {
     String text();
 
+    boolean showInEdit() default true;
+
+    boolean showInList() default true;
+
+    int width() default 80;
+
     ControlType type() default ControlType.INPUT_TEXT;
 
     Class<? extends Annotation> validate() default NullValidator.class;

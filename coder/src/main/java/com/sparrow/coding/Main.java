@@ -7,6 +7,8 @@ import com.sparrow.core.spi.ApplicationContext;
 
 /**
  * Created by harry on 18/11/16.
+ *
+ * test branch
  */
 public class Main {
     private static void useage() {
@@ -58,6 +60,7 @@ public class Main {
             }
             System.exit(0);
         }
+
 
         Class po = Class.forName(args[1]);
         GenerateAssembleCode generateAssembleCode = new GenerateAssembleCode();
@@ -118,11 +121,6 @@ public class Main {
 
         if ("-c".contentEquals(args[0]) || "-controller".equalsIgnoreCase(args[0])) {
             codeGenerator.controller(po);
-            System.exit(0);
-        }
-
-        if ("-t".equals(args[0]) || "-template".equalsIgnoreCase(args[0])) {
-            codeGenerator.generateTableTemplate(po);
             System.exit(0);
         }
 

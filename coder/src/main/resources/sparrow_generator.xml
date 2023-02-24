@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE configuration PUBLIC "-//sparrow Framework//DTD ioc Configuration//EN"
+    "http://www.sparrowzoo.com/dtds/sparrow_generator.dtd">
+<configuration>
+    <template control_type="INPUT_TEXT" page_type="EDIT">
+        <![CDATA[
+            <div class="pure-control-group">
+                <label>$field_text</label>
+                <input type="text" id="txtAppName" th:value="${app?.$field_name}" name="$field_name"/>
+                <span class="prompt" id="errorAppName"></span>
+            </div>
+        ]]>
+    </template>
+</configuration>

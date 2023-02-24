@@ -14,25 +14,6 @@ public class MessageConverterV1 {
     private String password;
 
     /**
-     * var appInfo = { txtAppName : { errorCtrlId : 'errorAppName', prompt : '璇疯緭鍏�20浣嶄互涓婣PP鍚嶇О', nullError :
-     * 'APP鍚嶇О涓哄繀娣婚」銆�', minLength : 1, maxLength : 20, lengthError : 'APP鍚嶇О闀垮害涓嶅緱澶氫簬20銆�' },
-     * <p>
-     * txtAppCode : { errorCtrlId : 'errorAppCode', prompt : '璇疯緭鍏�20浣嶄互涓婣PP缂栫爜', nullError : 'APP缂栫爜涓哄繀娣婚」銆�',
-     * minLength : 1, maxLength : 20, lengthError : 'APP鍚嶇О闀垮害涓嶅緱澶氫簬20銆�' }, txtAppSort : { errorCtrlId :
-     * 'errorAppSort', prompt : '璇疯緭鍏�20浣嶄互涓婣PP缂栫爜', nullError : 'APP缂栫爜涓哄繀娣婚」銆�', digitalError:'鎺掑簭鍙凤紝璇疯緭鍏�0-999涔嬮棿鐨勬暟瀛�',
-     * minValue : 0, maxValue : 999, defaultValue : 0 }, txtState : { errorCtrlId : 'errorState', prompt :
-     * '璇疯緭鍏ョ姸鎬佺爜0锛氭棤鏁� 1鏈夋晥', options :[1, 0] }, txtRemark : { errorCtrlId : 'errorRemark', prompt : '璇疯緭鍏ヨ缁勭殑鎻忚堪淇℃伅',
-     * lengthError : '鎻忚堪淇℃伅涓嶅緱瓒呰繃500涓瓧绗︺€�', spanTxtCount : 'spanTxtCount', allowNull : true } };var appInfo = {
-     * txtAppName : { errorCtrlId : 'errorAppName', prompt : '璇疯緭鍏�20浣嶄互涓婣PP鍚嶇О', nullError : 'APP鍚嶇О涓哄繀娣婚」銆�',
-     * minLength : 1, maxLength : 20, lengthError : 'APP鍚嶇О闀垮害涓嶅緱澶氫簬20銆�' },
-     * <p>
-     * txtAppCode : { errorCtrlId : 'errorAppCode', prompt : '璇疯緭鍏�20浣嶄互涓婣PP缂栫爜', nullError : 'APP缂栫爜涓哄繀娣婚」銆�',
-     * minLength : 1, maxLength : 20, lengthError : 'APP鍚嶇О闀垮害涓嶅緱澶氫簬20銆�' }, txtAppSort : { errorCtrlId :
-     * 'errorAppSort', prompt : '璇疯緭鍏�20浣嶄互涓婣PP缂栫爜', nullError : 'APP缂栫爜涓哄繀娣婚」銆�', digitalError:'鎺掑簭鍙凤紝璇疯緭鍏�0-999涔嬮棿鐨勬暟瀛�',
-     * minValue : 0, maxValue : 999, defaultValue : 0 }, txtState : { errorCtrlId : 'errorState', prompt :
-     * '璇疯緭鍏ョ姸鎬佺爜0锛氭棤鏁� 1鏈夋晥', options :[1, 0] }, txtRemark : { errorCtrlId : 'errorRemark', prompt : '璇疯緭鍏ヨ缁勭殑鎻忚堪淇℃伅',
-     * lengthError : '鎻忚堪淇℃伅涓嶅緱瓒呰繃500涓瓧绗︺€�', spanTxtCount : 'spanTxtCount', allowNull : true } };
-     *
      * @param args
      * @throws NoSuchFieldException
      * @throws IllegalAccessException

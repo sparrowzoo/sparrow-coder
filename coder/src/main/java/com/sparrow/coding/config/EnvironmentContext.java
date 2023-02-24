@@ -15,7 +15,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
@@ -79,9 +78,6 @@ public class EnvironmentContext {
         return this.author;
     }
 
-    public String getTableTemplateConfigPath(String originTableName) {
-        return tableConfig + File.separator + "table_template_config" + File.separator + originTableName + ".properties";
-    }
 
     public String getTableCreateDDLPath(String originTableName) {
         return tableConfig + File.separator + "ddl" + File.separator + originTableName + ".sql";
@@ -95,12 +91,12 @@ public class EnvironmentContext {
         return this.config.getProperty(CoderConfig.PACKAGE_PREFIX + packageKey.name().toLowerCase());
     }
 
-    public String getClassName(ClassKey packageKey, String tableName) {
+    public String getClassName(ClassKey packageKey, String persistenceClassName) {
         String source = config.getProperty(CoderConfig.CLASS_PREFIX + packageKey.name().toLowerCase());
-        if (tableName == null) {
+        if (persistenceClassName == null) {
             return source;
         }
-        return source.replace(PlaceholderKey.$table_name.name(), tableName);
+        return source.replace(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
     }
 
     public String getConfigPath() {
@@ -138,8 +134,9 @@ public class EnvironmentContext {
 
         private Map<String, String> placeHolder;
 
-        private Properties tableProperties;
-
+        /**
+         * 包名都根据po对象生成
+         */
         private String poPackage;
 
         public String getOriginTableName() {
@@ -182,61 +179,8 @@ public class EnvironmentContext {
             return fileUtility.replacePath(poPackage, ClassKey.PO.name(), getPackage(key), ".");
         }
 
-        private String getDisplayValue(String fieldName, String key, String defaultValue) {
-            key = String.format("%s.display_%s", fieldName, key);
-            return tableProperties.getProperty(key, defaultValue);
-        }
-
-        private Boolean getBoolean(String fieldName, String key, String defaultValue) {
-            return Boolean.valueOf(this.getDisplayValue(fieldName, key, defaultValue));
-        }
-
-        private Integer getInteger(String fieldName, String key, String defaultValue) {
-            return Integer.valueOf(this.getDisplayValue(fieldName, key, defaultValue));
-        }
-
-        public String getTableName() {
+        public String getPersistenceClassName() {
             return StringUtility.setFirstByteUpperCase(StringUtility.underlineToHump(this.originTableName));
-        }
-
-        public String getDisplayName() {
-            return tableProperties.getProperty("display_name");
-        }
-
-        public boolean getDisplayAdd(String fieldName) {
-            return this.getBoolean(fieldName, "add", "true");
-        }
-
-        public boolean getDisplayUpdate(String fieldName) {
-            return this.getBoolean(fieldName, "update", "true");
-        }
-
-        public boolean getDisplayList(String fieldName) {
-            return this.getBoolean(fieldName, "list", "true");
-        }
-
-        public boolean getDisplayDetail(String fieldName) {
-            return this.getBoolean(fieldName, "detail", "true");
-        }
-
-        public boolean getDisplayImage(String fieldName) {
-            return this.getBoolean(fieldName, "image", "true");
-        }
-
-        public boolean getDisplayHyperLink(String fieldName) {
-            return this.getBoolean(fieldName, "hyper_link", "true");
-        }
-
-        public Integer getDisplayWidth(String fieldName) {
-            return this.getInteger(fieldName, "width", "200");
-        }
-
-        public Integer getDisplayHeight(String fieldName) {
-            return this.getInteger(fieldName, "height", "30");
-        }
-
-        public Integer getDisplayOrderNo(String fieldName) {
-            return this.getInteger(fieldName, "orderNo", "1");
         }
 
         private Map<String, String> getPlaceHolder(Class po) throws IOException {
@@ -244,25 +188,15 @@ public class EnvironmentContext {
             String originTableName = entityManager.getTableName();
             this.originTableName = originTableName;
 
-            this.tableProperties = new Properties();
-            String tableTemplateConfigPath = getTableTemplateConfigPath(this.originTableName);
-            File tablePropertyFile = new File(tableTemplateConfigPath);
-            if (tablePropertyFile.exists()) {
-                tableProperties.load(new FileInputStream(tablePropertyFile));
-            } else {
-                System.err.printf("table template config not exist [%s] \n", tableTemplateConfigPath);
-            }
 
-            String tableName = this.getTableName();
-            String tableDisplayName = this.getDisplayName();
+            String persistenceClassName = this.getPersistenceClassName();
             String primaryPropertyName = entityManager.getPrimary().getName();
 
-            Map<String, String> context = new TreeMap<>((o1, o2) -> o2.compareTo(o1));
+            Map<String, String> context = new TreeMap<>(Comparator.reverseOrder());
 
             context.put(PlaceholderKey.$origin_table_name.name(), originTableName);
-            context.put(PlaceholderKey.$table_name.name(), tableName);
-            context.put(PlaceholderKey.$lower_table_name.name(), StringUtility.setFirstByteLowerCase(tableName));
-            context.put(PlaceholderKey.$display_name.name(), tableDisplayName);
+            context.put(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
+            context.put(PlaceholderKey.$persistence_object_name.name(), StringUtility.setFirstByteLowerCase(persistenceClassName));
             context.put(PlaceholderKey.$date.name(), DateTimeUtility
                 .getFormatCurrentTime("yyyy-MM-dd HH:mm:ss"));
             context.put(PlaceholderKey.$author.name(), getAuthor());
@@ -284,17 +218,17 @@ public class EnvironmentContext {
             context.put(PlaceholderKey.$package_service.name(), this.getFullPackage(ClassKey.SERVICE));
             context.put(PlaceholderKey.$package_controller.name(), this.getFullPackage(ClassKey.CONTROLLER));
 
-            context.put(PlaceholderKey.$class_po.name(), getClassName(ClassKey.PO, tableName));
-            context.put(PlaceholderKey.$class_dao.name(), getClassName(ClassKey.DAO, tableName));
+            context.put(PlaceholderKey.$class_po.name(), getClassName(ClassKey.PO, persistenceClassName));
+            context.put(PlaceholderKey.$class_dao.name(), getClassName(ClassKey.DAO, persistenceClassName));
             context.put(PlaceholderKey.$class_impl_dao.name(),
-                getClassName(ClassKey.DAO_IMPL, tableName));
+                getClassName(ClassKey.DAO_IMPL, persistenceClassName));
             context.put(PlaceholderKey.$class_service.name(),
-                getClassName(ClassKey.SERVICE, tableName));
+                getClassName(ClassKey.SERVICE, persistenceClassName));
 
-            context.put(PlaceholderKey.$class_repository.name(), getClassName(ClassKey.REPOSITORY, tableName));
-            context.put(PlaceholderKey.$class_repositoryImpl.name(), getClassName(ClassKey.REPOSITORY_IMPL, tableName));
-            context.put(PlaceholderKey.$class_controller.name(), getClassName(ClassKey.CONTROLLER, tableName));
-            context.put(PlaceholderKey.$object_po.name(),
+            context.put(PlaceholderKey.$class_repository.name(), getClassName(ClassKey.REPOSITORY, persistenceClassName));
+            context.put(PlaceholderKey.$class_repositoryImpl.name(), getClassName(ClassKey.REPOSITORY_IMPL, persistenceClassName));
+            context.put(PlaceholderKey.$class_controller.name(), getClassName(ClassKey.CONTROLLER, persistenceClassName));
+            context.put(PlaceholderKey.$persistence_object_name.name(),
                 StringUtility.setFirstByteLowerCase(context.get(PlaceholderKey.$class_po.name())));
 
             context.put(PlaceholderKey.$object_dao.name(),
@@ -342,7 +276,7 @@ public class EnvironmentContext {
             }
 
             String fullPath = this.getFullPath(workspace, packageKey);
-            String className = getClassName(packageKey, getTableName());
+            String className = getClassName(packageKey, getPersistenceClassName());
             FileUtility.getInstance().writeFile(fullPath + File.separator + className + extension,
                 content);
         }
