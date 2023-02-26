@@ -1,11 +1,10 @@
-package com.sparrow.coding.support.enums;
+package com.sparrow.coding.java.enums;
 
 public enum PlaceholderKey {
     /**
      * e.g. @author harry
      */
     $author,
-
     /**
      * origin table name e.g user_address
      */

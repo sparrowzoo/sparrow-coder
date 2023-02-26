@@ -1,4 +1,4 @@
-package com.sparrow.coding.support.enums;
+package com.sparrow.coding.java.enums;
 
 /**
  * 生成类的key 通过该key 的配置找到对应的子模块名，包名及类名
@@ -6,10 +6,7 @@ package com.sparrow.coding.support.enums;
  * 具体的配置见config.properties
  */
 public enum ClassKey {
-
-    /**
-     * po 无需admin
-     */
+    
     PO("", "persistence"),
     BO("bo.txt", "domain"),
     PARAM("param.txt", "protocol"),
@@ -24,7 +21,7 @@ public enum ClassKey {
     REPOSITORY("repository.txt", "domain"),
     REPOSITORY_IMPL("repositoryImpl.txt", "infrastructure"),
     DATA_CONVERTER("dataConverter.txt", "infrastructure");
-    
+
     private String template;
     private String module;
 

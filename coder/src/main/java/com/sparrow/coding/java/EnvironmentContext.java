@@ -1,7 +1,8 @@
-package com.sparrow.coding.config;
+package com.sparrow.coding.java;
 
-import com.sparrow.coding.support.enums.ClassKey;
-import com.sparrow.coding.support.enums.PlaceholderKey;
+import com.sparrow.coding.config.CoderConfig;
+import com.sparrow.coding.java.enums.ClassKey;
+import com.sparrow.coding.java.enums.PlaceholderKey;
 import com.sparrow.orm.EntityManager;
 import com.sparrow.orm.SparrowEntityManager;
 import com.sparrow.protocol.constant.Constant;

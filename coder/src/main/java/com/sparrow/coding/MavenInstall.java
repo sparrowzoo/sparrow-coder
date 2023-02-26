@@ -12,16 +12,13 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 import sun.misc.JarFilter;
 
-/**
- *
- */
 public class MavenInstall {
 
     private static Runtime _runRuntime = Runtime.getRuntime();
     private static String CMD_INSTALL_FILE;
 
     public static void main(String[] args) {
-        File file = new File(EnvironmentSupport.getInstance().getWorkspace()+"/Sparrow/jar");
+        File file = new File(EnvironmentSupport.getInstance().getWorkspace() + "/Sparrow/jar");
         FilenameFilter filter = new JarFilter();
         File[] jarFiles = file.listFiles(filter);
         for (File jar : jarFiles) {
@@ -48,15 +45,15 @@ public class MavenInstall {
             }
         }
         System.out.println("Jar [" + jarName + "] will be installed with the groupId=" + groupId + " ,"
-                + "artifactId=" + artifactId + " , version=" + version + ".");
+            + "artifactId=" + artifactId + " , version=" + version + ".");
         executeInstall(groupId, artifactId, version, file.getPath());
     }
 
     private static void executeInstall(String groupId, String artifactId,
-                                       String version, String path) {
+        String version, String path) {
         CMD_INSTALL_FILE = createInstallFileCMD(groupId, artifactId,
-                version, path);
-        String[] cmdArray = new String[]{"cmd", "/C", CMD_INSTALL_FILE};
+            version, path);
+        String[] cmdArray = new String[] {"cmd", "/C", CMD_INSTALL_FILE};
         try {
             Process process = _runRuntime.exec(cmdArray);
             printResult(process);
@@ -75,13 +72,13 @@ public class MavenInstall {
     }
 
     private static String createInstallFileCMD(String groupId,
-                                               String artifactId, String version, String path) {
+        String artifactId, String version, String path) {
         StringBuilder sb = new StringBuilder();
         sb.append("mvn install:install-file -DgroupId=").append(groupId)
-                .append(" -DartifactId=").append(artifactId)
-                .append(" -Dversion=").append(version)
-                .append(" -Dpackaging=jar")
-                .append(" -Dfile=").append(path);
+            .append(" -DartifactId=").append(artifactId)
+            .append(" -Dversion=").append(version)
+            .append(" -Dpackaging=jar")
+            .append(" -Dfile=").append(path);
         return sb.toString();
     }
 }

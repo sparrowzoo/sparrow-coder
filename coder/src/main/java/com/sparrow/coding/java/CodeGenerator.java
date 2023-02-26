@@ -1,7 +1,6 @@
-package com.sparrow.coding;
+package com.sparrow.coding.java;
 
-import com.sparrow.coding.config.EnvironmentContext;
-import com.sparrow.coding.support.enums.ClassKey;
+import com.sparrow.coding.java.enums.ClassKey;
 import com.sparrow.orm.AbstractEntityManagerAdapter;
 import com.sparrow.orm.JDBCTemplate;
 import com.sparrow.orm.SparrowEntityManager;

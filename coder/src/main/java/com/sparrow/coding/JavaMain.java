@@ -1,8 +1,8 @@
 package com.sparrow.coding;
 
+import com.sparrow.coding.java.CodeGenerator;
 import com.sparrow.container.Container;
 import com.sparrow.container.ContainerBuilder;
-import com.sparrow.container.impl.SparrowContainer;
 import com.sparrow.core.spi.ApplicationContext;
 
 /**
@@ -10,7 +10,7 @@ import com.sparrow.core.spi.ApplicationContext;
  *
  * test branch
  */
-public class Main {
+public class JavaMain {
     private static void useage() {
         System.out.println("usage:");
         System.out.println("sparrow-coder.sh [OPTION] [args]");
@@ -63,7 +63,6 @@ public class Main {
 
 
         Class po = Class.forName(args[1]);
-        GenerateAssembleCode generateAssembleCode = new GenerateAssembleCode();
         if ("-b".equalsIgnoreCase(args[0]) || "-bo".equalsIgnoreCase(args[0])) {
             codeGenerator.bo(po);
             System.exit(0);

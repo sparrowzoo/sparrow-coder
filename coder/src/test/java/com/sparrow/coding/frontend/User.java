@@ -1,6 +1,7 @@
 package com.sparrow.coding.frontend;
 
 import com.sparrow.coding.protocol.ControlType;
+import com.sparrow.coding.protocol.Entity;
 import com.sparrow.coding.protocol.Form;
 import com.sparrow.coding.protocol.validate.AllowInputCharLengthValidator;
 import com.sparrow.coding.protocol.validate.AllowOptionsValidator;
@@ -14,6 +15,7 @@ import com.sparrow.coding.protocol.validate.NullValidator;
 import com.sparrow.coding.protocol.validate.TelValidator;
 import com.sparrow.coding.protocol.validate.UserNameRuleValidator;
 
+@Entity(name = "user",text = "用户")
 public class User {
     @Form(text = "用户名", type = ControlType.INPUT_TEXT, validate = UserNameRuleValidator.class)
     @UserNameRuleValidator(prompt = "请输入6-20个字符(字母、数字或下划线)推荐字母+数字组合的用户名。"

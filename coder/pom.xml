@@ -75,7 +75,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.sparrow.coding.Main</mainClass>
+                            <mainClass>com.sparrow.coding.JavaMain</mainClass>
                         </manifest>
                     </archive>
                     <descriptors>

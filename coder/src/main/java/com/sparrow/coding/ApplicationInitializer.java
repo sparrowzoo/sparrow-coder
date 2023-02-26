@@ -1,4 +1,4 @@
-package com.sparrow.coding.config;
+package com.sparrow.coding;
 
 import com.sparrow.container.Container;
 import com.sparrow.support.Initializer;
