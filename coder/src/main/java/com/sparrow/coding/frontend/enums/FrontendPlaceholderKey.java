@@ -3,10 +3,6 @@ package com.sparrow.coding.frontend.enums;
 public enum FrontendPlaceholderKey {
 
     /**
-     * @author harry
-     */
-    $author,
-    /**
      * 实体对象名称 比喻:用户对象名 user
      */
     $entity_name,
@@ -14,6 +10,11 @@ public enum FrontendPlaceholderKey {
      * 实体对象中文描述 比如 用户
      */
     $entity_text,
+
+    /**
+     * 主键 key
+     */
+    $primary_key,
     /**
      * 实体对象名称 比喻:用户对象名 User
      */
@@ -41,5 +42,19 @@ public enum FrontendPlaceholderKey {
     /**
      * 管理页面的数据行html
      */
-    $manage_data_line
+    $manage_data_table,
+
+    /**
+     * java 工程工作目录
+     */
+    $workspace,
+
+    /**
+     * 资源文件工程目录
+     */
+    $resource_workspace,
+    /**
+     * 项目
+     */
+    $project
 }

@@ -15,59 +15,23 @@
   ~ limitations under the License.
   -->
 
-    <!ELEMENT configuration (create_page_field|manage_page_field|manage_page_data_line|manage_page_header_field|create_page|manage_page|manage_page_header_line|create_page_js|manage_page_js)*>
+    <!ELEMENT configuration (create_page_field|manage_page_field|manage_page_header_field|create_page|manage_page|create_page_js|manage_page_js|language_js)*>
     <!ELEMENT create_page_field (#PCDATA)>
     <!ELEMENT manage_page_field (#PCDATA)>
-    <!ELEMENT manage_page_data_line (#PCDATA)>
-    <!ELEMENT manage_page_header_line (#PCDATA)>
     <!ELEMENT manage_page_header_field (#PCDATA)>
     <!ELEMENT create_page (#PCDATA)>
     <!ELEMENT manage_page (#PCDATA)>
 
+
     <!ELEMENT create_page_js (#PCDATA)>
     <!ELEMENT manage_page_js (#PCDATA)>
+    <!ELEMENT language_js (#PCDATA)>
 
 
+    <!ATTLIST create_page_field control_type (INPUT_TEXT|INPUT_PASSWORD|TEXT_AREA|DROPDOWN_LIST|RADIO_LIST|CHECK_BOX_LIST|IMAGE|ENABLE_DISABLE) #REQUIRED>
 
+    <!ATTLIST manage_page_field control_type (LINK|CHECK_BOX|LABEL|IMAGE|ENABLE_DISABLE) #REQUIRED>
 
-
-
-    <!ATTLIST create_page_field
-        control_type(
-            INPUT_TEXT|
-            INPUT_PASSWORD|
-            TEXT_AREA|
-            DROPDOWN_LIST|
-            RADIO_LIST|
-            CHECK_BOX_LIST|
-            IMAGE|
-            ENABLE_DISABLE) #REQUIRED>
-
-    <!ATTLIST manage_page_field
-        control_type(
-            LINK|
-            CHECK_BOX|
-            LABEL|
-            IMAGE) #REQUIRED>
-
-    <!ATTLIST manage_page_data_line
-        even_odd(
-            EVEN|
-            ODD) #REQUIRED>
-
-
-    <!ATTLIST manage_page_header_field
-        check_box(true|
-            false) #REQUIRED>
-
-
-
-    <!ATTLIST create_page
-        header_tail(
-            HEADER|
-            TAIL) #REQUIRED>
-
-    <!ATTLIST manage_page
-        header_tail(
-            HEADER|
-            TAIL) #REQUIRED>
+    <!ATTLIST manage_page_header_field check_box (true|false) #REQUIRED>
+    <!ATTLIST create_page header_tail (HEADER|TAIL) #REQUIRED>
+    <!ATTLIST manage_page header_tail (HEADER|TAIL) #REQUIRED>

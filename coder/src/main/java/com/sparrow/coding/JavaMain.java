@@ -5,21 +5,16 @@ import com.sparrow.container.Container;
 import com.sparrow.container.ContainerBuilder;
 import com.sparrow.core.spi.ApplicationContext;
 
-/**
- * Created by harry on 18/11/16.
- *
- * test branch
- */
 public class JavaMain {
-    private static void useage() {
+    private static void usage() {
         System.out.println("usage:");
         System.out.println("sparrow-coder.sh [OPTION] [args]");
         System.out.println("OPTION:");
         System.out.println("bo:              [-b |-bo]           args=po");
         System.out.println("param:           [-p |-param]        args=po");
-        System.out.println("q:               [-q |-query]        args=po");
+        System.out.println("query:           [-q |-query]        args=po");
         System.out.println("vo:              [-v |-vo]           args=po");
-        System.out.println("cv:              [-cv|-converter]    args=po");
+        System.out.println("converter:       [-cv|-converter]    args=po");
 
         System.out.println("dao:             [-d |-dao]          args=po");
         System.out.println("daoImpl:         [-di|-daoImpl]      args=po");
@@ -27,10 +22,11 @@ public class JavaMain {
         System.out.println("repositoryImpl:  [-ri|-repositoryImpl]args=po");
         System.out.println("service:         [-s |-service]      args=po");
         System.out.println("controller:      [-c |-controller]   args=po");
+        System.out.println("assemble:        [-a |-assemble]     args=pojo");
+
         System.out.println("table template:  [-t |-template]     args=po");
         System.out.println("create ddl:      [-ct|-createDDL]    args=po");
         System.out.println("create ddl-n:    [-ctn|-createDDL-n] args=src-table-name,n -c(create into database)");
-        System.out.println("assemble:        [-a |-assemble]     args=pojo,pojo");
     }
 
     public static void main(String[] args) throws Exception {
@@ -40,12 +36,12 @@ public class JavaMain {
             .initInterceptor(false));
 
         if (args.length == 0 || "--help".equals(args[0])) {
-            useage();
+            usage();
             System.exit(0);
         }
 
         if (args.length < 2) {
-            useage();
+            usage();
             System.exit(0);
         }
 
@@ -61,8 +57,7 @@ public class JavaMain {
             System.exit(0);
         }
 
-
-        Class po = Class.forName(args[1]);
+        Class<?> po = Class.forName(args[1]);
         if ("-b".equalsIgnoreCase(args[0]) || "-bo".equalsIgnoreCase(args[0])) {
             codeGenerator.bo(po);
             System.exit(0);
@@ -103,7 +98,7 @@ public class JavaMain {
             System.exit(0);
         }
 
-        if ("-di".equalsIgnoreCase(args[0]) || "-daoimpl".equalsIgnoreCase(args[0])) {
+        if ("-di".equalsIgnoreCase(args[0]) || "-daoImpl".equalsIgnoreCase(args[0])) {
             codeGenerator.daoImpl(po);
             System.exit(0);
         }

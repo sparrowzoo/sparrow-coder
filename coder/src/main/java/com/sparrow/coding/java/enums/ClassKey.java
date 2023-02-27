@@ -6,7 +6,6 @@ package com.sparrow.coding.java.enums;
  * 具体的配置见config.properties
  */
 public enum ClassKey {
-    
     PO("", "persistence"),
     BO("bo.txt", "domain"),
     PARAM("param.txt", "protocol"),

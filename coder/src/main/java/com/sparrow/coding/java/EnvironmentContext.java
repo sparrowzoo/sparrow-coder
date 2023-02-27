@@ -1,6 +1,7 @@
 package com.sparrow.coding.java;
 
 import com.sparrow.coding.config.CoderConfig;
+import com.sparrow.coding.config.EnvConfig;
 import com.sparrow.coding.java.enums.ClassKey;
 import com.sparrow.coding.java.enums.PlaceholderKey;
 import com.sparrow.orm.EntityManager;
@@ -31,7 +32,6 @@ public class EnvironmentContext {
      * sparrow coder config
      */
     private Properties config;
-
     /**
      * config path
      */
@@ -44,13 +44,13 @@ public class EnvironmentContext {
     private FileUtility fileUtility = FileUtility.getInstance();
 
     public EnvironmentContext() throws IOException {
-        this.tableConfig = System.getenv("SPARROW_TABLE_CONFIG");
+        this.tableConfig = System.getenv(EnvConfig.SPARROW_TABLE_CONFIG);
         if (StringUtility.isNullOrEmpty(tableConfig)) {
             System.err.println("ERROR please set [Environment Variable] 'SPARROW_TABLE_CONFIG'");
             System.exit(0);
         }
 
-        String configPath = System.getenv("SPARROW_CONFIG_PATH");
+        String configPath = System.getenv(EnvConfig.SPARROW_CONFIG_PATH);
 
         InputStream configStream;
 
@@ -79,7 +79,6 @@ public class EnvironmentContext {
         return this.author;
     }
 
-
     public String getTableCreateDDLPath(String originTableName) {
         return tableConfig + File.separator + "ddl" + File.separator + originTableName + ".sql";
     }
@@ -100,10 +99,6 @@ public class EnvironmentContext {
         return source.replace(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
     }
 
-    public String getConfigPath() {
-        return this.configPath;
-    }
-
     public String readConfigContent(String configFile) {
         String configFilePath = this.configPath + "/" + configFile;
         System.err.printf("config file path is [%s]\n", configFilePath);
@@ -114,23 +109,7 @@ public class EnvironmentContext {
         return FileUtility.getInstance().readFileContent(inputStream, Constant.CHARSET_UTF_8);
     }
 
-    public String readManageStart() {
-        return this.readConfigContent("managestart.txt");
-    }
-
-    public String readManageEnd() {
-        return this.readConfigContent("manageend.txt");
-    }
-
-    public String readNewStart() {
-        return this.readConfigContent("newstart.txt");
-    }
-
-    public String readNewEnd() {
-        return this.readConfigContent("newend.txt");
-    }
-
-    public class TableConfig {
+    public class Config {
         private String originTableName;
 
         private Map<String, String> placeHolder;
@@ -144,23 +123,12 @@ public class EnvironmentContext {
             return originTableName;
         }
 
-        public Map<String, String> getPlaceHolder() {
-            return placeHolder;
-        }
-
-        public String getPoPackage() {
-            return poPackage;
-        }
-
-        public EntityManager getEntityManager() {
-            return entityManager;
-        }
-
         private EntityManager entityManager;
 
-        public TableConfig(Class po) throws IOException {
+        public Config(Class<?> po){
             this.poPackage = po.getName().substring(0, po.getName().lastIndexOf(Symbol.DOT));
-            this.placeHolder = getPlaceHolder(po);
+            this.entityManager = new SparrowEntityManager(po);
+            this.placeHolder = initPlaceHolder();
         }
 
         public String getProject() {
@@ -172,8 +140,14 @@ public class EnvironmentContext {
         }
 
         public String getModule(ClassKey key) {
-            String admin = this.getParentModule();
-            return config.getProperty(CoderConfig.MODULE_PREFIX + admin + "." + key.getModule().toLowerCase());
+            String parentModule = this.getParentModule();
+            String moduleKey = CoderConfig.MODULE_PREFIX;
+            if (!StringUtility.isNullOrEmpty(parentModule)) {
+                moduleKey += parentModule + "." + key.getModule().toLowerCase();
+            } else {
+                moduleKey += key.getModule().toLowerCase();
+            }
+            return config.getProperty(CoderConfig.MODULE_PREFIX + moduleKey + "." + key.getModule().toLowerCase());
         }
 
         public String getFullPackage(ClassKey key) {
@@ -184,18 +158,12 @@ public class EnvironmentContext {
             return StringUtility.setFirstByteUpperCase(StringUtility.underlineToHump(this.originTableName));
         }
 
-        private Map<String, String> getPlaceHolder(Class po) throws IOException {
-            this.entityManager = new SparrowEntityManager(po);
-            String originTableName = entityManager.getTableName();
-            this.originTableName = originTableName;
-
-
+        private Map<String, String> initPlaceHolder() {
+            this.originTableName = entityManager.getTableName();
             String persistenceClassName = this.getPersistenceClassName();
             String primaryPropertyName = entityManager.getPrimary().getName();
-
             Map<String, String> context = new TreeMap<>(Comparator.reverseOrder());
-
-            context.put(PlaceholderKey.$origin_table_name.name(), originTableName);
+            context.put(PlaceholderKey.$origin_table_name.name(), this.originTableName);
             context.put(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
             context.put(PlaceholderKey.$persistence_object_name.name(), StringUtility.setFirstByteLowerCase(persistenceClassName));
             context.put(PlaceholderKey.$date.name(), DateTimeUtility

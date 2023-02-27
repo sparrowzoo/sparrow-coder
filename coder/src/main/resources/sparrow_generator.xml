@@ -118,7 +118,10 @@
         </div>
         </body>
         </html>
+        <!--generate by sparrow coder-->
      ]]>
+
+
     </create_page>
 
 
@@ -180,22 +183,29 @@
         <legend>共<span id="spanRecordCount" name="recordCount" class="highlight">[[${pager?.recordCount}]]</span>条记录
         </legend>
         <table class='pure-table' id="grvAppList">
-         ]]>
-    </manage_page>
-    <manage_page_header_line>
-        <![CDATA[
             <thead>
                 <tr>
                    $manage_header_line
                 </tr>
-                </thead>
-                <tbody>
-        ]]>
-    </manage_page_header_line>
+            </thead>
+            <tbody>
+                <tr th:class="${indexStat.odd}?'pure-table-odd'" th:each="$entity_name,indexStat : ${pager?.list}">
+                    $manage_data_table
+                </tr>
+            </tbody>
+       </table>
+                <div th:utext="${pager.html}"></div>
+            </fieldset>
+          </div>
+        </div>
+     </body>
+   </html>
+]]>
+    </manage_page>
     <manage_page_header_field check_box="true">
         <![CDATA[
         <th style="text-align:center;">
-            <input id="grvAppListCheckAll"
+            <input id="grv$upper_entity_nameListCheckAll"
                    onclick="$.gridView.allCheckClick(this);" type="checkbox"/>
         </th>
         ]]>
@@ -210,10 +220,15 @@
             <td width="$width" align="center" th:text="${$entity_name?.$property_name}"></td>
         ]]>
     </manage_page_field>
+    <manage_page_field control_type="ENABLE_DISABLE">
+        <![CDATA[
+            <td width="$width" align="center" th:text="${$entity_name?.$property_name}"></td>
+        ]]>
+    </manage_page_field>
     <manage_page_field control_type="CHECK_BOX">
         <![CDATA[
         <td width="$width" align="center">
-            <input th:id="${$entity_name.id}"
+            <input th:id="${$entity_name.$primary_key}"
                    onclick="$.gridView.recordCheckClick(this,'grv$upper_entity_nameListCheckAll');"
                    type="checkbox" name="grvAppList"/></td>
         ]]>
@@ -225,62 +240,52 @@
          </td>
         ]]>
     </manage_page_field>
-    <manage_page_data_line even_odd="ODD">
+    <manage_page_field control_type="LINK">
         <![CDATA[
-        <tr th:class="${indexStat.odd}?'pure-table-odd'" th:each="$entity_name,indexStat : ${pager?.list}">$manage_data_line</tr>
-       ]]>
-    </manage_page_data_line>
-    <manage_page_data_line even_odd="EVEN">
-        <![CDATA[
-        <tr th:each="$entity_name,indexStat : ${pager?.list}">
+         <td width="$width" align="left">
+            <a href="">
+                <img th:src="@{${$entity_name?.$property_name}}" style="width:30px;height:30px" title="$field_text"/>
+            </a>
+         </td>
         ]]>
-    </manage_page_data_line>
+    </manage_page_field>
     <manage_page header_tail="TAIL">
-        <![CDATA[
-            </tbody>
-        </table>
-        <div th:utext="${pager.html}"></div>
-            </fieldset>
-            </div>
-            </div>
-            </body>
-            </html>
-    ]]>
+        <!--generate by sparrow coder-->
     </manage_page>
 
     <create_page_js>
         <![CDATA[
           var $entity_namController = {
-    api: {
-        save: "save",
-        manage: "manage"
-    },
-
-    load: function () {
-        document.domain = $.browser.cookie.root_domain;
-        $.dispatcher.eventRegistry = [
-            {
-                id: "btnReturn",
-                delegate: function (e, srcElement) {
-                    window.location.href = $entity_namController.api.manage;
-                },
-                strategy: lang.command.return
+            api: {
+                save: "save",
+                manage: "manage"
             },
-            {
-                id: "btnSave",
-                delegate: function (e, srcElement) {
-                    $.v.getValidateResult($entity_namInfo, function () {
-                        $.submit($entity_namController.api.save);
-                    });
-                },
-                strategy: lang.command.save
-            }];
-        $.dispatcher.bind();
-    }
-};
-define("$entity_nam", [], function () {
-    return $entity_namController;
-});
+
+            load: function () {
+                document.domain = $.browser.cookie.root_domain;
+                $.dispatcher.eventRegistry = [
+                    {
+                        id: "btnReturn",
+                        delegate: function (e, srcElement) {
+                            window.location.href = $entity_namController.api.manage;
+                        },
+                        strategy: lang.command.return
+                    },
+                    {
+                        id: "btnSave",
+                        delegate: function (e, srcElement) {
+                            $.v.getValidateResult($entity_namInfo, function () {
+                                $.submit($entity_namController.api.save);
+                            });
+                        },
+                        strategy: lang.command.save
+                    }];
+                $.dispatcher.bind();
+            }
+        };
+        define("$entity_nam", [], function () {
+            return $entity_namController;
+        });
     ]]>
     </create_page_js>
     <manage_page_js>
@@ -339,4 +344,28 @@ define("$entity_nam", [], function () {
             });
         ]]>
     </manage_page_js>
+
+    <language_js>
+        lang = {
+        message: {
+        delete: "$entity_text删除后将无法恢复，您确认要删除吗?",
+        update: "$entity_text更新成功",
+        noSelectRecord: "请选择$entity_text",
+        enable: "您确认启用该$entity_text吗？",
+        disable: "您确认禁用该$entity_text吗?",
+        error: "网络繁忙，请稍侯再试。",
+        accessDenied:"访问被拒绝",
+        },
+        command:{
+        return:"返回",
+        save:"提交",
+        add:"新建",
+        enable:"启用",
+        disable:"禁用",
+        delete:"删除"
+        }
+        };
+    </language_js>
+
+
 </configuration>

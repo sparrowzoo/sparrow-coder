@@ -4,6 +4,7 @@ public enum ControlType {
     LABEL("lbl"),
     LINK("lnk"),
     INPUT_TEXT("txt"),
+    INPUT_HIDDEN("hdn"),
     INPUT_PASSWORD("txt"),
     TEXT_AREA("txt"),
     DROPDOWN_LIST("ddl"),
@@ -18,6 +19,7 @@ public enum ControlType {
     HIDDEN("hdn"),
     SELECT("slt"),
     FILE("flb"),
+    ENABLE_DISABLE(""),
     IMAGE("img");
 
 
