@@ -2,60 +2,60 @@ package $package_repository_impl;
 
 import com.sparrow.protocol.dao.StatusCriteria;
 import com.sparrow.protocol.enums.StatusRecord;
-import com.sparrow.security.admin.dao.$table_nameDAO;
-import com.sparrow.security.admin.infrastructure.persistence.data.converter.$table_nameConverter;
-import com.sparrow.security.po.$table_name;
-import com.sparrow.security.admin.bo.$table_nameBO;
-import com.sparrow.security.admin.protocol.param.$table_nameParam;
-import com.sparrow.security.admin.repository.$table_nameRepository;
-import com.sparrow.security.admin.protocol.query.$table_nameQuery;
+import com.sparrow.security.admin.dao.$persistence_class_nameDAO;
+import com.sparrow.security.admin.infrastructure.persistence.data.converter.$persistence_class_nameConverter;
+import com.sparrow.security.po.$persistence_class_name;
+import com.sparrow.security.admin.bo.$persistence_class_nameBO;
+import com.sparrow.security.admin.protocol.param.$persistence_class_nameParam;
+import com.sparrow.security.admin.repository.$persistence_class_nameRepository;
+import com.sparrow.security.admin.protocol.query.$persistence_class_nameQuery;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 @Named
-public class $table_nameRepositoryImpl implements $table_nameRepository {
+public class $persistence_class_nameRepositoryImpl implements $persistence_class_nameRepository {
     @Inject
-    private $table_nameConverter $object_poConverter;
+    private $persistence_class_nameConverter $persistence_object_nameConverter;
 
     @Inject
-    private $table_nameDAO $object_poDao;
+    private $persistence_class_nameDAO $persistence_object_nameDao;
 
-    @Override public Long save($table_nameParam $object_poParam) {
-        $table_name $object_po = this.$object_poConverter.param2po($object_poParam);
-        if ($object_po.getId() != null) {
-            this.$object_poDao.update($object_po);
-            return $object_po.getId();
+    @Override public Long save($persistence_class_nameParam $persistence_object_nameParam) {
+        $persistence_class_name $persistence_object_name = this.$persistence_object_nameConverter.param2po($persistence_object_nameParam);
+        if ($persistence_object_name.getId() != null) {
+            this.$persistence_object_nameDao.update($persistence_object_name);
+            return $persistence_object_name.getId();
         }
-        return this.$object_poDao.insert($object_po);
+        return this.$persistence_object_nameDao.insert($persistence_object_name);
     }
 
-    @Override public int delete(String $object_poIds) {
-        StatusCriteria statusCriteria = new StatusCriteria($object_poIds, StatusRecord.DESTROYED);
-        return this.$object_poDao.changeStatus(statusCriteria);
+    @Override public int delete(String $persistence_object_nameIds) {
+        StatusCriteria statusCriteria = new StatusCriteria($persistence_object_nameIds, StatusRecord.DESTROYED);
+        return this.$persistence_object_nameDao.changeStatus(statusCriteria);
     }
 
-    @Override public int disable(String $object_poIds) {
-        StatusCriteria statusCriteria = new StatusCriteria($object_poIds, StatusRecord.DISABLE);
-        return this.$object_poDao.changeStatus(statusCriteria);
+    @Override public int disable(String $persistence_object_nameIds) {
+        StatusCriteria statusCriteria = new StatusCriteria($persistence_object_nameIds, StatusRecord.DISABLE);
+        return this.$persistence_object_nameDao.changeStatus(statusCriteria);
     }
 
-    @Override public int enable(String $object_poIds) {
-        StatusCriteria statusCriteria = new StatusCriteria($object_poIds, StatusRecord.ENABLE);
-        return this.$object_poDao.changeStatus(statusCriteria);
+    @Override public int enable(String $persistence_object_nameIds) {
+        StatusCriteria statusCriteria = new StatusCriteria($persistence_object_nameIds, StatusRecord.ENABLE);
+        return this.$persistence_object_nameDao.changeStatus(statusCriteria);
     }
 
-    @Override public $table_nameBO get$table_name(Long $object_poId) {
-        $table_name $object_po = this.$object_poDao.getEntity($object_poId);
-        return this.$object_poConverter.po2bo($object_po);
+    @Override public $persistence_class_nameBO get$persistence_class_name(Long $persistence_object_nameId) {
+        $persistence_class_name $persistence_object_name = this.$persistence_object_nameDao.getEntity($persistence_object_nameId);
+        return this.$persistence_object_nameConverter.po2bo($persistence_object_name);
     }
 
-    @Override public List<$table_nameBO> query$table_names($table_nameQuery $object_poQuery) {
-        List<$table_name> $object_poList = this.$object_poDao.query$table_names(this.$object_poConverter.toDbPagerQuery($object_poQuery));
-        return this.$object_poConverter.poList2BoList($object_poList);
+    @Override public List<$persistence_class_nameBO> query$persistence_class_names($persistence_class_nameQuery $persistence_object_nameQuery) {
+        List<$persistence_class_name> $persistence_object_nameList = this.$persistence_object_nameDao.query$persistence_class_names(this.$persistence_object_nameConverter.toDbPagerQuery($persistence_object_nameQuery));
+        return this.$persistence_object_nameConverter.poList2BoList($persistence_object_nameList);
     }
 
-    @Override public Long get$table_nameCount($table_nameQuery $object_poQuery) {
-        return this.$object_poDao.count$table_name(this.$object_poConverter.toDbCountQuery($object_poQuery));
+    @Override public Long get$persistence_class_nameCount($persistence_class_nameQuery $persistence_object_nameQuery) {
+        return this.$persistence_object_nameDao.count$persistence_class_name(this.$persistence_object_nameConverter.toDbCountQuery($persistence_object_nameQuery));
     }
 }

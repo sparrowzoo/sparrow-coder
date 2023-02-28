@@ -1,6 +1,7 @@
 package com.sparrow.coding.frontend;
 
 import com.sparrow.coding.api.ValidatorMessageGenerator;
+import com.sparrow.coding.config.ExampleFront;
 import com.sparrow.coding.frontend.validate.NullValidatorMessageGenerator;
 import com.sparrow.coding.protocol.Form;
 import com.sparrow.coding.protocol.validate.AllowInputCharLengthValidator;
@@ -35,7 +36,7 @@ public class MessageGeneratorTester {
 
     private static void test(String fieldName,
         Class annotation) throws NoSuchFieldException, IllegalAccessException {
-        Class userClazz = User.class;
+        Class userClazz = ExampleFront.class;
         Field field = userClazz.getDeclaredField(fieldName);
         Form form = field.getAnnotation(Form.class);
         Annotation nullValidator = field.getAnnotation(annotation);

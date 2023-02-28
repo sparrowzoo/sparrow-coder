@@ -41,6 +41,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+/**
+ * 代码生成器环境上下文
+ */
 public class EnvironmentContext {
     private static Logger logger = LoggerFactory.getLogger(EnvironmentContext.class);
     /**
@@ -59,9 +62,7 @@ public class EnvironmentContext {
         InputStream configStream;
         if (StringUtility.isNullOrEmpty(configPath) || "template".equals(configPath)) {
             configStream = this.environmentSupport.getFileInputStreamInCache("/template/config.properties");
-            configPath = "/template";
         } else if ("template-mybatis".equals(configPath)) {
-            configPath = "/template-mybatis";
             configStream = this.environmentSupport.getFileInputStreamInCache("/template-mybatis/config.properties");
         } else {
             configStream = new FileInputStream(configPath + "/config.properties");
@@ -164,27 +165,33 @@ public class EnvironmentContext {
             return content;
         }
 
-        private Map<String,String> newFieldPlaceholder(Field field){
-            Map<String,String> fieldPlaceholder=new HashMap<>();
+        private Map<String, String> newFieldPlaceholder(Field field) {
+            Map<String, String> fieldPlaceholder = new HashMap<>();
             fieldPlaceholder.putAll(this.placeHolder);
             fieldPlaceholder.putAll(this.fieldPlaceholders.get(field.getName()));
             return fieldPlaceholder;
         }
+
         private String replaceManageField(Field field) {
             Form form = field.getAnnotation(Form.class);
             Element element = Xml.getElementByTagAttribute(this.document, "manage_page_field", "control_type", form.listType().name());
             String content = element.getTextContent();
-            content = StringUtility.replace(content,this.newFieldPlaceholder(field));
+            content = StringUtility.replace(content, this.newFieldPlaceholder(field));
             return content;
         }
 
         private String replaceEditField(Field field) {
-            Form form = field.getAnnotation(Form.class);
-            ControlType controlType = form.type();
-            Element element = Xml.getElementByTagAttribute(this.document, "create_page_field control_type", "control_type", controlType.name());
-            String content = element.getTextContent();
-            content = StringUtility.replace(content, this.newFieldPlaceholder(field));
-            return content;
+            try {
+                Form form = field.getAnnotation(Form.class);
+                ControlType controlType = form.type();
+                Element element = Xml.getElementByTagAttribute(this.document, "create_page_field", "control_type", controlType.name());
+                String content = element.getTextContent();
+                content = StringUtility.replace(content, this.newFieldPlaceholder(field));
+                return content;
+            } catch (Exception e) {
+                logger.error(" field edit is error {}", field.getName(), e);
+                return "<!-- filed generate error " + field.getName() + "-->";
+            }
         }
 
         private String generateEditFields() {
@@ -224,10 +231,13 @@ public class EnvironmentContext {
             Map<String, String> context = new HashMap<>();
 
             this.placeHolder = context;
+            context.put(PlaceholderKey.$module_prefix.name(),config.getProperty(CoderConfig.MODULE_PREFIX+"prefix"));
             context.put(FrontendPlaceholderKey.$project.name(), config.getProperty(CoderConfig.PROJECT));
             context.put(FrontendPlaceholderKey.$workspace.name(), System.getenv(EnvConfig.SPARROW_WORKSPACE));
             context.put(FrontendPlaceholderKey.$resource_workspace.name(), System.getenv(EnvConfig.SPARROW_RESOURCE_WORKSPACE));
             context.put(FrontendPlaceholderKey.$entity_name.name(), entity.name());
+            context.put(FrontendPlaceholderKey.$entity_by_horizontal.name(),StringUtility.humpToLower(entity.name(),'-'));
+            context.put(FrontendPlaceholderKey.$entity_by_slash.name(),StringUtility.humpToLower(entity.name(),File.separatorChar));
             context.put(FrontendPlaceholderKey.$upper_entity_name.name(), StringUtility.setFirstByteUpperCase(entity.name()));
             context.put(FrontendPlaceholderKey.$entity_text.name(), entity.text());
 
@@ -250,7 +260,7 @@ public class EnvironmentContext {
             Element headerElement = Xml.getElementByTagAttribute(this.document, "create_page", "header_tail", "HEADER");
             String createPageHeaderContent = StringUtility.replace(headerElement.getTextContent(), this.placeHolder);
 
-            Element tailElement = Xml.getElementByTagAttribute(this.document, "create_page", "header_tail", "HEADER");
+            Element tailElement = Xml.getElementByTagAttribute(this.document, "create_page", "header_tail", "TAIL");
             String createPageTailContent = StringUtility.replace(tailElement.getTextContent(), this.placeHolder);
 
             String editFields = this.generateEditFields();
@@ -259,7 +269,7 @@ public class EnvironmentContext {
             System.out.println(content);
 
             String entityName = placeHolder.get(FrontendPlaceholderKey.$entity_name.name());
-            String fullPath = this.viewTemplatePath + StringUtility.humpToLower(entityName, File.separatorChar) + File.separator + "new" + this.extension;
+            String fullPath = this.viewTemplatePath + File.separator + StringUtility.humpToLower(entityName, File.separatorChar) + File.separator + "new" + this.extension;
             FileUtility.getInstance().writeFile(fullPath, content);
         }
 
@@ -271,8 +281,9 @@ public class EnvironmentContext {
             String managePageTailContent = StringUtility.replace(tailElement.getTextContent(), this.placeHolder);
             String content = managePageHeaderContent + managePageTailContent;
             System.out.println(content);
-            String entityName = placeHolder.get(FrontendPlaceholderKey.$entity_name.name());
-            String fullPath = this.viewTemplatePath + StringUtility.humpToLower(entityName, File.separatorChar) + File.separator + "manage" + this.extension;
+            String entityName = placeHolder.get(FrontendPlaceholderKey.$entity_by_slash.name());
+            String fullPath = this.viewTemplatePath + File.separator + entityName + File.separator + "manage" + this.extension;
+            System.out.println("write to path:"+fullPath);
             FileUtility.getInstance().writeFile(fullPath, content);
         }
 
@@ -280,8 +291,9 @@ public class EnvironmentContext {
             String content = Xml.getElementTextContent(this.document, "create_page_js");
             content = StringUtility.replace(content, this.placeHolder);
             System.out.println(content);
-            String entityName = placeHolder.get(FrontendPlaceholderKey.$entity_name.name());
-            String fullPath = this.jsPath + StringUtility.humpToLower(entityName, File.pathSeparatorChar) + File.pathSeparator + "new.js";
+            String entityName = placeHolder.get(FrontendPlaceholderKey.$entity_by_slash.name());
+            String fullPath = this.jsPath +File.separator+ entityName + File.separator + "new.js";
+            System.out.println("write to path:"+fullPath);
             FileUtility.getInstance().writeFile(fullPath, content);
         }
 
@@ -289,8 +301,9 @@ public class EnvironmentContext {
             String content = Xml.getElementTextContent(this.document, "manage_page_js");
             content = StringUtility.replace(content, this.placeHolder);
             System.out.println(content);
-            String entityName = placeHolder.get(FrontendPlaceholderKey.$entity_name.name());
-            String fullPath = this.jsPath + StringUtility.humpToLower(entityName, File.separatorChar) + File.separator + "manage.js";
+            String entityName = placeHolder.get(FrontendPlaceholderKey.$entity_by_slash.name());
+            String fullPath = this.jsPath +File.separator+ entityName + File.separator + "manage.js";
+            System.out.println("write to path:"+fullPath);
             FileUtility.getInstance().writeFile(fullPath, content);
         }
 
@@ -299,21 +312,30 @@ public class EnvironmentContext {
             content = StringUtility.replace(content, this.placeHolder);
             Field[] fields = this.clazz.getDeclaredFields();
             fields = ClassUtility.getOrderedFields(fields);
-            StringBuilder sb = new StringBuilder();
+            String entityName = this.placeHolder.get(FrontendPlaceholderKey.$entity_name.name());
+            StringBuilder sb = new StringBuilder(entityName + "Info={");
             for (Field field : fields) {
                 try {
                     Form form = field.getAnnotation(Form.class);
                     Annotation validator = field.getAnnotation(form.validate());
+                    if (validator == null) {
+                        logger.error("field:{} validate is null ", field.getName());
+                        continue;
+                    }
                     String fieldJson = ValidatorRegistry.getInstance().getValidatorMessageGenerator(validator.annotationType())
                         .generateValidateMessage(field.getName(), form.type().getPrefix(), validator);
                     sb.append(fieldJson);
+                    sb.append(",");
                 } catch (Exception e) {
                     logger.error("field:{} validate generate error ", field.getName(), e);
                 }
             }
+            sb.deleteCharAt(sb.length() - 1);
+            sb.append("}");
             content = content + sb.toString();
-            String entityName = placeHolder.get(FrontendPlaceholderKey.$entity_name.name());
-            String fullPath = this.languageJsPath + StringUtility.humpToLower(entityName, '-') + ".js";
+            System.out.println(content);
+            String fullPath = this.languageJsPath + File.separator + this.placeHolder.get(FrontendPlaceholderKey.$entity_by_horizontal.name()) + ".js";
+            System.out.println("write to path:"+fullPath);
             FileUtility.getInstance().writeFile(fullPath, content);
         }
     }

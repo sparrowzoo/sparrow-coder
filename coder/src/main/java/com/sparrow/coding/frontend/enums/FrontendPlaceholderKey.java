@@ -1,5 +1,8 @@
 package com.sparrow.coding.frontend.enums;
 
+/**
+ * 前缀配置的placeholder
+ */
 public enum FrontendPlaceholderKey {
 
     /**
@@ -10,6 +13,17 @@ public enum FrontendPlaceholderKey {
      * 实体对象中文描述 比如 用户
      */
     $entity_text,
+
+    /**
+     * "-"转换实体对象  比如example-front
+     */
+    $entity_by_horizontal,
+
+    /**
+     * "/"转换实体对象 比如example/front
+     */
+    $entity_by_slash,
+
 
     /**
      * 主键 key

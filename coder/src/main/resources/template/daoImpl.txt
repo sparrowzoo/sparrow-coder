@@ -4,41 +4,41 @@ import com.sparrow.orm.query.BooleanCriteria;
 import com.sparrow.orm.query.Criteria;
 import com.sparrow.orm.query.SearchCriteria;
 import com.sparrow.orm.template.impl.ORMStrategy;
-import com.sparrow.security.admin.dao.$table_nameDAO;
-import $package_dao.query.$object_po.Count$table_nameQuery;
-import $package_dao.query.$object_po.Pager$table_nameQuery;
-import $package_po.$table_name;
+import com.sparrow.security.admin.dao.$persistence_class_nameDAO;
+import $package_dao.query.$persistence_object_name.Count$persistence_class_nameQuery;
+import $package_dao.query.$persistence_object_name.Pager$persistence_class_nameQuery;
+import $package_po.$persistence_class_name;
 import java.util.List;
 import javax.inject.Named;
 
 @Named
-public class $table_nameDaoImpl extends ORMStrategy<$table_name, Long> implements $table_nameDAO {
-    @Override public List<$table_name> query$table_names(Pager$table_nameQuery pager$table_nameQuery) {
-        SearchCriteria searchCriteria = new SearchCriteria(pager$table_nameQuery.getPager());
-        searchCriteria.setWhere(this.generateCriteria(pager$table_nameQuery));
+public class $persistence_class_nameDaoImpl extends ORMStrategy<$persistence_class_name, Long> implements $persistence_class_nameDAO {
+    @Override public List<$persistence_class_name> query$persistence_class_names(Pager$persistence_class_nameQuery pager$persistence_class_nameQuery) {
+        SearchCriteria searchCriteria = new SearchCriteria(pager$persistence_class_nameQuery.getPager());
+        searchCriteria.setWhere(this.generateCriteria(pager$persistence_class_nameQuery));
         return this.getList(searchCriteria);
     }
 
-    private BooleanCriteria generateCriteria(Count$table_nameQuery count$table_nameQuery) {
+    private BooleanCriteria generateCriteria(Count$persistence_class_nameQuery count$persistence_class_nameQuery) {
         Long startTime=null;
-        if(count$table_nameQuery.getBeginDate()!=null){
-            startTime=count$table_nameQuery.getBeginDate().getTime();
+        if(count$persistence_class_nameQuery.getBeginDate()!=null){
+            startTime=count$persistence_class_nameQuery.getBeginDate().getTime();
         }
 
         Long endTime=null;
-        if(count$table_nameQuery.getEndDate()!=null){
-            endTime=count$table_nameQuery.getEndDate().getTime();
+        if(count$persistence_class_nameQuery.getEndDate()!=null){
+            endTime=count$persistence_class_nameQuery.getEndDate().getTime();
         }
 
         return BooleanCriteria.criteria(
-            Criteria.field("$object_po.$object_poName").equal(count$table_nameQuery.getName()))
-            .and(Criteria.field("$object_po.createTime").greaterThan(startTime))
-            .and(Criteria.field("$object_po.createTime").lessThan(endTime));
+            Criteria.field("$persistence_object_name.$persistence_object_nameName").equal(count$persistence_class_nameQuery.getName()))
+            .and(Criteria.field("$persistence_object_name.createTime").greaterThan(startTime))
+            .and(Criteria.field("$persistence_object_name.createTime").lessThan(endTime));
     }
 
-    @Override public Long count$table_name(Count$table_nameQuery $object_poPagerQuery) {
+    @Override public Long count$persistence_class_name(Count$persistence_class_nameQuery $persistence_object_namePagerQuery) {
         SearchCriteria searchCriteria = new SearchCriteria();
-        searchCriteria.setWhere(this.generateCriteria($object_poPagerQuery));
+        searchCriteria.setWhere(this.generateCriteria($persistence_object_namePagerQuery));
         return this.getCount(searchCriteria);
     }
 }

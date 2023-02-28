@@ -8,7 +8,4 @@
     <bean name="sparrow_default" class="com.sparrow.datasource.ConnectionPool">
         <property name="dataSourceFactory" ref="dataSourceFactory"/>
     </bean>
-    <bean name="connectionContextHolder" class="com.sparrow.datasource.ConnectionContextHolderImpl">
-        <property name="dataSourceFactory" ref="dataSourceFactory"/>
-    </bean>
 </beans>

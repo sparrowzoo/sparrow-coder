@@ -1,7 +1,7 @@
 package com.sparrow.coding.frontend.validate2;
 
 import com.sparrow.coding.api.ValidatorMessageGenerator;
-import com.sparrow.coding.frontend.User;
+import com.sparrow.coding.config.ExampleFront;
 import com.sparrow.coding.protocol.Form;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -14,7 +14,7 @@ public class MessageConverterV2 {
      */
     public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
         //拿到需要解析的类
-        Class userClazz = User.class;
+        Class userClazz = ExampleFront.class;
         //通过反射拿到字段
         Field[] userFields = userClazz.getDeclaredFields();
         //定义要返回的json builder

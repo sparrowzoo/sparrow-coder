@@ -1,10 +1,10 @@
 package $package_data_converter;
 
 import com.sparrow.protocol.enums.StatusRecord;
-import $package_bo.$table_nameBO;
-import com.sparrow.security.po.$table_name;
-import $package_param.$table_nameParam;
-import $package_query.$table_nameQuery;
+import $package_bo.$persistence_class_nameBO;
+import com.sparrow.security.po.$persistence_class_name;
+import $package_param.$persistence_class_nameParam;
+import $package_query.$persistence_class_nameQuery;
 import com.sparrow.protocol.dao.PagerQuery;
 
 import com.sparrow.support.converter.PO2BOConverter;
@@ -15,66 +15,66 @@ import java.util.List;
 import javax.inject.Named;
 
 @Named
-public class $table_nameConverter implements Param2POConverter<$table_nameParam, $table_name>, PO2BOConverter<$table_nameBO, $table_name> {
+public class $persistence_class_nameConverter implements Param2POConverter<$persistence_class_nameParam, $persistence_class_name>, PO2BOConverter<$persistence_class_nameBO, $persistence_class_name> {
    
    
-    public Pager$table_nameQuery toDbPagerQuery($table_nameQuery $object_poQuery) {
-           if ($object_poQuery == null) {
-               Pager$table_nameQuery pager$table_nameQuery = new Pager$table_nameQuery();
-               pager$table_nameQuery.setPager(new PagerQuery());
-               return pager$table_nameQuery;
+    public Pager$persistence_class_nameQuery toDbPagerQuery($persistence_class_nameQuery $persistence_object_nameQuery) {
+           if ($persistence_object_nameQuery == null) {
+               Pager$persistence_class_nameQuery pager$persistence_class_nameQuery = new Pager$persistence_class_nameQuery();
+               pager$persistence_class_nameQuery.setPager(new PagerQuery());
+               return pager$persistence_class_nameQuery;
            }
-           PagerQuery pagerQuery = new PagerQuery($object_poQuery.getPageSize(), $object_poQuery.getCurrentPageIndex());
-           Pager$table_nameQuery pager$table_nameQuery = new Pager$table_nameQuery();
-           this.fullProperties($object_poQuery, pager$table_nameQuery);
-           pager$table_nameQuery.setPager(pagerQuery);
-           return pager$table_nameQuery;
+           PagerQuery pagerQuery = new PagerQuery($persistence_object_nameQuery.getPageSize(), $persistence_object_nameQuery.getCurrentPageIndex());
+           Pager$persistence_class_nameQuery pager$persistence_class_nameQuery = new Pager$persistence_class_nameQuery();
+           this.fullProperties($persistence_object_nameQuery, pager$persistence_class_nameQuery);
+           pager$persistence_class_nameQuery.setPager(pagerQuery);
+           return pager$persistence_class_nameQuery;
        }
    
-       private void fullProperties($table_nameQuery $object_poQuery, Count$table_nameQuery count$table_nameQuery) {
-           if ($object_poQuery == null) {
+       private void fullProperties($persistence_class_nameQuery $persistence_object_nameQuery, Count$persistence_class_nameQuery count$persistence_class_nameQuery) {
+           if ($persistence_object_nameQuery == null) {
                return;
            }
-           count$table_nameQuery.setName($object_poQuery.getName());
-           count$table_nameQuery.setBeginDate($object_poQuery.getBeginDate());
-           count$table_nameQuery.setEndDate($object_poQuery.getEndDate());
+           count$persistence_class_nameQuery.setName($persistence_object_nameQuery.getName());
+           count$persistence_class_nameQuery.setBeginDate($persistence_object_nameQuery.getBeginDate());
+           count$persistence_class_nameQuery.setEndDate($persistence_object_nameQuery.getEndDate());
        }
    
-       public Count$table_nameQuery toDbCountQuery($table_nameQuery $object_poQuery) {
-           Count$table_nameQuery count$table_nameQuery = new Count$table_nameQuery();
-           if ($object_poQuery == null) {
-               return count$table_nameQuery;
+       public Count$persistence_class_nameQuery toDbCountQuery($persistence_class_nameQuery $persistence_object_nameQuery) {
+           Count$persistence_class_nameQuery count$persistence_class_nameQuery = new Count$persistence_class_nameQuery();
+           if ($persistence_object_nameQuery == null) {
+               return count$persistence_class_nameQuery;
            }
-           this.fullProperties($object_poQuery, count$table_nameQuery);
-           return count$table_nameQuery;
+           this.fullProperties($persistence_object_nameQuery, count$persistence_class_nameQuery);
+           return count$persistence_class_nameQuery;
        }
 
 
-    @Override public $table_name param2po($table_nameParam param) {
-        $table_name $object_po = new $table_name();
-        BeanUtility.copyProperties(param, $object_po);
-        $object_po.setCreateTime(System.currentTimeMillis());
-        $object_po.setUpdateTime($object_po.getCreateTime());
-        $object_po.setCreateUserId(0L);
-        $object_po.setUpdateUserId(0L);
-        $object_po.setStatus(StatusRecord.ENABLE);
-        if ($object_po.getRemark() == null) {
-            $object_po.setRemark("");
+    @Override public $persistence_class_name param2po($persistence_class_nameParam param) {
+        $persistence_class_name $persistence_object_name = new $persistence_class_name();
+        BeanUtility.copyProperties(param, $persistence_object_name);
+        $persistence_object_name.setCreateTime(System.currentTimeMillis());
+        $persistence_object_name.setUpdateTime($persistence_object_name.getCreateTime());
+        $persistence_object_name.setCreateUserId(0L);
+        $persistence_object_name.setUpdateUserId(0L);
+        $persistence_object_name.setStatus(StatusRecord.ENABLE);
+        if ($persistence_object_name.getRemark() == null) {
+            $persistence_object_name.setRemark("");
         }
         return $lower_table_name;
     }
 
-    @Override public $table_nameBO po2bo($table_name $object_po) {
-        $table_nameBO $object_poBO = new $table_nameBO();
-        BeanUtility.copyProperties($object_po, $object_poBO);
-        return $object_poBO;
+    @Override public $persistence_class_nameBO po2bo($persistence_class_name $persistence_object_name) {
+        $persistence_class_nameBO $persistence_object_nameBO = new $persistence_class_nameBO();
+        BeanUtility.copyProperties($persistence_object_name, $persistence_object_nameBO);
+        return $persistence_object_nameBO;
     }
 
-    @Override public List<$table_nameBO> poList2BoList(List<$table_name> list) {
-        List<$table_nameBO> $object_poBos = new ArrayList<>(list.size());
-        for ($table_name $object_po : list) {
-            $object_poBos.add(this.po2bo($object_po));
+    @Override public List<$persistence_class_nameBO> poList2BoList(List<$persistence_class_name> list) {
+        List<$persistence_class_nameBO> $persistence_object_nameBos = new ArrayList<>(list.size());
+        for ($persistence_class_name $persistence_object_name : list) {
+            $persistence_object_nameBos.add(this.po2bo($persistence_object_name));
         }
-        return $object_poBos;
+        return $persistence_object_nameBos;
     }
 }

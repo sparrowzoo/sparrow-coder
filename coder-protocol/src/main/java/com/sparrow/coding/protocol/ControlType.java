@@ -16,7 +16,6 @@ public enum ControlType {
     DATE_HHMMSS("txt"),
     CHECK_BOX("ckb"),
     RADIO("rdb"),
-    HIDDEN("hdn"),
     SELECT("slt"),
     FILE("flb"),
     ENABLE_DISABLE(""),

@@ -1,12 +1,12 @@
 package $package_assemble;
 
 import com.sparrow.protocol.constant.Constant;
-import $package_vo.$table_nameVO;
+import $package_vo.$persistence_class_nameVO;
 import com.sparrow.protocol.ListRecordTotalBO;
 import com.sparrow.protocol.pager.PagerResult;
 import com.sparrow.protocol.pager.SimplePager;
-import $package_bo.$table_nameBO;
-import $package_param.$table_nameParam;
+import $package_bo.$persistence_class_nameBO;
+import $package_param.$persistence_class_nameParam;
 import com.sparrow.support.assemble.BO2VOAssemble;
 import com.sparrow.support.assemble.Param2VOAssemble;
 import com.sparrow.support.pager.HtmlPagerResult;
@@ -19,47 +19,47 @@ import java.util.Collections;
 import java.util.List;
 import javax.inject.Named;
 
-@Named("$object_poControllerAssemble")
-public class $table_nameAssemble implements BO2VOAssemble<$table_nameVO, $table_nameBO>,
-    Param2VOAssemble<$table_nameVO,$table_nameParam> {
+@Named
+public class $persistence_class_nameAssemble implements BO2VOAssemble<$persistence_class_nameVO, $persistence_class_nameBO>,
+    Param2VOAssemble<$persistence_class_nameVO,$persistence_class_nameParam> {
 
-    public $table_nameVO paramAssembleVO($table_nameParam param){
-        $table_nameVO $object_po = new $table_nameVO();
-        BeanUtility.copyProperties(param, $object_po);
-        $object_po.setMaxRemarkLength(StringUtility.getMaxAllowLength(Constant.MAX_REMARK_LENGTH,param.getRemark()));
-        return $object_po;
+    public $persistence_class_nameVO paramAssembleVO($persistence_class_nameParam param){
+        $persistence_class_nameVO $persistence_object_name = new $persistence_class_nameVO();
+        BeanUtility.copyProperties(param, $persistence_object_name);
+        $persistence_object_name.setMaxRemarkLength(StringUtility.getMaxAllowLength(Constant.MAX_REMARK_LENGTH,param.getRemark()));
+        return $persistence_object_name;
     }
 
-    @Override public $table_nameVO boAssembleVO($table_nameBO bo) {
-        $table_nameVO $object_po = new $table_nameVO();
-        BeanUtility.copyProperties(bo, $object_po);
-        $object_po.setStatus(bo.getStatus().name());
+    @Override public $persistence_class_nameVO boAssembleVO($persistence_class_nameBO bo) {
+        $persistence_class_nameVO $persistence_object_name = new $persistence_class_nameVO();
+        BeanUtility.copyProperties(bo, $persistence_object_name);
+        $persistence_object_name.setStatus(bo.getStatus().name());
 
-        $object_po.setMaxRemarkLength(StringUtility.getMaxAllowLength(Constant.MAX_REMARK_LENGTH,$object_po.getRemark()));
-        return $object_po;
+        $persistence_object_name.setMaxRemarkLength(StringUtility.getMaxAllowLength(Constant.MAX_REMARK_LENGTH,$persistence_object_name.getRemark()));
+        return $persistence_object_name;
     }
 
-    @Override public List<$table_nameVO> boListAssembleVOList(List<$table_nameBO> list) {
+    @Override public List<$persistence_class_nameVO> boListAssembleVOList(List<$persistence_class_nameBO> list) {
         if (CollectionsUtility.isNullOrEmpty(list)) {
             return Collections.emptyList();
         }
-        List<$table_nameVO> $object_poVOList = new ArrayList<>(list.size());
-        for ($table_nameBO $object_poBo : list) {
-            $table_nameVO $object_poVo = new $table_nameVO();
-            BeanUtility.copyProperties($object_poBo, $object_poVo);
-            String statusName = EnumUtility.getValue($object_poBo.getStatus());
-            $object_poVo.setStatus(statusName);
-            $object_poVOList.add($object_poVo);
+        List<$persistence_class_nameVO> $persistence_object_nameVOList = new ArrayList<>(list.size());
+        for ($persistence_class_nameBO $persistence_object_nameBo : list) {
+            $persistence_class_nameVO $persistence_object_nameVo = new $persistence_class_nameVO();
+            BeanUtility.copyProperties($persistence_object_nameBo, $persistence_object_nameVo);
+            String statusName = EnumUtility.getValue($persistence_object_nameBo.getStatus());
+            $persistence_object_nameVo.setStatus(statusName);
+            $persistence_object_nameVOList.add($persistence_object_nameVo);
         }
-        return $object_poVOList;
+        return $persistence_object_nameVOList;
     }
 
-    public HtmlPagerResult<$table_nameVO> assembleHtmlPager(ListRecordTotalBO<$table_nameBO> $object_poListTotalRecord,
-        SimplePager $object_poQuery) {
-        List<$table_nameVO> $object_poVOList = this.boListAssembleVOList($object_poListTotalRecord.getList());
-        PagerResult<$table_nameVO> pagerResult = new PagerResult<>($object_poQuery);
-        pagerResult.setList($object_poVOList);
-        pagerResult.setRecordCount($object_poListTotalRecord.getTotal());
+    public HtmlPagerResult<$persistence_class_nameVO> assembleHtmlPager(ListRecordTotalBO<$persistence_class_nameBO> $persistence_object_nameListTotalRecord,
+        SimplePager $persistence_object_nameQuery) {
+        List<$persistence_class_nameVO> $persistence_object_nameVOList = this.boListAssembleVOList($persistence_object_nameListTotalRecord.getList());
+        PagerResult<$persistence_class_nameVO> pagerResult = new PagerResult<>($persistence_object_nameQuery);
+        pagerResult.setList($persistence_object_nameVOList);
+        pagerResult.setRecordCount($persistence_object_nameListTotalRecord.getTotal());
         return new HtmlPagerResult<>(pagerResult);
     }
 }

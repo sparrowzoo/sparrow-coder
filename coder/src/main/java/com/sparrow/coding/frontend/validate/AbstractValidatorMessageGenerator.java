@@ -10,9 +10,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractValidatorMessageGenerator<T extends Annotation> implements ValidatorMessageGenerator<T>, ContainerAware {
 
+    private static Logger logger = LoggerFactory.getLogger(AbstractValidatorMessageGenerator.class);
     private ValidatorRegistry registry = ValidatorRegistry.getInstance();
 
     private static final String ERROR_PREFIX = "error";
@@ -84,25 +87,30 @@ public abstract class AbstractValidatorMessageGenerator<T extends Annotation> im
 
     @Override public String generateValidateMessage(String fieldName, String controlPrefix,
         Annotation validator) throws NoSuchFieldException, IllegalAccessException {
-        String upperFieldName = StringUtility.setFirstByteUpperCase(fieldName);
-        String validatorKey = this.getFieldKey(controlPrefix, upperFieldName);
-        String errorCtrlId = this.getErrorCtrlId(upperFieldName);
-        StringBuilder sb = new StringBuilder();
-        sb.append(validatorKey);
-        sb.append(errorCtrlId);
-        InvocationHandler invocationHandler = Proxy.getInvocationHandler(validator);
-        Field memberValues = invocationHandler.getClass().getDeclaredField("memberValues");
-        memberValues.setAccessible(true);
-        Map<String, Object> maps = (Map<String, Object>) memberValues.get(invocationHandler);
-        for (String key : maps.keySet()) {
-            if (key.equals(DEFAULT_VALUE)) {
-                continue;
+        try {
+            String upperFieldName = StringUtility.setFirstByteUpperCase(fieldName);
+            String validatorKey = this.getFieldKey(controlPrefix, upperFieldName);
+            String errorCtrlId = this.getErrorCtrlId(upperFieldName);
+            StringBuilder sb = new StringBuilder();
+            sb.append(validatorKey);
+            sb.append(errorCtrlId);
+            InvocationHandler invocationHandler = Proxy.getInvocationHandler(validator);
+            Field memberValues = invocationHandler.getClass().getDeclaredField("memberValues");
+            memberValues.setAccessible(true);
+            Map<String, Object> maps = (Map<String, Object>) memberValues.get(invocationHandler);
+            for (String key : maps.keySet()) {
+                if (key.equals(DEFAULT_VALUE)) {
+                    continue;
+                }
+                sb.append(this.formatMessage(key, maps.get(key)));
             }
-            sb.append(this.formatMessage(key, maps.get(key)));
+            this.appendDefaultValue(sb, maps);
+            this.finish(sb);
+            return sb.toString();
+        } catch (Exception e) {
+            logger.error("validate message error field:{}", fieldName, e);
+            return null;
         }
-        this.appendDefaultValue(sb, maps);
-        this.finish(sb);
-        return sb.toString();
     }
 
     @Override public void aware(Container container, String s) {

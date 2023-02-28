@@ -1,11 +1,10 @@
 package com.sparrow.coding.frontend.validate3;
 
 import com.sparrow.coding.api.ValidatorMessageGenerator;
-import com.sparrow.coding.frontend.User;
+import com.sparrow.coding.config.ExampleFront;
 import com.sparrow.coding.frontend.validate.EmailValidatorMessageGenerator;
 import com.sparrow.coding.frontend.validate.MobileValidatorMessageGenerator;
 import com.sparrow.coding.frontend.validate.NullValidatorMessageGenerator;
-import com.sparrow.coding.frontend.validate2.MessageGeneratorStrategyV2;
 import com.sparrow.coding.protocol.Form;
 import com.sparrow.coding.protocol.validate.EmailValidator;
 import com.sparrow.coding.protocol.validate.MobileValidator;
@@ -24,7 +23,7 @@ public class MessageConverterV3 {
      */
     public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
         //拿到需要解析的类
-        Class userClazz = User.class;
+        Class userClazz = ExampleFront.class;
         //通过反射拿到字段
         Field[] userFields = userClazz.getDeclaredFields();
 

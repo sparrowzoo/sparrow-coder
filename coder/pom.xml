@@ -30,15 +30,11 @@
             <artifactId>pinyin4j</artifactId>
             <version>2.5.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.sparrowzoo</groupId>
-            <artifactId>sparrow-protocol</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>${javax.servlet_api_version}</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.sparrowzoo</groupId>
@@ -65,6 +61,17 @@
             <groupId>com.sparrowzoo.coding</groupId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <artifactId>example-po</artifactId>
+            <groupId>com.sparrowzoo.example</groupId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
+
     </dependencies>
     <build>
         <finalName>sparrow-coder</finalName>

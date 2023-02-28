@@ -20,9 +20,11 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EnvironmentContext {
-
+    private static Logger logger = LoggerFactory.getLogger(EnvironmentContext.class);
     /**
      * current author
      */
@@ -125,7 +127,7 @@ public class EnvironmentContext {
 
         private EntityManager entityManager;
 
-        public Config(Class<?> po){
+        public Config(Class<?> po) {
             this.poPackage = po.getName().substring(0, po.getName().lastIndexOf(Symbol.DOT));
             this.entityManager = new SparrowEntityManager(po);
             this.placeHolder = initPlaceHolder();
@@ -147,7 +149,12 @@ public class EnvironmentContext {
             } else {
                 moduleKey += key.getModule().toLowerCase();
             }
-            return config.getProperty(CoderConfig.MODULE_PREFIX + moduleKey + "." + key.getModule().toLowerCase());
+            String modulePath = config.getProperty(moduleKey);
+            if (modulePath == null) {
+                logger.error("module path is null, module key is [{}]", moduleKey);
+            }
+            modulePath=StringUtility.replace(modulePath,this.placeHolder);
+            return modulePath;
         }
 
         public String getFullPackage(ClassKey key) {
@@ -160,9 +167,11 @@ public class EnvironmentContext {
 
         private Map<String, String> initPlaceHolder() {
             this.originTableName = entityManager.getTableName();
+
             String persistenceClassName = this.getPersistenceClassName();
             String primaryPropertyName = entityManager.getPrimary().getName();
             Map<String, String> context = new TreeMap<>(Comparator.reverseOrder());
+            context.put(PlaceholderKey.$module_prefix.name(),config.getProperty(CoderConfig.MODULE_PREFIX+"prefix"));
             context.put(PlaceholderKey.$origin_table_name.name(), this.originTableName);
             context.put(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
             context.put(PlaceholderKey.$persistence_object_name.name(), StringUtility.setFirstByteLowerCase(persistenceClassName));
@@ -197,8 +206,6 @@ public class EnvironmentContext {
             context.put(PlaceholderKey.$class_repository.name(), getClassName(ClassKey.REPOSITORY, persistenceClassName));
             context.put(PlaceholderKey.$class_repositoryImpl.name(), getClassName(ClassKey.REPOSITORY_IMPL, persistenceClassName));
             context.put(PlaceholderKey.$class_controller.name(), getClassName(ClassKey.CONTROLLER, persistenceClassName));
-            context.put(PlaceholderKey.$persistence_object_name.name(),
-                StringUtility.setFirstByteLowerCase(context.get(PlaceholderKey.$class_po.name())));
 
             context.put(PlaceholderKey.$object_dao.name(),
                 StringUtility.setFirstByteLowerCase(context.get(PlaceholderKey.$class_dao.name())));
@@ -235,10 +242,11 @@ public class EnvironmentContext {
         }
 
         public void write(ClassKey packageKey) {
-            String workspace = config.getProperty(CoderConfig.WORKSPACE);
+            String workspace = System.getenv(EnvConfig.SPARROW_WORKSPACE);
             System.err.printf("current path is [%s]\n", workspace);
             String content = readConfigContent(packageKey.getTemplate());
             content = StringUtility.replace(content.trim(), this.placeHolder);
+            System.out.println(content);
             String extension = ".java";
             if (content.trim().startsWith("<?xml")) {
                 extension = ".xml";

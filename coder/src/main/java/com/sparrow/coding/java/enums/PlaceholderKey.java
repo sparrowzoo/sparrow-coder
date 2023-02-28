@@ -21,6 +21,11 @@ public enum PlaceholderKey {
     $persistence_object_name,
 
     /**
+     * 项目
+     */
+    $module_prefix,
+
+    /**
      * po: e.g com.sparrow.user.po
      */
     $package_po,

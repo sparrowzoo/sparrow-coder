@@ -2,7 +2,7 @@ package $package_param;
 
 import com.sparrow.protocol.Param;
 
-public class $table_nameParam implements Param {
+public class $persistence_class_nameParam implements Param {
     private String remark;
     public String getRemark() {
         return remark;

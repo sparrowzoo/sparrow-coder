@@ -6,6 +6,7 @@
     <modules>
         <module>coder</module>
         <module>coder-protocol</module>
+        <module>example-po</module>
     </modules>
     <groupId>com.sparrowzoo.coder</groupId>
     <artifactId>sparrow-coder</artifactId>

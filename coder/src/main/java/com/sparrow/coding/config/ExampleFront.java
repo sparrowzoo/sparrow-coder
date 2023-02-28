@@ -16,15 +16,18 @@ import com.sparrow.coding.protocol.validate.TelValidator;
 import com.sparrow.coding.protocol.validate.UserNameRuleValidator;
 import com.sparrow.protocol.FieldOrder;
 
-@Entity(name = "user", text = "用户")
-public class ExampleUser {
-    @Form(text = "用户ID", type = ControlType.CHECK_BOX)
+/**
+ * 示例代码
+ */
+@Entity(name = "sparrowExample", text = "用户")
+public class ExampleFront {
+    @Form(text = "用户ID", primaryKey = true, type = ControlType.INPUT_HIDDEN, listType = ControlType.CHECK_BOX, showInList = true)
     @FieldOrder(order = 1)
-    private String userId;
+    private Long id;
 
     @Form(text = "用户头象", type = ControlType.IMAGE, listType = ControlType.IMAGE)
     @FieldOrder(order = 1.2F)
-    private String headerIco;
+    private String avatar;
 
     @Form(text = "用户名", type = ControlType.INPUT_TEXT, validate = UserNameRuleValidator.class, showInList = true, listType = ControlType.LINK)
     @UserNameRuleValidator(prompt = "请输入6-20个字符(字母、数字或下划线)推荐字母+数字组合的用户名。"

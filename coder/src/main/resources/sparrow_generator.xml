@@ -18,12 +18,12 @@
             <script language="javascript" type="text/javascript"
                     th:src="@{${resource}+'/scripts/require.js?v='+${resource_version}}"></script>
             <script language="javascript" type="text/javascript"
-                    th:src="@{${resource}+'/ext/scripts/system/language/zh_cn/$entity_name.js?v='+${resource_version}}"></script>
+                    th:src="@{${resource}+'/ext/scripts/system/language/zh_cn/$entity_by_horizontal.js?v='+${resource_version}}"></script>
             <script language="javascript" type="text/javascript">
                 requirejs.config({
                 baseUrl: "[[${resource}]]/scripts",
                 paths: {
-                $entity_name: '[[${resource}]]/ext/scripts/system/$entity_name/new'
+                $entity_name: '[[${resource}]]/ext/scripts/system/$entity_by_slash/new'
                 }
                 });
                 require(['sparrow', 'domReady!', '$entity_name'], function ($, dom, $entity_nameController) {
@@ -46,6 +46,11 @@
         <legend>注: <span class="highlight">*</span>为必添项</legend>
         ]]>
     </create_page>
+    <create_page_field control_type="INPUT_HIDDEN">
+        <![CDATA[
+           <input type="hidden" id="txt$upper_property_name" th:value="${$entity_name?.$property_name}" name="$property_name"/>
+        ]]>
+    </create_page_field>
     <create_page_field control_type="INPUT_TEXT">
         <![CDATA[
             <div class="pure-control-group">
@@ -123,8 +128,6 @@
 
 
     </create_page>
-
-
     <manage_page header_tail="HEADER">
         <![CDATA[
         <html lang="en" xmlns:th="http://www.thymeleaf.org">
@@ -141,12 +144,12 @@
             <script language="javascript" type="text/javascript"
                     th:src="@{${resource}+'/scripts/require.js?v='+${resource_version}}"></script>
             <script language="javascript" type="text/javascript"
-                    th:src="@{${resource}+'/ext/scripts/system/language/zh_cn/$entity_name.js?v='+${resource_version}}"></script>
+                    th:src="@{${resource}+'/ext/scripts/system/language/zh_cn/$entity_by_horizontal.js?v='+${resource_version}}"></script>
             <script language="javascript" type="text/javascript">
                 requirejs.config({
                 baseUrl: "[[${resource}]]/scripts",
                 paths: {
-                $entity_name: '[[${resource}]]/ext/scripts/system/$entity_name/manage'
+                $entity_name: '[[${resource}]]/ext/scripts/system/$entity_by_slash/manage'
                 }
                 });
                 require(['sparrow', 'domReady!', '$entity_name'], function ($, dom, $entity_nameController) {
@@ -255,7 +258,7 @@
 
     <create_page_js>
         <![CDATA[
-          var $entity_namController = {
+          var $entity_nameController = {
             api: {
                 save: "save",
                 manage: "manage"
@@ -267,15 +270,15 @@
                     {
                         id: "btnReturn",
                         delegate: function (e, srcElement) {
-                            window.location.href = $entity_namController.api.manage;
+                            window.location.href = $entity_nameController.api.manage;
                         },
                         strategy: lang.command.return
                     },
                     {
                         id: "btnSave",
                         delegate: function (e, srcElement) {
-                            $.v.getValidateResult($entity_namInfo, function () {
-                                $.submit($entity_namController.api.save);
+                            $.v.getValidateResult($entity_nameInfo, function () {
+                                $.submit($entity_nameController.api.save);
                             });
                         },
                         strategy: lang.command.save
@@ -283,14 +286,14 @@
                 $.dispatcher.bind();
             }
         };
-        define("$entity_nam", [], function () {
-            return $entity_namController;
+        define("$entity_name", [], function () {
+            return $entity_nameController;
         });
     ]]>
     </create_page_js>
     <manage_page_js>
         <![CDATA[
-            var $entity_namController = {
+            var $entity_nameController = {
             api: {
                 add: "new",
                 search: "search.do",
@@ -300,7 +303,7 @@
             },
 
             load: function () {
-                $.gridView.id="grvAppList";
+                $.gridView.id="grv$upper_entity_nameList";
                 document.forms[0].action=this.api.search;
 
                 $.dispatcher.eventRegistry = [
@@ -314,33 +317,33 @@
                     {
                         id: "btnAdd",
                         delegate: function (e, srcElement) {
-                            window.location.href = $entity_namController.api.add;
+                            window.location.href = $entity_nameController.api.add;
                         }
                     },
                     {
                         id: "btnEnable",
                         delegate: function (e, srcElement) {
-                            $.gridView.submit($entity_namController.api.enable,lang.message.enable);
+                            $.gridView.submit($entity_nameController.api.enable,lang.message.enable);
                         }
                     },
                     {
                         id: "btnDisable",
                         delegate: function (e, srcElement) {
-                            $.gridView.submit($entity_namController.api.disable,lang.message.disable);
+                            $.gridView.submit($entity_nameController.api.disable,lang.message.disable);
                         }
                     },
                     {
                         id: "btnDelete",
                         delegate: function (e, srcElement) {
-                                $.gridView.submit($entity_namController.api.delete, lang.message.delete);
+                                $.gridView.submit($entity_nameController.api.delete, lang.message.delete);
                         }
                     }
                 ];
                 $.dispatcher.bind();
             }
             };
-            define("$entity_nam", [], function () {
-                return $entity_namController;
+            define("$entity_name", [], function () {
+                return $entity_nameController;
             });
         ]]>
     </manage_page_js>
@@ -366,6 +369,4 @@
         }
         };
     </language_js>
-
-
 </configuration>

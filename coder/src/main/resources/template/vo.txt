@@ -2,7 +2,7 @@ package $package_vo;
 
 import com.sparrow.protocol.VO;
 
-public class $table_nameVO implements VO {
+public class $persistence_class_nameVO implements VO {
 
     private String status;
     private String remark;

@@ -1,0 +1,175 @@
+
+        
+        <html lang="en" xmlns:th="http://www.thymeleaf.org">
+        <head>
+            <title>用户 新增</title>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <link rel="stylesheet" type="text/css" th:href="@{${resource}+'/styles/sparrow.css?v='+${resource_version}}"/>
+            <link rel="stylesheet" type="text/css" th:href="@{${resource}+'/styles/pure-css/pure.css?v='+${resource_version}}"/>
+            <link rel="stylesheet" type="text/css"
+                  th:href="@{${resource}+'/styles/layouts-backend.css?v='+${resource_version}}"/>
+            <link rel="stylesheet" type="text/css" th:href="@{${resource}+'/styles/modal.css?v='+${resource_version}}"/>
+            <script language="javascript" type="text/javascript"
+                    th:src="@{${resource}+'/scripts/require.js?v='+${resource_version}}"></script>
+            <script language="javascript" type="text/javascript"
+                    th:src="@{${resource}+'/ext/scripts/system/language/zh_cn/exampleUser.js?v='+${resource_version}}"></script>
+            <script language="javascript" type="text/javascript">
+                requirejs.config({
+                baseUrl: "[[${resource}]]/scripts",
+                paths: {
+                exampleUser: '[[${resource}]]/ext/scripts/system/exampleUser/new'
+                }
+                });
+                require(['sparrow', 'domReady!', 'exampleUser'], function ($, dom, exampleUserController) {
+                exampleUserController.load();
+                });
+            </script>
+            <style type="text/css">
+                .inline-block label {
+                width: 7em !important;
+                }
+                .status label {
+                width: 3em !important;
+                }
+            </style>
+        </head>
+        <body>
+        <div id="main">
+        <form method="post" class="pure-form pure-form-aligned">
+        <fieldset>
+        <legend>注: <span class="highlight">*</span>为必添项</legend>
+        
+    
+        
+           <input type="hidden" id="txtUserId" th:value="${exampleUser?.userId}" name="userId"/>
+        
+    
+        
+        <div class="pure-control-group">
+            <label>用户头象</label>
+            <iframe frameborder="0" id="null.exampleUser" class="file-frame"></iframe>
+            <input type="hidden" id="hdnHeaderIco" name="headerIco" th:value="${exampleUser?.headerIco}"/>
+            <span class="prompt" th:text="${app_icon}" id="errorHeaderIco"></span>
+        </div>
+        <div id="divHeaderIco" class="pure-controls">
+            <img th:src="@{${exampleUser?.headerIco}}">
+        </div>
+        
+    
+        
+            <div class="pure-control-group">
+                <label>用户名</label>
+                <input type="text" id="txtUserName" th:value="${exampleUser?.userName}" name="userName"/>
+                <span class="prompt" id="errorUserName"></span>
+            </div>
+        
+    
+        
+            <div class="pure-control-group">
+                <label>密码</label>
+                <input type="password" id="txtPassword" th:value="${exampleUser?.password}" name="password"/>
+                <span class="prompt" id="errorPassword"></span>
+            </div>
+        
+    
+        
+        <div class="pure-control-group">
+            <label>状态</label>
+            <div class="inline-block status">
+                <input type="radio" id="rdbStatus00" name="status" value="DISABLE"
+                       th:attr="checked=${exampleUser?.status=='DISABLE'}">
+                <label for="rdbStatus00">禁用</label>
+                <input type="radio" id="rdbStatus01" name="status" value="ENABLE"
+                       th:attr="checked=${exampleUser?.status=='ENABLE'}">
+                <label for="rdbStatus01">正常</label>
+            </div>
+            <span class="prompt" id="errorStatus"></span>
+        </div>
+         
+    
+        
+            <div class="pure-control-group">
+                <label>年龄</label>
+                <input type="text" id="txtAge" th:value="${exampleUser?.age}" name="age"/>
+                <span class="prompt" id="errorAge"></span>
+            </div>
+        
+    
+        
+            <div class="pure-control-group">
+                <label>E-mail</label>
+                <input type="text" id="txtEmail" th:value="${exampleUser?.email}" name="email"/>
+                <span class="prompt" id="errorEmail"></span>
+            </div>
+        
+    
+        
+            <div class="pure-control-group">
+                <label>确认密码</label>
+                <input type="password" id="txtConfirmPassword" th:value="${exampleUser?.confirmPassword}" name="confirmPassword"/>
+                <span class="prompt" id="errorConfirmPassword"></span>
+            </div>
+        
+    
+        
+            <div class="pure-control-group">
+                <label>身份证号码</label>
+                <input type="text" id="txtIdCard" th:value="${exampleUser?.idCard}" name="idCard"/>
+                <span class="prompt" id="errorIdCard"></span>
+            </div>
+        
+    
+        
+            <div class="pure-control-group">
+                <label>手机号</label>
+                <input type="text" id="txtMobile" th:value="${exampleUser?.mobile}" name="mobile"/>
+                <span class="prompt" id="errorMobile"></span>
+            </div>
+        
+    
+        
+            <div class="pure-control-group">
+                <label>电话号码</label>
+                <input type="text" id="txtTel" th:value="${exampleUser?.tel}" name="tel"/>
+                <span class="prompt" id="errorTel"></span>
+            </div>
+        
+    
+        
+        <div class="pure-control-group">
+            <label>备注</label>
+            <textarea th:text="${exampleUser?.remark}" id="txtRemark" cols='20' rows='5' name="remark""></textarea>
+            <span class="prompt" id="errorRemark"></span>
+        </div>
+        <div class="pure-controls">
+            您还可以输入：<span id="spanTxtCount" th:text="${exampleUser?.inputLength}"></span>个字符/[[${exampleUser?.maxAllowLength}]]
+        </div>
+         
+    
+        
+            <div class="pure-control-group">
+                <label>真实姓名</label>
+                <input type="text" id="txtName" th:value="${exampleUser?.name}" name="name"/>
+                <span class="prompt" id="errorName"></span>
+            </div>
+        
+    
+        
+            <div class="pure-controls">
+                <input id="btnSave" type="button" class="pure-button pure-button-primary"
+                       value="提交"/>
+                <input id="btnReturn" type="button" class="pure-button"
+                       value="返回"/>
+            </div>
+        </fieldset>
+    </form>
+        </div>
+        </body>
+        </html>
+        <!--generate by sparrow coder-->
+     
+
+
+    

@@ -1,5 +1,6 @@
 package com.sparrow.coding.frontend;
 
+import com.sparrow.coding.config.ExampleFront;
 import com.sparrow.coding.protocol.Form;
 import com.sparrow.container.Container;
 import com.sparrow.container.ContainerBuilder;
@@ -14,7 +15,7 @@ public class ValidatorRegistryTest {
             .initInterceptor(false)
             .scanBasePackage("com.sparrow"));
 
-        Class userClazz = User.class;
+        Class userClazz = ExampleFront.class;
         Field[] fields = userClazz.getDeclaredFields();
         StringBuilder sb = new StringBuilder();
         for (Field field : fields) {

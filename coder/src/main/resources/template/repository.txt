@@ -1,24 +1,24 @@
 package $package_repository;
-import $package_bo.$table_nameBO;
-import $package_param.$table_nameParam;
-import $package_query.$table_nameQuery;
+import $package_bo.$persistence_class_nameBO;
+import $package_param.$persistence_class_nameParam;
+import $package_query.$persistence_class_nameQuery;
 import java.util.List;
 
 
 
-public interface $table_nameRepository {
-    Long save($table_nameParam appParam);
+public interface $persistence_class_nameRepository {
+    Long save($persistence_class_nameParam appParam);
 
-    int delete(String $lower_table_nameIds);
+    int delete(String $persistence_object_nameIds);
 
-    int disable(String $lower_table_nameIds);
+    int disable(String $persistence_object_nameIds);
 
-    int enable(String $lower_table_nameIds);
+    int enable(String $persistence_object_nameIds);
 
-    $table_nameBO get$table_name(Long $lower_table_nameId);
+    $persistence_class_nameBO get$persistence_class_name(Long $persistence_object_nameId);
 
-    List<$table_nameBO> query$table_names($table_nameQuery $object_poQuery);
+    List<$persistence_class_nameBO> query$persistence_class_names($persistence_class_nameQuery $persistence_object_nameQuery);
 
-    Long get$table_nameCount($table_nameQuery $object_poQuery);
+    Long get$persistence_class_nameCount($persistence_class_nameQuery $persistence_object_nameQuery);
 
 }
