@@ -31,6 +31,11 @@ public enum PlaceholderKey {
     $persistence_object_by_slash,
 
     /**
+     * 示例 user.address
+     */
+    $persistence_object_by_dot,
+
+    /**
      * 项目
      */
     $module_prefix,
@@ -69,6 +74,10 @@ public enum PlaceholderKey {
      * dao e.g com.sparrow.user.dao
      */
     $package_dao,
+
+    $package_pager_query,
+
+    $package_count_query,
 
     /**
      * dao impl e.g com.sparrow.user.dao.impl

@@ -133,21 +133,21 @@ public class JavaMain {
         }
         if ("--example".equals(args[0])) {
             List<String> argsList = new ArrayList<>(args.length);
-//            argsList.add("-c com.sparrow.example.po.SparrowExample");
-//            argsList.add("-b com.sparrow.example.po.SparrowExample");
-//            argsList.add("-p com.sparrow.example.po.SparrowExample");
-//            argsList.add("-q com.sparrow.example.po.SparrowExample");
-//            argsList.add("-v com.sparrow.example.po.SparrowExample");
-//            argsList.add("-cv com.sparrow.example.po.SparrowExample");
-//            argsList.add("-d com.sparrow.example.po.SparrowExample");
-//            argsList.add("-di com.sparrow.example.po.SparrowExample");
-//            argsList.add("-r com.sparrow.example.po.SparrowExample");
-//            argsList.add("-ri com.sparrow.example.po.SparrowExample");
-//            argsList.add("-s com.sparrow.example.po.SparrowExample");
-//            argsList.add("-a com.sparrow.example.po.SparrowExample");
-//            argsList.add("-ct com.sparrow.example.po.SparrowExample");
+            argsList.add("-c com.sparrow.example.po.SparrowExample");
+            argsList.add("-b com.sparrow.example.po.SparrowExample");
+            argsList.add("-p com.sparrow.example.po.SparrowExample");
+            argsList.add("-q com.sparrow.example.po.SparrowExample");
+            argsList.add("-v com.sparrow.example.po.SparrowExample");
+            argsList.add("-cv com.sparrow.example.po.SparrowExample");
+            argsList.add("-d com.sparrow.example.po.SparrowExample");
+            argsList.add("-di com.sparrow.example.po.SparrowExample");
+            argsList.add("-r com.sparrow.example.po.SparrowExample");
+            argsList.add("-ri com.sparrow.example.po.SparrowExample");
+            argsList.add("-s com.sparrow.example.po.SparrowExample");
+            argsList.add("-a com.sparrow.example.po.SparrowExample");
+            argsList.add("-ct com.sparrow.example.po.SparrowExample");
             argsList.add("-pq com.sparrow.example.po.SparrowExample");
-            //argsList.add("-cq com.sparrow.example.po.SparrowExample");
+            argsList.add("-cq com.sparrow.example.po.SparrowExample");
 
             for (String argsLine : argsList) {
                 args = argsLine.split(" ");

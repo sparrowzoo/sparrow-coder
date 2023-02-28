@@ -3,12 +3,10 @@ package $package_service;
 import com.sparrow.exception.Asserts;
 import com.sparrow.protocol.BusinessException;
 import com.sparrow.protocol.ListRecordTotalBO;
-import com.sparrow.security.admin.bo.$persistence_class_nameBO;
-import com.sparrow.security.admin.repository.$persistence_class_nameRepository;
-import com.sparrow.security.admin.support.suffix.$persistence_class_nameSuffix;
-import com.sparrow.security.admin.protocol.enums.SecurityAdminError;
-import com.sparrow.security.admin.protocol.param.$persistence_class_nameParam;
-import com.sparrow.security.admin.protocol.query.$persistence_class_nameQuery;
+import com.sparrow.$module_prefix.admin.bo.$persistence_class_nameBO;
+import com.sparrow.$module_prefix.admin.repository.$persistence_class_nameRepository;
+import com.sparrow.$module_prefix.admin.protocol.param.$persistence_class_nameParam;
+import com.sparrow.$module_prefix.admin.protocol.query.$persistence_class_nameQuery;
 import com.sparrow.utility.StringUtility;
 import java.util.List;
 import javax.inject.Inject;
@@ -29,17 +27,17 @@ public class $persistence_class_nameService {
     }
 
     public Integer delete$persistence_class_name(String $persistence_object_nameIds) throws BusinessException {
-        Asserts.isTrue(StringUtility.isNullOrEmpty($persistence_object_nameIds), SecurityAdminError.$persistence_class_name_ID_IS_EMPTY);
+        //Asserts.isTrue(StringUtility.isNullOrEmpty($persistence_object_nameIds), SecurityAdminError.$persistence_class_name_ID_IS_EMPTY);
         return this.$persistence_object_nameRepository.delete($persistence_object_nameIds);
     }
 
     public Integer enable$persistence_class_name(String $persistence_object_nameIds) throws BusinessException {
-        Asserts.isTrue(StringUtility.isNullOrEmpty($persistence_object_nameIds), SecurityAdminError.$persistence_class_name_ID_IS_EMPTY);
+        //Asserts.isTrue(StringUtility.isNullOrEmpty($persistence_object_nameIds), SecurityAdminError.$persistence_class_name_ID_IS_EMPTY);
         return this.$persistence_object_nameRepository.enable($persistence_object_nameIds);
     }
 
     public Integer disable$persistence_class_name(String $persistence_object_nameIds) throws BusinessException {
-        Asserts.isTrue(StringUtility.isNullOrEmpty($persistence_object_nameIds), SecurityAdminError.$persistence_class_name_ID_IS_EMPTY);
+        //Asserts.isTrue(StringUtility.isNullOrEmpty($persistence_object_nameIds), SecurityAdminError.$persistence_class_name_ID_IS_EMPTY);
         return this.$persistence_object_nameRepository.disable($persistence_object_nameIds);
     }
 
@@ -57,7 +55,7 @@ public class $persistence_class_nameService {
     }
 
     public $persistence_class_nameBO get$persistence_class_name(Long $persistence_object_nameId) throws BusinessException {
-        Asserts.isTrue($persistence_object_nameId == null, SecurityAdminError.$persistence_object_name_IS_EMPTY);
+        //Asserts.isTrue($persistence_object_nameId == null, SecurityAdminError.$persistence_object_name_IS_EMPTY);
         return this.$persistence_object_nameRepository.get$persistence_class_name($persistence_object_nameId);
     }
 }

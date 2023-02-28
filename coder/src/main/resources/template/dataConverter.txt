@@ -2,11 +2,12 @@ package $package_data_converter;
 
 import com.sparrow.protocol.enums.StatusRecord;
 import $package_bo.$persistence_class_nameBO;
-import com.sparrow.security.po.$persistence_class_name;
+import com.sparrow.$module_prefix.po.$persistence_class_name;
 import $package_param.$persistence_class_nameParam;
 import $package_query.$persistence_class_nameQuery;
 import com.sparrow.protocol.dao.PagerQuery;
-
+import $package_count_query.Count$persistence_class_nameQuery;
+import $package_pager_query.Pager$persistence_class_nameQuery;
 import com.sparrow.support.converter.PO2BOConverter;
 import com.sparrow.support.converter.Param2POConverter;
 import com.sparrow.utility.BeanUtility;
@@ -53,15 +54,16 @@ public class $persistence_class_nameConverter implements Param2POConverter<$pers
     @Override public $persistence_class_name param2po($persistence_class_nameParam param) {
         $persistence_class_name $persistence_object_name = new $persistence_class_name();
         BeanUtility.copyProperties(param, $persistence_object_name);
-        $persistence_object_name.setCreateTime(System.currentTimeMillis());
-        $persistence_object_name.setUpdateTime($persistence_object_name.getCreateTime());
+
+        $persistence_object_name.setGmtCreate(System.currentTimeMillis());
+        $persistence_object_name.setGmtModified($persistence_object_name.getGmtCreate());
         $persistence_object_name.setCreateUserId(0L);
-        $persistence_object_name.setUpdateUserId(0L);
+        $persistence_object_name.setModifiedUserId(0L);
         $persistence_object_name.setStatus(StatusRecord.ENABLE);
-        if ($persistence_object_name.getRemark() == null) {
-            $persistence_object_name.setRemark("");
-        }
-        return $lower_table_name;
+        //if ($persistence_object_name.getRemark() == null) {
+        //    $persistence_object_name.setRemark("");
+        //}
+        return $persistence_object_name;
     }
 
     @Override public $persistence_class_nameBO po2bo($persistence_class_name $persistence_object_name) {

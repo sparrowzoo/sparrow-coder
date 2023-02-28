@@ -2,8 +2,8 @@ package $package_dao;
 
 import com.sparrow.protocol.dao.DaoSupport;
 import $package_po.$persistence_class_name;
-import $package_dao.query.$persistence_object_name.Count$persistence_class_nameQuery;
-import $package_dao.query.$persistence_object_name.Pager$persistence_class_nameQuery;
+import $package_dao.query.$persistence_object_by_dot.Count$persistence_class_nameQuery;
+import $package_dao.query.$persistence_object_by_dot.Pager$persistence_class_nameQuery;
 import java.util.List;
 
 public interface $persistence_class_nameDAO extends DaoSupport<$persistence_class_name, Long> {

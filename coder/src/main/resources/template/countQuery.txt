@@ -4,7 +4,7 @@ import com.sparrow.protocol.enums.StatusRecord;
 import java.util.Date;
 
 public class Count$persistence_class_nameQuery {
-    public CountAppQuery() {
+    public Count$persistence_class_nameQuery() {
     }
 
     public Count$persistence_class_nameQuery(Count$persistence_class_nameQuery count$persistence_class_nameQuery) {

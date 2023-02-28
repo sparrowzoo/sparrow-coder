@@ -1,4 +1,4 @@
-package $package_page_query;
+package $package_pager_query;
 
 import com.sparrow.protocol.dao.PagerQuery;
 

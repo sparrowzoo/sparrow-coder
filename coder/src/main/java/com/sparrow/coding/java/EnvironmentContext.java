@@ -153,7 +153,7 @@ public class EnvironmentContext {
             if (modulePath == null) {
                 logger.error("module path is null, module key is [{}]", moduleKey);
             }
-            modulePath=StringUtility.replace(modulePath,this.placeHolder);
+            modulePath = StringUtility.replace(modulePath, this.placeHolder);
             return modulePath;
         }
 
@@ -171,13 +171,13 @@ public class EnvironmentContext {
             String persistenceClassName = this.getPersistenceClassName();
             String primaryPropertyName = entityManager.getPrimary().getName();
             Map<String, String> context = new TreeMap<>(Comparator.reverseOrder());
-            context.put(PlaceholderKey.$module_prefix.name(),config.getProperty(CoderConfig.MODULE_PREFIX+"prefix"));
+            context.put(PlaceholderKey.$module_prefix.name(), config.getProperty(CoderConfig.MODULE_PREFIX + "prefix"));
             context.put(PlaceholderKey.$origin_table_name.name(), this.originTableName);
             context.put(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
             context.put(PlaceholderKey.$persistence_object_name.name(), StringUtility.setFirstByteLowerCase(persistenceClassName));
-            context.put(PlaceholderKey.$persistence_object_by_horizontal.name(), StringUtility.humpToLower(persistenceClassName,'-'));
-            context.put(PlaceholderKey.$persistence_object_by_slash.name(), StringUtility.humpToLower(persistenceClassName,'/'));
-
+            context.put(PlaceholderKey.$persistence_object_by_horizontal.name(), StringUtility.humpToLower(persistenceClassName, '-'));
+            context.put(PlaceholderKey.$persistence_object_by_slash.name(), StringUtility.humpToLower(persistenceClassName, '/'));
+            context.put(PlaceholderKey.$persistence_object_by_dot.name(), StringUtility.humpToLower(persistenceClassName, '.'));
 
             context.put(PlaceholderKey.$date.name(), DateTimeUtility
                 .getFormatCurrentTime("yyyy-MM-dd HH:mm:ss"));
@@ -191,6 +191,11 @@ public class EnvironmentContext {
             context.put(PlaceholderKey.$package_vo.name(), this.getFullPackage(ClassKey.VO));
 
             context.put(PlaceholderKey.$package_dao.name(), this.getFullPackage(ClassKey.DAO));
+            String pagerQuery= this.getFullPackage(ClassKey.PAGER_QUERY);
+            context.put(PlaceholderKey.$package_pager_query.name(),StringUtility.replace(pagerQuery,context));
+            String countQuery= this.getFullPackage(ClassKey.COUNT_QUERY);
+            context.put(PlaceholderKey.$package_count_query.name(),StringUtility.replace(countQuery,context));
+
             context.put(PlaceholderKey.$package_repository.name(), this.getFullPackage(ClassKey.REPOSITORY));
             context.put(PlaceholderKey.$package_repository_impl.name(), this.getFullPackage(ClassKey.REPOSITORY_IMPL));
             context.put(PlaceholderKey.$package_data_converter.name(), this.getFullPackage(ClassKey.DATA_CONVERTER));
@@ -240,9 +245,10 @@ public class EnvironmentContext {
                 + "src" + File.separator
                 + "main" + File.separator
                 + "java" + File.separator
-                + this.getFullPackage(k).replace(Symbol.DOT, File.separator);
+                + this.getFullPackage(k);
+            fullPath = StringUtility.replace(fullPath, this.placeHolder);
+            fullPath=fullPath.replace('.',File.separatorChar);
             System.out.println("write to " + fullPath);
-            fullPath= StringUtility.replace(fullPath,this.placeHolder);
             return fullPath;
         }
 

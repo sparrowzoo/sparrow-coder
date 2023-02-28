@@ -2,13 +2,13 @@ package $package_repository_impl;
 
 import com.sparrow.protocol.dao.StatusCriteria;
 import com.sparrow.protocol.enums.StatusRecord;
-import com.sparrow.security.admin.dao.$persistence_class_nameDAO;
-import com.sparrow.security.admin.infrastructure.persistence.data.converter.$persistence_class_nameConverter;
-import com.sparrow.security.po.$persistence_class_name;
-import com.sparrow.security.admin.bo.$persistence_class_nameBO;
-import com.sparrow.security.admin.protocol.param.$persistence_class_nameParam;
-import com.sparrow.security.admin.repository.$persistence_class_nameRepository;
-import com.sparrow.security.admin.protocol.query.$persistence_class_nameQuery;
+import com.sparrow.$module_prefix.admin.dao.$persistence_class_nameDAO;
+import com.sparrow.$module_prefix.admin.infrastructure.persistence.data.converter.$persistence_class_nameConverter;
+import com.sparrow.$module_prefix.po.$persistence_class_name;
+import com.sparrow.$module_prefix.admin.bo.$persistence_class_nameBO;
+import com.sparrow.$module_prefix.admin.protocol.param.$persistence_class_nameParam;
+import com.sparrow.$module_prefix.admin.repository.$persistence_class_nameRepository;
+import com.sparrow.$module_prefix.admin.protocol.query.$persistence_class_nameQuery;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -31,8 +31,7 @@ public class $persistence_class_nameRepositoryImpl implements $persistence_class
     }
 
     @Override public int delete(String $persistence_object_nameIds) {
-        StatusCriteria statusCriteria = new StatusCriteria($persistence_object_nameIds, StatusRecord.DESTROYED);
-        return this.$persistence_object_nameDao.changeStatus(statusCriteria);
+        return this.$persistence_object_nameDao.batchDelete($persistence_object_nameIds);
     }
 
     @Override public int disable(String $persistence_object_nameIds) {
