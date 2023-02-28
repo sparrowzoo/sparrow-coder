@@ -175,6 +175,10 @@ public class EnvironmentContext {
             context.put(PlaceholderKey.$origin_table_name.name(), this.originTableName);
             context.put(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
             context.put(PlaceholderKey.$persistence_object_name.name(), StringUtility.setFirstByteLowerCase(persistenceClassName));
+            context.put(PlaceholderKey.$persistence_object_by_horizontal.name(), StringUtility.humpToLower(persistenceClassName,'-'));
+            context.put(PlaceholderKey.$persistence_object_by_slash.name(), StringUtility.humpToLower(persistenceClassName,'/'));
+
+
             context.put(PlaceholderKey.$date.name(), DateTimeUtility
                 .getFormatCurrentTime("yyyy-MM-dd HH:mm:ss"));
             context.put(PlaceholderKey.$author.name(), getAuthor());
@@ -238,6 +242,7 @@ public class EnvironmentContext {
                 + "java" + File.separator
                 + this.getFullPackage(k).replace(Symbol.DOT, File.separator);
             System.out.println("write to " + fullPath);
+            fullPath= StringUtility.replace(fullPath,this.placeHolder);
             return fullPath;
         }
 

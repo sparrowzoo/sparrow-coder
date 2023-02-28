@@ -20,6 +20,8 @@ public class JavaMain {
         System.out.println("生成Query:           [-q |-query]        args=po");
         System.out.println("生成VO:              [-v |-vo]           args=po");
         System.out.println("生成dataConverter:   [-cv|-converter]    args=po");
+        System.out.println("生成Pager Query:     [-pq|-pagerQuery]   args=po");
+        System.out.println("生成Count Query:     [-cq|-countQuery]   args=po");
 
         System.out.println("生成Dao 接口:         [-d |-dao]          args=po");
         System.out.println("生成dao 实现:         [-di|-daoImpl]      args=po");
@@ -75,6 +77,16 @@ public class JavaMain {
             return;
         }
 
+        if ("-pq".equalsIgnoreCase(args[0]) || "-pagerQuery".equalsIgnoreCase(args[0])) {
+            codeGenerator.pagerQuery(po);
+            return;
+        }
+
+        if ("-cq".equalsIgnoreCase(args[0]) || "-countQuery".equalsIgnoreCase(args[0])) {
+            codeGenerator.countQuery(po);
+            return;
+        }
+
         if ("-d".equalsIgnoreCase(args[0]) || "-dao".equalsIgnoreCase(args[0])) {
             codeGenerator.dao(po);
             return;
@@ -121,19 +133,22 @@ public class JavaMain {
         }
         if ("--example".equals(args[0])) {
             List<String> argsList = new ArrayList<>(args.length);
-            argsList.add("-c com.sparrow.example.po.SparrowExample");
-            argsList.add("-b com.sparrow.example.po.SparrowExample");
-            argsList.add("-p com.sparrow.example.po.SparrowExample");
-            argsList.add("-q com.sparrow.example.po.SparrowExample");
-            argsList.add("-v com.sparrow.example.po.SparrowExample");
-            argsList.add("-cv com.sparrow.example.po.SparrowExample");
-            argsList.add("-d com.sparrow.example.po.SparrowExample");
-            argsList.add("-di com.sparrow.example.po.SparrowExample");
-            argsList.add("-r com.sparrow.example.po.SparrowExample");
-            argsList.add("-ri com.sparrow.example.po.SparrowExample");
-            argsList.add("-s com.sparrow.example.po.SparrowExample");
-            argsList.add("-a com.sparrow.example.po.SparrowExample");
-            argsList.add("-ct com.sparrow.example.po.SparrowExample");
+//            argsList.add("-c com.sparrow.example.po.SparrowExample");
+//            argsList.add("-b com.sparrow.example.po.SparrowExample");
+//            argsList.add("-p com.sparrow.example.po.SparrowExample");
+//            argsList.add("-q com.sparrow.example.po.SparrowExample");
+//            argsList.add("-v com.sparrow.example.po.SparrowExample");
+//            argsList.add("-cv com.sparrow.example.po.SparrowExample");
+//            argsList.add("-d com.sparrow.example.po.SparrowExample");
+//            argsList.add("-di com.sparrow.example.po.SparrowExample");
+//            argsList.add("-r com.sparrow.example.po.SparrowExample");
+//            argsList.add("-ri com.sparrow.example.po.SparrowExample");
+//            argsList.add("-s com.sparrow.example.po.SparrowExample");
+//            argsList.add("-a com.sparrow.example.po.SparrowExample");
+//            argsList.add("-ct com.sparrow.example.po.SparrowExample");
+            argsList.add("-pq com.sparrow.example.po.SparrowExample");
+            //argsList.add("-cq com.sparrow.example.po.SparrowExample");
+
             for (String argsLine : argsList) {
                 args = argsLine.split(" ");
                 innerMain(args);

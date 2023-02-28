@@ -21,6 +21,16 @@ public enum PlaceholderKey {
     $persistence_object_name,
 
     /**
+     * 示例  user-address
+     */
+    $persistence_object_by_horizontal,
+
+    /**
+     * 示例 user/address
+     */
+    $persistence_object_by_slash,
+
+    /**
      * 项目
      */
     $module_prefix,

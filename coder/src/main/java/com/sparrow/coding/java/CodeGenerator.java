@@ -34,12 +34,22 @@ public class CodeGenerator {
         tableConfig.write(ClassKey.ASSEMBLE);
     }
 
-    public void converter(Class<?> po){
+    public void converter(Class<?> po) {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.write(ClassKey.DATA_CONVERTER);
     }
 
-    public void vo(Class<?> po){
+    public void countQuery(Class<?> po) {
+        EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
+        tableConfig.write(ClassKey.COUNT_QUERY);
+    }
+
+    public void pagerQuery(Class<?> po) {
+        EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
+        tableConfig.write(ClassKey.PAGER_QUERY);
+    }
+
+    public void vo(Class<?> po) {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.write(ClassKey.VO);
     }
@@ -64,7 +74,7 @@ public class CodeGenerator {
         tableConfig.write(ClassKey.SERVICE);
     }
 
-    public void repository(Class<?> po){
+    public void repository(Class<?> po) {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.write(ClassKey.REPOSITORY);
     }
@@ -74,7 +84,7 @@ public class CodeGenerator {
         tableConfig.write(ClassKey.REPOSITORY_IMPL);
     }
 
-    public void controller(Class<?> po){
+    public void controller(Class<?> po) {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.write(ClassKey.CONTROLLER);
     }
