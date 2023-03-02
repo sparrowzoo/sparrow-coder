@@ -194,6 +194,9 @@ public class EnvironmentContext {
             StringBuilder editForm = new StringBuilder();
             for (Field field : fields) {
                 Form form = field.getAnnotation(Form.class);
+                if (form == null) {
+                    continue;
+                }
                 if (form.showInEdit()) {
                     editForm.append(this.replaceEditField(field));
                 }
@@ -210,6 +213,9 @@ public class EnvironmentContext {
             fields = ClassUtility.getOrderedFields(fields);
             for (Field field : fields) {
                 Form form = field.getAnnotation(Form.class);
+                if (form == null) {
+                    continue;
+                }
                 if (form.showInList()) {
                     if (!form.primaryKey()) {
                         manageHeaderLine.append(this.replaceManageHeaderField(field));
@@ -226,19 +232,22 @@ public class EnvironmentContext {
             Map<String, String> context = new HashMap<>();
 
             this.placeHolder = context;
-            context.put(PlaceholderKey.$module_prefix.name(),config.getProperty(CoderConfig.MODULE_PREFIX+"prefix"));
+            context.put(PlaceholderKey.$module_prefix.name(), config.getProperty(CoderConfig.MODULE_PREFIX + "prefix"));
             context.put(FrontendPlaceholderKey.$project.name(), config.getProperty(CoderConfig.PROJECT));
             context.put(FrontendPlaceholderKey.$workspace.name(), System.getenv(EnvConfig.SPARROW_WORKSPACE));
             context.put(FrontendPlaceholderKey.$resource_workspace.name(), System.getenv(EnvConfig.SPARROW_RESOURCE_WORKSPACE));
             context.put(FrontendPlaceholderKey.$entity_name.name(), entity.name());
-            context.put(FrontendPlaceholderKey.$entity_by_horizontal.name(),StringUtility.humpToLower(entity.name(),'-'));
-            context.put(FrontendPlaceholderKey.$entity_by_slash.name(),StringUtility.humpToLower(entity.name(),File.separatorChar));
+            context.put(FrontendPlaceholderKey.$entity_by_horizontal.name(), StringUtility.humpToLower(entity.name(), '-'));
+            context.put(FrontendPlaceholderKey.$entity_by_slash.name(), StringUtility.humpToLower(entity.name(), File.separatorChar));
             context.put(FrontendPlaceholderKey.$upper_entity_name.name(), StringUtility.setFirstByteUpperCase(entity.name()));
             context.put(FrontendPlaceholderKey.$entity_text.name(), entity.text());
 
             Field[] fields = clazz.getDeclaredFields();
             for (Field field : fields) {
                 Form form = field.getAnnotation(Form.class);
+                if (form == null) {
+                    continue;
+                }
                 if (form.primaryKey()) {
                     context.put(FrontendPlaceholderKey.$primary_key.name(), field.getName());
                 }
@@ -278,7 +287,7 @@ public class EnvironmentContext {
             System.out.println(content);
             String entityName = placeHolder.get(FrontendPlaceholderKey.$entity_by_slash.name());
             String fullPath = this.viewTemplatePath + File.separator + entityName + File.separator + "manage" + this.extension;
-            System.out.println("write to path:"+fullPath);
+            System.out.println("write to path:" + fullPath);
             FileUtility.getInstance().writeFile(fullPath, content);
         }
 
@@ -287,8 +296,8 @@ public class EnvironmentContext {
             content = StringUtility.replace(content, this.placeHolder);
             System.out.println(content);
             String entityName = placeHolder.get(FrontendPlaceholderKey.$entity_by_slash.name());
-            String fullPath = this.jsPath +File.separator+ entityName + File.separator + "new.js";
-            System.out.println("write to path:"+fullPath);
+            String fullPath = this.jsPath + File.separator + entityName + File.separator + "new.js";
+            System.out.println("write to path:" + fullPath);
             FileUtility.getInstance().writeFile(fullPath, content);
         }
 
@@ -297,8 +306,8 @@ public class EnvironmentContext {
             content = StringUtility.replace(content, this.placeHolder);
             System.out.println(content);
             String entityName = placeHolder.get(FrontendPlaceholderKey.$entity_by_slash.name());
-            String fullPath = this.jsPath +File.separator+ entityName + File.separator + "manage.js";
-            System.out.println("write to path:"+fullPath);
+            String fullPath = this.jsPath + File.separator + entityName + File.separator + "manage.js";
+            System.out.println("write to path:" + fullPath);
             FileUtility.getInstance().writeFile(fullPath, content);
         }
 
@@ -330,7 +339,7 @@ public class EnvironmentContext {
             content = content + sb.toString();
             System.out.println(content);
             String fullPath = this.languageJsPath + File.separator + this.placeHolder.get(FrontendPlaceholderKey.$entity_by_horizontal.name()) + ".js";
-            System.out.println("write to path:"+fullPath);
+            System.out.println("write to path:" + fullPath);
             FileUtility.getInstance().writeFile(fullPath, content);
         }
     }
