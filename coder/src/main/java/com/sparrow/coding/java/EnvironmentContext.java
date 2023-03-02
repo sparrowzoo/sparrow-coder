@@ -153,6 +153,7 @@ public class EnvironmentContext {
         private EntityManager entityManager;
 
         public Config(Class<?> po) {
+
             this.poPackage = po.getName().substring(0, po.getName().lastIndexOf(Symbol.DOT));
             this.entityManager = new SparrowEntityManager(po);
             this.placeHolder = initPlaceHolder();
