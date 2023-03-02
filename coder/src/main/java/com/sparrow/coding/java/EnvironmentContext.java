@@ -7,6 +7,7 @@ import com.sparrow.coding.java.enums.PlaceholderKey;
 import com.sparrow.orm.EntityManager;
 import com.sparrow.orm.SparrowEntityManager;
 import com.sparrow.protocol.constant.Constant;
+import com.sparrow.protocol.constant.magic.Digit;
 import com.sparrow.protocol.constant.magic.Symbol;
 import com.sparrow.support.EnvironmentSupport;
 import com.sparrow.utility.DateTimeUtility;
@@ -36,10 +37,24 @@ public class EnvironmentContext {
     private Properties config;
     /**
      * config path
+     * <p>
+     * 配置文件及模板文件所在的根目录
      */
     private String configPath;
 
+    /**
+     * 表的DDL 所在根目录
+     */
     private String tableConfig;
+
+    /**
+     * 项目
+     */
+    private String project;
+    /**
+     * 父模块名
+     */
+    private String parentModule;
 
     private EnvironmentSupport environmentSupport = EnvironmentSupport.getInstance();
 
@@ -51,11 +66,16 @@ public class EnvironmentContext {
             System.err.println("ERROR please set [Environment Variable] 'SPARROW_TABLE_CONFIG'");
             System.exit(0);
         }
+        this.initPropertyConfig();
+        this.author = this.config.getProperty(CoderConfig.AUTHOR);
+        this.project = config.getProperty(CoderConfig.PROJECT);
+        this.parentModule = config.getProperty(CoderConfig.MODULE_PREFIX + CoderConfig.MODULE_PARENT_ADMIN);
+        System.out.printf("author is %s\n", this.author);
+    }
 
+    private void initPropertyConfig() throws IOException {
         String configPath = System.getenv(EnvConfig.SPARROW_CONFIG_PATH);
-
         InputStream configStream;
-
         if (StringUtility.isNullOrEmpty(configPath) || "template".equals(configPath)) {
             configStream = this.environmentSupport.getFileInputStreamInCache("/template/config.properties");
             configPath = "/template";
@@ -65,20 +85,14 @@ public class EnvironmentContext {
         } else {
             configStream = new FileInputStream(new File(configPath + "/config.properties"));
         }
-
-        this.configPath = configPath;
         Properties config = new Properties();
         config.load(configStream);
         if (configStream == null) {
             System.err.println("template config file can't read");
+            System.exit(0);
         }
+        this.configPath = configPath;
         this.config = config;
-        this.author = config.getProperty(CoderConfig.AUTHOR);
-        System.out.printf("author is %s\n", this.author);
-    }
-
-    public String getAuthor() {
-        return this.author;
     }
 
     public String getTableCreateDDLPath(String originTableName) {
@@ -89,20 +103,20 @@ public class EnvironmentContext {
         return tableConfig + File.separator + "ddl" + File.separator + originTableName + File.separator + i + ".sql";
     }
 
-    public String getPackage(ClassKey packageKey) {
-        return this.config.getProperty(CoderConfig.PACKAGE_PREFIX + packageKey.name().toLowerCase());
+    public String getPackage(ClassKey classKey) {
+        return this.config.getProperty(CoderConfig.PACKAGE_PREFIX + classKey.name().toLowerCase());
     }
 
-    public String getClassName(ClassKey packageKey, String persistenceClassName) {
-        String source = config.getProperty(CoderConfig.CLASS_PREFIX + packageKey.name().toLowerCase());
+    public String getClassName(ClassKey classKey, String persistenceClassName) {
+        String source = config.getProperty(CoderConfig.CLASS_PREFIX + classKey.name().toLowerCase());
         if (persistenceClassName == null) {
             return source;
         }
         return source.replace(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
     }
 
-    public String readConfigContent(String configFile) {
-        String configFilePath = this.configPath + "/" + configFile;
+    public String readConfigContent(String templateFileName) {
+        String configFilePath = this.configPath + "/" + templateFileName;
         System.err.printf("config file path is [%s]\n", configFilePath);
         InputStream inputStream = EnvironmentSupport.getInstance().getFileInputStreamInCache(configFilePath);
         if (inputStream == null) {
@@ -112,8 +126,19 @@ public class EnvironmentContext {
     }
 
     public class Config {
+        /**
+         * 原始表名 通过entity JPA @Table 获取
+         */
         private String originTableName;
 
+        /**
+         * 持久化类名
+         */
+        private String persistenceClassName;
+
+        /**
+         * 占位符
+         */
         private Map<String, String> placeHolder;
 
         /**
@@ -133,16 +158,7 @@ public class EnvironmentContext {
             this.placeHolder = initPlaceHolder();
         }
 
-        public String getProject() {
-            return config.getProperty(CoderConfig.PROJECT);
-        }
-
-        public String getParentModule() {
-            return config.getProperty(CoderConfig.MODULE_PREFIX + CoderConfig.MODULE_PARENT_ADMIN);
-        }
-
         public String getModule(ClassKey key) {
-            String parentModule = this.getParentModule();
             String moduleKey = CoderConfig.MODULE_PREFIX;
             if (!StringUtility.isNullOrEmpty(parentModule)) {
                 moduleKey += parentModule + "." + key.getModule().toLowerCase();
@@ -152,23 +168,19 @@ public class EnvironmentContext {
             String modulePath = config.getProperty(moduleKey);
             if (modulePath == null) {
                 logger.error("module path is null, module key is [{}]", moduleKey);
+                System.exit(0);
             }
-            modulePath = StringUtility.replace(modulePath, this.placeHolder);
-            return modulePath;
+            return StringUtility.replace(modulePath, this.placeHolder);
         }
 
         public String getFullPackage(ClassKey key) {
-            return fileUtility.replacePath(poPackage, ClassKey.PO.name(), getPackage(key), ".");
-        }
-
-        public String getPersistenceClassName() {
-            return StringUtility.setFirstByteUpperCase(StringUtility.underlineToHump(this.originTableName));
+            String packageOfClazz = getPackage(key);
+            return fileUtility.replacePath(poPackage, ClassKey.PO.name(), packageOfClazz, Symbol.DOT);
         }
 
         private Map<String, String> initPlaceHolder() {
             this.originTableName = entityManager.getTableName();
-
-            String persistenceClassName = this.getPersistenceClassName();
+            this.persistenceClassName = StringUtility.setFirstByteUpperCase(StringUtility.underlineToHump(this.originTableName));
             String primaryPropertyName = entityManager.getPrimary().getName();
             Map<String, String> context = new TreeMap<>(Comparator.reverseOrder());
             context.put(PlaceholderKey.$module_prefix.name(), config.getProperty(CoderConfig.MODULE_PREFIX + "prefix"));
@@ -181,20 +193,23 @@ public class EnvironmentContext {
 
             context.put(PlaceholderKey.$date.name(), DateTimeUtility
                 .getFormatCurrentTime("yyyy-MM-dd HH:mm:ss"));
-            context.put(PlaceholderKey.$author.name(), getAuthor());
+            context.put(PlaceholderKey.$author.name(), author);
 
             context.put(PlaceholderKey.$package_po.name(), poPackage);
             context.put(PlaceholderKey.$package_bo.name(), this.getFullPackage(ClassKey.BO));
             context.put(PlaceholderKey.$package_param.name(), this.getFullPackage(ClassKey.PARAM));
+
+            context.put(PlaceholderKey.$package_batch_param.name(), this.getFullPackage(ClassKey.BATCH_OPERATE_PARAM));
+
             context.put(PlaceholderKey.$package_query.name(), this.getFullPackage(ClassKey.QUERY));
             context.put(PlaceholderKey.$package_dto.name(), this.getFullPackage(ClassKey.DTO));
             context.put(PlaceholderKey.$package_vo.name(), this.getFullPackage(ClassKey.VO));
 
             context.put(PlaceholderKey.$package_dao.name(), this.getFullPackage(ClassKey.DAO));
-            String pagerQuery= this.getFullPackage(ClassKey.PAGER_QUERY);
-            context.put(PlaceholderKey.$package_pager_query.name(),StringUtility.replace(pagerQuery,context));
-            String countQuery= this.getFullPackage(ClassKey.COUNT_QUERY);
-            context.put(PlaceholderKey.$package_count_query.name(),StringUtility.replace(countQuery,context));
+            String pagerQuery = this.getFullPackage(ClassKey.PAGER_QUERY);
+            context.put(PlaceholderKey.$package_pager_query.name(), StringUtility.replace(pagerQuery, context));
+            String countQuery = this.getFullPackage(ClassKey.COUNT_QUERY);
+            context.put(PlaceholderKey.$package_count_query.name(), StringUtility.replace(countQuery, context));
 
             context.put(PlaceholderKey.$package_repository.name(), this.getFullPackage(ClassKey.REPOSITORY));
             context.put(PlaceholderKey.$package_repository_impl.name(), this.getFullPackage(ClassKey.REPOSITORY_IMPL));
@@ -235,8 +250,6 @@ public class EnvironmentContext {
         }
 
         public String getFullPath(String workspace, ClassKey k) {
-            String project = this.getProject();
-            String parentModule = this.getParentModule();
             String modulePath = this.getModule(k);
             String fullPath = workspace + File.separator
                 + project + File.separator
@@ -247,15 +260,15 @@ public class EnvironmentContext {
                 + "java" + File.separator
                 + this.getFullPackage(k);
             fullPath = StringUtility.replace(fullPath, this.placeHolder);
-            fullPath=fullPath.replace('.',File.separatorChar);
+            fullPath = fullPath.replace('.', File.separatorChar);
             System.out.println("write to " + fullPath);
             return fullPath;
         }
 
-        public void write(ClassKey packageKey) {
+        public void write(ClassKey classKey) {
             String workspace = System.getenv(EnvConfig.SPARROW_WORKSPACE);
             System.err.printf("current path is [%s]\n", workspace);
-            String content = readConfigContent(packageKey.getTemplate());
+            String content = readConfigContent(classKey.getTemplate());
             content = StringUtility.replace(content.trim(), this.placeHolder);
             System.out.println(content);
             String extension = ".java";
@@ -263,8 +276,8 @@ public class EnvironmentContext {
                 extension = ".xml";
             }
 
-            String fullPath = this.getFullPath(workspace, packageKey);
-            String className = getClassName(packageKey, getPersistenceClassName());
+            String fullPath = this.getFullPath(workspace, classKey);
+            String className = getClassName(classKey, persistenceClassName);
             FileUtility.getInstance().writeFile(fullPath + File.separator + className + extension,
                 content);
         }

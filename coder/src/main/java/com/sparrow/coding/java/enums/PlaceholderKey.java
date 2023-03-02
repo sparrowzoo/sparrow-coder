@@ -56,6 +56,11 @@ public enum PlaceholderKey {
     $package_param,
 
     /**
+     * batch operate param package
+     */
+    $package_batch_param,
+
+    /**
      * po: e.g com.sparrow.user.query
      */
     $package_query,

@@ -31,7 +31,7 @@ public class $persistence_class_nameDaoImpl extends ORMStrategy<$persistence_cla
         }
 
         return BooleanCriteria.criteria(
-            Criteria.field("$persistence_object_name.$persistence_object_nameName").equal(count$persistence_class_nameQuery.getName()))
+            Criteria.field("$persistence_object_name.name").equal(count$persistence_class_nameQuery.getName()))
             .and(Criteria.field("$persistence_object_name.createTime").greaterThan(startTime))
             .and(Criteria.field("$persistence_object_name.createTime").lessThan(endTime));
     }

@@ -7,7 +7,7 @@ import java.util.List;
 
 
 public interface $persistence_class_nameRepository {
-    Long save($persistence_class_nameParam appParam);
+    Long save($persistence_class_nameParam $persistence_object_nameParam);
 
     int delete(String $persistence_object_nameIds);
 

@@ -6,8 +6,6 @@ public class $persistence_class_nameVO implements VO {
 
     private String status;
     private String remark;
-    private Integer maxRemarkLength;
-
     public String getStatus() {
         return status;
     }
@@ -22,13 +20,5 @@ public class $persistence_class_nameVO implements VO {
 
     public void setRemark(String remark) {
         this.remark = remark;
-    }
-
-    public Integer getMaxRemarkLength() {
-        return maxRemarkLength;
-    }
-
-    public void setMaxRemarkLength(Integer maxRemarkLength) {
-        this.maxRemarkLength = maxRemarkLength;
     }
 }

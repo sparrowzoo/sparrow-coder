@@ -35,10 +35,7 @@ public class ExampleFront {
     @FieldOrder(order = 2)
     private String userName;
 
-    @Form(text = "密码", type = ControlType.INPUT_PASSWORD)
-    @NullValidator(prompt = "请输入密码", nullError = "用户密码不允许为空", allowNull = false, minLength = 6, maxLength = 20, lengthError = "密码要求6-20位字符")
-    @FieldOrder(order = 3)
-    private String password;
+
 
     @Form(text = "状态", type = ControlType.ENABLE_DISABLE, validate = AllowOptionsValidator.class, showInList = true)
     @AllowOptionsValidator(options = {"1", "2", "3"}, defaultValue = "1")
@@ -55,6 +52,11 @@ public class ExampleFront {
     @EmailValidator(prompt = "请输入邮箱", emailError = "邮箱格式输入错误", minLength = 10, maxLength = 255, lengthError = "邮箱长度必须>=10 并且<255", setError = "邮箱已存在")
     @FieldOrder(order = 6)
     private String email;
+
+    @Form(text = "密码", type = ControlType.INPUT_PASSWORD)
+    @NullValidator(prompt = "请输入密码", nullError = "用户密码不允许为空", allowNull = false, minLength = 6, maxLength = 20, lengthError = "密码要求6-20位字符")
+    @FieldOrder(order = 6.1f)
+    private String password;
 
     @Form(text = "确认密码", type = ControlType.INPUT_PASSWORD, validate = EqualValidator.class)
     @EqualValidator(prompt = "请输入确认密码",
@@ -90,13 +92,15 @@ public class ExampleFront {
     @FieldOrder(order = 11)
     private String tel;
 
-    @Form(text = "备注", type = ControlType.TEXT_AREA, validate = AllowInputCharLengthValidator.class)
-    @AllowInputCharLengthValidator(maxAllowCharLength = 512, allowCharLengthShowControlId = "spanAllowCharLength")
-    @FieldOrder(order = 12)
-    private String remark;
+
 
     @Form(text = "真实姓名", type = ControlType.INPUT_TEXT, validate = ChineseCharactersValidator.class)
-    @ChineseCharactersValidator
+    @ChineseCharactersValidator(nullError = "请输入真实姓名",chineseCharactersError = "请输入中文")
     @FieldOrder(order = 13)
     private String name;
+
+    @Form(text = "备注", type = ControlType.TEXT_AREA, validate = AllowInputCharLengthValidator.class)
+    @AllowInputCharLengthValidator(maxAllowCharLength = 512, allowCharLengthShowControlId = "spanAllowCharLength")
+    @FieldOrder(order = 14)
+    private String remark;
 }

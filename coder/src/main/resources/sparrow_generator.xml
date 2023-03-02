@@ -73,11 +73,11 @@
         <![CDATA[
         <div class="pure-control-group">
             <label>$field_text</label>
-            <textarea th:text="${$entity_name?.$property_name}" id="txt$upper_property_name" cols='20' rows='5' name="$property_name""></textarea>
+            <textarea th:text="${$entity_name?.$property_name}" id="txt$upper_property_name" cols='20' rows='5' name="$property_name"></textarea>
             <span class="prompt" id="error$upper_property_name"></span>
         </div>
         <div class="pure-controls">
-            您还可以输入：<span id="spanTxtCount" th:text="${$entity_name?.inputLength}"></span>个字符/[[${$entity_name?.maxAllowLength}]]
+            您还可以输入：<span id="spanAllowCharLength" th:text="${$entity_name?.inputLength}"></span>个字符/<span id="spanMaxCharLength"></span>
         </div>
          ]]>
     </create_page_field>
@@ -266,6 +266,8 @@
 
             load: function () {
                 document.domain = $.browser.cookie.root_domain;
+                $.v.init($entity_nameInfo)
+
                 $.dispatcher.eventRegistry = [
                     {
                         id: "btnReturn",

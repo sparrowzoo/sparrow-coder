@@ -8,14 +8,6 @@ import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 
 public class PinyinUtil {
-    static {
-        System.out.println("pinyin init");
-    }
-
-    PinyinUtil() {
-        System.out.println("pinyin init");
-    }
-
     /**
      * 将汉字转换为全拼
      *

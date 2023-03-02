@@ -39,7 +39,7 @@
             <useProjectArtifact>false</useProjectArtifact>
             <!--if false then need manifest with class-path -->
             <unpack>true</unpack>
-            <scope>runtime</scope>
+            <scope>compile</scope>
         </dependencySet>
     </dependencySets>
     <fileSets>

@@ -16,5 +16,7 @@ public @interface AllowInputCharLengthValidator {
 
     String allowCharLengthShowControlId() default "spanAllowCharLength";
 
+    String maxCharLengthControlId() default "spanMaxCharLength";
+
     boolean allowNull() default true;
 }

@@ -43,6 +43,11 @@ public class CodeGenerator {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.write(ClassKey.COUNT_QUERY);
     }
+    public void batchOperate(Class<?> po) {
+        EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
+        tableConfig.write(ClassKey.BATCH_OPERATE_PARAM);
+    }
+
 
     public void pagerQuery(Class<?> po) {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
@@ -94,26 +99,30 @@ public class CodeGenerator {
         String originTableContent = FileUtility.getInstance().readFileContent(originTableFullPath);
         for (int i = 0; i < n; i++) {
             String tempSql = originTableContent.replace(Constant.TABLE_SUFFIX, "_" + i);
-            if (create) {
-                try {
-                    String[] ddlArray = tempSql.split(";");
-                    for (String ddl : ddlArray) {
-                        if (!StringUtility.isNullOrEmpty(ddl)) {
-                            JDBCTemplate.getInstance().executeUpdate(ddl);
-                        }
-                    }
-                } catch (Exception e) {
-                    logger.error("create ddl sql error", e);
-                }
-            }
-
+            this.initTableToDb(create, tempSql);
             String destTablePath = environmentContext.getSplitTableCreateDDLPath(originTableName, i);
             FileUtility.getInstance().writeFile(destTablePath, tempSql);
             System.err.printf("table create ddl write to %s\n", destTablePath);
         }
     }
 
-    public void generaCreateDDL(Class<?> po) throws IOException {
+    private void initTableToDb(boolean create, String tempSql) {
+        if (!create) {
+            return;
+        }
+        try {
+            String[] ddlArray = tempSql.split(";");
+            for (String ddl : ddlArray) {
+                if (!StringUtility.isNullOrEmpty(ddl)) {
+                    JDBCTemplate.getInstance().executeUpdate(ddl);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("create ddl sql error", e);
+        }
+    }
+
+    public void generaCreateDDL(Class<?> po) {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         AbstractEntityManagerAdapter managerAdapter = new SparrowEntityManager(po);
         String tablePath = this.environmentContext.getTableCreateDDLPath(tableConfig.getOriginTableName());

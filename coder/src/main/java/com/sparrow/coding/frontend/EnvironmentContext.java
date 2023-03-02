@@ -81,10 +81,6 @@ public class EnvironmentContext {
         System.out.printf("author is %s\n", this.author);
     }
 
-    public String getAuthor() {
-        return this.author;
-    }
-
     public class Config {
         /**
          * 当前对象
@@ -129,7 +125,6 @@ public class EnvironmentContext {
         public Config(Class<? extends POJO> clazz) throws ParserConfigurationException, SAXException, IOException {
             this.clazz = clazz;
             this.frontendGeneratorConfigPath = config.getProperty(CoderConfig.FRONTEND_GENERATOR_CONFIG_PATH);
-
             this.languageJsPath = config.getProperty(CoderConfig.LANGUAGE_JS_PATH);
             this.jsPath = config.getProperty(CoderConfig.JS_PATH);
             this.cssPath = config.getProperty(CoderConfig.CSS_PATH);

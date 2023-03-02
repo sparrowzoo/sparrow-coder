@@ -11,7 +11,7 @@ import java.util.List;
 public class JavaMain {
     private static void usage() {
         System.out.println("使用方法【usage】:");
-        System.out.println("sparrow-coder.sh [OPTION] [args]");
+        System.out.println("sparrow-java-coder.sh [OPTION] [args]");
         System.out.println("OPTION:");
         System.out.println("生成示例:             [--example]");
         System.out.println("帮助:                [--help]");
@@ -22,7 +22,7 @@ public class JavaMain {
         System.out.println("生成dataConverter:   [-cv|-converter]    args=po");
         System.out.println("生成Pager Query:     [-pq|-pagerQuery]   args=po");
         System.out.println("生成Count Query:     [-cq|-countQuery]   args=po");
-
+        System.out.println("生成BatchOperateParam:[-bop|-BatchOperateParam] args=po");
         System.out.println("生成Dao 接口:         [-d |-dao]          args=po");
         System.out.println("生成dao 实现:         [-di|-daoImpl]      args=po");
         System.out.println("生成仓储层接口:        [-r |-repository]   args=po");
@@ -87,6 +87,11 @@ public class JavaMain {
             return;
         }
 
+        if ("-bop".equalsIgnoreCase(args[0]) || "-BatchOperateParam".equalsIgnoreCase(args[0])) {
+            codeGenerator.batchOperate(po);
+            return;
+        }
+
         if ("-d".equalsIgnoreCase(args[0]) || "-dao".equalsIgnoreCase(args[0])) {
             codeGenerator.dao(po);
             return;
@@ -126,7 +131,7 @@ public class JavaMain {
         Container container = ApplicationContext.getContainer();
         container.init(new ContainerBuilder().initController(false)
             .initInterceptor(false));
-        args = "--example".split(" ");
+        //args = "--example".split(" ");
         if (args.length == 0 || "--help".equals(args[0])) {
             usage();
             return;
@@ -148,6 +153,7 @@ public class JavaMain {
             argsList.add("-ct com.sparrow.example.po.SparrowExample");
             argsList.add("-pq com.sparrow.example.po.SparrowExample");
             argsList.add("-cq com.sparrow.example.po.SparrowExample");
+            argsList.add("-bop com.sparrow.example.po.SparrowExample");
 
             for (String argsLine : argsList) {
                 args = argsLine.split(" ");

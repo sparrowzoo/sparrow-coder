@@ -86,7 +86,7 @@ public abstract class AbstractValidatorMessageGenerator<T extends Annotation> im
     }
 
     @Override public String generateValidateMessage(String fieldName, String controlPrefix,
-        Annotation validator) throws NoSuchFieldException, IllegalAccessException {
+        Annotation validator) {
         try {
             String upperFieldName = StringUtility.setFirstByteUpperCase(fieldName);
             String validatorKey = this.getFieldKey(controlPrefix, upperFieldName);
@@ -104,6 +104,7 @@ public abstract class AbstractValidatorMessageGenerator<T extends Annotation> im
                 }
                 sb.append(this.formatMessage(key, maps.get(key)));
             }
+            sb.append(this.formatMessage("event",validator.annotationType().getSimpleName()));
             this.appendDefaultValue(sb, maps);
             this.finish(sb);
             return sb.toString();

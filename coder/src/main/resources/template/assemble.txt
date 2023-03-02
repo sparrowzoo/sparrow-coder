@@ -26,7 +26,6 @@ public class $persistence_class_nameAssemble implements BO2VOAssemble<$persisten
     public $persistence_class_nameVO paramAssembleVO($persistence_class_nameParam param){
         $persistence_class_nameVO $persistence_object_name = new $persistence_class_nameVO();
         BeanUtility.copyProperties(param, $persistence_object_name);
-        $persistence_object_name.setMaxRemarkLength(StringUtility.getMaxAllowLength(Constant.MAX_REMARK_LENGTH,param.getRemark()));
         return $persistence_object_name;
     }
 
@@ -34,8 +33,6 @@ public class $persistence_class_nameAssemble implements BO2VOAssemble<$persisten
         $persistence_class_nameVO $persistence_object_name = new $persistence_class_nameVO();
         BeanUtility.copyProperties(bo, $persistence_object_name);
         $persistence_object_name.setStatus(bo.getStatus().name());
-
-        $persistence_object_name.setMaxRemarkLength(StringUtility.getMaxAllowLength(Constant.MAX_REMARK_LENGTH,$persistence_object_name.getRemark()));
         return $persistence_object_name;
     }
 
