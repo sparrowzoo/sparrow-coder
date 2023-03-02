@@ -4,24 +4,5 @@ import com.sparrow.protocol.BO;
 import com.sparrow.protocol.enums.StatusRecord;
 
 public class $persistence_class_nameBO implements BO {
-
-    private String remark;
-    private StatusRecord status;
-
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark= remark;
-    }
-
-    public StatusRecord getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusRecord status) {
-        this.status = status;
-    }
+    $get_sets
 }

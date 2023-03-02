@@ -4,12 +4,14 @@ import com.sparrow.coding.config.CoderConfig;
 import com.sparrow.coding.config.EnvConfig;
 import com.sparrow.coding.java.enums.ClassKey;
 import com.sparrow.coding.java.enums.PlaceholderKey;
+import com.sparrow.example.po.SparrowExample;
 import com.sparrow.orm.EntityManager;
 import com.sparrow.orm.SparrowEntityManager;
 import com.sparrow.protocol.constant.Constant;
 import com.sparrow.protocol.constant.magic.Digit;
 import com.sparrow.protocol.constant.magic.Symbol;
 import com.sparrow.support.EnvironmentSupport;
+import com.sparrow.utility.ClassUtility;
 import com.sparrow.utility.DateTimeUtility;
 import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
@@ -17,7 +19,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
@@ -152,11 +156,27 @@ public class EnvironmentContext {
 
         private EntityManager entityManager;
 
+        private void initPojoSource(Class<?> po) {
+            List<Field> fields = ClassUtility.extractFields(SparrowExample.class);
+            StringBuilder fieldBuild = new StringBuilder();
+            StringBuilder methodBuild = new StringBuilder();
+            for (Field field : fields) {
+                Class<?> fieldClazz = field.getType();
+                String upperField = StringUtility.setFirstByteUpperCase(field.getName());
+                fieldBuild.append(String.format("private %s %s; \n", fieldClazz.getSimpleName(), field.getName()));
+                methodBuild.append(String.format("public %2$s get%1$s(){\n return this.%3$s;\n}\n", upperField, fieldClazz.getSimpleName(), field.getName()));
+                methodBuild.append(String.format("public void set%1$s(%2$s %3$s){\nthis.%3$s=%3$s;\n}\n", upperField, fieldClazz.getSimpleName(), field.getName()));
+            }
+            String getSets = fieldBuild.append(methodBuild).toString();
+            this.placeHolder.put(PlaceholderKey.$get_sets.name(), getSets);
+        }
+
         public Config(Class<?> po) {
 
             this.poPackage = po.getName().substring(0, po.getName().lastIndexOf(Symbol.DOT));
             this.entityManager = new SparrowEntityManager(po);
             this.placeHolder = initPlaceHolder();
+            this.initPojoSource(po);
         }
 
         public String getModule(ClassKey key) {

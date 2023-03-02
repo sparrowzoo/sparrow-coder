@@ -1,13 +1,9 @@
 package $package_param;
 
 import com.sparrow.protocol.Param;
+import com.sparrow.protocol.enums.StatusRecord;
+
 
 public class $persistence_class_nameParam implements Param {
-    private String remark;
-    public String getRemark() {
-        return remark;
-    }
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
+    $get_sets
 }

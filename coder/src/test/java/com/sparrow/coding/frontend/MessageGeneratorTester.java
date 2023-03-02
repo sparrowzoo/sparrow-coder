@@ -31,7 +31,6 @@ public class MessageGeneratorTester {
         test("tel", TelValidator.class);
         test("confirmPassword", EqualValidator.class);
         test("remark", AllowInputCharLengthValidator.class);
-
     }
 
     private static void test(String fieldName,
