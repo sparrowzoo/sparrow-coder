@@ -72,7 +72,11 @@ public class EnvironmentContext {
         }
         this.initPropertyConfig();
         this.author = this.config.getProperty(CoderConfig.AUTHOR);
-        this.project = config.getProperty(CoderConfig.PROJECT);
+        this.project = System.getenv(EnvConfig.SPARROW_PROJECT);
+        if (this.project == null) {
+            this.project = config.getProperty(CoderConfig.PROJECT);
+        }
+
         this.parentModule = config.getProperty(CoderConfig.MODULE_PREFIX + CoderConfig.MODULE_PARENT_ADMIN);
         System.out.printf("author is %s\n", this.author);
     }
@@ -157,7 +161,7 @@ public class EnvironmentContext {
         private EntityManager entityManager;
 
         private void initPojoSource(Class<?> po) {
-            List<Field> fields = ClassUtility.extractFields(SparrowExample.class);
+            List<Field> fields = ClassUtility.extractFields(po);
             StringBuilder fieldBuild = new StringBuilder();
             StringBuilder methodBuild = new StringBuilder();
             for (Field field : fields) {
@@ -204,7 +208,11 @@ public class EnvironmentContext {
             this.persistenceClassName = StringUtility.setFirstByteUpperCase(StringUtility.underlineToHump(this.originTableName));
             String primaryPropertyName = entityManager.getPrimary().getName();
             Map<String, String> context = new TreeMap<>(Comparator.reverseOrder());
-            context.put(PlaceholderKey.$module_prefix.name(), config.getProperty(CoderConfig.MODULE_PREFIX + "prefix"));
+            String modulePrefix = System.getenv(EnvConfig.SPARROW_MODULE_PREFIX);
+            if (modulePrefix == null) {
+                modulePrefix = config.getProperty(CoderConfig.MODULE_PREFIX + "prefix");
+            }
+            context.put(PlaceholderKey.$module_prefix.name(), modulePrefix);
             context.put(PlaceholderKey.$origin_table_name.name(), this.originTableName);
             context.put(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
             context.put(PlaceholderKey.$persistence_object_name.name(), StringUtility.setFirstByteLowerCase(persistenceClassName));

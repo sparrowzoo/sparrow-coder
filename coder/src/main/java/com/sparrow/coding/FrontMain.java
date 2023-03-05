@@ -5,6 +5,7 @@ import com.sparrow.container.Container;
 import com.sparrow.container.ContainerBuilder;
 import com.sparrow.core.spi.ApplicationContext;
 import com.sparrow.protocol.POJO;
+import com.sparrow.utility.StringUtility;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,9 @@ public class FrontMain {
         System.out.println("生成管理页 js:                [-mj |-GenerateManageJs]    args=pojo");
     }
 
-    public static void innerMain(String[] args) throws IOException, ClassNotFoundException, ParserConfigurationException, SAXException {
+    public static void innerMain(
+        String[] args) throws IOException, ClassNotFoundException, ParserConfigurationException, SAXException {
+        System.out.println("生成类:" + args[1]);
         Class<? extends POJO> clazz = (Class<? extends POJO>) Class.forName(args[1]);
         EnvironmentContext environmentContext = new EnvironmentContext();
         EnvironmentContext.Config config = environmentContext.new Config(clazz);
@@ -85,6 +88,6 @@ public class FrontMain {
             usage();
             return;
         }
-
+        innerMain(args);
     }
 }

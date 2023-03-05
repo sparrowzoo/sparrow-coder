@@ -232,8 +232,18 @@ public class EnvironmentContext {
             Map<String, String> context = new HashMap<>();
 
             this.placeHolder = context;
-            context.put(PlaceholderKey.$module_prefix.name(), config.getProperty(CoderConfig.MODULE_PREFIX + "prefix"));
-            context.put(FrontendPlaceholderKey.$project.name(), config.getProperty(CoderConfig.PROJECT));
+            String modulePrefix = System.getenv(EnvConfig.SPARROW_MODULE_PREFIX);
+            if (modulePrefix == null) {
+                modulePrefix = config.getProperty(CoderConfig.MODULE_PREFIX + "prefix");
+            }
+            context.put(PlaceholderKey.$module_prefix.name(), modulePrefix);
+
+            String project = System.getenv(EnvConfig.SPARROW_PROJECT);
+            if (project == null) {
+                project = config.getProperty(CoderConfig.PROJECT);
+            }
+
+            context.put(FrontendPlaceholderKey.$project.name(), project);
             context.put(FrontendPlaceholderKey.$workspace.name(), System.getenv(EnvConfig.SPARROW_WORKSPACE));
             context.put(FrontendPlaceholderKey.$resource_workspace.name(), System.getenv(EnvConfig.SPARROW_RESOURCE_WORKSPACE));
             context.put(FrontendPlaceholderKey.$entity_name.name(), entity.name());

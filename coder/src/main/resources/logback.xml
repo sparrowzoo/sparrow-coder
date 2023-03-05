@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
-    <property scope="context" name="LOG_HOME" value="~/logs"/>
+    <property scope="context" name="LOG_HOME" value="./logs"/>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level %thread %logger{0} %m%n</pattern>
@@ -90,13 +90,15 @@
 
 
     <root level="DEBUG">
-<!--        <appender-ref ref="STDOUT"/>-->
+        <appender-ref ref="STDOUT"/>
     </root>
 
-    <logger name="com.sparrow" level="DEBUG" additivity="false">
+    <logger name="com.sparrow" level="ERROR" additivity="false">
         <appender-ref ref="DEBUG"/>
         <appender-ref ref="INFO"/>
         <appender-ref ref="WARN"/>
         <appender-ref ref="ERROR"/>
     </logger>
+    <!--简单地使用NopStatusListener类，这将停止logback的自记录。-->
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener"/>
 </configuration>

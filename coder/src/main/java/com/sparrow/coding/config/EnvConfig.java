@@ -27,6 +27,16 @@ public class EnvConfig {
     public static final String SPARROW_WORKSPACE = "SPARROW_WORKSPACE";
 
     /**
+     * 生成的项目名称
+     */
+    public static final String SPARROW_PROJECT = "SPARROW_PROJECT";
+
+    /**
+     * 项目的子模块的前缀
+     */
+    public static final String SPARROW_MODULE_PREFIX = "SPARROW_MODULE_PREFIX";
+
+    /**
      * 资源文件工作
      */
     public static final String SPARROW_RESOURCE_WORKSPACE = "SPARROW_RESOURCE_WORKSPACE";

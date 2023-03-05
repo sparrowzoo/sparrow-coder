@@ -12,6 +12,7 @@
     <groupId>com.sparrow.coding</groupId>
     <artifactId>coder</artifactId>
     <version>1.0</version>
+    <packaging>jar</packaging>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>

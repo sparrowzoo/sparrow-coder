@@ -11,7 +11,6 @@ public class ValidatorRegistry {
 
     private ValidatorRegistry() {
         registry = new HashMap<>();
-        System.out.println("init");
     }
 
     static class Inner {
