@@ -5,8 +5,12 @@
     <includeBaseDirectory>false</includeBaseDirectory>
     <fileSets>
         <fileSet>
-            <directory>bin</directory>
+            <directory>../example-po/bin</directory>
             <outputDirectory>bin</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/resources/template</directory>
+            <outputDirectory>template</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>target</directory>

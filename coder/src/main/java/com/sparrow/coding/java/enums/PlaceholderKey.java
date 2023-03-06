@@ -5,6 +5,11 @@ public enum PlaceholderKey {
      * e.g. @author harry
      */
     $author,
+
+    /**
+     * 代码生成器的家目录
+     */
+    $coder_home,
     /**
      * origin table name e.g user_address
      */

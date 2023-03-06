@@ -59,7 +59,7 @@ com.sparrow.coding.config.EnvConfig
 ## java 类生成
 
 ```
-cd /sparrow-coder/example-po/src/bin //切到bin 目录
+cd /sparrow-coder/example-po/bin //切到bin 目录
 sh sparrow-java-coder.sh --help //帮助菜单
 sh sparrow-java-coder.sh --example //生成示例代码
 

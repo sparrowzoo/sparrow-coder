@@ -1,39 +1,28 @@
 package com.sparrow.coding.frontend;
 
 import com.sparrow.coding.config.CoderConfig;
-import com.sparrow.coding.config.EnvConfig;
 import com.sparrow.coding.frontend.enums.FrontendPlaceholderKey;
-import com.sparrow.coding.java.enums.ClassKey;
 import com.sparrow.coding.java.enums.PlaceholderKey;
 import com.sparrow.coding.protocol.ControlType;
 import com.sparrow.coding.protocol.Entity;
 import com.sparrow.coding.protocol.Form;
-import com.sparrow.coding.protocol.validate.MobileValidator;
-import com.sparrow.orm.EntityManager;
-import com.sparrow.orm.SparrowEntityManager;
+import com.sparrow.coding.support.utils.ConfigUtils;
 import com.sparrow.protocol.POJO;
 import com.sparrow.protocol.constant.Constant;
-import com.sparrow.protocol.constant.magic.Symbol;
-import com.sparrow.protocol.dao.PO;
 import com.sparrow.support.EnvironmentSupport;
 import com.sparrow.utility.ClassUtility;
-import com.sparrow.utility.DateTimeUtility;
 import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
 import com.sparrow.utility.Xml;
 import com.sparrow.xml.DefaultDocumentLoader;
 import com.sparrow.xml.DocumentLoader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.TreeMap;
 import javax.xml.parsers.ParserConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,24 +47,10 @@ public class EnvironmentContext {
     private EnvironmentSupport environmentSupport = EnvironmentSupport.getInstance();
 
     public EnvironmentContext() throws IOException {
-        String configPath = System.getenv(EnvConfig.SPARROW_CONFIG_PATH);
-        InputStream configStream;
-        if (StringUtility.isNullOrEmpty(configPath) || "template".equals(configPath)) {
-            configStream = this.environmentSupport.getFileInputStreamInCache("/template/config.properties");
-        } else if ("template-mybatis".equals(configPath)) {
-            configStream = this.environmentSupport.getFileInputStreamInCache("/template-mybatis/config.properties");
-        } else {
-            configStream = new FileInputStream(configPath + "/config.properties");
-        }
-
         /**
          * config path
          */
-        Properties config = new Properties();
-        config.load(configStream);
-        if (configStream == null) {
-            System.err.println("template config file can't read");
-        }
+        Properties config =ConfigUtils.initPropertyConfig();
         this.config = config;
         this.author = config.getProperty(CoderConfig.AUTHOR);
         System.out.printf("author is %s\n", this.author);
@@ -124,7 +99,7 @@ public class EnvironmentContext {
 
         public Config(Class<? extends POJO> clazz) throws ParserConfigurationException, SAXException, IOException {
             this.clazz = clazz;
-            this.frontendGeneratorConfigPath = config.getProperty(CoderConfig.FRONTEND_GENERATOR_CONFIG_PATH);
+            this.frontendGeneratorConfigPath = config.getProperty(CoderConfig.FRONTEND_GENERATOR_CONFIG);
             this.languageJsPath = config.getProperty(CoderConfig.LANGUAGE_JS_PATH);
             this.jsPath = config.getProperty(CoderConfig.JS_PATH);
             this.cssPath = config.getProperty(CoderConfig.CSS_PATH);
@@ -232,20 +207,16 @@ public class EnvironmentContext {
             Map<String, String> context = new HashMap<>();
 
             this.placeHolder = context;
-            String modulePrefix = System.getenv(EnvConfig.SPARROW_MODULE_PREFIX);
-            if (modulePrefix == null) {
-                modulePrefix = config.getProperty(CoderConfig.MODULE_PREFIX + "prefix");
-            }
+
+            String  modulePrefix = config.getProperty(CoderConfig.MODULE_PREFIX + "prefix");
+
             context.put(PlaceholderKey.$module_prefix.name(), modulePrefix);
 
-            String project = System.getenv(EnvConfig.SPARROW_PROJECT);
-            if (project == null) {
-                project = config.getProperty(CoderConfig.PROJECT);
-            }
+            String project  = config.getProperty(CoderConfig.PROJECT);
 
             context.put(FrontendPlaceholderKey.$project.name(), project);
-            context.put(FrontendPlaceholderKey.$workspace.name(), System.getenv(EnvConfig.SPARROW_WORKSPACE));
-            context.put(FrontendPlaceholderKey.$resource_workspace.name(), System.getenv(EnvConfig.SPARROW_RESOURCE_WORKSPACE));
+            context.put(FrontendPlaceholderKey.$workspace.name(), config.getProperty(CoderConfig.WORKSPACE));
+            context.put(FrontendPlaceholderKey.$resource_workspace.name(), config.getProperty(CoderConfig.RESOURCE_WORKSPACE));
             context.put(FrontendPlaceholderKey.$entity_name.name(), entity.name());
             context.put(FrontendPlaceholderKey.$entity_by_horizontal.name(), StringUtility.humpToLower(entity.name(), '-'));
             context.put(FrontendPlaceholderKey.$entity_by_slash.name(), StringUtility.humpToLower(entity.name(), File.separatorChar));

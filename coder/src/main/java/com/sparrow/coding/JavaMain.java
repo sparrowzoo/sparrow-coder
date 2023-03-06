@@ -131,7 +131,9 @@ public class JavaMain {
         Container container = ApplicationContext.getContainer();
         container.init(new ContainerBuilder().initController(false)
             .initInterceptor(false));
-        //args = "--example".split(" ");
+//        args = "--example".split(" ");
+//        args = "-b com.sparrow.example.po.SparrowExample".split(" ");
+
         if (args.length == 0 || "--help".equals(args[0])) {
             usage();
             return;

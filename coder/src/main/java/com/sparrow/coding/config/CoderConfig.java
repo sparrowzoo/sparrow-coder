@@ -16,10 +16,22 @@ public class CoderConfig {
      * 资源文件工作区
      */
     public static String RESOURCE_WORKSPACE = "resource_workspace";
+
+    /**
+     * 后端代码模板家目录
+     */
+    public static String BACKEND_TEMPLATE_HOME = "backend_template_home";
+
+
+    /**
+     * 后端代码模板家目录
+     */
+    public static String TABLE_OUTPUT_HOME = "table_output_home";
+
     /**
      * 前端生成器配置文件路径
      */
-    public static String FRONTEND_GENERATOR_CONFIG_PATH = "frontend_generator_config_path";
+    public static String FRONTEND_GENERATOR_CONFIG = "frontend_generator_config";
     /**
      * 生成的前端模板的扩展名 支持 .jsp .html .vue 等等
      */

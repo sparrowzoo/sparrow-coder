@@ -4,11 +4,10 @@ import com.sparrow.coding.config.CoderConfig;
 import com.sparrow.coding.config.EnvConfig;
 import com.sparrow.coding.java.enums.ClassKey;
 import com.sparrow.coding.java.enums.PlaceholderKey;
-import com.sparrow.example.po.SparrowExample;
+import com.sparrow.coding.support.utils.ConfigUtils;
 import com.sparrow.orm.EntityManager;
 import com.sparrow.orm.SparrowEntityManager;
 import com.sparrow.protocol.constant.Constant;
-import com.sparrow.protocol.constant.magic.Digit;
 import com.sparrow.protocol.constant.magic.Symbol;
 import com.sparrow.support.EnvironmentSupport;
 import com.sparrow.utility.ClassUtility;
@@ -31,25 +30,32 @@ import org.slf4j.LoggerFactory;
 public class EnvironmentContext {
     private static Logger logger = LoggerFactory.getLogger(EnvironmentContext.class);
     /**
+     * sparrow coder config
+     */
+    private Properties config;
+
+    /**
      * current author
      */
     private String author;
 
+
+
     /**
-     * sparrow coder config
+     * 工作区
      */
-    private Properties config;
+    private String workspace;
     /**
      * config path
      * <p>
-     * 配置文件及模板文件所在的根目录
+     * 后端模板文件所在的根目录
      */
-    private String configPath;
+    private String backendTemplateHome;
 
     /**
      * 表的DDL 所在根目录
      */
-    private String tableConfig;
+    private String tableOutputGenerateHome;
 
     /**
      * 项目
@@ -60,55 +66,34 @@ public class EnvironmentContext {
      */
     private String parentModule;
 
+
+
     private EnvironmentSupport environmentSupport = EnvironmentSupport.getInstance();
 
     private FileUtility fileUtility = FileUtility.getInstance();
 
     public EnvironmentContext() throws IOException {
-        this.tableConfig = System.getenv(EnvConfig.SPARROW_TABLE_CONFIG);
-        if (StringUtility.isNullOrEmpty(tableConfig)) {
-            System.err.println("ERROR please set [Environment Variable] 'SPARROW_TABLE_CONFIG'");
-            System.exit(0);
-        }
-        this.initPropertyConfig();
+        this.config= ConfigUtils.initPropertyConfig();
+        String coderHome=System.getenv(EnvConfig.SPARROW_CODER_HOME);
         this.author = this.config.getProperty(CoderConfig.AUTHOR);
-        this.project = System.getenv(EnvConfig.SPARROW_PROJECT);
-        if (this.project == null) {
-            this.project = config.getProperty(CoderConfig.PROJECT);
-        }
-
+        this.workspace=config.getProperty(CoderConfig.WORKSPACE);
+        this.project = config.getProperty(CoderConfig.PROJECT);
         this.parentModule = config.getProperty(CoderConfig.MODULE_PREFIX + CoderConfig.MODULE_PARENT_ADMIN);
+        this.backendTemplateHome = config.getProperty(CoderConfig.BACKEND_TEMPLATE_HOME);
+        this.backendTemplateHome=this.backendTemplateHome.replace(PlaceholderKey.$coder_home.name(),coderHome);
+        this.tableOutputGenerateHome =config.getProperty(CoderConfig.TABLE_OUTPUT_HOME);
+        this.tableOutputGenerateHome=this.tableOutputGenerateHome.replace(PlaceholderKey.$coder_home.name(),coderHome);
         System.out.printf("author is %s\n", this.author);
     }
 
-    private void initPropertyConfig() throws IOException {
-        String configPath = System.getenv(EnvConfig.SPARROW_CONFIG_PATH);
-        InputStream configStream;
-        if (StringUtility.isNullOrEmpty(configPath) || "template".equals(configPath)) {
-            configStream = this.environmentSupport.getFileInputStreamInCache("/template/config.properties");
-            configPath = "/template";
-        } else if ("template-mybatis".equals(configPath)) {
-            configPath = "/template-mybatis";
-            configStream = this.environmentSupport.getFileInputStreamInCache("/template-mybatis/config.properties");
-        } else {
-            configStream = new FileInputStream(new File(configPath + "/config.properties"));
-        }
-        Properties config = new Properties();
-        config.load(configStream);
-        if (configStream == null) {
-            System.err.println("template config file can't read");
-            System.exit(0);
-        }
-        this.configPath = configPath;
-        this.config = config;
-    }
+
 
     public String getTableCreateDDLPath(String originTableName) {
-        return tableConfig + File.separator + "ddl" + File.separator + originTableName + ".sql";
+        return tableOutputGenerateHome + File.separator + "ddl" + File.separator + originTableName + ".sql";
     }
 
     public String getSplitTableCreateDDLPath(String originTableName, int i) {
-        return tableConfig + File.separator + "ddl" + File.separator + originTableName + File.separator + i + ".sql";
+        return tableOutputGenerateHome + File.separator + "ddl" + File.separator + originTableName + File.separator + i + ".sql";
     }
 
     public String getPackage(ClassKey classKey) {
@@ -124,7 +109,7 @@ public class EnvironmentContext {
     }
 
     public String readConfigContent(String templateFileName) {
-        String configFilePath = this.configPath + "/" + templateFileName;
+        String configFilePath = this.backendTemplateHome + "/" + templateFileName;
         System.err.printf("config file path is [%s]\n", configFilePath);
         InputStream inputStream = EnvironmentSupport.getInstance().getFileInputStreamInCache(configFilePath);
         if (inputStream == null) {
@@ -176,7 +161,6 @@ public class EnvironmentContext {
         }
 
         public Config(Class<?> po) {
-
             this.poPackage = po.getName().substring(0, po.getName().lastIndexOf(Symbol.DOT));
             this.entityManager = new SparrowEntityManager(po);
             this.placeHolder = initPlaceHolder();
@@ -208,10 +192,7 @@ public class EnvironmentContext {
             this.persistenceClassName = StringUtility.setFirstByteUpperCase(StringUtility.underlineToHump(this.originTableName));
             String primaryPropertyName = entityManager.getPrimary().getName();
             Map<String, String> context = new TreeMap<>(Comparator.reverseOrder());
-            String modulePrefix = System.getenv(EnvConfig.SPARROW_MODULE_PREFIX);
-            if (modulePrefix == null) {
-                modulePrefix = config.getProperty(CoderConfig.MODULE_PREFIX + "prefix");
-            }
+            String modulePrefix = config.getProperty(CoderConfig.MODULE_PREFIX + "prefix");
             context.put(PlaceholderKey.$module_prefix.name(), modulePrefix);
             context.put(PlaceholderKey.$origin_table_name.name(), this.originTableName);
             context.put(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
@@ -278,7 +259,7 @@ public class EnvironmentContext {
             return context;
         }
 
-        public String getFullPath(String workspace, ClassKey k) {
+        public String getFullPath(ClassKey k) {
             String modulePath = this.getModule(k);
             String fullPath = workspace + File.separator
                 + project + File.separator
@@ -295,7 +276,6 @@ public class EnvironmentContext {
         }
 
         public void write(ClassKey classKey) {
-            String workspace = System.getenv(EnvConfig.SPARROW_WORKSPACE);
             System.err.printf("current path is [%s]\n", workspace);
             String content = readConfigContent(classKey.getTemplate());
             content = StringUtility.replace(content.trim(), this.placeHolder);
@@ -305,7 +285,7 @@ public class EnvironmentContext {
                 extension = ".xml";
             }
 
-            String fullPath = this.getFullPath(workspace, classKey);
+            String fullPath = this.getFullPath(classKey);
             String className = getClassName(classKey, persistenceClassName);
             FileUtility.getInstance().writeFile(fullPath + File.separator + className + extension,
                 content);

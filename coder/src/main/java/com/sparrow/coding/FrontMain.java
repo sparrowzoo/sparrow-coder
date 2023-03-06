@@ -52,13 +52,14 @@ public class FrontMain {
 
         if ("-mj".equals(args[0]) || "-GenerateManageJs".equals(args[0])) {
             config.generateManageJs();
-            return;
         }
     }
 
     public static void main(
         String[] args) throws ClassNotFoundException, IOException, ParserConfigurationException, SAXException {
-        //args = "--example".split(" ");
+//        args = "--example".split(" ");
+//        args = "-mp com.sparrow.coding.config.ExampleFront".split(" ");
+
         Container container = ApplicationContext.getContainer();
         container.init(new ContainerBuilder().initController(false)
             .initInterceptor(false)
