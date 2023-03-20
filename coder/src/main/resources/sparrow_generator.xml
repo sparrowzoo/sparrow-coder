@@ -185,7 +185,7 @@
         <fieldset>
         <legend>共<span id="spanRecordCount" name="recordCount" class="highlight">[[${pager?.recordCount}]]</span>条记录
         </legend>
-        <table class='pure-table' id="grvAppList">
+        <table class='pure-table' id="grv$upper_entity_nameList">
             <thead>
                 <tr>
                    $manage_header_line
@@ -233,7 +233,7 @@
         <td width="$width" align="center">
             <input th:id="${$entity_name.$primary_key}"
                    onclick="$.gridView.recordCheckClick(this,'grv$upper_entity_nameListCheckAll');"
-                   type="checkbox" name="grvAppList"/></td>
+                   type="checkbox" name="grv$upper_entity_nameList"/></td>
         ]]>
     </manage_page_field>
     <manage_page_field control_type="IMAGE">
