@@ -18,6 +18,7 @@ public enum ClassKey {
     CONTROLLER("controller.txt", "adapter"),
     VO("vo.txt", "adapter"),
     DAO("dao.txt", "dao.api"),
+    DAO_MYBATIS("mybatis.xml", "dao.mybatis"),
     DAO_IMPL("daoImpl.txt", "dao.sparrow"),
     SERVICE("service.txt", "domain"),
     ASSEMBLE("assemble.txt", "adapter"),

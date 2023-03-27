@@ -14,7 +14,7 @@ fi
 
 options=$1
 if [ $1 == '-all' ]; then
-     options='-b,-p,-q,-v,-cv,-pq,-cq,-bop,-d,-di,-r,-ri,-s,-c,-a,-ct'
+     options='-b,-p,-q,-v,-cv,-pq,-cq,-bop,-d,-di,-mi,-r,-ri,-s,-c,-a,-ct'
 fi
 #将,替换为空格
 options_array=(${options//,/ })

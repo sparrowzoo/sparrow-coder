@@ -7,6 +7,7 @@ import com.sparrow.orm.SparrowEntityManager;
 import com.sparrow.protocol.constant.Constant;
 import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
+import java.io.File;
 import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,11 +44,11 @@ public class CodeGenerator {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.write(ClassKey.COUNT_QUERY);
     }
+
     public void batchOperate(Class<?> po) {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.write(ClassKey.BATCH_OPERATE_PARAM);
     }
-
 
     public void pagerQuery(Class<?> po) {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
@@ -72,6 +73,11 @@ public class CodeGenerator {
     public void daoImpl(Class<?> po) {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.write(ClassKey.DAO_IMPL);
+    }
+
+    public void daoMybatis(Class<?> po) {
+        EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
+        tableConfig.writeMybatis(po);
     }
 
     public void service(Class<?> po) {

@@ -107,6 +107,11 @@ public class JavaMain {
             return;
         }
 
+        if ("-mi".equalsIgnoreCase(args[0]) || "-mybatisImpl".equalsIgnoreCase(args[0])) {
+            codeGenerator.daoMybatis(po);
+            return;
+        }
+
         if ("-ri".equalsIgnoreCase(args[0]) || "-repositoryImpl".equalsIgnoreCase(args[0])) {
             codeGenerator.repositoryImpl(po);
             return;
@@ -132,7 +137,7 @@ public class JavaMain {
         container.init(new ContainerBuilder().initController(false)
             .initInterceptor(false));
 //        args = "--example".split(" ");
-//        args = "-b com.sparrow.example.po.SparrowExample".split(" ");
+//        args = "-mi com.sparrow.example.po.SparrowExample".split(" ");
 
         if (args.length == 0 || "--help".equals(args[0])) {
             usage();
