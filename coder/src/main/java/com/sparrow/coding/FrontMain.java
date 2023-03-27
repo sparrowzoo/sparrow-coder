@@ -58,7 +58,7 @@ public class FrontMain {
     public static void main(
         String[] args) throws ClassNotFoundException, IOException, ParserConfigurationException, SAXException {
 //        args = "--example".split(" ");
-        args = "-mp com.sparrow.coding.config.ExampleFront".split(" ");
+//        args = "-mp com.sparrow.coding.config.ExampleFront".split(" ");
 
         Container container = ApplicationContext.getContainer();
         container.init(new ContainerBuilder().initController(false)
