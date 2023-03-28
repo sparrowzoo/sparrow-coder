@@ -7,7 +7,6 @@ import com.sparrow.orm.SparrowEntityManager;
 import com.sparrow.protocol.constant.Constant;
 import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
-import java.io.File;
 import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +15,8 @@ public class CodeGenerator {
     private static Logger logger = LoggerFactory.getLogger(CodeGenerator.class);
     private EnvironmentContext environmentContext;
 
-    public CodeGenerator() throws IOException {
-        this.environmentContext = new EnvironmentContext();
+    public CodeGenerator(String sparrowConfig) throws IOException {
+        this.environmentContext = new EnvironmentContext(sparrowConfig);
     }
 
     public void param(Class<?> po) throws IOException {
@@ -77,7 +76,7 @@ public class CodeGenerator {
 
     public void daoMybatis(Class<?> po) {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
-        tableConfig.writeMybatis(po);
+        tableConfig.writeMybatis(po,environmentContext);
     }
 
     public void service(Class<?> po) {

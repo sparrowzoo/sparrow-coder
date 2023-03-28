@@ -1,24 +1,37 @@
 package com.sparrow.coding.java;
 
+import com.sparrow.coding.config.MybatisMethodConfig;
+import com.sparrow.coding.java.enums.ClassKey;
 import com.sparrow.orm.AbstractEntityManagerAdapter;
 import com.sparrow.utility.StringUtility;
+import java.io.IOException;
+import java.util.Properties;
 import javax.persistence.GenerationType;
 
 public class MybatisEntityManager extends AbstractEntityManagerAdapter {
     private StringBuilder xml;
+    private EnvironmentContext environmentContext;
 
     public String getXml() {
         return xml.toString();
     }
 
-    public MybatisEntityManager(Class clazz) {
+    public MybatisEntityManager(Class clazz, EnvironmentContext environmentContext) {
         super(clazz);
         this.clazz = clazz;
+        this.environmentContext = environmentContext;
     }
 
     @Override
     public void init() {
         this.xml = new StringBuilder();
+        Properties mybatisConfig = null;
+        try {
+            mybatisConfig = this.environmentContext.getMybatisConfig();
+        } catch (IOException e) {
+            logger.error("mybatis config {}", mybatisConfig);
+            return;
+        }
         this.generateHeader();
         this.generateResultMap();
         this.generateFieldSql();
@@ -30,6 +43,9 @@ public class MybatisEntityManager extends AbstractEntityManagerAdapter {
         this.generateUpdate();
         this.generateDelete();
         this.generateGetEntity();
+        if ("true".equalsIgnoreCase(mybatisConfig.getProperty(MybatisMethodConfig.CHANGE_STATUS))) {
+            this.generateChangeStatus();
+        }
         xml.append("</mapper>");
     }
 
@@ -68,6 +84,16 @@ public class MybatisEntityManager extends AbstractEntityManagerAdapter {
         xml.append(this.tableName);
         xml.append(" WHERE ${uniqueFieldName}= #{key}\n");
         xml.append("</select>\n");
+    }
+
+    private void generateChangeStatus() {
+        xml.append("<update id=\"changeStatus\" parameterType=\"com.sparrow.protocol.dao.StatusCriteria\">\n");
+        xml.append(String.format("update `%1$s` set `%2$s`=#{status}\n", this.tableName, this.status.getColumnName()));
+        xml.append("WHERE id IN\n");
+        xml.append("<foreach collection=\"idArray\" item=\"id\" index=\"index\" open=\"(\" close=\")\" separator=\",\">\n");
+        xml.append(String.format("#{%s}", this.primary.getColumnName()));
+        xml.append("</foreach>\n");
+        xml.append("</update>");
     }
 
     private void generateGetEntity() {

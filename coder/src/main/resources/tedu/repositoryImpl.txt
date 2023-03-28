@@ -1,24 +1,22 @@
 package $package_repository_impl;
 
-import com.sparrow.protocol.dao.StatusCriteria;
-import com.sparrow.protocol.enums.StatusRecord;
 import $package_dao.$persistence_class_nameDAO;
-import com.sparrow.$module_prefix.admin.infrastructure.persistence.data.converter.$persistence_class_nameConverter;
+import $package_data_converter.$persistence_class_nameConverter;
 import $package_po.$persistence_class_name;
 import $package_bo.$persistence_class_nameBO;
 import $package_param.$persistence_class_nameParam;
 import $package_repository.$persistence_class_nameRepository;
 import $package_query.$persistence_class_nameQuery;
 import java.util.List;
-import javax.inject.Inject;
-import javax.inject.Named;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-@Named
+@Component
 public class $persistence_class_nameRepositoryImpl implements $persistence_class_nameRepository {
-    @Inject
+    @Autowired
     private $persistence_class_nameConverter $persistence_object_nameConverter;
 
-    @Inject
+    @Autowired
     private $persistence_class_nameDAO $persistence_object_nameDao;
 
     @Override public Long save($persistence_class_nameParam $persistence_object_nameParam) {

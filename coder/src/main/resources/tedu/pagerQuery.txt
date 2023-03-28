@@ -1,0 +1,19 @@
+package $package_pager_query;
+
+import com.sparrow.protocol.dao.PagerQuery;
+
+public class Pager$persistence_class_nameQuery extends Count$persistence_class_nameQuery {
+
+    public Pager$persistence_class_nameQuery() {
+    }
+
+    private PagerQuery pager;
+
+    public PagerQuery getPager() {
+        return pager;
+    }
+
+    public void setPager(PagerQuery pager) {
+        this.pager = pager;
+    }
+}

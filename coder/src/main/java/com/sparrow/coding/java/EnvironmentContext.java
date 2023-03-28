@@ -68,8 +68,8 @@ public class EnvironmentContext {
 
     private FileUtility fileUtility = FileUtility.getInstance();
 
-    public EnvironmentContext() throws IOException {
-        this.config = ConfigUtils.initPropertyConfig();
+    public EnvironmentContext(String sparrowConfig) throws IOException {
+        this.config = ConfigUtils.initPropertyConfig(sparrowConfig);
         String coderHome = System.getenv(EnvConfig.SPARROW_CODER_HOME);
         this.author = this.config.getProperty(CoderConfig.AUTHOR);
         this.workspace = config.getProperty(CoderConfig.WORKSPACE);
@@ -100,6 +100,18 @@ public class EnvironmentContext {
             return source;
         }
         return source.replace(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
+    }
+
+    public Properties getMybatisConfig() throws IOException {
+        String mybatisConfig = this.backendTemplateHome + "/" + ClassKey.DAO_MYBATIS.getTemplate();
+        System.err.printf("config file path is [%s]\n", mybatisConfig);
+        InputStream inputStream = EnvironmentSupport.getInstance().getFileInputStreamInCache(mybatisConfig);
+        if (inputStream == null) {
+            System.err.printf("[%s] can't read\n", mybatisConfig);
+        }
+        Properties mybatisProperties = new Properties();
+        mybatisProperties.load(inputStream);
+        return mybatisProperties;
     }
 
     public String readConfigContent(String templateFileName) {
@@ -264,7 +276,7 @@ public class EnvironmentContext {
                     + modulePath + File.separator
                     + "src" + File.separator
                     + "main" + File.separator
-                    + "resources"+File.separator+"mapper";
+                    + "resources" + File.separator + "mapper";
             } else {
                 fullPath = workspace + File.separator
                     + project + File.separator
@@ -282,8 +294,9 @@ public class EnvironmentContext {
             return fullPath;
         }
 
-        public void writeMybatis(Class<?> po) {
-            MybatisEntityManager entityManager = new MybatisEntityManager(po);
+        public void writeMybatis(Class<?> po, EnvironmentContext environmentContext) {
+            MybatisEntityManager entityManager = new MybatisEntityManager(po, environmentContext);
+            entityManager.init();
             String content = entityManager.getXml();
             content = StringUtility.replace(content.trim(), this.placeHolder);
             System.out.println(content);

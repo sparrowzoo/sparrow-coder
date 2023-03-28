@@ -1,0 +1,53 @@
+package $package_count_query;
+
+import com.sparrow.protocol.enums.StatusRecord;
+import java.util.Date;
+
+public class Count$persistence_class_nameQuery {
+    public Count$persistence_class_nameQuery() {
+    }
+
+    public Count$persistence_class_nameQuery(Count$persistence_class_nameQuery count$persistence_class_nameQuery) {
+        this.name = count$persistence_class_nameQuery.name;
+        this.beginDate = count$persistence_class_nameQuery.beginDate;
+        this.endDate = count$persistence_class_nameQuery.endDate;
+        this.status = count$persistence_class_nameQuery.status;
+    }
+
+    private String name;
+    private StatusRecord status;
+    private Date beginDate;
+    private Date endDate;
+
+    public Date getBeginDate() {
+        return beginDate;
+    }
+
+    public void setBeginDate(Date beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public StatusRecord getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusRecord status) {
+        this.status = status;
+    }
+}

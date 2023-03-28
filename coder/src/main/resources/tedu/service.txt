@@ -1,20 +1,19 @@
 package $package_service;
 
-import com.sparrow.exception.Asserts;
-import com.sparrow.protocol.BusinessException;
-import com.sparrow.protocol.ListRecordTotalBO;
+import com.tedu.inn.protocol.exception.BusinessException;
 import $package_bo.$persistence_class_nameBO;
 import $package_repository.$persistence_class_nameRepository;
 import $package_param.$persistence_class_nameParam;
 import $package_query.$persistence_class_nameQuery;
 import com.sparrow.utility.StringUtility;
 import java.util.List;
-import javax.inject.Inject;
-import javax.inject.Named;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Named
+
+@Service
 public class $persistence_class_nameService {
-    @Inject
+    @Autowired
     private $persistence_class_nameRepository $persistence_object_nameRepository;
 
     private void validateSave$persistence_class_name($persistence_class_nameParam $persistence_object_nameParam) throws BusinessException {

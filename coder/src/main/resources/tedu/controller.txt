@@ -1,0 +1,98 @@
+package $package_controller;
+
+import com.sparrow.protocol.BusinessException;
+import com.sparrow.protocol.ListRecordTotalBO;
+import com.sparrow.protocol.TreeItem;
+import com.sparrow.protocol.pager.SimplePager;
+import $package_assemble.$persistence_class_nameAssemble;
+import $package_bo.$persistence_class_nameBO;
+import $package_param.$persistence_class_nameParam;
+import $package_batch_param.$persistence_class_nameBatchOperateParam;
+import $package_query.$persistence_class_nameQuery;
+import $package_vo.$persistence_class_nameVO;
+import $package_service.$persistence_class_nameService;
+import com.sparrow.servlet.ServletContainer;
+import com.sparrow.spring.starter.ModelAndViewUtils;
+import com.sparrow.support.pager.HtmlPagerResult;
+import java.util.List;
+import javax.inject.Inject;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
+@RestController
+@RequestMapping("$persistence_object_by_slash")
+public class $persistence_class_nameController {
+
+    @Inject
+    private $persistence_class_nameService $persistence_object_nameService;
+
+    @Inject
+    private $persistence_class_nameAssemble $persistence_object_nameAssemble;
+
+    @GetMapping("manage")
+    public ModelAndView loadAll$persistence_class_names() {
+        $persistence_class_nameBatchOperateParam batchOperationQuery = ModelAndViewUtils.query();
+        if (batchOperationQuery != null) {
+            return this.query$persistence_class_names(batchOperationQuery);
+        }
+        SimplePager simplePager = new SimplePager();
+        ListRecordTotalBO<$persistence_class_nameBO> $persistence_object_nameListTotalRecord = this.$persistence_object_nameService.queryAll$persistence_class_name();
+        HtmlPagerResult<$persistence_class_nameVO> pager = this.$persistence_object_nameAssemble.assembleHtmlPager($persistence_object_nameListTotalRecord, simplePager);
+        ModelAndView mv = new ModelAndView("/$persistence_object_by_slash/manage");
+        mv.addObject("pager", pager);
+        return mv;
+    }
+
+    private ModelAndView query$persistence_class_names($persistence_class_nameQuery $persistence_object_nameQuery) {
+        ListRecordTotalBO<$persistence_class_nameBO> $persistence_object_nameListTotalRecord = this.$persistence_object_nameService.query$persistence_class_name($persistence_object_nameQuery);
+        HtmlPagerResult<$persistence_class_nameVO> pager = this.$persistence_object_nameAssemble.assembleHtmlPager($persistence_object_nameListTotalRecord, $persistence_object_nameQuery);
+        ModelAndView mv = new ModelAndView("/$persistence_object_by_slash/manage");
+        mv.addObject("pager", pager);
+        return mv;
+    }
+
+    @PostMapping("search.do")
+    public ModelAndView search($persistence_class_nameQuery $persistence_object_nameQuery) {
+        return this.query$persistence_class_names($persistence_object_nameQuery);
+    }
+
+    @PostMapping("save")
+    public ModelAndView save$persistence_class_name($persistence_class_nameParam $persistence_object_nameParam) throws BusinessException {
+       this.$persistence_object_nameService.save$persistence_class_name($persistence_object_nameParam);
+       return ModelAndViewUtils.redirect("/$persistence_object_by_slash/manage");
+    }
+
+    @GetMapping("edit")
+    public ModelAndView get$persistence_class_name(Long $persistence_object_nameId) throws BusinessException {
+        ModelAndView mv = new ModelAndView("/$persistence_object_by_slash/new");
+        if ($persistence_object_nameId == null) {
+            return mv;
+        }
+
+        $persistence_class_nameBO $persistence_object_nameBo = $persistence_object_nameService.get$persistence_class_name($persistence_object_nameId);
+        $persistence_class_nameVO $persistence_object_nameVo = this.$persistence_object_nameAssemble.boAssembleVO($persistence_object_nameBo);
+        mv.addObject("$persistence_object_name", $persistence_object_nameVo);
+        return mv;
+    }
+
+    @PostMapping("delete")
+    public ModelAndView delete$persistence_class_name($persistence_class_nameBatchOperateParam batchOperationQuery) throws BusinessException {
+        this.$persistence_object_nameService.delete$persistence_class_name(batchOperationQuery.getIds());
+        return ModelAndViewUtils.redirect("/$persistence_object_by_slash/manage");
+    }
+
+    @PostMapping("enable")
+    public ModelAndView enable$persistence_class_name($persistence_class_nameBatchOperateParam batchOperationQuery) throws BusinessException {
+        this.$persistence_object_nameService.enable$persistence_class_name(batchOperationQuery.getIds());
+        return ModelAndViewUtils.redirect("/$persistence_object_by_slash/manage");
+    }
+
+    @PostMapping("disable")
+    public ModelAndView disable$persistence_class_name($persistence_class_nameBatchOperateParam batchOperationQuery) throws BusinessException {
+        this.$persistence_object_nameService.disable$persistence_class_name(batchOperationQuery.getIds());
+        return ModelAndViewUtils.redirect("/$persistence_object_by_slash/manage");
+    }
+}

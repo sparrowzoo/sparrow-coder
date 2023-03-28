@@ -36,7 +36,12 @@ public class JavaMain {
     }
 
     public static void innerMain(String[] args) throws IOException, ClassNotFoundException {
-        CodeGenerator codeGenerator = new CodeGenerator();
+        String sparrowConfig = "default";
+        String configPath = args[args.length - 1];
+        if (configPath.startsWith("-config=")) {
+            sparrowConfig = configPath.substring("-config=".length());
+        }
+        CodeGenerator codeGenerator = new CodeGenerator(sparrowConfig);
         if ("-ctn".equals(args[0]) || "-createDDL-n".equals(args[0])) {
             if (args.length == 3) {
                 codeGenerator.generaCreateNDDL(args[1], Integer.valueOf(args[2]), false);
@@ -137,7 +142,7 @@ public class JavaMain {
         container.init(new ContainerBuilder().initController(false)
             .initInterceptor(false));
 //        args = "--example".split(" ");
-//        args = "-mi com.sparrow.example.po.SparrowExample".split(" ");
+//        args = "-mi com.sparrow.example.po.SparrowExample -config=/Users/zhanglizhi/workspace/tedu/tarena-tp-basic/basic-po/bin/config.properties".split(" ");
 
         if (args.length == 0 || "--help".equals(args[0])) {
             usage();

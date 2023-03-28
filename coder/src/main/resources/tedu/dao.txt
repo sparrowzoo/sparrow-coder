@@ -1,0 +1,14 @@
+package $package_dao;
+
+import $package_po.$persistence_class_name;
+import java.util.List;
+public interface $persistence_class_nameDAO {
+    Long insert($persistence_class_name $persistence_object_name);
+
+    int delete(Long $persistence_object_nameId);
+
+    int update($persistence_class_name $persistence_object_name);
+
+    $persistence_class_name getEntity(Long $persistence_object_nameId);
+}
+

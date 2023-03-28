@@ -1,22 +1,20 @@
 package $package_data_converter;
 
-import com.sparrow.protocol.enums.StatusRecord;
 import $package_bo.$persistence_class_nameBO;
 import $package_po.$persistence_class_name;
 import $package_param.$persistence_class_nameParam;
 import $package_query.$persistence_class_nameQuery;
-import com.sparrow.protocol.dao.PagerQuery;
 import $package_count_query.Count$persistence_class_nameQuery;
 import $package_pager_query.Pager$persistence_class_nameQuery;
-import com.sparrow.support.converter.PO2BOConverter;
-import com.sparrow.support.converter.Param2POConverter;
-import com.sparrow.utility.BeanUtility;
+import org.springframework.beans.BeanUtils;
+import com.tarena.passport.protocol.LoginUser;
+import com.tarena.passport.sdk.context.SecurityContext;
 import java.util.ArrayList;
 import java.util.List;
-import javax.inject.Named;
+import org.springframework.stereotype.Component;
 
-@Named
-public class $persistence_class_nameConverter implements Param2POConverter<$persistence_class_nameParam, $persistence_class_name>, PO2BOConverter<$persistence_class_nameBO, $persistence_class_name> {
+@Component
+public class $persistence_class_nameConverter{
    
    
     public Pager$persistence_class_nameQuery toDbPagerQuery($persistence_class_nameQuery $persistence_object_nameQuery) {
@@ -51,28 +49,30 @@ public class $persistence_class_nameConverter implements Param2POConverter<$pers
        }
 
 
-    @Override public $persistence_class_name param2po($persistence_class_nameParam param) {
+     public $persistence_class_name param2po($persistence_class_nameParam param) {
         $persistence_class_name $persistence_object_name = new $persistence_class_name();
-        BeanUtility.copyProperties(param, $persistence_object_name);
+        BeanUtils.copyProperties(param, $persistence_object_name);
+
+        LoginUser loginUser=SecurityContext.getLoginToken();
 
         $persistence_object_name.setGmtCreate(System.currentTimeMillis());
         $persistence_object_name.setGmtModified($persistence_object_name.getGmtCreate());
-        $persistence_object_name.setCreateUserId(0L);
-        $persistence_object_name.setModifiedUserId(0L);
-        $persistence_object_name.setStatus(StatusRecord.ENABLE);
+        $persistence_object_name.setCreateUserId(loginUser.getUserId());
+        $persistence_object_name.setModifiedUserId(loginUser.getUserId());
+        $persistence_object_name.setStatus(1);
 
-        $persistence_object_name.setCreateUserName("");
-        $persistence_object_name.setModifiedUserName("");
+        $persistence_object_name.setCreateUserName(loginUser.getUserName());
+        $persistence_object_name.setModifiedUserName(loginUser.getUserName());
         return $persistence_object_name;
     }
 
-    @Override public $persistence_class_nameBO po2bo($persistence_class_name $persistence_object_name) {
+     public $persistence_class_nameBO po2bo($persistence_class_name $persistence_object_name) {
         $persistence_class_nameBO $persistence_object_nameBO = new $persistence_class_nameBO();
-        BeanUtility.copyProperties($persistence_object_name, $persistence_object_nameBO);
+        BeanUtils.copyProperties(($persistence_object_name, $persistence_object_nameBO);
         return $persistence_object_nameBO;
     }
 
-    @Override public List<$persistence_class_nameBO> poList2BoList(List<$persistence_class_name> list) {
+     public List<$persistence_class_nameBO> poList2BoList(List<$persistence_class_name> list) {
         List<$persistence_class_nameBO> $persistence_object_nameBos = new ArrayList<>(list.size());
         for ($persistence_class_name $persistence_object_name : list) {
             $persistence_object_nameBos.add(this.po2bo($persistence_object_name));
