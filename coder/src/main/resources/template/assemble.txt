@@ -56,7 +56,7 @@ public class $persistence_class_nameAssemble implements BO2VOAssemble<$persisten
         List<$persistence_class_nameVO> $persistence_object_nameVOList = this.boListAssembleVOList($persistence_object_nameListTotalRecord.getList());
         PagerResult<$persistence_class_nameVO> pagerResult = new PagerResult<>($persistence_object_nameQuery);
         pagerResult.setList($persistence_object_nameVOList);
-        pagerResult.setRecordCount($persistence_object_nameListTotalRecord.getTotal());
+        pagerResult.setRecordTotal($persistence_object_nameListTotalRecord.getTotal());
         return new HtmlPagerResult<>(pagerResult);
     }
 }

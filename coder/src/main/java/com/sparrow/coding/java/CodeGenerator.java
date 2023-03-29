@@ -39,11 +39,6 @@ public class CodeGenerator {
         tableConfig.write(ClassKey.DATA_CONVERTER);
     }
 
-    public void countQuery(Class<?> po) {
-        EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
-        tableConfig.write(ClassKey.COUNT_QUERY);
-    }
-
     public void batchOperate(Class<?> po) {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.write(ClassKey.BATCH_OPERATE_PARAM);

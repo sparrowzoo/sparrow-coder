@@ -5,11 +5,9 @@ import $package_bo.$persistence_class_nameBO;
 import $package_po.$persistence_class_name;
 import $package_param.$persistence_class_nameParam;
 import $package_query.$persistence_class_nameQuery;
-import com.sparrow.protocol.dao.PagerQuery;
-import $package_count_query.Count$persistence_class_nameQuery;
-import $package_pager_query.Pager$persistence_class_nameQuery;
 import com.sparrow.support.converter.PO2BOConverter;
 import com.sparrow.support.converter.Param2POConverter;
+import $package_pager_query.$persistence_class_nameDBPagerQuery;
 import com.sparrow.utility.BeanUtility;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,38 +16,14 @@ import javax.inject.Named;
 @Named
 public class $persistence_class_nameConverter implements Param2POConverter<$persistence_class_nameParam, $persistence_class_name>, PO2BOConverter<$persistence_class_nameBO, $persistence_class_name> {
    
-   
-    public Pager$persistence_class_nameQuery toDbPagerQuery($persistence_class_nameQuery $persistence_object_nameQuery) {
+    public $persistence_class_nameDBPagerQuery toDbPagerQuery($persistence_class_nameQuery $persistence_object_nameQuery) {
            if ($persistence_object_nameQuery == null) {
-               Pager$persistence_class_nameQuery pager$persistence_class_nameQuery = new Pager$persistence_class_nameQuery();
-               pager$persistence_class_nameQuery.setPager(new PagerQuery());
-               return pager$persistence_class_nameQuery;
+               return new $persistence_class_nameDBPagerQuery();
            }
-           PagerQuery pagerQuery = new PagerQuery($persistence_object_nameQuery.getPageSize(), $persistence_object_nameQuery.getCurrentPageIndex());
-           Pager$persistence_class_nameQuery pager$persistence_class_nameQuery = new Pager$persistence_class_nameQuery();
-           this.fullProperties($persistence_object_nameQuery, pager$persistence_class_nameQuery);
-           pager$persistence_class_nameQuery.setPager(pagerQuery);
-           return pager$persistence_class_nameQuery;
+           $persistence_class_nameDBPagerQuery $persistence_class_nameDBPagerQuery = new $persistence_class_nameDBPagerQuery();
+           BeanUtility.copyProperties($persistence_object_nameQuery, $persistence_class_nameDBPagerQuery);
+           return $persistence_class_nameDBPagerQuery;
        }
-   
-       private void fullProperties($persistence_class_nameQuery $persistence_object_nameQuery, Count$persistence_class_nameQuery count$persistence_class_nameQuery) {
-           if ($persistence_object_nameQuery == null) {
-               return;
-           }
-           count$persistence_class_nameQuery.setName($persistence_object_nameQuery.getName());
-           count$persistence_class_nameQuery.setBeginDate($persistence_object_nameQuery.getBeginDate());
-           count$persistence_class_nameQuery.setEndDate($persistence_object_nameQuery.getEndDate());
-       }
-   
-       public Count$persistence_class_nameQuery toDbCountQuery($persistence_class_nameQuery $persistence_object_nameQuery) {
-           Count$persistence_class_nameQuery count$persistence_class_nameQuery = new Count$persistence_class_nameQuery();
-           if ($persistence_object_nameQuery == null) {
-               return count$persistence_class_nameQuery;
-           }
-           this.fullProperties($persistence_object_nameQuery, count$persistence_class_nameQuery);
-           return count$persistence_class_nameQuery;
-       }
-
 
     @Override public $persistence_class_name param2po($persistence_class_nameParam param) {
         $persistence_class_name $persistence_object_name = new $persistence_class_name();

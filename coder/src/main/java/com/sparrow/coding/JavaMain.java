@@ -21,7 +21,6 @@ public class JavaMain {
         System.out.println("生成VO:              [-v |-vo]           args=po");
         System.out.println("生成dataConverter:   [-cv|-converter]    args=po");
         System.out.println("生成Pager Query:     [-pq|-pagerQuery]   args=po");
-        System.out.println("生成Count Query:     [-cq|-countQuery]   args=po");
         System.out.println("生成BatchOperateParam:[-bop|-BatchOperateParam] args=po");
         System.out.println("生成Dao 接口:         [-d |-dao]          args=po");
         System.out.println("生成dao 实现:         [-di|-daoImpl]      args=po");
@@ -87,11 +86,6 @@ public class JavaMain {
             return;
         }
 
-        if ("-cq".equalsIgnoreCase(args[0]) || "-countQuery".equalsIgnoreCase(args[0])) {
-            codeGenerator.countQuery(po);
-            return;
-        }
-
         if ("-bop".equalsIgnoreCase(args[0]) || "-BatchOperateParam".equalsIgnoreCase(args[0])) {
             codeGenerator.batchOperate(po);
             return;
@@ -142,7 +136,8 @@ public class JavaMain {
         container.init(new ContainerBuilder().initController(false)
             .initInterceptor(false));
 //        args = "--example".split(" ");
-//        args = "-mi com.sparrow.example.po.SparrowExample -config=/Users/zhanglizhi/workspace/tedu/tarena-tp-basic/basic-po/bin/config.properties".split(" ");
+//        args = "-pq com.sparrow.example.po.SparrowExample".split(" ");
+       // args = "-pq com.sparrow.example.po.SparrowExample -config=/Users/zhanglizhi/workspace/tedu/tarena-tp-basic/basic-po/bin/config.properties".split(" ");
 
         if (args.length == 0 || "--help".equals(args[0])) {
             usage();
@@ -164,7 +159,6 @@ public class JavaMain {
             argsList.add("-a com.sparrow.example.po.SparrowExample");
             argsList.add("-ct com.sparrow.example.po.SparrowExample");
             argsList.add("-pq com.sparrow.example.po.SparrowExample");
-            argsList.add("-cq com.sparrow.example.po.SparrowExample");
             argsList.add("-bop com.sparrow.example.po.SparrowExample");
 
             for (String argsLine : argsList) {

@@ -224,9 +224,6 @@ public class EnvironmentContext {
             context.put(PlaceholderKey.$package_dao.name(), this.getFullPackage(ClassKey.DAO));
             String pagerQuery = this.getFullPackage(ClassKey.PAGER_QUERY);
             context.put(PlaceholderKey.$package_pager_query.name(), StringUtility.replace(pagerQuery, context));
-            String countQuery = this.getFullPackage(ClassKey.COUNT_QUERY);
-            context.put(PlaceholderKey.$package_count_query.name(), StringUtility.replace(countQuery, context));
-
             context.put(PlaceholderKey.$package_repository.name(), this.getFullPackage(ClassKey.REPOSITORY));
             context.put(PlaceholderKey.$package_repository_impl.name(), this.getFullPackage(ClassKey.REPOSITORY_IMPL));
             context.put(PlaceholderKey.$package_data_converter.name(), this.getFullPackage(ClassKey.DATA_CONVERTER));

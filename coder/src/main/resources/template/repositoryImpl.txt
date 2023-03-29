@@ -3,12 +3,13 @@ package $package_repository_impl;
 import com.sparrow.protocol.dao.StatusCriteria;
 import com.sparrow.protocol.enums.StatusRecord;
 import $package_dao.$persistence_class_nameDAO;
-import com.sparrow.$module_prefix.admin.infrastructure.persistence.data.converter.$persistence_class_nameConverter;
+import $package_data_converter.$persistence_class_nameConverter;
 import $package_po.$persistence_class_name;
 import $package_bo.$persistence_class_nameBO;
 import $package_param.$persistence_class_nameParam;
 import $package_repository.$persistence_class_nameRepository;
 import $package_query.$persistence_class_nameQuery;
+
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -55,6 +56,6 @@ public class $persistence_class_nameRepositoryImpl implements $persistence_class
     }
 
     @Override public Long get$persistence_class_nameCount($persistence_class_nameQuery $persistence_object_nameQuery) {
-        return this.$persistence_object_nameDao.count$persistence_class_name(this.$persistence_object_nameConverter.toDbCountQuery($persistence_object_nameQuery));
+        return this.$persistence_object_nameDao.count$persistence_class_name(this.$persistence_object_nameConverter.toDbPagerQuery($persistence_object_nameQuery));
     }
 }

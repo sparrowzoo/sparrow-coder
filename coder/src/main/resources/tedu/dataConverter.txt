@@ -29,24 +29,6 @@ public class $persistence_class_nameConverter{
            pager$persistence_class_nameQuery.setPager(pagerQuery);
            return pager$persistence_class_nameQuery;
        }
-   
-       private void fullProperties($persistence_class_nameQuery $persistence_object_nameQuery, Count$persistence_class_nameQuery count$persistence_class_nameQuery) {
-           if ($persistence_object_nameQuery == null) {
-               return;
-           }
-           count$persistence_class_nameQuery.setName($persistence_object_nameQuery.getName());
-           count$persistence_class_nameQuery.setBeginDate($persistence_object_nameQuery.getBeginDate());
-           count$persistence_class_nameQuery.setEndDate($persistence_object_nameQuery.getEndDate());
-       }
-   
-       public Count$persistence_class_nameQuery toDbCountQuery($persistence_class_nameQuery $persistence_object_nameQuery) {
-           Count$persistence_class_nameQuery count$persistence_class_nameQuery = new Count$persistence_class_nameQuery();
-           if ($persistence_object_nameQuery == null) {
-               return count$persistence_class_nameQuery;
-           }
-           this.fullProperties($persistence_object_nameQuery, count$persistence_class_nameQuery);
-           return count$persistence_class_nameQuery;
-       }
 
 
      public $persistence_class_name param2po($persistence_class_nameParam param) {

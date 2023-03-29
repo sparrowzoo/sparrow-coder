@@ -25,7 +25,6 @@ public enum ClassKey {
     REPOSITORY("repository.txt", "domain"),
     REPOSITORY_IMPL("repositoryImpl.txt", "infrastructure"),
     DATA_CONVERTER("dataConverter.txt", "infrastructure"),
-    COUNT_QUERY("countQuery.txt", "dao.api"),
     PAGER_QUERY("pagerQuery.txt", "dao.api"),
     BATCH_OPERATE_PARAM("batchOperateParam.txt", "protocol");
 
