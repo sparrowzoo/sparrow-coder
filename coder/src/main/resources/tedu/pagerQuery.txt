@@ -1,7 +1,8 @@
 package $package_pager_query;
 
-import com.sparrow.protocol.dao.DatabasePagerQuery;
 import java.util.Date;
+import com.tedu.inn.protocol.dao.DatabasePagerQuery;
+
 
 public class $persistence_class_nameDBPagerQuery extends DatabasePagerQuery {
    public $persistence_class_nameDBPagerQuery() {}
@@ -32,13 +33,5 @@ public class $persistence_class_nameDBPagerQuery extends DatabasePagerQuery {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public StatusRecord getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusRecord status) {
-        this.status = status;
     }
 }

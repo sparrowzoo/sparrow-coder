@@ -1,9 +1,10 @@
 package $package_query;
 
-import com.tedu.inn.protocol.model.PageRequest;
+import com.tedu.inn.protocol.pager.SimplePagerQuery;
+
 import java.util.Date;
 
-public class $persistence_class_nameQuery extends PageRequest {
+public class $persistence_class_nameQuery extends SimplePagerQuery {
     private String name;
     private Date beginDate;
     private Date endDate;

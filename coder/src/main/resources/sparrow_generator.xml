@@ -106,7 +106,7 @@
             <span class="prompt" th:text="${app_icon}" id="error$upper_property_name"></span>
         </div>
         <div id="div$upper_property_name" class="pure-controls">
-            <img th:src="@{${$entity_name?.$property_name}}">
+<!--            <img th:src="@{${$entity_name?.$property_name}}">-->
         </div>
         ]]>
     </create_page_field>
@@ -183,7 +183,7 @@
         </form>
         <div class="pure-form pure-form-aligned">
         <fieldset>
-        <legend>共<span id="spanRecordCount" name="recordCount" class="highlight">[[${pager?.recordCount}]]</span>条记录
+        <legend>共<span id="spanRecordCount" name="recordCount" class="highlight">[[${pager?.recordTotal}]]</span>条记录
         </legend>
         <table class='pure-table' id="grv$upper_entity_nameList">
             <thead>
@@ -239,7 +239,7 @@
     <manage_page_field control_type="IMAGE">
         <![CDATA[
          <td width="$width" align="left">
-             <img th:src="@{${$entity_name?.$property_name}}" style="width:30px;height:30px" title="$field_text"/>
+<!--             <img th:src="@{${$entity_name?.$property_name}}" style="width:30px;height:30px" title="$field_text"/>-->
          </td>
         ]]>
     </manage_page_field>
@@ -247,7 +247,7 @@
         <![CDATA[
          <td width="$width" align="left">
             <a href="">
-                <img th:src="@{${$entity_name?.$property_name}}" style="width:30px;height:30px" title="$field_text"/>
+<!--                <img th:src="@{${$entity_name?.$property_name}}" style="width:30px;height:30px" title="$field_text"/>-->
             </a>
          </td>
         ]]>

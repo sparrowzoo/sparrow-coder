@@ -37,11 +37,14 @@ public class $persistence_class_nameRepositoryImpl implements $persistence_class
 
     @Override public int disable(String $persistence_object_nameIds) {
         StatusCriteria statusCriteria = new StatusCriteria($persistence_object_nameIds, StatusRecord.DISABLE);
+        this.$persistence_object_nameConverter.convertStatus(statusCriteria);
         return this.$persistence_object_nameDao.changeStatus(statusCriteria);
     }
 
     @Override public int enable(String $persistence_object_nameIds) {
         StatusCriteria statusCriteria = new StatusCriteria($persistence_object_nameIds, StatusRecord.ENABLE);
+        this.$persistence_object_nameConverter.convertStatus(statusCriteria);
+
         return this.$persistence_object_nameDao.changeStatus(statusCriteria);
     }
 

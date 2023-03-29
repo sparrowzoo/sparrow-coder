@@ -4,7 +4,7 @@ import com.sparrow.orm.query.BooleanCriteria;
 import com.sparrow.orm.query.Criteria;
 import com.sparrow.orm.query.SearchCriteria;
 import com.sparrow.orm.template.impl.ORMStrategy;
-import com.sparrow.$module_prefix.admin.dao.$persistence_class_nameDAO;
+import $package_dao.$persistence_class_nameDAO;
 import $package_pager_query.$persistence_class_nameDBPagerQuery;
 import $package_po.$persistence_class_name;
 import java.util.List;

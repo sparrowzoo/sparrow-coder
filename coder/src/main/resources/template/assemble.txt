@@ -1,10 +1,10 @@
 package $package_assemble;
 
 import com.sparrow.protocol.constant.Constant;
-import $package_vo.$persistence_class_nameVO;
 import com.sparrow.protocol.ListRecordTotalBO;
 import com.sparrow.protocol.pager.PagerResult;
 import com.sparrow.protocol.pager.SimplePager;
+import $package_vo.$persistence_class_nameVO;
 import $package_bo.$persistence_class_nameBO;
 import $package_param.$persistence_class_nameParam;
 import com.sparrow.support.assemble.BO2VOAssemble;

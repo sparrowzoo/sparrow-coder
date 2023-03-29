@@ -44,7 +44,21 @@ public class MybatisEntityManager extends AbstractEntityManagerAdapter {
         this.generateDelete();
         this.generateGetEntity();
         if ("true".equalsIgnoreCase(mybatisConfig.getProperty(MybatisMethodConfig.CHANGE_STATUS))) {
-            this.generateChangeStatus();
+            String parameterType = mybatisConfig.getProperty("parameter_type");
+            if (StringUtility.isNullOrEmpty(parameterType)) {
+                parameterType = "com.sparrow.protocol.dao.StatusCriteria";
+            }
+
+            String modifiedCondition = mybatisConfig.getProperty("modified_condition");
+
+            if (StringUtility.isNullOrEmpty(modifiedCondition)) {
+                modifiedCondition =
+                    "`modified_user_name`=#{modifiedUserName},\n" +
+                        " `modified_user_id`=#{modifiedUserId},\n" +
+                        " `gmt_modified`=#{gmtModified}";
+            }
+
+            this.generateChangeStatus(parameterType, modifiedCondition);
         }
         xml.append("</mapper>");
     }
@@ -86,9 +100,10 @@ public class MybatisEntityManager extends AbstractEntityManagerAdapter {
         xml.append("</select>\n");
     }
 
-    private void generateChangeStatus() {
-        xml.append("<update id=\"changeStatus\" parameterType=\"com.sparrow.protocol.dao.StatusCriteria\">\n");
-        xml.append(String.format("update `%1$s` set `%2$s`=#{status}\n", this.tableName, this.status.getColumnName()));
+    private void generateChangeStatus(String parameterType, String modifiedCondition) {
+        xml.append("<update id=\"changeStatus\" parameterType=\"").append(parameterType).append("\">\n");
+        xml.append(String.format("update `%1$s` set `%2$s`=#{status},\n", this.tableName, this.status.getColumnName()));
+        xml.append(modifiedCondition);
         xml.append("WHERE id IN\n");
         xml.append("<foreach collection=\"idArray\" item=\"id\" index=\"index\" open=\"(\" close=\")\" separator=\",\">\n");
         xml.append(String.format("#{%s}", this.primary.getColumnName()));

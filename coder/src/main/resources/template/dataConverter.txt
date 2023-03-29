@@ -1,5 +1,6 @@
 package $package_data_converter;
 
+import com.sparrow.protocol.dao.StatusCriteria;
 import com.sparrow.protocol.enums.StatusRecord;
 import $package_bo.$persistence_class_nameBO;
 import $package_po.$persistence_class_name;
@@ -52,5 +53,11 @@ public class $persistence_class_nameConverter implements Param2POConverter<$pers
             $persistence_object_nameBos.add(this.po2bo($persistence_object_name));
         }
         return $persistence_object_nameBos;
+    }
+
+    public void convertStatus(StatusCriteria statusCriteria){
+            statusCriteria.setModifiedUserName("harry");
+            statusCriteria.setGmtModified(System.currentTimeMillis());
+            statusCriteria.setModifiedUserId(1L);
     }
 }

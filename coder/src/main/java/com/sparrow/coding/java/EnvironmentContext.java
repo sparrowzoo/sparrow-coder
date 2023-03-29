@@ -306,12 +306,15 @@ public class EnvironmentContext {
 
         public void write(ClassKey classKey) {
             System.err.printf("current path is [%s]\n", workspace);
+
+            String licensed = FileUtility.getInstance().readFileContent("/Licensed.txt");
             String content = readConfigContent(classKey.getTemplate());
             content = StringUtility.replace(content.trim(), this.placeHolder);
             System.out.println(content);
             String extension = ".java";
             String fullPath = this.getFullPath(classKey);
             String className = getClassName(classKey, persistenceClassName);
+            content = licensed + "\n" + content;
             FileUtility.getInstance().writeFile(fullPath + File.separator + className + extension,
                 content);
         }

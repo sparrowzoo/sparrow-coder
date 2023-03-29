@@ -1,7 +1,10 @@
+
 package $package_dao;
 
 import $package_po.$persistence_class_name;
+import $package_pager_query.$persistence_class_nameDBPagerQuery;
 import java.util.List;
+
 public interface $persistence_class_nameDAO {
     Long insert($persistence_class_name $persistence_object_name);
 
@@ -10,5 +13,11 @@ public interface $persistence_class_nameDAO {
     int update($persistence_class_name $persistence_object_name);
 
     $persistence_class_name getEntity(Long $persistence_object_nameId);
+
+
+    List<$persistence_class_name> query$persistence_class_names($persistence_class_nameDBPagerQuery $persistence_object_namePagerQuery);
+
+    Long count$persistence_class_name($persistence_class_nameDBPagerQuery $persistence_object_namePagerQuery);
+
 }
 

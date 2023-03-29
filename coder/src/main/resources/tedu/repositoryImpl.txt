@@ -53,6 +53,6 @@ public class $persistence_class_nameRepositoryImpl implements $persistence_class
     }
 
     @Override public Long get$persistence_class_nameCount($persistence_class_nameQuery $persistence_object_nameQuery) {
-        return this.$persistence_object_nameDao.count$persistence_class_name(this.$persistence_object_nameConverter.toDbCountQuery($persistence_object_nameQuery));
+        return this.$persistence_object_nameDao.count$persistence_class_name(this.$persistence_object_nameConverter.toDbPagerQuery($persistence_object_nameQuery));
     }
 }

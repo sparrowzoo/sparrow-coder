@@ -4,8 +4,7 @@ import $package_bo.$persistence_class_nameBO;
 import $package_po.$persistence_class_name;
 import $package_param.$persistence_class_nameParam;
 import $package_query.$persistence_class_nameQuery;
-import $package_count_query.Count$persistence_class_nameQuery;
-import $package_pager_query.Pager$persistence_class_nameQuery;
+import $package_pager_query.$persistence_class_nameDBPagerQuery;
 import org.springframework.beans.BeanUtils;
 import com.tarena.passport.protocol.LoginUser;
 import com.tarena.passport.sdk.context.SecurityContext;
@@ -15,21 +14,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class $persistence_class_nameConverter{
-   
-   
-    public Pager$persistence_class_nameQuery toDbPagerQuery($persistence_class_nameQuery $persistence_object_nameQuery) {
-           if ($persistence_object_nameQuery == null) {
-               Pager$persistence_class_nameQuery pager$persistence_class_nameQuery = new Pager$persistence_class_nameQuery();
-               pager$persistence_class_nameQuery.setPager(new PagerQuery());
-               return pager$persistence_class_nameQuery;
-           }
-           PagerQuery pagerQuery = new PagerQuery($persistence_object_nameQuery.getPageSize(), $persistence_object_nameQuery.getCurrentPageIndex());
-           Pager$persistence_class_nameQuery pager$persistence_class_nameQuery = new Pager$persistence_class_nameQuery();
-           this.fullProperties($persistence_object_nameQuery, pager$persistence_class_nameQuery);
-           pager$persistence_class_nameQuery.setPager(pagerQuery);
-           return pager$persistence_class_nameQuery;
-       }
 
+   public $persistence_class_nameDBPagerQuery toDbPagerQuery($persistence_class_nameQuery $persistence_object_nameQuery) {
+           if ($persistence_object_nameQuery == null) {
+               return new $persistence_class_nameDBPagerQuery();
+           }
+           $persistence_class_nameDBPagerQuery $persistence_object_nameDBPagerQuery = new $persistence_class_nameDBPagerQuery();
+           BeanUtils.copyProperties($persistence_object_nameQuery, $persistence_object_nameDBPagerQuery);
+           return $persistence_object_nameDBPagerQuery;
+       }
+   
 
      public $persistence_class_name param2po($persistence_class_nameParam param) {
         $persistence_class_name $persistence_object_name = new $persistence_class_name();
@@ -50,7 +44,7 @@ public class $persistence_class_nameConverter{
 
      public $persistence_class_nameBO po2bo($persistence_class_name $persistence_object_name) {
         $persistence_class_nameBO $persistence_object_nameBO = new $persistence_class_nameBO();
-        BeanUtils.copyProperties(($persistence_object_name, $persistence_object_nameBO);
+        BeanUtils.copyProperties($persistence_object_name, $persistence_object_nameBO);
         return $persistence_object_nameBO;
     }
 
