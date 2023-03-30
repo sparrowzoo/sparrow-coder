@@ -26,9 +26,9 @@ public class $persistence_class_nameService {
         return this.$persistence_object_nameRepository.save($persistence_object_nameParam);
     }
 
-    public Integer delete$persistence_class_name(String $persistence_object_nameIds) throws BusinessException {
-        //Asserts.isTrue(StringUtility.isNullOrEmpty($persistence_object_nameIds), SecurityAdminError.$persistence_class_name_ID_IS_EMPTY);
-        return this.$persistence_object_nameRepository.delete($persistence_object_nameIds);
+    public Integer delete$persistence_class_name(Long $persistence_object_nameId) throws BusinessException {
+        //Asserts.isTrue(StringUtility.isNullOrEmpty($persistence_object_nameId), SecurityAdminError.$persistence_class_name_ID_IS_EMPTY);
+        return this.$persistence_object_nameRepository.delete($persistence_object_nameId);
     }
 
     public Integer enable$persistence_class_name(String $persistence_object_nameIds) throws BusinessException {
