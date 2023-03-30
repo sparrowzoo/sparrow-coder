@@ -24,24 +24,25 @@ public class $persistence_class_nameRepositoryImpl implements $persistence_class
 
     @Override public Long save($persistence_class_nameParam $persistence_object_nameParam) {
         $persistence_class_name $persistence_object_name = this.$persistence_object_nameConverter.param2po($persistence_object_nameParam);
-        if ($persistence_object_name.getId() != null) {
+        if ($persistence_object_name.get$upper_primary_property_name() != null) {
             this.$persistence_object_nameDao.update($persistence_object_name);
-            return $persistence_object_name.getId();
+            return $persistence_object_name.get$upper_primary_property_name();
         }
-        return this.$persistence_object_nameDao.insert($persistence_object_name);
+        this.$persistence_object_nameDao.insert($persistence_object_name);
+        return $persistence_object_name.get$upper_primary_property_name();
     }
 
-    @Override public int delete(String $persistence_object_nameIds) {
+    @Override public Integer delete(String $persistence_object_nameIds) {
         return this.$persistence_object_nameDao.batchDelete($persistence_object_nameIds);
     }
 
-    @Override public int disable(String $persistence_object_nameIds) {
+    @Override public Integer disable(String $persistence_object_nameIds) {
         StatusCriteria statusCriteria = new StatusCriteria($persistence_object_nameIds, StatusRecord.DISABLE);
         this.$persistence_object_nameConverter.convertStatus(statusCriteria);
         return this.$persistence_object_nameDao.changeStatus(statusCriteria);
     }
 
-    @Override public int enable(String $persistence_object_nameIds) {
+    @Override public Integer enable(String $persistence_object_nameIds) {
         StatusCriteria statusCriteria = new StatusCriteria($persistence_object_nameIds, StatusRecord.ENABLE);
         this.$persistence_object_nameConverter.convertStatus(statusCriteria);
 

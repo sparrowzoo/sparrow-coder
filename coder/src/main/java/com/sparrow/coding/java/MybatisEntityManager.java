@@ -104,7 +104,7 @@ public class MybatisEntityManager extends AbstractEntityManagerAdapter {
         xml.append("<update id=\"changeStatus\" parameterType=\"").append(parameterType).append("\">\n");
         xml.append(String.format("update `%1$s` set `%2$s`=#{status},\n", this.tableName, this.status.getColumnName()));
         xml.append(modifiedCondition);
-        xml.append("WHERE id IN\n");
+        xml.append(" WHERE id IN\n");
         xml.append("<foreach collection=\"idArray\" item=\"id\" index=\"index\" open=\"(\" close=\")\" separator=\",\">\n");
         xml.append(String.format("#{%s}", this.primary.getColumnName()));
         xml.append("</foreach>\n");
@@ -126,7 +126,13 @@ public class MybatisEntityManager extends AbstractEntityManagerAdapter {
     }
 
     private void generateInsert() {
-        xml.append(String.format("<insert id=\"insert\" parameterType=\"%s\">\n", this.className));
+
+        String autoGenerateConfig = "";
+        if (this.primary.getGenerationType().equals(GenerationType.IDENTITY)) {
+            autoGenerateConfig = String.format(" useGeneratedKeys=\"true\" keyColumn=\"%1$s\" keyProperty=\"%2$s\"", this.primary.getColumnName(), this.primary.getName());
+        }
+
+        xml.append(String.format("<insert id=\"insert\" parameterType=\"%1$s\" %2$s>\n", this.className,autoGenerateConfig));
         xml.append(this.insert);
         xml.append("</insert>");
     }

@@ -9,11 +9,11 @@ import java.util.List;
 public interface $persistence_class_nameRepository {
     Long save($persistence_class_nameParam $persistence_object_nameParam);
 
-    int delete(String $persistence_object_nameIds);
+    Integer delete(String $persistence_object_nameIds);
 
-    int disable(String $persistence_object_nameIds);
+    Integer disable(String $persistence_object_nameIds);
 
-    int enable(String $persistence_object_nameIds);
+    Integer enable(String $persistence_object_nameIds);
 
     $persistence_class_nameBO get$persistence_class_name(Long $persistence_object_nameId);
 

@@ -45,8 +45,8 @@ public class $persistence_class_nameController {
     }
 
     @PostMapping("delete")
-    public Integer delete$persistence_class_name(String ids) throws BusinessException {
-        return this.$persistence_object_nameService.delete$persistence_class_name(ids);
+    public Integer delete$persistence_class_name(Long id) throws BusinessException {
+        return this.$persistence_object_nameService.delete$persistence_class_name(id);
     }
 
     @PostMapping("enable")
