@@ -1,6 +1,8 @@
 package $package_repository_impl;
 
 import $package_dao.$persistence_class_nameDAO;
+import com.tedu.inn.protocol.enums.StatusRecord;
+import com.tedu.inn.protocol.dao.StatusCriteria;
 import $package_data_converter.$persistence_class_nameConverter;
 import $package_po.$persistence_class_name;
 import $package_bo.$persistence_class_nameBO;
@@ -29,16 +31,19 @@ public class $persistence_class_nameRepositoryImpl implements $persistence_class
     }
 
     @Override public int delete(String $persistence_object_nameIds) {
-        return this.$persistence_object_nameDao.batchDelete($persistence_object_nameIds);
+        //return this.$persistence_object_nameDao.batchDelete($persistence_object_nameIds);
+        return 0;
     }
 
     @Override public int disable(String $persistence_object_nameIds) {
-        StatusCriteria statusCriteria = new StatusCriteria($persistence_object_nameIds, StatusRecord.DISABLE);
+        StatusCriteria statusCriteria = new StatusCriteria($persistence_object_nameIds, StatusRecord.DISABLE.getStatus());
+        this.$persistence_object_nameConverter.convertStatus(statusCriteria);
         return this.$persistence_object_nameDao.changeStatus(statusCriteria);
     }
 
     @Override public int enable(String $persistence_object_nameIds) {
-        StatusCriteria statusCriteria = new StatusCriteria($persistence_object_nameIds, StatusRecord.ENABLE);
+        StatusCriteria statusCriteria = new StatusCriteria($persistence_object_nameIds, StatusRecord.ENABLE.getStatus());
+        this.$persistence_object_nameConverter.convertStatus(statusCriteria);
         return this.$persistence_object_nameDao.changeStatus(statusCriteria);
     }
 
@@ -47,7 +52,8 @@ public class $persistence_class_nameRepositoryImpl implements $persistence_class
         return this.$persistence_object_nameConverter.po2bo($persistence_object_name);
     }
 
-    @Override public List<$persistence_class_nameBO> query$persistence_class_names($persistence_class_nameQuery $persistence_object_nameQuery) {
+    @Override public List<$persistence_class_nameBO> query$persistence_class_names(
+        $persistence_class_nameQuery $persistence_object_nameQuery) {
         List<$persistence_class_name> $persistence_object_nameList = this.$persistence_object_nameDao.query$persistence_class_names(this.$persistence_object_nameConverter.toDbPagerQuery($persistence_object_nameQuery));
         return this.$persistence_object_nameConverter.poList2BoList($persistence_object_nameList);
     }

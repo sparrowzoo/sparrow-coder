@@ -10,17 +10,18 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 @Service
 public class $persistence_class_nameService {
     @Autowired
     private $persistence_class_nameRepository $persistence_object_nameRepository;
 
-    private void validateSave$persistence_class_name($persistence_class_nameParam $persistence_object_nameParam) throws BusinessException {
+    private void validateSave$persistence_class_name(
+        $persistence_class_nameParam $persistence_object_nameParam) throws BusinessException {
         //Asserts.isTrue(StringUtility.isNullOrEmpty($persistence_object_nameParam.getName()), SecurityAdminError.NAME_IS_EMPTY, $persistence_class_nameSuffix.name);
     }
 
-    public Long save$persistence_class_name($persistence_class_nameParam $persistence_object_nameParam) throws BusinessException {
+    public Long save$persistence_class_name(
+        $persistence_class_nameParam $persistence_object_nameParam) throws BusinessException {
         this.validateSave$persistence_class_name($persistence_object_nameParam);
         return this.$persistence_object_nameRepository.save($persistence_object_nameParam);
     }
@@ -32,19 +33,20 @@ public class $persistence_class_nameService {
 
     public Integer enable$persistence_class_name(String $persistence_object_nameIds) throws BusinessException {
         //Asserts.isTrue(StringUtils.isEmpty(bankIds), $persistence_class_nameAdminError.ID_IS_EMPTY);
-        return 0;//this.$persistence_object_nameRepository.enable($persistence_object_nameIds);
+        return this.$persistence_object_nameRepository.enable($persistence_object_nameIds);
     }
 
     public Integer disable$persistence_class_name(String $persistence_object_nameIds) throws BusinessException {
         //Asserts.isTrue(StringUtils.isEmpty($persistence_object_nameIds), $persistence_class_nameAdminError.ID_IS_EMPTY);
-        return 0;// this.$persistence_object_nameRepository.disable($persistence_object_nameIds);
+        return this.$persistence_object_nameRepository.disable($persistence_object_nameIds);
     }
 
     public ListRecordTotalBO<$persistence_class_nameBO> queryAll$persistence_class_name() {
         return query$persistence_class_name(null);
     }
 
-    public ListRecordTotalBO<$persistence_class_nameBO> query$persistence_class_name($persistence_class_nameQuery $persistence_object_nameQuery) {
+    public ListRecordTotalBO<$persistence_class_nameBO> query$persistence_class_name(
+        $persistence_class_nameQuery $persistence_object_nameQuery) {
         Long totalRecord = this.$persistence_object_nameRepository.get$persistence_class_nameCount($persistence_object_nameQuery);
         List<$persistence_class_nameBO> $persistence_object_nameBoList = null;
         if (totalRecord > 0) {
@@ -53,7 +55,8 @@ public class $persistence_class_nameService {
         return new ListRecordTotalBO<>($persistence_object_nameBoList, totalRecord);
     }
 
-    public $persistence_class_nameBO get$persistence_class_name(Long $persistence_object_nameId) throws BusinessException {
+    public $persistence_class_nameBO get$persistence_class_name(
+        Long $persistence_object_nameId) throws BusinessException {
         //Asserts.isTrue($persistence_object_nameId == null, $persistence_class_nameAdminError.IS_EMPTY);
         return this.$persistence_object_nameRepository.get$persistence_class_name($persistence_object_nameId);
     }

@@ -1,5 +1,6 @@
 package $package_data_converter;
 
+import com.tedu.inn.protocol.dao.StatusCriteria;
 import $package_bo.$persistence_class_nameBO;
 import $package_po.$persistence_class_name;
 import $package_param.$persistence_class_nameParam;
@@ -54,5 +55,12 @@ public class $persistence_class_nameConverter{
             $persistence_object_nameBos.add(this.po2bo($persistence_object_name));
         }
         return $persistence_object_nameBos;
+    }
+
+    public void convertStatus(StatusCriteria statusCriteria){
+            LoginUser loginUser = SecurityContext.getLoginToken();
+            statusCriteria.setModifiedUserId(loginUser.getUserId());
+            statusCriteria.setModifiedUserName(loginUser.getUserName());
+            statusCriteria.setGmtModified(System.currentTimeMillis());
     }
 }

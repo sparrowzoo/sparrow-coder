@@ -3,9 +3,9 @@ package $package_pager_query;
 import java.util.Date;
 import com.tedu.inn.protocol.dao.DatabasePagerQuery;
 
-
 public class $persistence_class_nameDBPagerQuery extends DatabasePagerQuery {
-   public $persistence_class_nameDBPagerQuery() {}
+    public $persistence_class_nameDBPagerQuery() {
+    }
 
     private String name;
     private Date beginDate;

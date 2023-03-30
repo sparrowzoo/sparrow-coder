@@ -26,8 +26,7 @@ public class $persistence_class_nameAssemble {
         }
         List<$persistence_class_nameVO> $persistence_object_nameVOList = new ArrayList<>(list.size());
         for ($persistence_class_nameBO $persistence_object_nameBo : list) {
-            $persistence_class_nameVO $persistence_object_nameVo = new $persistence_class_nameVO();
-            BeanUtils.copyProperties($persistence_object_nameBo, $persistence_object_nameVo);
+            $persistence_class_nameVO $persistence_object_nameVo = this.assembleBO2VO($persistence_object_nameBo);
             $persistence_object_nameVOList.add($persistence_object_nameVo);
         }
         return $persistence_object_nameVOList;

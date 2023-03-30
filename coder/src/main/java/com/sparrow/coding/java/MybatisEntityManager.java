@@ -44,12 +44,12 @@ public class MybatisEntityManager extends AbstractEntityManagerAdapter {
         this.generateDelete();
         this.generateGetEntity();
         if ("true".equalsIgnoreCase(mybatisConfig.getProperty(MybatisMethodConfig.CHANGE_STATUS))) {
-            String parameterType = mybatisConfig.getProperty("parameter_type");
+            String parameterType = mybatisConfig.getProperty(MybatisMethodConfig.PARAMETER_TYPE);
             if (StringUtility.isNullOrEmpty(parameterType)) {
                 parameterType = "com.sparrow.protocol.dao.StatusCriteria";
             }
 
-            String modifiedCondition = mybatisConfig.getProperty("modified_condition");
+            String modifiedCondition = mybatisConfig.getProperty(MybatisMethodConfig.MODIFIED_CONDITION);
 
             if (StringUtility.isNullOrEmpty(modifiedCondition)) {
                 modifiedCondition =

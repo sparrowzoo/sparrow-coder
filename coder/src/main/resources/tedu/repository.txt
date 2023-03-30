@@ -14,4 +14,8 @@ public interface $persistence_class_nameRepository {
     Long get$persistence_class_nameCount($persistence_class_nameQuery $persistence_object_nameQuery);
 
     List<$persistence_class_nameBO> query$persistence_class_names($persistence_class_nameQuery $persistence_object_nameBOQuery);
+
+    int disable(String bankIds);
+
+    int enable(String bankIds);
 }
