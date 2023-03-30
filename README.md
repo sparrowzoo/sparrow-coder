@@ -56,6 +56,12 @@ test demo
 ```
 com.sparrow.coding.config.EnvConfig
 ```
+## 配置文件
+```
+vi example-po/bin/config.properties
+workspace=修改成自己的工作目录(sparrow-example 工程所在目录)
+resource_workspace=修改成自己的工作目录
+```
 
 ## java 类生成
 
@@ -65,6 +71,8 @@ sh sparrow-java-coder.sh --help //帮助菜单
 sh sparrow-java-coder.sh --example //生成示例代码
 
 sh sparrow-java-coder.sh -ct com.sparrow.example.po.SparrowExample
+sh sparrow-java-coder-all.sh //生成所有java 代码
+sh sparrow-front-code-all.sh //生成所有前端代码
 ```
 
 ## 前端代码生成
