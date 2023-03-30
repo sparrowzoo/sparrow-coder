@@ -72,7 +72,6 @@ sh sparrow-java-coder.sh --example //生成示例代码
 
 sh sparrow-java-coder.sh -ct com.sparrow.example.po.SparrowExample
 sh sparrow-java-coder-all.sh //生成所有java 代码
-sh sparrow-front-code-all.sh //生成所有前端代码
 ```
 
 ## 前端代码生成
@@ -88,6 +87,7 @@ sh sparrow-front-coder.sh -cp com.sparrow.coding.config.ExampleFront
 sh sparrow-front-coder.sh -cj com.sparrow.coding.config.ExampleFront
 sh sparrow-front-coder.sh -lj com.sparrow.coding.config.ExampleFront
 sh sparrow-front-coder.sh -mj com.sparrow.coding.config.ExampleFront
+sh sparrow-front-code-all.sh //生成所有前端代码
 
 ```
 
