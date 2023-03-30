@@ -15,8 +15,8 @@ public class CodeGenerator {
     private static Logger logger = LoggerFactory.getLogger(CodeGenerator.class);
     private EnvironmentContext environmentContext;
 
-    public CodeGenerator() throws IOException {
-        this.environmentContext = new EnvironmentContext();
+    public CodeGenerator(String sparrowConfig) throws IOException {
+        this.environmentContext = new EnvironmentContext(sparrowConfig);
     }
 
     public void param(Class<?> po) throws IOException {
@@ -39,15 +39,10 @@ public class CodeGenerator {
         tableConfig.write(ClassKey.DATA_CONVERTER);
     }
 
-    public void countQuery(Class<?> po) {
-        EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
-        tableConfig.write(ClassKey.COUNT_QUERY);
-    }
     public void batchOperate(Class<?> po) {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.write(ClassKey.BATCH_OPERATE_PARAM);
     }
-
 
     public void pagerQuery(Class<?> po) {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
@@ -72,6 +67,11 @@ public class CodeGenerator {
     public void daoImpl(Class<?> po) {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.write(ClassKey.DAO_IMPL);
+    }
+
+    public void daoMybatis(Class<?> po) {
+        EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
+        tableConfig.writeMybatis(po,environmentContext);
     }
 
     public void service(Class<?> po) {

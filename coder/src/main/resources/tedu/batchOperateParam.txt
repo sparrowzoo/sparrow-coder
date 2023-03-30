@@ -1,0 +1,15 @@
+package $package_batch_param;
+
+import $package_query.$persistence_class_nameQuery;
+
+public class $persistence_class_nameBatchOperateParam extends $persistence_class_nameQuery {
+    private String ids;
+
+    public String getIds() {
+        return ids;
+    }
+
+    public void setIds(String ids) {
+        this.ids = ids;
+    }
+}

@@ -87,7 +87,6 @@ public enum PlaceholderKey {
 
     $package_pager_query,
 
-    $package_count_query,
 
     /**
      * dao impl e.g com.sparrow.user.dao.impl

@@ -4,21 +4,22 @@ import com.sparrow.orm.query.BooleanCriteria;
 import com.sparrow.orm.query.Criteria;
 import com.sparrow.orm.query.SearchCriteria;
 import com.sparrow.orm.template.impl.ORMStrategy;
-import $package_dao.$persistence_class_nameDAO;
-import $package_pager_query.$persistence_class_nameDBPagerQuery;
+import com.sparrow.$module_prefix.admin.dao.$persistence_class_nameDAO;
+import $package_count_query.Count$persistence_class_nameQuery;
+import $package_pager_query.Pager$persistence_class_nameQuery;
 import $package_po.$persistence_class_name;
 import java.util.List;
 import javax.inject.Named;
 
 @Named
 public class $persistence_class_nameDaoImpl extends ORMStrategy<$persistence_class_name, Long> implements $persistence_class_nameDAO {
-    @Override public List<$persistence_class_name> query$persistence_class_names($persistence_class_nameDBPagerQuery pager$persistence_class_nameQuery) {
-        SearchCriteria searchCriteria = new SearchCriteria(pager$persistence_class_nameQuery);
+    @Override public List<$persistence_class_name> query$persistence_class_names(Pager$persistence_class_nameQuery pager$persistence_class_nameQuery) {
+        SearchCriteria searchCriteria = new SearchCriteria(pager$persistence_class_nameQuery.getPager());
         searchCriteria.setWhere(this.generateCriteria(pager$persistence_class_nameQuery));
         return this.getList(searchCriteria);
     }
 
-    private BooleanCriteria generateCriteria($persistence_class_nameDBPagerQuery count$persistence_class_nameQuery) {
+    private BooleanCriteria generateCriteria(Count$persistence_class_nameQuery count$persistence_class_nameQuery) {
         Long startTime=null;
         if(count$persistence_class_nameQuery.getBeginDate()!=null){
             startTime=count$persistence_class_nameQuery.getBeginDate().getTime();
@@ -35,7 +36,7 @@ public class $persistence_class_nameDaoImpl extends ORMStrategy<$persistence_cla
             .and(Criteria.field("$persistence_object_name.createTime").lessThan(endTime));
     }
 
-    @Override public Long count$persistence_class_name($persistence_class_nameDBPagerQuery $persistence_object_namePagerQuery) {
+    @Override public Long count$persistence_class_name(Count$persistence_class_nameQuery $persistence_object_namePagerQuery) {
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.setWhere(this.generateCriteria($persistence_object_namePagerQuery));
         return this.getCount(searchCriteria);

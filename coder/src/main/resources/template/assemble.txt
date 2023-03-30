@@ -1,10 +1,10 @@
 package $package_assemble;
 
 import com.sparrow.protocol.constant.Constant;
-import $package_vo.$persistence_class_nameVO;
 import com.sparrow.protocol.ListRecordTotalBO;
 import com.sparrow.protocol.pager.PagerResult;
 import com.sparrow.protocol.pager.SimplePager;
+import $package_vo.$persistence_class_nameVO;
 import $package_bo.$persistence_class_nameBO;
 import $package_param.$persistence_class_nameParam;
 import com.sparrow.support.assemble.BO2VOAssemble;
@@ -56,7 +56,7 @@ public class $persistence_class_nameAssemble implements BO2VOAssemble<$persisten
         List<$persistence_class_nameVO> $persistence_object_nameVOList = this.boListAssembleVOList($persistence_object_nameListTotalRecord.getList());
         PagerResult<$persistence_class_nameVO> pagerResult = new PagerResult<>($persistence_object_nameQuery);
         pagerResult.setList($persistence_object_nameVOList);
-        pagerResult.setRecordCount($persistence_object_nameListTotalRecord.getTotal());
+        pagerResult.setRecordTotal($persistence_object_nameListTotalRecord.getTotal());
         return new HtmlPagerResult<>(pagerResult);
     }
 }

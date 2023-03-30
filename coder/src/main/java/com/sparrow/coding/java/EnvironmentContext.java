@@ -39,8 +39,6 @@ public class EnvironmentContext {
      */
     private String author;
 
-
-
     /**
      * 工作区
      */
@@ -66,27 +64,23 @@ public class EnvironmentContext {
      */
     private String parentModule;
 
-
-
     private EnvironmentSupport environmentSupport = EnvironmentSupport.getInstance();
 
     private FileUtility fileUtility = FileUtility.getInstance();
 
-    public EnvironmentContext() throws IOException {
-        this.config= ConfigUtils.initPropertyConfig();
-        String coderHome=System.getenv(EnvConfig.SPARROW_CODER_HOME);
+    public EnvironmentContext(String sparrowConfig) throws IOException {
+        this.config = ConfigUtils.initPropertyConfig(sparrowConfig);
+        String coderHome = System.getenv(EnvConfig.SPARROW_CODER_HOME);
         this.author = this.config.getProperty(CoderConfig.AUTHOR);
-        this.workspace=config.getProperty(CoderConfig.WORKSPACE);
+        this.workspace = config.getProperty(CoderConfig.WORKSPACE);
         this.project = config.getProperty(CoderConfig.PROJECT);
         this.parentModule = config.getProperty(CoderConfig.MODULE_PREFIX + CoderConfig.MODULE_PARENT_ADMIN);
         this.backendTemplateHome = config.getProperty(CoderConfig.BACKEND_TEMPLATE_HOME);
-        this.backendTemplateHome=this.backendTemplateHome.replace(PlaceholderKey.$coder_home.name(),coderHome);
-        this.tableOutputGenerateHome =config.getProperty(CoderConfig.TABLE_OUTPUT_HOME);
-        this.tableOutputGenerateHome=this.tableOutputGenerateHome.replace(PlaceholderKey.$coder_home.name(),coderHome);
+        this.backendTemplateHome = this.backendTemplateHome.replace(PlaceholderKey.$coder_home.name(), coderHome);
+        this.tableOutputGenerateHome = config.getProperty(CoderConfig.TABLE_OUTPUT_HOME);
+        this.tableOutputGenerateHome = this.tableOutputGenerateHome.replace(PlaceholderKey.$coder_home.name(), coderHome);
         System.out.printf("author is %s\n", this.author);
     }
-
-
 
     public String getTableCreateDDLPath(String originTableName) {
         return tableOutputGenerateHome + File.separator + "ddl" + File.separator + originTableName + ".sql";
@@ -106,6 +100,18 @@ public class EnvironmentContext {
             return source;
         }
         return source.replace(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
+    }
+
+    public Properties getMybatisConfig() throws IOException {
+        String mybatisConfig = this.backendTemplateHome + "/" + ClassKey.DAO_MYBATIS.getTemplate();
+        System.err.printf("config file path is [%s]\n", mybatisConfig);
+        InputStream inputStream = EnvironmentSupport.getInstance().getFileInputStreamInCache(mybatisConfig);
+        if (inputStream == null) {
+            System.err.printf("[%s] can't read\n", mybatisConfig);
+        }
+        Properties mybatisProperties = new Properties();
+        mybatisProperties.load(inputStream);
+        return mybatisProperties;
     }
 
     public String readConfigContent(String templateFileName) {
@@ -132,7 +138,7 @@ public class EnvironmentContext {
         /**
          * 占位符
          */
-        private Map<String, String> placeHolder;
+        public Map<String, String> placeHolder;
 
         /**
          * 包名都根据po对象生成
@@ -218,9 +224,6 @@ public class EnvironmentContext {
             context.put(PlaceholderKey.$package_dao.name(), this.getFullPackage(ClassKey.DAO));
             String pagerQuery = this.getFullPackage(ClassKey.PAGER_QUERY);
             context.put(PlaceholderKey.$package_pager_query.name(), StringUtility.replace(pagerQuery, context));
-            String countQuery = this.getFullPackage(ClassKey.COUNT_QUERY);
-            context.put(PlaceholderKey.$package_count_query.name(), StringUtility.replace(countQuery, context));
-
             context.put(PlaceholderKey.$package_repository.name(), this.getFullPackage(ClassKey.REPOSITORY));
             context.put(PlaceholderKey.$package_repository_impl.name(), this.getFullPackage(ClassKey.REPOSITORY_IMPL));
             context.put(PlaceholderKey.$package_data_converter.name(), this.getFullPackage(ClassKey.DATA_CONVERTER));
@@ -260,33 +263,58 @@ public class EnvironmentContext {
         }
 
         public String getFullPath(ClassKey k) {
+
             String modulePath = this.getModule(k);
-            String fullPath = workspace + File.separator
-                + project + File.separator
-                + parentModule + File.separator
-                + modulePath + File.separator
-                + "src" + File.separator
-                + "main" + File.separator
-                + "java" + File.separator
-                + this.getFullPackage(k);
+            String fullPath = null;
+            if (ClassKey.DAO_MYBATIS.getModule().equals(k.getModule())) {
+                fullPath = workspace + File.separator
+                    + project + File.separator
+                    + parentModule + File.separator
+                    + modulePath + File.separator
+                    + "src" + File.separator
+                    + "main" + File.separator
+                    + "resources" + File.separator + "mapper";
+            } else {
+                fullPath = workspace + File.separator
+                    + project + File.separator
+                    + parentModule + File.separator
+                    + modulePath + File.separator
+                    + "src" + File.separator
+                    + "main" + File.separator
+                    + "java" + File.separator
+                    + this.getFullPackage(k);
+            }
+
             fullPath = StringUtility.replace(fullPath, this.placeHolder);
             fullPath = fullPath.replace('.', File.separatorChar);
             System.out.println("write to " + fullPath);
             return fullPath;
         }
 
+        public void writeMybatis(Class<?> po, EnvironmentContext environmentContext) {
+            MybatisEntityManager entityManager = new MybatisEntityManager(po, environmentContext);
+            entityManager.init();
+            String content = entityManager.getXml();
+            content = StringUtility.replace(content.trim(), this.placeHolder);
+            System.out.println(content);
+            String extension = ".xml";
+            String fullPath = this.getFullPath(ClassKey.DAO_MYBATIS);
+            String className = getClassName(ClassKey.DAO_MYBATIS, persistenceClassName);
+            FileUtility.getInstance().writeFile(fullPath + File.separator + className + extension,
+                content);
+        }
+
         public void write(ClassKey classKey) {
             System.err.printf("current path is [%s]\n", workspace);
+
+            String licensed = FileUtility.getInstance().readFileContent("/Licensed.txt");
             String content = readConfigContent(classKey.getTemplate());
             content = StringUtility.replace(content.trim(), this.placeHolder);
             System.out.println(content);
             String extension = ".java";
-            if (content.trim().startsWith("<?xml")) {
-                extension = ".xml";
-            }
-
             String fullPath = this.getFullPath(classKey);
             String className = getClassName(classKey, persistenceClassName);
+            content = licensed + "\n" + content;
             FileUtility.getInstance().writeFile(fullPath + File.separator + className + extension,
                 content);
         }

@@ -1,5 +1,6 @@
 package com.sparrow.example.po;
 
+import com.sparrow.protocol.FieldOrder;
 import com.sparrow.protocol.MethodOrder;
 import com.sparrow.protocol.dao.PO;
 import javax.persistence.Column;
@@ -11,6 +12,10 @@ import javax.persistence.Table;
 @Table(name = "sparrow_example")
 public class SparrowExample extends PO {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", columnDefinition = "int(11)")
+    @FieldOrder(order = 0)
     private Long id;
 
     private String avatar;
@@ -33,10 +38,7 @@ public class SparrowExample extends PO {
 
     private String name;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "int(11)")
-    @MethodOrder(order = 0)
+
     public Long getId() {
         return this.id;
     }

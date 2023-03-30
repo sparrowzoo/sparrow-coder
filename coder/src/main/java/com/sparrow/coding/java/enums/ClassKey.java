@@ -18,13 +18,13 @@ public enum ClassKey {
     CONTROLLER("controller.txt", "adapter"),
     VO("vo.txt", "adapter"),
     DAO("dao.txt", "dao.api"),
+    DAO_MYBATIS("mybatis.properties", "dao.mybatis"),
     DAO_IMPL("daoImpl.txt", "dao.sparrow"),
     SERVICE("service.txt", "domain"),
     ASSEMBLE("assemble.txt", "adapter"),
     REPOSITORY("repository.txt", "domain"),
     REPOSITORY_IMPL("repositoryImpl.txt", "infrastructure"),
     DATA_CONVERTER("dataConverter.txt", "infrastructure"),
-    COUNT_QUERY("countQuery.txt", "dao.api"),
     PAGER_QUERY("pagerQuery.txt", "dao.api"),
     BATCH_OPERATE_PARAM("batchOperateParam.txt", "protocol");
 

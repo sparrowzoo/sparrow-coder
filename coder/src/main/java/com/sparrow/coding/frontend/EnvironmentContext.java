@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import javax.xml.parsers.ParserConfigurationException;
@@ -44,13 +45,14 @@ public class EnvironmentContext {
      */
     private Properties config;
 
-    private EnvironmentSupport environmentSupport = EnvironmentSupport.getInstance();
-
-    public EnvironmentContext() throws IOException {
+    public EnvironmentContext(String configPath) throws IOException {
+        if (StringUtility.isNullOrEmpty(configPath)) {
+            configPath = "default";
+        }
         /**
          * config path
          */
-        Properties config =ConfigUtils.initPropertyConfig();
+        Properties config = ConfigUtils.initPropertyConfig(configPath);
         this.config = config;
         this.author = config.getProperty(CoderConfig.AUTHOR);
         System.out.printf("author is %s\n", this.author);
@@ -184,8 +186,8 @@ public class EnvironmentContext {
             StringBuilder manageDataLine = new StringBuilder();
             manageHeaderLine.append(this.replaceSelectAll());
             manageHeaderLine.append(Constant.ENTER_TEXT);
-            Field[] fields = clazz.getDeclaredFields();
-            fields = ClassUtility.getOrderedFields(fields);
+            List<Field> fieldList = ClassUtility.extractFields(this.clazz);
+            Field[] fields = ClassUtility.getOrderedFields(fieldList);
             for (Field field : fields) {
                 Form form = field.getAnnotation(Form.class);
                 if (form == null) {
@@ -208,11 +210,11 @@ public class EnvironmentContext {
 
             this.placeHolder = context;
 
-            String  modulePrefix = config.getProperty(CoderConfig.MODULE_PREFIX + "prefix");
+            String modulePrefix = config.getProperty(CoderConfig.MODULE_PREFIX + "prefix");
 
             context.put(PlaceholderKey.$module_prefix.name(), modulePrefix);
 
-            String project  = config.getProperty(CoderConfig.PROJECT);
+            String project = config.getProperty(CoderConfig.PROJECT);
 
             context.put(FrontendPlaceholderKey.$project.name(), project);
             context.put(FrontendPlaceholderKey.$workspace.name(), config.getProperty(CoderConfig.WORKSPACE));
@@ -295,8 +297,8 @@ public class EnvironmentContext {
         public void generateLanguageJs() {
             String content = Xml.getElementTextContent(this.document, "language_js");
             content = StringUtility.replace(content, this.placeHolder);
-            Field[] fields = this.clazz.getDeclaredFields();
-            fields = ClassUtility.getOrderedFields(fields);
+            List<Field> fieldList = ClassUtility.extractFields(this.clazz);
+            Field[] fields = ClassUtility.getOrderedFields(fieldList);
             String entityName = this.placeHolder.get(FrontendPlaceholderKey.$entity_name.name());
             StringBuilder sb = new StringBuilder(entityName + "Info={");
             for (Field field : fields) {

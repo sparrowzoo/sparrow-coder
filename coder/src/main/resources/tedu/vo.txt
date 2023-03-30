@@ -1,0 +1,5 @@
+package $package_vo;
+
+public class $persistence_class_nameVO {
+    $get_sets
+}

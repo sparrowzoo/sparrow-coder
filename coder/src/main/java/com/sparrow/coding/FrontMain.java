@@ -27,8 +27,14 @@ public class FrontMain {
     public static void innerMain(
         String[] args) throws IOException, ClassNotFoundException, ParserConfigurationException, SAXException {
         System.out.println("生成类:" + args[1]);
+
+        String sparrowConfig = "default";
+        String configPath = args[args.length - 1];
+        if (configPath.startsWith("-config=")) {
+            sparrowConfig = configPath.substring("-config=".length());
+        }
         Class<? extends POJO> clazz = (Class<? extends POJO>) Class.forName(args[1]);
-        EnvironmentContext environmentContext = new EnvironmentContext();
+        EnvironmentContext environmentContext = new EnvironmentContext(sparrowConfig);
         EnvironmentContext.Config config = environmentContext.new Config(clazz);
         if ("-mp".equals(args[0]) || "-GenerateManagePage".equals(args[0])) {
             config.generateManagePage();

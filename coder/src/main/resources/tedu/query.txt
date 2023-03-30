@@ -1,0 +1,35 @@
+package $package_query;
+
+import com.tedu.inn.protocol.pager.SimplePagerQuery;
+
+import java.util.Date;
+
+public class $persistence_class_nameQuery extends SimplePagerQuery {
+    private String name;
+    private Date beginDate;
+    private Date endDate;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Date getBeginDate() {
+        return beginDate;
+    }
+
+    public void setBeginDate(Date beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+}

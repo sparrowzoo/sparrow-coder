@@ -14,13 +14,13 @@ fi
 
 options=$1
 if [ $1 == '-all' ]; then
-     options='-b,-p,-q,-v,-cv,-pq,-cq,-bop,-d,-di,-r,-ri,-s,-c,-a,-ct'
+     options='-b,-p,-q,-v,-cv,-pq,-cq,-bop,-d,-di,-mi,-r,-ri,-s,-c,-a,-ct'
 fi
 #将,替换为空格
 options_array=(${options//,/ })
 for option in ${options_array[@]}
 do
-  java  -classpath $SPARROW_CODER_HOME/$sparrow_coder_name:$class_path  com.sparrow.coding.JavaMain $option $2
+  java  -classpath $SPARROW_CODER_HOME/$sparrow_coder_name:$class_path  com.sparrow.coding.JavaMain $option $2 $3
 done
 
 
