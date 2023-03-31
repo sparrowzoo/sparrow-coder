@@ -1,10 +1,12 @@
-test demo
 # sparrow-coder 麻雀代码生成器 【灵活半自动化代码生成器】
 
 # 核心功能
 ## 基于整洁架构生成核心代码
 ![整洁架构](整洁架构.png)
+下载sparrow-example 【默认保存至${user.home}】目录
 
+可以在config.properties 文件中修改该目录[config.properties](./example-po/bin/config.properties)
+] 见下文说明
 [sparrow-example](https://github.com/sparrowzoo/sparrow-example)
 
 ## 生成前后端代码
@@ -14,9 +16,9 @@ test demo
 # 使用方式
 ## 添加sparrow 依赖
 个性maven settings 配置文件
-
+将下文代码复制到 {user.home}/.m2/setting.xml 文件中.
 ```
-{user.home}/.m2/setting.xml
+
 <?xml version="1.0" encoding="UTF-8"?>
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -51,11 +53,17 @@ test demo
 </settings>
 ```
 
+## 编译
+配置成功后执行命令
+```
+mvn clean install -Dmaven.test.skip
+```
+
+
 ## 环境变量配置说明
-参考EnvConfig 代码说明
-```
-com.sparrow.coding.config.EnvConfig
-```
+SPARROW_CODER_HOME={sparrow-coder/coder/target} 目录下
+
+{sparrow-coder/coder/target} 为变量 具体为sparrow-coder-all.jar 所在目录，即代码生成器所在目录
 ## 配置文件
 ```
 vi example-po/bin/config.properties
