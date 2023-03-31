@@ -216,9 +216,15 @@ public class EnvironmentContext {
 
             String project = config.getProperty(CoderConfig.PROJECT);
 
+            String workspace= config.getProperty(CoderConfig.WORKSPACE);
+            String userHome=System.getProperty("user.home");
+            workspace=workspace.replace("${user.home}",userHome);
+
+            String resourceWorkspace= config.getProperty(CoderConfig.RESOURCE_WORKSPACE);
+            resourceWorkspace=resourceWorkspace.replace("${user.home}",userHome);
             context.put(FrontendPlaceholderKey.$project.name(), project);
-            context.put(FrontendPlaceholderKey.$workspace.name(), config.getProperty(CoderConfig.WORKSPACE));
-            context.put(FrontendPlaceholderKey.$resource_workspace.name(), config.getProperty(CoderConfig.RESOURCE_WORKSPACE));
+            context.put(FrontendPlaceholderKey.$workspace.name(),workspace);
+            context.put(FrontendPlaceholderKey.$resource_workspace.name(),resourceWorkspace);
             context.put(FrontendPlaceholderKey.$entity_name.name(), entity.name());
             context.put(FrontendPlaceholderKey.$entity_by_horizontal.name(), StringUtility.humpToLower(entity.name(), '-'));
             context.put(FrontendPlaceholderKey.$entity_by_slash.name(), StringUtility.humpToLower(entity.name(), File.separatorChar));
