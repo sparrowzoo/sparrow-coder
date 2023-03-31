@@ -73,6 +73,8 @@ public class EnvironmentContext {
         String coderHome = System.getenv(EnvConfig.SPARROW_CODER_HOME);
         this.author = this.config.getProperty(CoderConfig.AUTHOR);
         this.workspace = config.getProperty(CoderConfig.WORKSPACE);
+        String userHome=System.getProperty("user.home");
+        this.workspace=this.workspace.replace("${user.home}",userHome);
         this.project = config.getProperty(CoderConfig.PROJECT);
         this.parentModule = config.getProperty(CoderConfig.MODULE_PREFIX + CoderConfig.MODULE_PARENT_ADMIN);
         this.backendTemplateHome = config.getProperty(CoderConfig.BACKEND_TEMPLATE_HOME);
