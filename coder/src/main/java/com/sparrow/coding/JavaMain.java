@@ -135,9 +135,9 @@ public class JavaMain {
         Container container = ApplicationContext.getContainer();
         container.init(new ContainerBuilder().initController(false)
             .initInterceptor(false));
-//        args = "--example".split(" ");
-//        args = "-pq com.sparrow.example.po.SparrowExample".split(" ");
-       // args = "-pq com.sparrow.example.po.SparrowExample -config=/Users/zhanglizhi/workspace/tedu/tarena-tp-basic/basic-po/bin/config.properties".split(" ");
+        // args = "--example".split(" ");
+        // args = "-pq com.sparrow.example.po.SparrowExample".split(" ");
+        // args = "-pq com.sparrow.example.po.SparrowExample -config=/Users/zhanglizhi/workspace/tedu/tarena-tp-basic/basic-po/bin/config.properties".split(" ");
 
         if (args.length == 0 || "--help".equals(args[0])) {
             usage();

@@ -33,6 +33,7 @@ import org.xml.sax.SAXException;
 
 /**
  * 代码生成器环境上下文
+ * test
  */
 public class EnvironmentContext {
     private static Logger logger = LoggerFactory.getLogger(EnvironmentContext.class);
