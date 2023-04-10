@@ -34,22 +34,22 @@ public class CodeGenerator {
         tableConfig.write(ClassKey.ASSEMBLE);
     }
 
-    public void converter(Class<?> po) {
+    public void converter(Class<?> po) throws IOException {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.write(ClassKey.DATA_CONVERTER);
     }
 
-    public void batchOperate(Class<?> po) {
+    public void batchOperate(Class<?> po) throws IOException {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.write(ClassKey.BATCH_OPERATE_PARAM);
     }
 
-    public void pagerQuery(Class<?> po) {
+    public void pagerQuery(Class<?> po) throws IOException {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.write(ClassKey.PAGER_QUERY);
     }
 
-    public void vo(Class<?> po) {
+    public void vo(Class<?> po) throws IOException {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.write(ClassKey.VO);
     }
@@ -64,37 +64,37 @@ public class CodeGenerator {
         tableConfig.write(ClassKey.DAO);
     }
 
-    public void daoImpl(Class<?> po) {
+    public void daoImpl(Class<?> po) throws IOException {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.write(ClassKey.DAO_IMPL);
     }
 
-    public void daoMybatis(Class<?> po) {
+    public void daoMybatis(Class<?> po) throws IOException {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.writeMybatis(po,environmentContext);
     }
 
-    public void service(Class<?> po) {
+    public void service(Class<?> po) throws IOException {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.write(ClassKey.SERVICE);
     }
 
-    public void repository(Class<?> po) {
+    public void repository(Class<?> po) throws IOException {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.write(ClassKey.REPOSITORY);
     }
 
-    public void repositoryImpl(Class<?> po) {
+    public void repositoryImpl(Class<?> po) throws IOException {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.write(ClassKey.REPOSITORY_IMPL);
     }
 
-    public void controller(Class<?> po) {
+    public void controller(Class<?> po) throws IOException {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         tableConfig.write(ClassKey.CONTROLLER);
     }
 
-    public void generaCreateNDDL(String originTableName, Integer n, boolean create) {
+    public void generaCreateNDDL(String originTableName, Integer n, boolean create) throws IOException {
         String originTableFullPath = environmentContext.getTableCreateDDLPath(originTableName);
         String originTableContent = FileUtility.getInstance().readFileContent(originTableFullPath);
         for (int i = 0; i < n; i++) {
@@ -122,7 +122,7 @@ public class CodeGenerator {
         }
     }
 
-    public void generaCreateDDL(Class<?> po) {
+    public void generaCreateDDL(Class<?> po) throws IOException {
         EnvironmentContext.Config tableConfig = environmentContext.new Config(po);
         AbstractEntityManagerAdapter managerAdapter = new SparrowEntityManager(po);
         String tablePath = this.environmentContext.getTableCreateDDLPath(tableConfig.getOriginTableName());

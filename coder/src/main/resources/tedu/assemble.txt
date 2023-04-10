@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 public class $persistence_class_nameAssemble {
     public $persistence_class_nameVO assembleBO2VO($persistence_class_nameBO bo) {
         $persistence_class_nameVO $persistence_object_name = new $persistence_class_nameVO();
-        BeanUtils.copyProperties(bo, bank);
-        return bank;
+        BeanUtils.copyProperties(bo, $persistence_object_name);
+        return $persistence_object_name;
     }
 
     public List<$persistence_class_nameVO> boListAssembleVOList(List<$persistence_class_nameBO> list) {
@@ -32,10 +32,10 @@ public class $persistence_class_nameAssemble {
         return $persistence_object_nameVOList;
     }
 
-    public PagerResult<BankVO> assemblePagerResult(ListRecordTotalBO<BankBO> $persistence_object_nameListTotalRecord,
+    public PagerResult<$persistence_class_nameVO> assemblePagerResult(ListRecordTotalBO<$persistence_class_nameBO> $persistence_object_nameListTotalRecord,
         SimplePagerQuery $persistence_object_nameQuery) {
-        List<BankVO> $persistence_object_nameVOList = this.boListAssembleVOList(bankListTotalRecord.getList());
-        PagerResult<BankVO> pagerResult = new PagerResult<>(bankQuery);
+        List<$persistence_class_nameVO> $persistence_object_nameVOList = this.boListAssembleVOList($persistence_object_nameListTotalRecord.getList());
+        PagerResult<$persistence_class_nameVO> pagerResult = new PagerResult<>($persistence_object_nameQuery);
         pagerResult.setObjects($persistence_object_nameVOList);
         pagerResult.setTotal($persistence_object_nameListTotalRecord.getTotal());
         return pagerResult;

@@ -15,7 +15,6 @@ import com.sparrow.utility.DateTimeUtility;
 import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -73,8 +72,8 @@ public class EnvironmentContext {
         String coderHome = System.getenv(EnvConfig.SPARROW_CODER_HOME);
         this.author = this.config.getProperty(CoderConfig.AUTHOR);
         this.workspace = config.getProperty(CoderConfig.WORKSPACE);
-        String userHome=System.getProperty("user.home");
-        this.workspace=this.workspace.replace("${user.home}",userHome);
+        String userHome = System.getProperty("user.home");
+        this.workspace = this.workspace.replace("${user.home}", userHome);
         this.project = config.getProperty(CoderConfig.PROJECT);
         this.parentModule = config.getProperty(CoderConfig.MODULE_PREFIX + CoderConfig.MODULE_PARENT_ADMIN);
         this.backendTemplateHome = config.getProperty(CoderConfig.BACKEND_TEMPLATE_HOME);
@@ -293,7 +292,7 @@ public class EnvironmentContext {
             return fullPath;
         }
 
-        public void writeMybatis(Class<?> po, EnvironmentContext environmentContext) {
+        public void writeMybatis(Class<?> po, EnvironmentContext environmentContext) throws IOException {
             MybatisEntityManager entityManager = new MybatisEntityManager(po, environmentContext);
             entityManager.init();
             String content = entityManager.getXml();
@@ -306,7 +305,7 @@ public class EnvironmentContext {
                 content);
         }
 
-        public void write(ClassKey classKey) {
+        public void write(ClassKey classKey) throws IOException {
             System.err.printf("current path is [%s]\n", workspace);
 
             String licensed = FileUtility.getInstance().readFileContent("/Licensed.txt");
