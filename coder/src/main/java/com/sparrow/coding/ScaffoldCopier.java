@@ -11,8 +11,10 @@ public class ScaffoldCopier {
 
     public static void main(String[] args2) {
         String[] args = new String[6];
-        args[0] = "/Users/zhanglizhi/workspace/tedu/tarena-tp-example";
-        args[1] = "luban-settle";
+        //args[0] = "/Users/zhanglizhi/workspace/tedu/tarena-tp-example";
+        //args[0] = "/Users/zhanglizhi/workspace/sparrow/sparrow-zoo/sparrow-example";
+
+        //args[1] = "chedan";
 
         try {
             copy(args[0], args[1]);
