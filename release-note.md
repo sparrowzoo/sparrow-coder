@@ -8,5 +8,5 @@
 - 相关sparrow 依赖已提交中央仓库，clone 后配置相关环境变量即可编译使用
 - 修复部分bug
 - 优化部分代码
-- 优化部分文档 【新增release node】
+- 优化部分文档 【新增release note】
 - 
