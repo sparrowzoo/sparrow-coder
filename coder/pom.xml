@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.sparrowzoo</groupId>
         <artifactId>sparrow-bom</artifactId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>1.0.1-RELEASE</version>
         <relativePath/>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -60,12 +60,12 @@
         <dependency>
             <artifactId>coder-protocol</artifactId>
             <groupId>com.sparrowzoo.coding</groupId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0-RELEASE</version>
         </dependency>
         <dependency>
             <artifactId>example-po</artifactId>
             <groupId>com.sparrowzoo.example</groupId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0-RELEASE</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>

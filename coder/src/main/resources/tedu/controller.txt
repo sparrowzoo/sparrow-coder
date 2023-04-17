@@ -27,9 +27,9 @@ public class $persistence_class_nameController {
 
     @PostMapping("search")
     @ResponseBody
-    public PagerResult<BankVO> queryBanks($persistence_class_nameQuery $persistence_object_nameQuery) {
-        ListRecordTotalBO<$persistence_class_nameBO> bankListTotalRecord = this.$persistence_object_nameService.query$persistence_class_name($persistence_object_nameQuery);
-        return this.$persistence_object_nameAssemble.assemblePagerResult(bankListTotalRecord, $persistence_object_nameQuery);
+    public PagerResult<$persistence_class_nameVO> query$persistence_class_names($persistence_class_nameQuery $persistence_object_nameQuery) {
+        ListRecordTotalBO<$persistence_class_nameBO> $persistence_object_nameListTotalRecord = this.$persistence_object_nameService.query$persistence_class_name($persistence_object_nameQuery);
+        return this.$persistence_object_nameAssemble.assemblePagerResult($persistence_object_nameListTotalRecord, $persistence_object_nameQuery);
     }
 
     @PostMapping("save")
@@ -39,7 +39,7 @@ public class $persistence_class_nameController {
     }
 
     @GetMapping("get")
-    public BankVO get$persistence_class_name(Long $persistence_object_nameId) throws BusinessException {
+    public $persistence_class_nameVO get$persistence_class_name(Long $persistence_object_nameId) throws BusinessException {
         $persistence_class_nameBO $persistence_object_nameBo = $persistence_object_nameService.get$persistence_class_name($persistence_object_nameId);
         return this.$persistence_object_nameAssemble.assembleBO2VO($persistence_object_nameBo);
     }

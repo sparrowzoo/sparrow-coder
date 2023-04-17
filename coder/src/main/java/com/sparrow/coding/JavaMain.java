@@ -4,6 +4,7 @@ import com.sparrow.coding.java.CodeGenerator;
 import com.sparrow.container.Container;
 import com.sparrow.container.ContainerBuilder;
 import com.sparrow.core.spi.ApplicationContext;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -134,10 +135,10 @@ public class JavaMain {
     public static void main(String[] args) throws Exception {
         Container container = ApplicationContext.getContainer();
         container.init(new ContainerBuilder().initController(false)
-            .initInterceptor(false));
-//        args = "--example".split(" ");
-//        args = "-pq com.sparrow.example.po.SparrowExample".split(" ");
-       // args = "-pq com.sparrow.example.po.SparrowExample -config=/Users/zhanglizhi/workspace/tedu/tarena-tp-basic/basic-po/bin/config.properties".split(" ");
+                .initInterceptor(false));
+        //args = "--example".split(" ");
+        //args = "-pq com.sparrow.example.po.SparrowExample".split(" ");
+        //args = "-pq com.sparrow.example.po.SparrowExample -config=/Users/zhanglizhi/workspace/tedu/tarena-tp-basic/basic-po/bin/config.properties".split(" ");
 
         if (args.length == 0 || "--help".equals(args[0])) {
             usage();

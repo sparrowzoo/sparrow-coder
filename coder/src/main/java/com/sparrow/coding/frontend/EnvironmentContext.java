@@ -9,7 +9,6 @@ import com.sparrow.coding.protocol.Form;
 import com.sparrow.coding.support.utils.ConfigUtils;
 import com.sparrow.protocol.POJO;
 import com.sparrow.protocol.constant.Constant;
-import com.sparrow.support.EnvironmentSupport;
 import com.sparrow.utility.ClassUtility;
 import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
@@ -32,7 +31,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
- * 代码生成器环境上下文
+ * 代码生成器环境上下文 test
  */
 public class EnvironmentContext {
     private static Logger logger = LoggerFactory.getLogger(EnvironmentContext.class);
@@ -216,15 +215,15 @@ public class EnvironmentContext {
 
             String project = config.getProperty(CoderConfig.PROJECT);
 
-            String workspace= config.getProperty(CoderConfig.WORKSPACE);
-            String userHome=System.getProperty("user.home");
-            workspace=workspace.replace("${user.home}",userHome);
+            String workspace = config.getProperty(CoderConfig.WORKSPACE);
+            String userHome = System.getProperty("user.home");
+            workspace = workspace.replace("${user.home}", userHome);
 
-            String resourceWorkspace= config.getProperty(CoderConfig.RESOURCE_WORKSPACE);
-            resourceWorkspace=resourceWorkspace.replace("${user.home}",userHome);
+            String resourceWorkspace = config.getProperty(CoderConfig.RESOURCE_WORKSPACE);
+            resourceWorkspace = resourceWorkspace.replace("${user.home}", userHome);
             context.put(FrontendPlaceholderKey.$project.name(), project);
-            context.put(FrontendPlaceholderKey.$workspace.name(),workspace);
-            context.put(FrontendPlaceholderKey.$resource_workspace.name(),resourceWorkspace);
+            context.put(FrontendPlaceholderKey.$workspace.name(), workspace);
+            context.put(FrontendPlaceholderKey.$resource_workspace.name(), resourceWorkspace);
             context.put(FrontendPlaceholderKey.$entity_name.name(), entity.name());
             context.put(FrontendPlaceholderKey.$entity_by_horizontal.name(), StringUtility.humpToLower(entity.name(), '-'));
             context.put(FrontendPlaceholderKey.$entity_by_slash.name(), StringUtility.humpToLower(entity.name(), File.separatorChar));
@@ -249,7 +248,7 @@ public class EnvironmentContext {
             }
         }
 
-        public void generateCreatePage() {
+        public void generateCreatePage() throws IOException {
             Element headerElement = Xml.getElementByTagAttribute(this.document, "create_page", "header_tail", "HEADER");
             String createPageHeaderContent = StringUtility.replace(headerElement.getTextContent(), this.placeHolder);
 
@@ -266,7 +265,7 @@ public class EnvironmentContext {
             FileUtility.getInstance().writeFile(fullPath, content);
         }
 
-        public void generateManagePage() {
+        public void generateManagePage() throws IOException {
             Element headerElement = Xml.getElementByTagAttribute(this.document, "manage_page", "header_tail", "HEADER");
             String managePageHeaderContent = StringUtility.replace(headerElement.getTextContent(), this.placeHolder);
 
@@ -280,7 +279,7 @@ public class EnvironmentContext {
             FileUtility.getInstance().writeFile(fullPath, content);
         }
 
-        public void generateCreateJs() {
+        public void generateCreateJs() throws IOException {
             String content = Xml.getElementTextContent(this.document, "create_page_js");
             content = StringUtility.replace(content, this.placeHolder);
             System.out.println(content);
@@ -290,7 +289,7 @@ public class EnvironmentContext {
             FileUtility.getInstance().writeFile(fullPath, content);
         }
 
-        public void generateManageJs() {
+        public void generateManageJs() throws IOException {
             String content = Xml.getElementTextContent(this.document, "manage_page_js");
             content = StringUtility.replace(content, this.placeHolder);
             System.out.println(content);
@@ -300,7 +299,7 @@ public class EnvironmentContext {
             FileUtility.getInstance().writeFile(fullPath, content);
         }
 
-        public void generateLanguageJs() {
+        public void generateLanguageJs() throws IOException {
             String content = Xml.getElementTextContent(this.document, "language_js");
             content = StringUtility.replace(content, this.placeHolder);
             List<Field> fieldList = ClassUtility.extractFields(this.clazz);

@@ -38,7 +38,6 @@ public class SparrowExample extends PO {
 
     private String name;
 
-
     public Long getId() {
         return this.id;
     }
