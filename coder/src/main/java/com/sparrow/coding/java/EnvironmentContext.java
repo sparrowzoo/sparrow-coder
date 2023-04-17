@@ -72,6 +72,10 @@ public class EnvironmentContext {
     public EnvironmentContext(String sparrowConfig) throws IOException {
         this.config = ConfigUtils.initPropertyConfig(sparrowConfig);
         String coderHome = System.getenv(EnvConfig.SPARROW_CODER_HOME);
+        if (StringUtility.isNullOrEmpty(coderHome)) {
+            logger.error("[{}]环境变未配置，请source /etc/profile 或者 source ~/.bash_profile\n如果依然无法读取,请重启电脑！！！！", EnvConfig.SPARROW_CODER_HOME);
+            return;
+        }
         this.author = this.config.getProperty(CoderConfig.AUTHOR);
         this.workspace = config.getProperty(CoderConfig.WORKSPACE);
         String userHome = System.getProperty("user.home");
