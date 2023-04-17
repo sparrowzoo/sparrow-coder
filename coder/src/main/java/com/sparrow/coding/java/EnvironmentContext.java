@@ -14,6 +14,7 @@ import com.sparrow.utility.ClassUtility;
 import com.sparrow.utility.DateTimeUtility;
 import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -209,7 +211,7 @@ public class EnvironmentContext {
             context.put(PlaceholderKey.$persistence_object_by_dot.name(), StringUtility.humpToLower(persistenceClassName, '.'));
 
             context.put(PlaceholderKey.$date.name(), DateTimeUtility
-                .getFormatCurrentTime("yyyy-MM-dd HH:mm:ss"));
+                    .getFormatCurrentTime("yyyy-MM-dd HH:mm:ss"));
             context.put(PlaceholderKey.$author.name(), author);
 
             context.put(PlaceholderKey.$package_po.name(), poPackage);
@@ -237,19 +239,19 @@ public class EnvironmentContext {
             context.put(PlaceholderKey.$class_po.name(), getClassName(ClassKey.PO, persistenceClassName));
             context.put(PlaceholderKey.$class_dao.name(), getClassName(ClassKey.DAO, persistenceClassName));
             context.put(PlaceholderKey.$class_impl_dao.name(),
-                getClassName(ClassKey.DAO_IMPL, persistenceClassName));
+                    getClassName(ClassKey.DAO_IMPL, persistenceClassName));
             context.put(PlaceholderKey.$class_service.name(),
-                getClassName(ClassKey.SERVICE, persistenceClassName));
+                    getClassName(ClassKey.SERVICE, persistenceClassName));
 
             context.put(PlaceholderKey.$class_repository.name(), getClassName(ClassKey.REPOSITORY, persistenceClassName));
             context.put(PlaceholderKey.$class_repositoryImpl.name(), getClassName(ClassKey.REPOSITORY_IMPL, persistenceClassName));
             context.put(PlaceholderKey.$class_controller.name(), getClassName(ClassKey.CONTROLLER, persistenceClassName));
 
             context.put(PlaceholderKey.$object_dao.name(),
-                StringUtility.setFirstByteLowerCase(context.get(PlaceholderKey.$class_dao.name())));
+                    StringUtility.setFirstByteLowerCase(context.get(PlaceholderKey.$class_dao.name())));
 
             context.put(PlaceholderKey.$object_service.name(),
-                StringUtility.setFirstByteLowerCase(context.get(PlaceholderKey.$class_service.name())));
+                    StringUtility.setFirstByteLowerCase(context.get(PlaceholderKey.$class_service.name())));
 
             context.put(PlaceholderKey.$primary_property_name.name(), primaryPropertyName);
             context.put(PlaceholderKey.$upper_primary_property_name.name(), StringUtility.setFirstByteUpperCase(primaryPropertyName));
@@ -264,30 +266,24 @@ public class EnvironmentContext {
         }
 
         public String getFullPath(ClassKey k) {
-
             String modulePath = this.getModule(k);
-            String fullPath = null;
+            String path = "";
             if (ClassKey.DAO_MYBATIS.getModule().equals(k.getModule())) {
-                fullPath = workspace + File.separator
-                    + project + File.separator
-                    + parentModule + File.separator
-                    + modulePath + File.separator
-                    + "src" + File.separator
-                    + "main" + File.separator
-                    + "resources" + File.separator + "mapper";
+                path = "src" + File.separator
+                        + "main" + File.separator
+                        + "resources" + File.separator + "mapper";
             } else {
-                fullPath = workspace + File.separator
+                String fullPackage = this.getFullPackage(k);
+                path = "src" + File.separator
+                        + "main" + File.separator
+                        + "java" + File.separator
+                        + fullPackage.replace('.', File.separatorChar);
+            }
+            String fullPath = workspace + File.separator
                     + project + File.separator
                     + parentModule + File.separator
-                    + modulePath + File.separator
-                    + "src" + File.separator
-                    + "main" + File.separator
-                    + "java" + File.separator
-                    + this.getFullPackage(k);
-            }
-
+                    + modulePath + File.separator + path;
             fullPath = StringUtility.replace(fullPath, this.placeHolder);
-            fullPath = fullPath.replace('.', File.separatorChar);
             System.out.println("write to " + fullPath);
             return fullPath;
         }
@@ -302,7 +298,7 @@ public class EnvironmentContext {
             String fullPath = this.getFullPath(ClassKey.DAO_MYBATIS);
             String className = getClassName(ClassKey.DAO_MYBATIS, persistenceClassName);
             FileUtility.getInstance().writeFile(fullPath + File.separator + className + extension,
-                content);
+                    content);
         }
 
         public void write(ClassKey classKey) throws IOException {
@@ -317,7 +313,7 @@ public class EnvironmentContext {
             String className = getClassName(classKey, persistenceClassName);
             content = licensed + "\n" + content;
             FileUtility.getInstance().writeFile(fullPath + File.separator + className + extension,
-                content);
+                    content);
         }
     }
 }

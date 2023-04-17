@@ -13,46 +13,6 @@
 - 支持前后端分离和不分离版本
 - 本示例为不分离版本，分离版本由网友自行配置
 
-# 使用方式
-## 添加sparrow 依赖
-个性maven settings 配置文件
-将下文代码复制到 {user.home}/.m2/setting.xml 文件中.
-```
-
-<?xml version="1.0" encoding="UTF-8"?>
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
-
-    <localRepository>${user.home}/.m2/repository</localRepository>
-    <interactiveMode>true</interactiveMode>
-    <profiles>
-        <profile>
-            <id>center-repository</id>
-            <repositories>
-                <repository>
-                    <id>center</id>
-                    <name>center Repository</name>
-                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-                    <snapshots>
-                        <enabled>true</enabled>
-                        <updatePolicy>always</updatePolicy>
-                        <checksumPolicy>warn</checksumPolicy>
-                    </snapshots>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                </repository>
-            </repositories>
-        </profile>
-    </profiles>
-
-    <activeProfiles>
-        <activeProfile>center-repository</activeProfile>
-    </activeProfiles>
-</settings>
-```
-
 ## 编译
 配置成功后执行命令
 ```
