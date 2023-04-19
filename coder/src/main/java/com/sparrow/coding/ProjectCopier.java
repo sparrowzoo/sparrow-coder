@@ -19,7 +19,10 @@ public class ProjectCopier {
         Properties properties = System.getProperties();
         properties.load(ProjectCopier.class.getResourceAsStream("/tedu/" + config));
 
+        String userHome=System.getProperty("user.home");
         workspace = properties.getProperty("workspace");
+        workspace=workspace.replace("${user.home}", userHome);
+
         String sources = properties.getProperty("sources");
         String[] sourceProjects = sources.split(",");
         target = workspace + properties.getProperty("target");
