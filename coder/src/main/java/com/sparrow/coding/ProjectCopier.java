@@ -35,7 +35,7 @@ public class ProjectCopier {
 
     public static void main(String[] args2) throws IOException {
         run("copier.properties");
-        //run("admin_copier.properties");
+        run("admin_copier.properties");
     }
 
     private static FileUtility.FolderFilter filter = (sourceFile, targetFile) -> {
