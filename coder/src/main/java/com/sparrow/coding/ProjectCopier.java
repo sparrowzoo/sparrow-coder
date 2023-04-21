@@ -19,9 +19,9 @@ public class ProjectCopier {
         Properties properties = System.getProperties();
         properties.load(ProjectCopier.class.getResourceAsStream("/tedu/" + config));
 
-        String userHome=System.getProperty("user.home");
+        String userHome = System.getProperty("user.home");
         workspace = properties.getProperty("workspace");
-        workspace=workspace.replace("${user.home}", userHome);
+        workspace = workspace.replace("${user.home}", userHome);
 
         String sources = properties.getProperty("sources");
         String[] sourceProjects = sources.split(",");
@@ -37,8 +37,9 @@ public class ProjectCopier {
     }
 
     public static void main(String[] args2) throws IOException {
-        run("copier.properties");
-        run("admin_copier.properties");
+        run("sparrow_copier.properties");
+        //run("copier.properties");
+        //run("admin_copier.properties");
     }
 
     private static FileUtility.FolderFilter filter = (sourceFile, targetFile) -> {
