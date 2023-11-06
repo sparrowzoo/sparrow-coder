@@ -5,12 +5,13 @@
     <parent>
         <artifactId>sparrow-bom</artifactId>
         <groupId>com.sparrowzoo</groupId>
-        <version>1.0.0-RELEASE</version>
+        <version>1.0.4-RELEASE</version>
         <relativePath/>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>example-po</artifactId>
     <groupId>com.sparrowzoo.example</groupId>
+    <version>1.0.0-RELEASE</version>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>

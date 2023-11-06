@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -128,7 +129,7 @@ public class EnvironmentContext {
         if (inputStream == null) {
             System.err.printf("[%s] can't read\n", configFilePath);
         }
-        return FileUtility.getInstance().readFileContent(inputStream, Constant.CHARSET_UTF_8);
+        return FileUtility.getInstance().readFileContent(inputStream, StandardCharsets.UTF_8.name());
     }
 
     public class Config {

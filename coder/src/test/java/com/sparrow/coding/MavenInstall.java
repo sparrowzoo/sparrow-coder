@@ -9,6 +9,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
 import sun.misc.JarFilter;
 
@@ -64,7 +65,7 @@ public class MavenInstall {
 
     private static void printResult(Process process) throws IOException {
         InputStream is = process.getInputStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(is, Constant.CHARSET_UTF_8));
+        BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
         String lineStr;
         while ((lineStr = br.readLine()) != null) {
             System.out.println(lineStr);
