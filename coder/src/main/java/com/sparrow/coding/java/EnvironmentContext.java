@@ -283,10 +283,13 @@ public class EnvironmentContext {
                         + "java" + File.separator
                         + fullPackage.replace('.', File.separatorChar);
             }
+            String projectPath = StringUtility.isNullOrEmpty(project) ? "" : project + File.separator;
+            String parentModulePath = StringUtility.isNullOrEmpty(parentModule) ? "" : modulePath + File.separator;
+            String module = StringUtility.isNullOrEmpty(modulePath) ? "" : modulePath + File.separator;
             String fullPath = workspace + File.separator
-                    + project + File.separator
-                    + parentModule + File.separator
-                    + modulePath + File.separator + path;
+                    + projectPath
+                    + parentModulePath
+                    + module + path;
             fullPath = StringUtility.replace(fullPath, this.placeHolder);
             System.out.println("write to " + fullPath);
             return fullPath;

@@ -37,8 +37,8 @@ public class ProjectCopier {
     }
 
     public static void main(String[] args2) throws IOException {
-        run("sparrow_copier.properties");
-        //run("copier.properties");
+        //run("sparrow_copier.properties");
+        run("copier.properties");
         //run("admin_copier.properties");
     }
 

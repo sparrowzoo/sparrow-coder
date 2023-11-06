@@ -24,7 +24,7 @@ public class ScaffoldCopier {
         //sparrow example 脚手架所在目录
         args[0] = "/Users/zhanglizhi/workspace/sparrow/sparrow-zoo/sparrow-example";
         //脚手架新的名字
-        args[1] = "newexample";
+        args[1] = "chat";
         try {
             copy(args[0], args[1]);
         } catch (Exception e) {
