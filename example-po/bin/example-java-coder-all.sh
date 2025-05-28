@@ -8,5 +8,5 @@ else
     exit 1
 fi
 
-echo $pwd
-#sh ./sparrow-java-coder.sh -all com.sparrow.example.po.SparrowExample -config=$config_path
+
+sh ./sparrow-java-coder.sh -ct com.sparrow.example.po.SparrowExample -config=$config_path

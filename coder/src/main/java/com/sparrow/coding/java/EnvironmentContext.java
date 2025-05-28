@@ -87,6 +87,10 @@ public class EnvironmentContext {
         this.backendTemplateHome = this.backendTemplateHome.replace(PlaceholderKey.$coder_home.name(), coderHome);
         this.tableOutputGenerateHome = config.getProperty(CoderConfig.TABLE_OUTPUT_HOME);
         this.tableOutputGenerateHome = this.tableOutputGenerateHome.replace(PlaceholderKey.$coder_home.name(), coderHome);
+        this.tableOutputGenerateHome = this.tableOutputGenerateHome.replace(PlaceholderKey.$workspace.name(), workspace);
+        this.tableOutputGenerateHome = this.tableOutputGenerateHome.replace(PlaceholderKey.$project.name(), project);
+
+
         System.out.printf("author is %s\n", this.author);
     }
 
