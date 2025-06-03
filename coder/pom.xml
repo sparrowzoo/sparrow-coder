@@ -63,13 +63,14 @@
             <version>1.0.0-RELEASE</version>
         </dependency>
         <dependency>
-            <artifactId>example-po</artifactId>
-            <groupId>com.sparrowzoo.example</groupId>
-            <version>1.0.0-RELEASE</version>
-        </dependency>
-        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <optional>true</optional>
         </dependency>
 
 

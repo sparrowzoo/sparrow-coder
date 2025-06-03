@@ -1,17 +1,22 @@
 package com.sparrow.coding.protocol;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import lombok.Data;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+@Data
+public class Entity {
+    /**
+     * 实体类名
+     */
+    private String name;
+    /**
+     * tableName
+     * Map<String,Table> tableMap
+     * key: tableName
+     * value: Table JPA对象
+     */
+    private String tableName;
 
-@Target({TYPE})
-@Retention(RUNTIME)
-public @interface Entity {
-    String name();
+    private String text;
 
-    String text();
+    private String i18n;
 }

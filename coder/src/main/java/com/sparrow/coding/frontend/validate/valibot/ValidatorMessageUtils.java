@@ -1,4 +1,4 @@
-package com.sparrow.coding.frontend.validate;
+package com.sparrow.coding.frontend.validate.valibot;
 
 public class ValidatorMessageUtils {
     private static final String ERROR_PREFIX = "error";

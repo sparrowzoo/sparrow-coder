@@ -2,7 +2,7 @@ package com.sparrow.coding.frontend.validate2;
 
 import com.sparrow.coding.api.ValidatorMessageGenerator;
 import com.sparrow.coding.config.ExampleFront;
-import com.sparrow.coding.protocol.Form;
+import com.sparrow.coding.protocol.ColumnDef;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
@@ -22,7 +22,7 @@ public class MessageConverterV2 {
         //遍历每一个字段
         for (Field field : userFields) {
             //拿到form注解
-            Form form = field.getAnnotation(Form.class);
+            ColumnDef form = field.getAnnotation(ColumnDef.class);
             //拿到fieldName
             String fieldName = field.getName();
             //拿到定义的控件前缀

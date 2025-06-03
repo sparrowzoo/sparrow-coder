@@ -9,6 +9,16 @@
         <version>1.0.4-RELEASE</version>
         <relativePath/>
     </parent>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sparrowzoo</groupId>
+            <artifactId>sparrow</artifactId>
+        </dependency>
+    </dependencies>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>coder-protocol</artifactId>
     <groupId>com.sparrowzoo.coding</groupId>

@@ -2,13 +2,13 @@ package com.sparrow.coding.frontend.validate3;
 
 import com.sparrow.coding.api.ValidatorMessageGenerator;
 import com.sparrow.coding.config.ExampleFront;
-import com.sparrow.coding.frontend.validate.EmailValidatorMessageGenerator;
-import com.sparrow.coding.frontend.validate.MobileValidatorMessageGenerator;
-import com.sparrow.coding.frontend.validate.NullValidatorMessageGenerator;
-import com.sparrow.coding.protocol.Form;
+import com.sparrow.coding.frontend.validate.valibot.EmailValidatorMessageGenerator;
+import com.sparrow.coding.frontend.validate.valibot.MobileValidatorMessageGenerator;
+import com.sparrow.coding.frontend.validate.valibot.StringValidatorMessageGenerator;
+import com.sparrow.coding.protocol.ColumnDef;
 import com.sparrow.coding.protocol.validate.EmailValidator;
 import com.sparrow.coding.protocol.validate.MobileValidator;
-import com.sparrow.coding.protocol.validate.NullValidator;
+import com.sparrow.coding.protocol.validate.StringValidator;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
@@ -27,7 +27,7 @@ public class MessageConverterV3 {
         //通过反射拿到字段
         Field[] userFields = userClazz.getDeclaredFields();
 
-        MessageGeneratorStrategyV3.put(NullValidator.class, new NullValidatorMessageGenerator());
+        MessageGeneratorStrategyV3.put(StringValidator.class, new StringValidatorMessageGenerator());
         MessageGeneratorStrategyV3.put(EmailValidator.class, new EmailValidatorMessageGenerator());
         MessageGeneratorStrategyV3.put(MobileValidator.class, new MobileValidatorMessageGenerator());
 
@@ -36,7 +36,7 @@ public class MessageConverterV3 {
         //遍历每一个字段
         for (Field field : userFields) {
             //拿到form注解
-            Form form = field.getAnnotation(Form.class);
+            ColumnDef form = field.getAnnotation(ColumnDef.class);
             //拿到fieldName
             String fieldName = field.getName();
             //拿到定义的控件前缀

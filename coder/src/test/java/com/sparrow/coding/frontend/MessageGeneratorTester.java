@@ -2,8 +2,8 @@ package com.sparrow.coding.frontend;
 
 import com.sparrow.coding.api.ValidatorMessageGenerator;
 import com.sparrow.coding.config.ExampleFront;
-import com.sparrow.coding.frontend.validate.NullValidatorMessageGenerator;
-import com.sparrow.coding.protocol.Form;
+import com.sparrow.coding.frontend.validate.valibot.StringValidatorMessageGenerator;
+import com.sparrow.coding.protocol.ColumnDef;
 import com.sparrow.coding.protocol.validate.AllowInputCharLengthValidator;
 import com.sparrow.coding.protocol.validate.AllowOptionsValidator;
 import com.sparrow.coding.protocol.validate.ChineseCharactersValidator;
@@ -12,7 +12,7 @@ import com.sparrow.coding.protocol.validate.EmailValidator;
 import com.sparrow.coding.protocol.validate.EqualValidator;
 import com.sparrow.coding.protocol.validate.IdCardValidator;
 import com.sparrow.coding.protocol.validate.MobileValidator;
-import com.sparrow.coding.protocol.validate.NullValidator;
+import com.sparrow.coding.protocol.validate.StringValidator;
 import com.sparrow.coding.protocol.validate.TelValidator;
 import com.sparrow.coding.protocol.validate.UserNameRuleValidator;
 import java.lang.annotation.Annotation;
@@ -22,7 +22,7 @@ public class MessageGeneratorTester {
     public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
         test("userName", UserNameRuleValidator.class);
         test("age", DigitalValidator.class);
-        test("password", NullValidator.class);
+        test("password", StringValidator.class);
         test("status", AllowOptionsValidator.class);
         test("name", ChineseCharactersValidator.class);
         test("email", EmailValidator.class);
@@ -37,10 +37,10 @@ public class MessageGeneratorTester {
         Class annotation) throws NoSuchFieldException, IllegalAccessException {
         Class userClazz = ExampleFront.class;
         Field field = userClazz.getDeclaredField(fieldName);
-        Form form = field.getAnnotation(Form.class);
-        Annotation nullValidator = field.getAnnotation(annotation);
-        ValidatorMessageGenerator validatorMessageGenerator = new NullValidatorMessageGenerator();
-        String json = validatorMessageGenerator.generateValidateMessage(field.getName(), form.type().getPrefix(), nullValidator);
+        ColumnDef form = field.getAnnotation(ColumnDef.class);
+        Annotation validator = field.getAnnotation(annotation);
+        ValidatorMessageGenerator validatorMessageGenerator = new StringValidatorMessageGenerator();
+        String json = validatorMessageGenerator.generateValidateMessage(field.getName(), form.type().getPrefix(), validator);
         System.out.println(json);
     }
 }
