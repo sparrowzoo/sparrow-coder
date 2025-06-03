@@ -10,17 +10,23 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>example-po</artifactId>
-    <groupId>com.sparrowzoo.example</groupId>
+    <groupId>com.sparrowzoo.coder</groupId>
     <version>1.0.0-RELEASE</version>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <lombok.version>1.18.36</lombok.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.sparrowzoo</groupId>
             <artifactId>sparrow-protocol-dao</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
         </dependency>
     </dependencies>
 </project>

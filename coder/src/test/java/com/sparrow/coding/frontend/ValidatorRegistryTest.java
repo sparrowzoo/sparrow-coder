@@ -1,7 +1,8 @@
 package com.sparrow.coding.frontend;
 
+import com.sparrow.coding.api.ValidatorRegistry;
 import com.sparrow.coding.config.ExampleFront;
-import com.sparrow.coding.protocol.Form;
+import com.sparrow.coding.protocol.ColumnDef;
 import com.sparrow.container.Container;
 import com.sparrow.container.ContainerBuilder;
 import com.sparrow.core.spi.ApplicationContext;
@@ -20,7 +21,7 @@ public class ValidatorRegistryTest {
         StringBuilder sb = new StringBuilder();
         for (Field field : fields) {
             try {
-                Form form = field.getAnnotation(Form.class);
+                ColumnDef form = field.getAnnotation(ColumnDef.class);
                 Annotation validator = field.getAnnotation(form.validate());
                 String fieldJson = ValidatorRegistry.getInstance().getValidatorMessageGenerator(validator.annotationType())
                     .generateValidateMessage(field.getName(), form.type().getPrefix(), validator);

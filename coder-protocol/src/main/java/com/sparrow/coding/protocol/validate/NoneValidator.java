@@ -1,13 +1,14 @@
 package com.sparrow.coding.protocol.validate;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+public class NoneValidator implements Validator {
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+    @Override
+    public boolean getI18n() {
+        return false;
+    }
 
-@Target({METHOD, FIELD})
-@Retention(RUNTIME)
-public @interface NoneValidator {
+    @Override
+    public boolean isAllowEmpty() {
+        return true;
+    }
 }

@@ -10,6 +10,16 @@ public enum PlaceholderKey {
      * 代码生成器的家目录
      */
     $coder_home,
+
+    /**
+     * 项目的工作目录
+     */
+    $workspace,
+
+    /**
+     * 项目名
+     */
+    $project,
     /**
      * origin table name e.g user_address
      */

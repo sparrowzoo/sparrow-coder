@@ -86,7 +86,14 @@ public class EnvironmentContext {
         this.backendTemplateHome = config.getProperty(CoderConfig.BACKEND_TEMPLATE_HOME);
         this.backendTemplateHome = this.backendTemplateHome.replace(PlaceholderKey.$coder_home.name(), coderHome);
         this.tableOutputGenerateHome = config.getProperty(CoderConfig.TABLE_OUTPUT_HOME);
+        System.out.println("table output home " + this.tableOutputGenerateHome);
         this.tableOutputGenerateHome = this.tableOutputGenerateHome.replace(PlaceholderKey.$coder_home.name(), coderHome);
+        System.out.println("code home " + coderHome);
+        this.tableOutputGenerateHome = this.tableOutputGenerateHome.replace(PlaceholderKey.$workspace.name(), workspace);
+        System.out.println("workspace " + workspace);
+        this.tableOutputGenerateHome = this.tableOutputGenerateHome.replace(PlaceholderKey.$project.name(), project);
+        System.out.println("project " + project);
+        System.out.println("table output home " + this.tableOutputGenerateHome);
         System.out.printf("author is %s\n", this.author);
     }
 
@@ -284,10 +291,13 @@ public class EnvironmentContext {
                         + "java" + File.separator
                         + fullPackage.replace('.', File.separatorChar);
             }
+            String projectPath = StringUtility.isNullOrEmpty(project) ? "" : project + File.separator;
+            String parentModulePath = StringUtility.isNullOrEmpty(parentModule) ? "" : modulePath + File.separator;
+            String module = StringUtility.isNullOrEmpty(modulePath) ? "" : modulePath + File.separator;
             String fullPath = workspace + File.separator
-                    + project + File.separator
-                    + parentModule + File.separator
-                    + modulePath + File.separator + path;
+                    + projectPath
+                    + parentModulePath
+                    + module + path;
             fullPath = StringUtility.replace(fullPath, this.placeHolder);
             System.out.println("write to " + fullPath);
             return fullPath;

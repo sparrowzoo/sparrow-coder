@@ -6,7 +6,7 @@ package com.sparrow.coding.frontend.enums;
 public enum FrontendPlaceholderKey {
 
     /**
-     * 实体对象名称 比喻:用户对象名 user
+     * 实体对象名称 比如:用户对象名 user
      */
     $entity_name,
     /**

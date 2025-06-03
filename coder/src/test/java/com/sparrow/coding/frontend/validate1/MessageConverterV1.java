@@ -1,16 +1,16 @@
 package com.sparrow.coding.frontend.validate1;
 
 import com.sparrow.coding.config.ExampleFront;
-import com.sparrow.coding.frontend.validate.NullValidatorMessageGenerator;
+import com.sparrow.coding.frontend.validate.valibot.StringValidatorMessageGenerator;
 import com.sparrow.coding.protocol.ControlType;
-import com.sparrow.coding.protocol.Form;
+import com.sparrow.coding.protocol.ColumnDef;
 import com.sparrow.coding.protocol.validate.EmailValidator;
-import com.sparrow.coding.protocol.validate.NullValidator;
+import com.sparrow.coding.protocol.validate.StringValidator;
 import java.lang.reflect.Field;
 
 public class MessageConverterV1 {
-    @Form(text = "密码", type = ControlType.INPUT_PASSWORD, validate = NullValidator.class)
-    @NullValidator(prompt = "请输入密码", nullError = "用户密码不允许为空", allowNull = false, minLength = 6, maxLength = 20, lengthError = "密码要求6-20位字符")
+    @ColumnDef(text = "密码", type = ControlType.INPUT_PASSWORD, validate = StringValidator.class)
+    @StringValidator(prompt = "请输入密码", nullError = "用户密码不允许为空", allowNull = false, minLength = 6, maxLength = 20, lengthError = "密码要求6-20位字符")
     private String password;
 
     /**
@@ -28,7 +28,7 @@ public class MessageConverterV1 {
         //遍历每一个字段
         for (Field field : userFields) {
             //拿到form注解
-            Form form = field.getAnnotation(Form.class);
+            ColumnDef form = field.getAnnotation(ColumnDef.class);
             //拿到fieldName
             String fieldName = field.getName();
             //拿到定义的控件前缀
@@ -41,13 +41,13 @@ public class MessageConverterV1 {
              *     @NullValidator(prompt = "请输入密码", nullError = "用户密码不允许为空", allowNull = false, minLength = 6, maxLength = 20, lengthError = "密码要求6-20位字符")
              *     private String password;
              */
-            if (annotationClass.equals(NullValidator.class)) {
-                NullValidator nullValidator = field.getAnnotation(NullValidator.class);
-                String fieldJson = new NullValidatorMessageGenerator().generateValidateMessage(fieldName, controlPrefix, nullValidator);
+            if (annotationClass.equals(StringValidator.class)) {
+                StringValidator nullValidator = field.getAnnotation(StringValidator.class);
+                String fieldJson = new StringValidatorMessageGenerator().generateValidateMessage(fieldName, controlPrefix, nullValidator);
                 sb.append(fieldJson);
             } else if (annotationClass.equals(EmailValidator.class)) {
                 EmailValidator emailValidator = field.getAnnotation(EmailValidator.class);
-                String fieldJson = new NullValidatorMessageGenerator().generateValidateMessage(fieldName, controlPrefix, emailValidator);
+                String fieldJson = new StringValidatorMessageGenerator().generateValidateMessage(fieldName, controlPrefix, emailValidator);
                 sb.append(fieldJson);
             }
             System.out.println(sb.toString());

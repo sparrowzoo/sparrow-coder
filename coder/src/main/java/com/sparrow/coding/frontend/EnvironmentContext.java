@@ -1,11 +1,12 @@
 package com.sparrow.coding.frontend;
 
+import com.sparrow.coding.api.ValidatorRegistry;
 import com.sparrow.coding.config.CoderConfig;
 import com.sparrow.coding.frontend.enums.FrontendPlaceholderKey;
 import com.sparrow.coding.java.enums.PlaceholderKey;
 import com.sparrow.coding.protocol.ControlType;
 import com.sparrow.coding.protocol.Entity;
-import com.sparrow.coding.protocol.Form;
+import com.sparrow.coding.protocol.ColumnDef;
 import com.sparrow.coding.support.utils.ConfigUtils;
 import com.sparrow.protocol.POJO;
 import com.sparrow.protocol.constant.Constant;
@@ -144,7 +145,7 @@ public class EnvironmentContext {
         }
 
         private String replaceManageField(Field field) {
-            Form form = field.getAnnotation(Form.class);
+            ColumnDef form = field.getAnnotation(ColumnDef.class);
             Element element = Xml.getElementByTagAttribute(this.document, "manage_page_field", "control_type", form.listType().name());
             String content = element.getTextContent();
             content = StringUtility.replace(content, this.newFieldPlaceholder(field));
@@ -153,7 +154,7 @@ public class EnvironmentContext {
 
         private String replaceEditField(Field field) {
             try {
-                Form form = field.getAnnotation(Form.class);
+                ColumnDef form = field.getAnnotation(ColumnDef.class);
                 ControlType controlType = form.type();
                 Element element = Xml.getElementByTagAttribute(this.document, "create_page_field", "control_type", controlType.name());
                 String content = element.getTextContent();
@@ -169,7 +170,7 @@ public class EnvironmentContext {
             Field[] fields = clazz.getDeclaredFields();
             StringBuilder editForm = new StringBuilder();
             for (Field field : fields) {
-                Form form = field.getAnnotation(Form.class);
+                ColumnDef form = field.getAnnotation(ColumnDef.class);
                 if (form == null) {
                     continue;
                 }
@@ -188,7 +189,7 @@ public class EnvironmentContext {
             List<Field> fieldList = ClassUtility.extractFields(this.clazz);
             Field[] fields = ClassUtility.getOrderedFields(fieldList);
             for (Field field : fields) {
-                Form form = field.getAnnotation(Form.class);
+                ColumnDef form = field.getAnnotation(ColumnDef.class);
                 if (form == null) {
                     continue;
                 }
@@ -232,7 +233,7 @@ public class EnvironmentContext {
 
             Field[] fields = clazz.getDeclaredFields();
             for (Field field : fields) {
-                Form form = field.getAnnotation(Form.class);
+                ColumnDef form = field.getAnnotation(ColumnDef.class);
                 if (form == null) {
                     continue;
                 }
@@ -308,7 +309,7 @@ public class EnvironmentContext {
             StringBuilder sb = new StringBuilder(entityName + "Info={");
             for (Field field : fields) {
                 try {
-                    Form form = field.getAnnotation(Form.class);
+                    ColumnDef form = field.getAnnotation(ColumnDef.class);
                     Annotation validator = field.getAnnotation(form.validate());
                     if (validator == null) {
                         logger.error("field:{} validate is null ", field.getName());

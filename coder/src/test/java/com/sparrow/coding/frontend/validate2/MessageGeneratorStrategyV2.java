@@ -1,11 +1,11 @@
 package com.sparrow.coding.frontend.validate2;
 
 import com.sparrow.coding.api.ValidatorMessageGenerator;
-import com.sparrow.coding.frontend.validate.EmailValidatorMessageGenerator;
-import com.sparrow.coding.frontend.validate.NullValidatorMessageGenerator;
-import com.sparrow.coding.frontend.validate.TelValidatorMessageGenerator;
+import com.sparrow.coding.frontend.validate.valibot.EmailValidatorMessageGenerator;
+import com.sparrow.coding.frontend.validate.valibot.StringValidatorMessageGenerator;
+import com.sparrow.coding.frontend.validate.valibot.TelValidatorMessageGenerator;
 import com.sparrow.coding.protocol.validate.EmailValidator;
-import com.sparrow.coding.protocol.validate.NullValidator;
+import com.sparrow.coding.protocol.validate.StringValidator;
 import com.sparrow.coding.protocol.validate.TelValidator;
 import java.lang.annotation.Annotation;
 
@@ -14,8 +14,8 @@ import java.lang.annotation.Annotation;
  */
 public class MessageGeneratorStrategyV2 {
     public static ValidatorMessageGenerator getValidatorGenerator(Class<? extends Annotation> clazz) {
-        if (clazz.equals(NullValidator.class)) {
-            return new NullValidatorMessageGenerator();
+        if (clazz.equals(StringValidator.class)) {
+            return new StringValidatorMessageGenerator();
         }
         if (clazz.equals(EmailValidator.class)) {
             return new EmailValidatorMessageGenerator();

@@ -132,6 +132,7 @@ public class JavaMain {
         }
     }
 
+    //com.sparrow.coding.JavaMain --help
     public static void main(String[] args) throws Exception {
         Container container = ApplicationContext.getContainer();
         container.init(new ContainerBuilder().initController(false)

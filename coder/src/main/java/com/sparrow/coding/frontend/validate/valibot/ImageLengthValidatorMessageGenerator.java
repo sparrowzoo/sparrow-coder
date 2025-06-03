@@ -1,4 +1,4 @@
-package com.sparrow.coding.frontend.validate;
+package com.sparrow.coding.frontend.validate.valibot;
 
 import com.sparrow.coding.protocol.validate.ImageLengthValidator;
 import javax.inject.Named;
