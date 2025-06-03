@@ -14,7 +14,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public class DigitalValidator implements Validator {
     private Boolean i18n;
     private String emptyMessage;
-    private boolean allowEmpty;
+    private Boolean allowEmpty;
     private String digitalMessage;
     private int minValue;
     private int maxValue;

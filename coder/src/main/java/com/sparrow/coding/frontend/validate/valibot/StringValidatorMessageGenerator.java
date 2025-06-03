@@ -15,7 +15,7 @@ public class StringValidatorMessageGenerator extends AbstractValidatorMessageGen
         pipeline.append(this.minLength(validator));
         pipeline.append(this.maxLength(validator));
         this.finish(pipeline);
-        if (validator.isAllowEmpty()) {
+        if (validator.getAllowEmpty()) {
             return this.allowEmpty(pipeline.toString());
         }
         return pipeline.toString();

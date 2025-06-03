@@ -1,9 +1,9 @@
 package com.sparrow.coding.protocol.validate;
 
 public interface Validator {
-    boolean getI18n();
+    Boolean getI18n();
 
-    boolean isAllowEmpty();
+    Boolean getAllowEmpty();
 
     String getEmptyMessage();
 }

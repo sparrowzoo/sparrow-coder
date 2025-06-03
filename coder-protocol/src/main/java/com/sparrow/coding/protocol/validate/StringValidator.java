@@ -6,7 +6,7 @@ import lombok.Data;
 public class StringValidator implements Validator {
     private Boolean i18n;
     private String emptyMessage;
-    private boolean allowEmpty;
+    private Boolean allowEmpty;
     protected int minLength;
     protected int maxLength;
     private String lengthMessage;

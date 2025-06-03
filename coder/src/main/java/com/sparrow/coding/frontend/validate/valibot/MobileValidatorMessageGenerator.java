@@ -15,7 +15,7 @@ public class MobileValidatorMessageGenerator extends AbstractValidatorMessageGen
         pipeline.append(this.maxLength(validator));
         pipeline.append(String.format("v.regex(%1$s, \"%2$s\"))])","1\\d{10}",this.getMessage(validator.getI18n(),"format-message",validator.getFormatMessage())));
         this.finish(pipeline);
-        if (validator.isAllowEmpty()) {
+        if (validator.getAllowEmpty()) {
             return this.allowEmpty(pipeline.toString());
         }
         return pipeline.toString();

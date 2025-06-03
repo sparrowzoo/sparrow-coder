@@ -80,7 +80,7 @@ public class MybatisEntityManager extends AbstractEntityManagerAdapter {
 
     private void generateResultMap() {
         xml.append(String.format("<resultMap id=\"%sMap\" type=\"%s\">\n", this.simpleClassName, this.className));
-        xml.append(String.format("<id column=\"%s\" property=\"%s\" />\n", this.primary.getColumnName(), this.primary.getName()));
+        xml.append(String.format("<id column=\"%s\" property=\"%s\" />\n", this.primary.getColumnName(), this.primary.getPropertyName()));
         for (String column : this.columnPropertyMap.keySet()) {
             if (column.equals(this.primary.getColumnName())) {
                 continue;
@@ -117,7 +117,7 @@ public class MybatisEntityManager extends AbstractEntityManagerAdapter {
         xml.append("<include refid=\"fields\"/>\n");
         xml.append(" FROM \n");
         xml.append(this.tableName);
-        xml.append(String.format("\nWHERE %s= #{%s}\n", this.primary.getColumnName(), this.primary.getName()));
+        xml.append(String.format("\nWHERE %s= #{%s}\n", this.primary.getColumnName(), this.primary.getPropertyName()));
         xml.append("</select>\n");
     }
 
@@ -129,7 +129,7 @@ public class MybatisEntityManager extends AbstractEntityManagerAdapter {
 
         String autoGenerateConfig = "";
         if (this.primary.getGenerationType().equals(GenerationType.IDENTITY)) {
-            autoGenerateConfig = String.format(" useGeneratedKeys=\"true\" keyColumn=\"%1$s\" keyProperty=\"%2$s\"", this.primary.getColumnName(), this.primary.getName());
+            autoGenerateConfig = String.format(" useGeneratedKeys=\"true\" keyColumn=\"%1$s\" keyProperty=\"%2$s\"", this.primary.getColumnName(), this.primary.getPropertyName());
         }
 
         xml.append(String.format("<insert id=\"insert\" parameterType=\"%1$s\" %2$s>\n", this.className,autoGenerateConfig));
@@ -139,7 +139,7 @@ public class MybatisEntityManager extends AbstractEntityManagerAdapter {
 
     private void generateUuidInsert() {
         xml.append(String.format("<insert id=\"insert\" parameterType=\"%s\">\n", this.className));
-        xml.append(String.format("<selectKey keyProperty=\"%s\" keyColumn=\"%s\"  order=\"BEFORE\" resultType=\"java.lang.String\">\n", this.primary.getName(), this.primary.getColumnName()));
+        xml.append(String.format("<selectKey keyProperty=\"%s\" keyColumn=\"%s\"  order=\"BEFORE\" resultType=\"java.lang.String\">\n", this.primary.getPropertyName(), this.primary.getColumnName()));
         xml.append("select UUID()\n");
         xml.append("</selectKey>\n");
         xml.append(this.insert);

@@ -145,108 +145,113 @@ public class EnvironmentContext {
         }
 
         private String replaceManageField(Field field) {
-            ColumnDef form = field.getAnnotation(ColumnDef.class);
-            Element element = Xml.getElementByTagAttribute(this.document, "manage_page_field", "control_type", form.listType().name());
-            String content = element.getTextContent();
-            content = StringUtility.replace(content, this.newFieldPlaceholder(field));
-            return content;
+//            ColumnDef form = field.getAnnotation(ColumnDef.class);
+//            Element element = Xml.getElementByTagAttribute(this.document, "manage_page_field", "control_type", form.listType().name());
+//            String content = element.getTextContent();
+//            content = StringUtility.replace(content, this.newFieldPlaceholder(field));
+//            return content;
+            return "";
         }
 
         private String replaceEditField(Field field) {
-            try {
-                ColumnDef form = field.getAnnotation(ColumnDef.class);
-                ControlType controlType = form.type();
-                Element element = Xml.getElementByTagAttribute(this.document, "create_page_field", "control_type", controlType.name());
-                String content = element.getTextContent();
-                content = StringUtility.replace(content, this.newFieldPlaceholder(field));
-                return content;
-            } catch (Exception e) {
-                logger.error(" field edit is error {}", field.getName(), e);
-                return "<!-- filed generate error " + field.getName() + "-->";
-            }
+//            try {
+//                ColumnDef form = field.getAnnotation(ColumnDef.class);
+//                ControlType controlType = form.type();
+//                Element element = Xml.getElementByTagAttribute(this.document, "create_page_field", "control_type", controlType.name());
+//                String content = element.getTextContent();
+//                content = StringUtility.replace(content, this.newFieldPlaceholder(field));
+//                return content;
+//            } catch (Exception e) {
+//                logger.error(" field edit is error {}", field.getName(), e);
+//                return "<!-- filed generate error " + field.getName() + "-->";
+//            }
+            return "";
         }
 
         private String generateEditFields() {
-            Field[] fields = clazz.getDeclaredFields();
-            StringBuilder editForm = new StringBuilder();
-            for (Field field : fields) {
-                ColumnDef form = field.getAnnotation(ColumnDef.class);
-                if (form == null) {
-                    continue;
-                }
-                if (form.showInEdit()) {
-                    editForm.append(this.replaceEditField(field));
-                }
-            }
-            return editForm.toString();
+//            Field[] fields = clazz.getDeclaredFields();
+//            StringBuilder editForm = new StringBuilder();
+//            for (Field field : fields) {
+//                ColumnDef form = field.getAnnotation(ColumnDef.class);
+//                if (form == null) {
+//                    continue;
+//                }
+//                if (form.showInEdit()) {
+//                    editForm.append(this.replaceEditField(field));
+//                }
+//            }
+//            return editForm.toString();
+            return "";
         }
 
         private void initManagePlaceholder() {
-            StringBuilder manageHeaderLine = new StringBuilder();
-            StringBuilder manageDataLine = new StringBuilder();
-            manageHeaderLine.append(this.replaceSelectAll());
-            manageHeaderLine.append(Constant.ENTER_TEXT);
-            List<Field> fieldList = ClassUtility.extractFields(this.clazz);
-            Field[] fields = ClassUtility.getOrderedFields(fieldList);
-            for (Field field : fields) {
-                ColumnDef form = field.getAnnotation(ColumnDef.class);
-                if (form == null) {
-                    continue;
-                }
-                if (form.showInList()) {
-                    if (!form.primaryKey()) {
-                        manageHeaderLine.append(this.replaceManageHeaderField(field));
-                    }
-                    manageDataLine.append(this.replaceManageField(field));
-                }
-            }
-            this.placeHolder.put(FrontendPlaceholderKey.$manage_data_table.name(), manageDataLine.toString());
-            this.placeHolder.put(FrontendPlaceholderKey.$manage_header_line.name(), manageHeaderLine.toString());
+//            StringBuilder manageHeaderLine = new StringBuilder();
+//            StringBuilder manageDataLine = new StringBuilder();
+//            manageHeaderLine.append(this.replaceSelectAll());
+//            manageHeaderLine.append(Constant.ENTER_TEXT);
+//            List<Field> fieldList = ClassUtility.extractFields(this.clazz);
+//            Field[] fields = ClassUtility.getOrderedFields(fieldList);
+//            for (Field field : fields) {
+//                ColumnDef form = field.getAnnotation(ColumnDef.class);
+//                if (form == null) {
+//                    continue;
+//                }
+//                if (form.showInList()) {
+//                    if (!form.primaryKey()) {
+//                        manageHeaderLine.append(this.replaceManageHeaderField(field));
+//                    }
+//                    manageDataLine.append(this.replaceManageField(field));
+//                }
+//            }
+//            this.placeHolder.put(FrontendPlaceholderKey.$manage_data_table.name(), manageDataLine.toString());
+//            this.placeHolder.put(FrontendPlaceholderKey.$manage_header_line.name(), manageHeaderLine.toString());
+            return;
         }
 
         private void initPlaceHolder() {
-            Entity entity = clazz.getAnnotation(Entity.class);
-            Map<String, String> context = new HashMap<>();
-
-            this.placeHolder = context;
-
-            String modulePrefix = config.getProperty(CoderConfig.MODULE_PREFIX + "prefix");
-
-            context.put(PlaceholderKey.$module_prefix.name(), modulePrefix);
-
-            String project = config.getProperty(CoderConfig.PROJECT);
-
-            String workspace = config.getProperty(CoderConfig.WORKSPACE);
-            String userHome = System.getProperty("user.home");
-            workspace = workspace.replace("${user.home}", userHome);
-
-            String resourceWorkspace = config.getProperty(CoderConfig.RESOURCE_WORKSPACE);
-            resourceWorkspace = resourceWorkspace.replace("${user.home}", userHome);
-            context.put(FrontendPlaceholderKey.$project.name(), project);
-            context.put(FrontendPlaceholderKey.$workspace.name(), workspace);
-            context.put(FrontendPlaceholderKey.$resource_workspace.name(), resourceWorkspace);
-            context.put(FrontendPlaceholderKey.$entity_name.name(), entity.name());
-            context.put(FrontendPlaceholderKey.$entity_by_horizontal.name(), StringUtility.humpToLower(entity.name(), '-'));
-            context.put(FrontendPlaceholderKey.$entity_by_slash.name(), StringUtility.humpToLower(entity.name(), File.separatorChar));
-            context.put(FrontendPlaceholderKey.$upper_entity_name.name(), StringUtility.setFirstByteUpperCase(entity.name()));
-            context.put(FrontendPlaceholderKey.$entity_text.name(), entity.text());
-
-            Field[] fields = clazz.getDeclaredFields();
-            for (Field field : fields) {
-                ColumnDef form = field.getAnnotation(ColumnDef.class);
-                if (form == null) {
-                    continue;
-                }
-                if (form.primaryKey()) {
-                    context.put(FrontendPlaceholderKey.$primary_key.name(), field.getName());
-                }
-                Map<String, String> fieldPlaceholder = new HashMap<>();
-                fieldPlaceholder.put(FrontendPlaceholderKey.$field_text.name(), form.text());
-                fieldPlaceholder.put(FrontendPlaceholderKey.$property_name.name(), field.getName());
-                fieldPlaceholder.put(FrontendPlaceholderKey.$upper_property_name.name(), StringUtility.setFirstByteUpperCase(field.getName()));
-                fieldPlaceholder.put(FrontendPlaceholderKey.$width.name(), form.width() + "");
-                fieldPlaceholders.put(field.getName(), fieldPlaceholder);
-            }
+//            Entity entity = clazz.getAnnotation(Entity.class);
+//            Map<String, String> context = new HashMap<>();
+//
+//            this.placeHolder = context;
+//
+//            String modulePrefix = config.getProperty(CoderConfig.MODULE_PREFIX + "prefix");
+//
+//            context.put(PlaceholderKey.$module_prefix.name(), modulePrefix);
+//
+//            String project = config.getProperty(CoderConfig.PROJECT);
+//
+//            String workspace = config.getProperty(CoderConfig.WORKSPACE);
+//            String userHome = System.getProperty("user.home");
+//            workspace = workspace.replace("${user.home}", userHome);
+//
+//            String resourceWorkspace = config.getProperty(CoderConfig.RESOURCE_WORKSPACE);
+//            resourceWorkspace = resourceWorkspace.replace("${user.home}", userHome);
+//            context.put(FrontendPlaceholderKey.$project.name(), project);
+//            context.put(FrontendPlaceholderKey.$workspace.name(), workspace);
+//            context.put(FrontendPlaceholderKey.$resource_workspace.name(), resourceWorkspace);
+//            context.put(FrontendPlaceholderKey.$entity_name.name(), entity.name());
+//            context.put(FrontendPlaceholderKey.$entity_by_horizontal.name(), StringUtility.humpToLower(entity.name(), '-'));
+//            context.put(FrontendPlaceholderKey.$entity_by_slash.name(), StringUtility.humpToLower(entity.name(), File.separatorChar));
+//            context.put(FrontendPlaceholderKey.$upper_entity_name.name(), StringUtility.setFirstByteUpperCase(entity.name()));
+//            context.put(FrontendPlaceholderKey.$entity_text.name(), entity.text());
+//
+//            Field[] fields = clazz.getDeclaredFields();
+//            for (Field field : fields) {
+//                ColumnDef form = field.getAnnotation(ColumnDef.class);
+//                if (form == null) {
+//                    continue;
+//                }
+//                if (form.primaryKey()) {
+//                    context.put(FrontendPlaceholderKey.$primary_key.name(), field.getName());
+//                }
+//                Map<String, String> fieldPlaceholder = new HashMap<>();
+//                fieldPlaceholder.put(FrontendPlaceholderKey.$field_text.name(), form.text());
+//                fieldPlaceholder.put(FrontendPlaceholderKey.$property_name.name(), field.getName());
+//                fieldPlaceholder.put(FrontendPlaceholderKey.$upper_property_name.name(), StringUtility.setFirstByteUpperCase(field.getName()));
+//                fieldPlaceholder.put(FrontendPlaceholderKey.$width.name(), form.width() + "");
+//                fieldPlaceholders.put(field.getName(), fieldPlaceholder);
+//            }
+            return;
         }
 
         public void generateCreatePage() throws IOException {
@@ -301,35 +306,36 @@ public class EnvironmentContext {
         }
 
         public void generateLanguageJs() throws IOException {
-            String content = Xml.getElementTextContent(this.document, "language_js");
-            content = StringUtility.replace(content, this.placeHolder);
-            List<Field> fieldList = ClassUtility.extractFields(this.clazz);
-            Field[] fields = ClassUtility.getOrderedFields(fieldList);
-            String entityName = this.placeHolder.get(FrontendPlaceholderKey.$entity_name.name());
-            StringBuilder sb = new StringBuilder(entityName + "Info={");
-            for (Field field : fields) {
-                try {
-                    ColumnDef form = field.getAnnotation(ColumnDef.class);
-                    Annotation validator = field.getAnnotation(form.validate());
-                    if (validator == null) {
-                        logger.error("field:{} validate is null ", field.getName());
-                        continue;
-                    }
-                    String fieldJson = ValidatorRegistry.getInstance().getValidatorMessageGenerator(validator.annotationType())
-                        .generateValidateMessage(field.getName(), form.type().getPrefix(), validator);
-                    sb.append(fieldJson);
-                    sb.append(",");
-                } catch (Exception e) {
-                    logger.error("field:{} validate generate error ", field.getName(), e);
-                }
-            }
-            sb.deleteCharAt(sb.length() - 1);
-            sb.append("}");
-            content = content + sb.toString();
-            System.out.println(content);
-            String fullPath = this.languageJsPath + File.separator + this.placeHolder.get(FrontendPlaceholderKey.$entity_by_horizontal.name()) + ".js";
-            System.out.println("write to path:" + fullPath);
-            FileUtility.getInstance().writeFile(fullPath, content);
+//            String content = Xml.getElementTextContent(this.document, "language_js");
+//            content = StringUtility.replace(content, this.placeHolder);
+//            List<Field> fieldList = ClassUtility.extractFields(this.clazz);
+//            Field[] fields = ClassUtility.getOrderedFields(fieldList);
+//            String entityName = this.placeHolder.get(FrontendPlaceholderKey.$entity_name.name());
+//            StringBuilder sb = new StringBuilder(entityName + "Info={");
+//            for (Field field : fields) {
+//                try {
+//                    ColumnDef form = field.getAnnotation(ColumnDef.class);
+//                    Annotation validator = field.getAnnotation(form.validate());
+//                    if (validator == null) {
+//                        logger.error("field:{} validate is null ", field.getName());
+//                        continue;
+//                    }
+//                    String fieldJson = ValidatorRegistry.getInstance().getValidatorMessageGenerator(validator.annotationType())
+//                        .generateValidateMessage(field.getName(), form.type().getPrefix(), validator);
+//                    sb.append(fieldJson);
+//                    sb.append(",");
+//                } catch (Exception e) {
+//                    logger.error("field:{} validate generate error ", field.getName(), e);
+//                }
+//            }
+//            sb.deleteCharAt(sb.length() - 1);
+//            sb.append("}");
+//            content = content + sb.toString();
+//            System.out.println(content);
+//            String fullPath = this.languageJsPath + File.separator + this.placeHolder.get(FrontendPlaceholderKey.$entity_by_horizontal.name()) + ".js";
+//            System.out.println("write to path:" + fullPath);
+//            FileUtility.getInstance().writeFile(fullPath, content);
+            return;
         }
     }
 }

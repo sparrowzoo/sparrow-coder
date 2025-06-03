@@ -211,7 +211,7 @@ public class EnvironmentContext {
         private Map<String, String> initPlaceHolder() {
             this.originTableName = entityManager.getTableName();
             this.persistenceClassName = StringUtility.setFirstByteUpperCase(StringUtility.underlineToHump(this.originTableName));
-            String primaryPropertyName = entityManager.getPrimary().getName();
+            String primaryPropertyName = entityManager.getPrimary().getPropertyName();
             Map<String, String> context = new TreeMap<>(Comparator.reverseOrder());
             String modulePrefix = config.getProperty(CoderConfig.MODULE_PREFIX + "prefix");
             context.put(PlaceholderKey.$module_prefix.name(), modulePrefix);

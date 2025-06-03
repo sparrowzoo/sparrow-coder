@@ -19,7 +19,7 @@ public class DigitalValidatorMessageGenerator extends AbstractValidatorMessageGe
         pipeline.append(this.minValue(validator));
         pipeline.append(this.maxValue(validator));
         this.finish(pipeline);
-        if (validator.isAllowEmpty()) {
+        if (validator.getAllowEmpty()) {
             return this.allowEmpty(pipeline.toString());
         }
         return pipeline.toString();

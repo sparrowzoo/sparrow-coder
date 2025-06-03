@@ -1,6 +1,5 @@
 package com.sparrow.coding.api;
 
-import com.sparrow.coding.protocol.validate.Validator;
 import com.sparrow.utility.ClassUtility;
 
 import java.lang.annotation.Annotation;
@@ -9,6 +8,10 @@ import java.util.Map;
 
 public class ValidatorRegistry {
 
+    /**
+     * key: namespace
+     * value: Map<validatorName, ValidatorMessageGenerator>
+     */
     private Map<String, Map<String, ValidatorMessageGenerator<?>>> registry;
 
     private ValidatorRegistry() {
@@ -23,16 +26,16 @@ public class ValidatorRegistry {
     public void registry(ValidatorMessageGenerator<?> validatorMessageGenerator) {
         String packageName = validatorMessageGenerator.getClass().getPackage().getName();
         String namespace = packageName.substring(packageName.lastIndexOf(".") + 1);
-        String validatorName = ClassUtility.getEntityNameByClass(validatorMessageGenerator.getClass());
-        if (this.registry.containsKey(namespace)) {
+        String validatorName = ClassUtility.getBeanNameByClass(validatorMessageGenerator.getClass());
+        if (!this.registry.containsKey(namespace)) {
             this.registry.putIfAbsent(namespace, new HashMap<>());
         }
         this.registry.get(namespace).put(validatorName, validatorMessageGenerator);
     }
 
     public ValidatorMessageGenerator<?> getValidatorMessageGenerator(String namespace,
-                                                                             Class<? extends Annotation> clazz) {
-        String validatorName = ClassUtility.getEntityNameByClass(clazz);
+                                                                             Class<?> clazz) {
+        String validatorName = ClassUtility.getBeanNameByClass(clazz);
         return this.registry.get(namespace).get(validatorName);
     }
 

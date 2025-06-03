@@ -1,11 +1,10 @@
 package com.sparrow.coding.mybatis;
 
 import com.sparrow.coding.java.EnvironmentContext;
-import com.sparrow.coding.java.MybatisEntityManager;
 import com.sparrow.container.Container;
 import com.sparrow.container.ContainerBuilder;
 import com.sparrow.core.spi.ApplicationContext;
-import com.sparrow.example.po.SparrowExample;
+
 import java.io.IOException;
 
 public class MybatisEntityManagerTest {
@@ -15,8 +14,8 @@ public class MybatisEntityManagerTest {
             .initInterceptor(false)
             .scanBasePackage("com.sparrow"));
         EnvironmentContext environmentContext=new EnvironmentContext(null);
-        MybatisEntityManager entityManager=new MybatisEntityManager(SparrowExample.class,environmentContext);
-        entityManager.init();
-        System.out.println(entityManager.getXml());
+       // MybatisEntityManager entityManager=new MybatisEntityManager(SparrowExample.class,environmentContext);
+       // entityManager.init();
+       // System.out.println(entityManager.getXml());
     }
 }

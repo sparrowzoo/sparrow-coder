@@ -16,7 +16,7 @@ public class EmailValidatorMessageGenerator extends AbstractValidatorMessageGene
         pipeline.append(this.maxLength(validator));
         pipeline.append(String.format("v.email(%s)",this.getMessage(validator.getI18n(),"email-message",validator.getFormatMessage())));
         this.finish(pipeline);
-        if (validator.isAllowEmpty()) {
+        if (validator.getAllowEmpty()) {
             return this.allowEmpty(pipeline.toString());
         }
         return pipeline.toString();
