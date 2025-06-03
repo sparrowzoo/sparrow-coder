@@ -5,14 +5,10 @@ import com.sparrow.coding.api.ValidatorMessageGenerator;
 import com.sparrow.coding.api.ValidatorRegistry;
 import com.sparrow.coding.frontend.validate.valibot.StringValidatorMessageGenerator;
 import com.sparrow.coding.protocol.validate.EmailValidator;
-import com.sparrow.coding.protocol.validate.StringValidator;
-import com.sparrow.coding.protocol.validate.Validator;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.sql.SQLOutput;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {ApplicationBoot.class})
