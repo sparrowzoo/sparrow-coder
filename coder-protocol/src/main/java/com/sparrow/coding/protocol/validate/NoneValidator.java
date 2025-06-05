@@ -1,10 +1,25 @@
 package com.sparrow.coding.protocol.validate;
 
+import com.sparrow.core.Pair;
+
+import java.util.Collections;
+import java.util.List;
+
 public class NoneValidator implements Validator {
 
     @Override
     public Boolean getI18n() {
-        return false;
+        return null;
+    }
+
+    @Override
+    public void setI18nFieldName(String i18nFieldName) {
+
+    }
+
+    @Override
+    public String getI18nFieldName() {
+        return "";
     }
 
     @Override
@@ -16,4 +31,10 @@ public class NoneValidator implements Validator {
     public String getEmptyMessage() {
         return "";
     }
+
+    @Override
+    public List<Pair<String, String>> getI18nConfig() {
+        return Collections.emptyList();
+    }
+
 }

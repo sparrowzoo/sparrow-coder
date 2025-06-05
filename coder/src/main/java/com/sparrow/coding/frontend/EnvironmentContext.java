@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import javax.xml.parsers.ParserConfigurationException;
+
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -34,8 +36,8 @@ import org.xml.sax.SAXException;
 /**
  * 代码生成器环境上下文 test
  */
+@Slf4j
 public class EnvironmentContext {
-    private static Logger logger = LoggerFactory.getLogger(EnvironmentContext.class);
     /**
      * current author
      */

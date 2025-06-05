@@ -7,10 +7,11 @@ import javax.inject.Named;
 @Named
 public class StringValidatorMessageGenerator extends AbstractValidatorMessageGenerator<StringValidator> {
 
+
     @Override
-    public String generateValidateMessage(String propertyName, StringValidator validator) {
+    public String outerGenerateMessage(String propertyName, StringValidator validator) {
         StringBuilder pipeline = new StringBuilder();
-        pipeline.append(this.start(propertyName));
+        pipeline.append(this.pipeline());
         pipeline.append(this.nonEmpty(validator));
         pipeline.append(this.minLength(validator));
         pipeline.append(this.maxLength(validator));

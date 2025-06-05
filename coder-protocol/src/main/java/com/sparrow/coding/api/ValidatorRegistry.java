@@ -34,8 +34,7 @@ public class ValidatorRegistry {
     }
 
     public ValidatorMessageGenerator<?> getValidatorMessageGenerator(String namespace,
-                                                                             Class<?> clazz) {
-        String validatorName = ClassUtility.getBeanNameByClass(clazz);
+                                                                             String validatorName) {
         return this.registry.get(namespace).get(validatorName);
     }
 
