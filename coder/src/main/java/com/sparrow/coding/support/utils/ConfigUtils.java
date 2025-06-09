@@ -1,26 +1,22 @@
 package com.sparrow.coding.support.utils;
 
 import com.sparrow.utility.StringUtility;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.*;
+import java.nio.file.Files;
 import java.util.Properties;
 
+@Slf4j
 public class ConfigUtils {
-    public static Properties initPropertyConfig(String sparrowConfig) throws IOException {
-        InputStream configStream = null;
-        if (StringUtility.isNullOrEmpty(sparrowConfig) || "default".equalsIgnoreCase(sparrowConfig)) {
-            configStream = Class.class.getResourceAsStream("/config.properties");
-        } else {
-            File configFile = new File(sparrowConfig);
-            if (!configFile.exists()) {
-                System.err.println("template config file can't read");
-                System.exit(0);
-            }
-            configStream = new FileInputStream(configFile);
-        }
+    public static Properties initPropertyConfig(String configContent) throws IOException {
         Properties config = new Properties();
+        if (!StringUtility.isNullOrEmpty(configContent)) {
+            log.info("load config from file: " + configContent);
+            config.load(new StringReader(configContent));
+            return config;
+        }
+        InputStream configStream = ConfigUtils.class.getResourceAsStream("/config.properties");
         config.load(configStream);
         return config;
     }

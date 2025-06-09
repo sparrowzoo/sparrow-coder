@@ -7,7 +7,7 @@ import com.sparrow.protocol.pager.SimplePager;
 import $package_assemble.$persistence_class_nameAssemble;
 import $package_bo.$persistence_class_nameBO;
 import $package_param.$persistence_class_nameParam;
-import $package_batch_param.$persistence_class_nameParam;
+import $package_batch_param.$persistence_class_nameBatchOperateParam;
 import $package_query.$persistence_class_nameQuery;
 import $package_vo.$persistence_class_nameVO;
 import $package_service.$persistence_class_nameService;

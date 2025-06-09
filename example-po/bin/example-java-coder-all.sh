@@ -9,4 +9,4 @@ else
 fi
 
 
-sh ./sparrow-java-coder.sh -ct com.sparrow.example.po.SparrowExample -config=$config_path
+sh ./sparrow-java-coder.sh -ct com.sparrow.example.po.TableDef -config=$config_path

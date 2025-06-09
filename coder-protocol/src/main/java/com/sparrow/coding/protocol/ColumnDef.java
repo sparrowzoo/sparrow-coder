@@ -14,11 +14,13 @@ public class ColumnDef {
     private boolean showInInsert;
     private boolean showInEdit;
     private boolean showInList;
-    private boolean editableInList;
     private boolean allowNull;
     private String placeholder;
     private String defaultValue;
     private Condition condition;
     private String validateType;
     private Validator validator;
+    private Boolean visible;
+    private HeaderType headerType;
+    private CellType cellType;
 }

@@ -1,0 +1,61 @@
+package $package_service;
+
+import com.sparrow.exception.Asserts;
+import com.sparrow.protocol.BusinessException;
+import com.sparrow.protocol.ListRecordTotalBO;
+import $package_bo.$persistence_class_nameBO;
+import $package_repository.$persistence_class_nameRepository;
+import $package_param.$persistence_class_nameParam;
+import $package_query.$persistence_class_nameQuery;
+import com.sparrow.utility.StringUtility;
+import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+@Named
+public class $persistence_class_nameService {
+    @Inject
+    private $persistence_class_nameRepository $persistence_object_nameRepository;
+
+    private void validateSave$persistence_class_name($persistence_class_nameParam $persistence_object_nameParam) throws BusinessException {
+        //Asserts.isTrue(StringUtility.isNullOrEmpty($persistence_object_nameParam.getName()), SecurityAdminError.NAME_IS_EMPTY, $persistence_class_nameSuffix.name);
+    }
+
+    public Long save$persistence_class_name($persistence_class_nameParam $persistence_object_nameParam) throws BusinessException {
+        this.validateSave$persistence_class_name($persistence_object_nameParam);
+        return this.$persistence_object_nameRepository.save($persistence_object_nameParam);
+    }
+
+    public Integer delete$persistence_class_name(String $persistence_object_nameIds) throws BusinessException {
+        //Asserts.isTrue(StringUtility.isNullOrEmpty($persistence_object_nameIds), SecurityAdminError.$persistence_class_name_ID_IS_EMPTY);
+        return this.$persistence_object_nameRepository.delete($persistence_object_nameIds);
+    }
+
+    public Integer enable$persistence_class_name(String $persistence_object_nameIds) throws BusinessException {
+        //Asserts.isTrue(StringUtility.isNullOrEmpty($persistence_object_nameIds), SecurityAdminError.$persistence_class_name_ID_IS_EMPTY);
+        return this.$persistence_object_nameRepository.enable($persistence_object_nameIds);
+    }
+
+    public Integer disable$persistence_class_name(String $persistence_object_nameIds) throws BusinessException {
+        //Asserts.isTrue(StringUtility.isNullOrEmpty($persistence_object_nameIds), SecurityAdminError.$persistence_class_name_ID_IS_EMPTY);
+        return this.$persistence_object_nameRepository.disable($persistence_object_nameIds);
+    }
+
+    public ListRecordTotalBO<$persistence_class_nameBO> queryAll$persistence_class_name() {
+        return query$persistence_class_name(null);
+    }
+
+    public ListRecordTotalBO<$persistence_class_nameBO> query$persistence_class_name($persistence_class_nameQuery $persistence_object_nameQuery) {
+        Long totalRecord = this.$persistence_object_nameRepository.get$persistence_class_nameCount($persistence_object_nameQuery);
+        List<$persistence_class_nameBO> $persistence_object_nameBoList = null;
+        if (totalRecord > 0) {
+            $persistence_object_nameBoList = this.$persistence_object_nameRepository.query$persistence_class_names($persistence_object_nameQuery);
+        }
+        return new ListRecordTotalBO<>($persistence_object_nameBoList, totalRecord);
+    }
+
+    public $persistence_class_nameBO get$persistence_class_name(Long $persistence_object_nameId) throws BusinessException {
+        //Asserts.isTrue($persistence_object_nameId == null, SecurityAdminError.$persistence_object_name_IS_EMPTY);
+        return this.$persistence_object_nameRepository.get$persistence_class_name($persistence_object_nameId);
+    }
+}

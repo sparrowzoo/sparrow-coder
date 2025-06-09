@@ -1,0 +1,65 @@
+package $package_repository_impl;
+
+import com.sparrow.protocol.dao.StatusCriteria;
+import com.sparrow.protocol.enums.StatusRecord;
+import $package_dao.$persistence_class_nameDAO;
+import $package_data_converter.$persistence_class_nameConverter;
+import $package_po.$persistence_class_name;
+import $package_bo.$persistence_class_nameBO;
+import $package_param.$persistence_class_nameParam;
+import $package_repository.$persistence_class_nameRepository;
+import $package_query.$persistence_class_nameQuery;
+
+import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+@Named
+public class $persistence_class_nameRepositoryImpl implements $persistence_class_nameRepository {
+    @Inject
+    private $persistence_class_nameConverter $persistence_object_nameConverter;
+
+    @Inject
+    private $persistence_class_nameDAO $persistence_object_nameDao;
+
+    @Override public Long save($persistence_class_nameParam $persistence_object_nameParam) {
+        $persistence_class_name $persistence_object_name = this.$persistence_object_nameConverter.param2po($persistence_object_nameParam);
+        if ($persistence_object_name.get$upper_primary_property_name() != null) {
+            this.$persistence_object_nameDao.update($persistence_object_name);
+            return $persistence_object_name.get$upper_primary_property_name();
+        }
+        this.$persistence_object_nameDao.insert($persistence_object_name);
+        return $persistence_object_name.get$upper_primary_property_name();
+    }
+
+    @Override public Integer delete(String $persistence_object_nameIds) {
+        return this.$persistence_object_nameDao.batchDelete($persistence_object_nameIds);
+    }
+
+    @Override public Integer disable(String $persistence_object_nameIds) {
+        StatusCriteria statusCriteria = new StatusCriteria($persistence_object_nameIds, StatusRecord.DISABLE);
+        this.$persistence_object_nameConverter.convertStatus(statusCriteria);
+        return this.$persistence_object_nameDao.changeStatus(statusCriteria);
+    }
+
+    @Override public Integer enable(String $persistence_object_nameIds) {
+        StatusCriteria statusCriteria = new StatusCriteria($persistence_object_nameIds, StatusRecord.ENABLE);
+        this.$persistence_object_nameConverter.convertStatus(statusCriteria);
+
+        return this.$persistence_object_nameDao.changeStatus(statusCriteria);
+    }
+
+    @Override public $persistence_class_nameBO get$persistence_class_name(Long $persistence_object_nameId) {
+        $persistence_class_name $persistence_object_name = this.$persistence_object_nameDao.getEntity($persistence_object_nameId);
+        return this.$persistence_object_nameConverter.po2bo($persistence_object_name);
+    }
+
+    @Override public List<$persistence_class_nameBO> query$persistence_class_names($persistence_class_nameQuery $persistence_object_nameQuery) {
+        List<$persistence_class_name> $persistence_object_nameList = this.$persistence_object_nameDao.query$persistence_class_names(this.$persistence_object_nameConverter.toDbPagerQuery($persistence_object_nameQuery));
+        return this.$persistence_object_nameConverter.poList2BoList($persistence_object_nameList);
+    }
+
+    @Override public Long get$persistence_class_nameCount($persistence_class_nameQuery $persistence_object_nameQuery) {
+        return this.$persistence_object_nameDao.count$persistence_class_name(this.$persistence_object_nameConverter.toDbPagerQuery($persistence_object_nameQuery));
+    }
+}

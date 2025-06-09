@@ -11,11 +11,11 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CodeGenerator {
-    private static Logger logger = LoggerFactory.getLogger(CodeGenerator.class);
+public class CodeGenerator2 {
+    private static Logger logger = LoggerFactory.getLogger(CodeGenerator2.class);
     private EnvironmentContext environmentContext;
 
-    public CodeGenerator(String sparrowConfig) throws IOException {
+    public CodeGenerator2(String sparrowConfig) throws IOException {
         this.environmentContext = new EnvironmentContext(sparrowConfig);
     }
 

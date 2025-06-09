@@ -1,6 +1,6 @@
 package com.sparrow.coding;
 
-import com.sparrow.coding.java.CodeGenerator;
+import com.sparrow.coding.java.CodeGenerator2;
 import com.sparrow.container.Container;
 import com.sparrow.container.ContainerBuilder;
 import com.sparrow.core.spi.ApplicationContext;
@@ -41,7 +41,7 @@ public class JavaMain {
         if (configPath.startsWith("-config=")) {
             sparrowConfig = configPath.substring("-config=".length());
         }
-        CodeGenerator codeGenerator = new CodeGenerator(sparrowConfig);
+        CodeGenerator2 codeGenerator = new CodeGenerator2(sparrowConfig);
         if ("-ctn".equals(args[0]) || "-createDDL-n".equals(args[0])) {
             if (args.length == 3) {
                 codeGenerator.generaCreateNDDL(args[1], Integer.valueOf(args[2]), false);
@@ -137,10 +137,6 @@ public class JavaMain {
         Container container = ApplicationContext.getContainer();
         container.init(new ContainerBuilder().initController(false)
                 .initInterceptor(false));
-        //args = "--example".split(" ");
-        //args = "-pq com.sparrow.example.po.SparrowExample".split(" ");
-        //args = "-pq com.sparrow.example.po.SparrowExample -config=/Users/zhanglizhi/workspace/tedu/tarena-tp-basic/basic-po/bin/config.properties".split(" ");
-
         if (args.length == 0 || "--help".equals(args[0])) {
             usage();
             return;
