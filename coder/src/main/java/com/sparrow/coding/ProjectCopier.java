@@ -42,7 +42,7 @@ public class ProjectCopier {
         //run("admin_copier.properties");
     }
 
-    private static FileUtility.FolderFilter filter = (sourceFile, targetFile) -> {
+    private static FileUtility.FolderFilter filter = (sourceFile) -> {
         if (sourceFile.equalsIgnoreCase("target")) {
             return true;
         }
@@ -63,7 +63,7 @@ public class ProjectCopier {
             return;
         }
         for (String childDirectory : directoryList) {
-            if (filter.filter(childDirectory, target)) {
+            if (filter.filter(childDirectory)) {
                 continue;
             }
 
@@ -71,7 +71,7 @@ public class ProjectCopier {
                 String mapperSource = source + File.separator + childDirectory + "/src/main/resources";
                 File sourceDirectory = new File(mapperSource);
                 if (sourceDirectory.exists()) {
-                    FileUtility.getInstance().recurseCopy(mapperSource, resourceTarget);
+                    FileUtility.getInstance().recurseCopy(mapperSource);
                 } else {
                     logger.warn("{} is not exist", mapperSource);
                 }
@@ -83,7 +83,7 @@ public class ProjectCopier {
             File sourceDirectory = new File(sourceDirectoryPath);
             if (sourceDirectory.exists()) {
                 logger.info("copy {} to {}", sourceDirectoryPath, target);
-                FileUtility.getInstance().recurseCopy(sourceDirectoryPath, target);
+                FileUtility.getInstance().recurseCopy(sourceDirectoryPath);
             } else {
                 logger.warn("{} is not exist", sourceDirectoryPath);
             }

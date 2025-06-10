@@ -28,4 +28,6 @@ public class ProjectConfig extends PO {
     private String codeTemplate;
     @Column(name = "config", columnDefinition = "varchar(512) default '' comment '脚手架配置'")
     private String config;
+    @Column(name = "wrap_with_parent", columnDefinition = "tinyint(1) default 0 comment '是否使用父module")
+    private Boolean wrapWithParent;
 }
