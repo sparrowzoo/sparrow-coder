@@ -23,9 +23,15 @@ public class ScaffoldCopier {
     private static Logger logger = LoggerFactory.getLogger(ScaffoldCopier.class);
 
     static void copy(TableConfigRegistry registry) {
-        String scaffoldHome =new FileNameBuilder(registry.getWorkspace()).joint(registry.getScaffold()).build();
+        String scaffoldHome = new FileNameBuilder(registry.getWorkspace()).joint(registry.getScaffold()).build();
+        ProjectConfig projectConfig = registry.getProjectConfig();
         File directory = new File(scaffoldHome);
         FileUtility.FolderFilter folderFilter = (sourceFile) -> {
+            if (!projectConfig.getWrapWithParent()) {
+                if (sourceFile.contains("admin/pom.xml")) {
+                    return true;
+                }
+            }
             //如果是隐藏文件夹，跳过
             if (sourceFile.startsWith(".")) {
                 return true;
@@ -36,25 +42,25 @@ public class ScaffoldCopier {
             }
             return false;
         };
-
         String[] directoryList = directory.list();
         if (directoryList == null || directoryList.length == 0) {
             logger.error("directory [{}] is empty", scaffoldHome);
             return;
         }
-        ProjectConfig projectConfig = registry.getProjectConfig();
         for (String childDirectory : directoryList) {
             //过滤掉不需要的文件夹
             if (folderFilter.filter(childDirectory)) {
                 continue;
             }
 
-            String sourceDirectoryPath =new FileNameBuilder(scaffoldHome).joint(childDirectory).build();
+            String sourceDirectoryPath = new FileNameBuilder(scaffoldHome).joint(childDirectory).build();
             FileUtility.getInstance().recurseCopy(sourceDirectoryPath, (sourceFileName) -> {
                 String targetPath = sourceFileName.replace(scaffoldHome, "").replace("example", projectConfig.getModulePrefix());
-                targetPath =new FileNameBuilder(registry.getWorkspace()).joint(String.valueOf(projectConfig.getCreateUserId()))
-                        .joint(registry.getProjectConfig().getName()).joint(targetPath).build()
-                ;
+                if (!projectConfig.getWrapWithParent()) {
+                    targetPath = targetPath.replace("admin/", "");
+                }
+                targetPath = new FileNameBuilder(registry.getWorkspace()).joint(String.valueOf(projectConfig.getCreateUserId()))
+                        .joint(registry.getProjectConfig().getName()).joint(targetPath).build();
                 String content = FileUtility.getInstance().readFileContent(sourceFileName);
                 content = content.replaceAll("example", projectConfig.getModulePrefix());
                 try {

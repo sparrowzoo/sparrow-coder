@@ -35,13 +35,13 @@ public class DefaultCodeGenerator implements CodeGenerator {
     public void initRegistry(Long projectId) throws ClassNotFoundException, IOException {
         ProjectConfig projectConfig = new ProjectConfig();
         projectConfig.setId(1L);
-        projectConfig.setName("sparrow-security");
+        projectConfig.setName("sparrow-coder");
         projectConfig.setDescription("授权");
         projectConfig.setCodeTemplate("template");
         projectConfig.setFrontendName("react-sparrow-admin");
         projectConfig.setChineseName("授权管理");
         projectConfig.setDescription("");
-        projectConfig.setModulePrefix("security");
+        projectConfig.setModulePrefix("coder");
         projectConfig.setScanPackage("com.sparrow");
         projectConfig.setConfig("");
         projectConfig.setCreateUserId(1L);
@@ -50,6 +50,7 @@ public class DefaultCodeGenerator implements CodeGenerator {
         projectConfig.setGmtModified(0L);
         projectConfig.setCreateUserName("");
         projectConfig.setModifiedUserName("");
+        projectConfig.setWrapWithParent(false);
 
         this.registry.register(projectConfig);
         TableConfig tableConfig = new TableConfig();
