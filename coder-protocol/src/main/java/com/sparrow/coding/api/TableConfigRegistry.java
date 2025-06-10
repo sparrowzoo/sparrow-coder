@@ -3,9 +3,6 @@ package com.sparrow.coding.api;
 import com.sparrow.coding.po.ProjectConfig;
 import com.sparrow.coding.po.TableConfig;
 import com.sparrow.coding.protocol.TableContext;
-import com.sparrow.container.ConfigReader;
-import com.sparrow.container.Container;
-import com.sparrow.core.spi.ApplicationContext;
 
 import javax.inject.Named;
 import java.util.ArrayList;

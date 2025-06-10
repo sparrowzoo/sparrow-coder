@@ -1,4 +1,4 @@
-package com.sparrow.coding.po;
+package com.sparrowzoo.coder;
 
 import com.sparrow.protocol.dao.PO;
 import lombok.Data;

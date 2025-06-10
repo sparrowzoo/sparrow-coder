@@ -1,37 +1,26 @@
 package com.sparrow.coding.frontend;
 
-import com.sparrow.coding.api.ValidatorRegistry;
 import com.sparrow.coding.config.CoderConfig;
 import com.sparrow.coding.frontend.enums.FrontendPlaceholderKey;
-import com.sparrow.coding.java.enums.PlaceholderKey;
-import com.sparrow.coding.protocol.ControlType;
-import com.sparrow.coding.protocol.Entity;
-import com.sparrow.coding.protocol.ColumnDef;
 import com.sparrow.coding.support.utils.ConfigUtils;
 import com.sparrow.protocol.POJO;
-import com.sparrow.protocol.constant.Constant;
-import com.sparrow.utility.ClassUtility;
 import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
 import com.sparrow.utility.Xml;
 import com.sparrow.xml.DefaultDocumentLoader;
 import com.sparrow.xml.DocumentLoader;
-import java.io.File;
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import javax.xml.parsers.ParserConfigurationException;
-
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * 代码生成器环境上下文 test

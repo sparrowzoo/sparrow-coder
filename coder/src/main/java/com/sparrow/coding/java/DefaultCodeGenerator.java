@@ -12,16 +12,13 @@ import com.sparrow.coding.protocol.ColumnDef;
 import com.sparrow.coding.protocol.TableContext;
 import com.sparrow.container.ConfigReader;
 import com.sparrow.container.Container;
-import com.sparrow.container.ContainerAware;
 import com.sparrow.core.spi.ApplicationContext;
 import com.sparrow.orm.EntityManager;
 import com.sparrow.orm.Field;
 import com.sparrow.orm.SparrowEntityManager;
-import com.sparrow.support.web.WebConfigReader;
 import com.sparrow.utility.DateTimeUtility;
 import com.sparrow.utility.StringUtility;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -60,7 +57,7 @@ public class DefaultCodeGenerator implements CodeGenerator {
         tableConfig.setProjectId(1L);
         tableConfig.setPrimaryKey("id");
         tableConfig.setTableName("t_table_config");
-        tableConfig.setClassName("com.sparrow.coding.po.TableConfig");
+        tableConfig.setClassName("com.sparrowzoo.coder.TableConfig");
         tableConfig.setDescription("");
         tableConfig.setCheckable(false);
         tableConfig.setRowMenu(false);

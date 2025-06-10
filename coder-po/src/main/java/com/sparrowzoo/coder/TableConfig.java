@@ -1,11 +1,9 @@
-package com.sparrow.coding.po;
+package com.sparrowzoo.coder;
 
-import com.sparrow.coding.protocol.ColumnDef;
 import com.sparrow.protocol.dao.PO;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @Table(name = "t_table_config")
@@ -38,6 +36,4 @@ public class TableConfig extends PO {
     private String source;
     @Column(name = "source_code", columnDefinition = "text  default '' comment '上传源代码'")
     private String sourceCode;
-    @Transient
-    private List<ColumnDef> columnDefs;
 }

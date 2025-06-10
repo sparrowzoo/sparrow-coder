@@ -2,7 +2,6 @@ package com.sparrow.coding.api.backend;
 
 import com.sparrow.coding.enums.ClassKey;
 import com.sparrow.coding.po.ProjectConfig;
-import com.sparrow.coding.protocol.TableContext;
 
 import java.io.IOException;
 
