@@ -1,0 +1,70 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>sparrow-bom</artifactId>
+        <groupId>com.sparrowzoo</groupId>
+        <version>1.0.5-SNAPSHOT</version>
+        <relativePath/>
+    </parent>
+    <packaging>pom</packaging>
+    <artifactId>coder-bom</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <groupId>com.sparrowzoo.coder</groupId>
+    <properties>
+        <coder_version>1.0.0-SNAPSHOT</coder_version>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <version>${coder_version}</version>
+                <groupId>com.sparrowzoo.coder</groupId>
+                <artifactId>coder-protocol</artifactId>
+            </dependency>
+            <dependency>
+                <version>${coder_version}</version>
+                <groupId>com.sparrowzoo.coder</groupId>
+                <artifactId>coder-dao-api</artifactId>
+            </dependency>
+
+            <dependency>
+                <version>${coder_version}</version>
+                <groupId>com.sparrowzoo.coder</groupId>
+                <artifactId>coder-dao-sparrow</artifactId>
+            </dependency>
+
+            <dependency>
+                <version>${coder_version}</version>
+                <groupId>com.sparrowzoo.coder</groupId>
+                <artifactId>coder-mybatis</artifactId>
+            </dependency>
+
+            <dependency>
+                <version>${coder_version}</version>
+                <groupId>com.sparrowzoo.coder.admin</groupId>
+                <artifactId>coder-admin-infrastructure</artifactId>
+            </dependency>
+
+            <dependency>
+                <version>${coder_version}</version>
+                <groupId>com.sparrowzoo.coder</groupId>
+                <artifactId>coder-domain</artifactId>
+            </dependency>
+            <dependency>
+                <version>${coder_version}</version>
+                <groupId>com.sparrowzoo.coder</groupId>
+                <artifactId>coder-adapter</artifactId>
+            </dependency>
+            <dependency>
+                <version>${coder_version}</version>
+                <groupId>com.sparrowzoo.coder</groupId>
+                <artifactId>coder-main-spring-boot</artifactId>
+            </dependency>
+            <dependency>
+                <artifactId>coder-po</artifactId>
+                <groupId>com.sparrowzoo.coder</groupId>
+                <version>${coder_version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

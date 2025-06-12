@@ -2,20 +2,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>coder-bom</artifactId>
         <version>1.0.0-SNAPSHOT</version>
         <groupId>com.sparrowzoo.coder</groupId>
         <relativePath/>
     </parent>
-    <artifactId>coder-protocol</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <artifactId>coder-domain</artifactId>
     <dependencies>
         <dependency>
-            <groupId>com.sparrowzoo</groupId>
-            <artifactId>sparrow-protocol</artifactId>
+            <groupId>com.sparrowzoo.coder</groupId>
+        <artifactId>coder-protocol</artifactId>
         </dependency>
     </dependencies>
-    <modelVersion>4.0.0</modelVersion>
 </project>

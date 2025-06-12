@@ -7,8 +7,9 @@
         <module>coder</module>
         <module>coder-protocol</module>
         <module>example-po</module>
-        <module>code-dao</module>
-        <module>code-po</module>
+        <module>coder-po</module>
+        <module>bom</module>
+        <module>coder-domain</module>
     </modules>
     <groupId>com.sparrowzoo.coder</groupId>
     <artifactId>sparrow-coder</artifactId>
