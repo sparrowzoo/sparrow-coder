@@ -36,7 +36,7 @@ public class DefaultClassGenerator implements ClassGenerator {
         this.registry = registry;
         this.config = ConfigUtils.initPropertyConfig(registry.getProjectConfig(projectId).getConfig());
         this.projectConfig=registry.getProjectConfig(projectId);
-        this.tableContext=registry.getTableContext(projectId,tableName);
+        this.tableContext=registry.getFirstTableContext(projectId,tableName);
     }
 
     @Override

@@ -37,8 +37,12 @@ public class TableConfigRegistry {
         registry.get(projectId).put(tableName, tableContext);
     }
 
-    public TableContext getTableContext(Long projectId, String tableName) {
+    public TableContext getFirstTableContext(Long projectId, String tableName) {
         return registry.get(projectId).get(tableName);
+    }
+
+    public TableContext getFirstTableContext(Long projectId) {
+        return registry.get(projectId).values().iterator().next();
     }
 
     public List<TableConfig> getAllTableConfig(Long projectId) {

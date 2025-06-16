@@ -20,7 +20,7 @@ public class BackendTest {
                 .scanBasePackage("com.sparrow"));
 
         CodeGenerator generator = new DefaultCodeGenerator(1L,);
-        //generator.initScaffold();
+        generator.initScaffold();
         generator.generate("t_table_config");
     }
 }

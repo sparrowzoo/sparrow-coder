@@ -9,26 +9,30 @@ import com.sparrow.orm.Field;
 import com.sparrow.orm.SparrowEntityManager;
 import com.sparrow.utility.DateTimeUtility;
 import com.sparrow.utility.StringUtility;
-import com.sparrowzoo.coder.po.ProjectConfig;
-import com.sparrowzoo.coder.po.TableConfig;
 import com.sparrowzoo.coder.bo.TableContext;
 import com.sparrowzoo.coder.enums.PlaceholderKey;
+import com.sparrowzoo.coder.po.ProjectConfig;
+import com.sparrowzoo.coder.po.TableConfig;
 import com.sparrowzoo.coder.service.CodeGenerator;
 import com.sparrowzoo.coder.service.backend.ScaffoldCopier;
 import com.sparrowzoo.coder.service.registry.TableConfigRegistry;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.TreeMap;
 
 
 public class DefaultCodeGenerator implements CodeGenerator {
+    private TableConfigRegistry registry;
+    private Long projectId;
 
     public DefaultCodeGenerator(Long projectId) throws IOException, ClassNotFoundException {
+        this.projectId = projectId;
         registry = ApplicationContext.getContainer().getBean(TableConfigRegistry.class);
         this.initRegistry(projectId);
     }
 
-    private TableConfigRegistry registry;
 
     @Override
     public void initRegistry(Long projectId) throws ClassNotFoundException, IOException {
@@ -64,7 +68,7 @@ public class DefaultCodeGenerator implements CodeGenerator {
         tableConfig.setColumnFilter(false);
         tableConfig.setStatusCommand(false);
         tableConfig.setColumnConfigs("");
-        tableConfig.setSource(CodeSource.INNER.name());
+        tableConfig.setSource(CodeSource.UPLOAD.name());
         tableConfig.setSourceCode("");
         tableConfig.setCreateUserId(0L);
         tableConfig.setModifiedUserId(0L);
@@ -75,7 +79,7 @@ public class DefaultCodeGenerator implements CodeGenerator {
 
         TableContext context = new TableContext();
         context.setTableConfig(tableConfig);
-        this.registry.register(projectId,tableConfig.getTableName(), context);
+        this.registry.register(projectId, tableConfig.getTableName(), context);
         this.initPlaceHolder(context);
     }
 
@@ -89,7 +93,7 @@ public class DefaultCodeGenerator implements CodeGenerator {
         String tableName = entityManager.getTableName();
         String persistenceClassName = entityManager.getSimpleClassName();
         String modulePrefix = projectConfig.getModulePrefix();
-        ClassGenerator classGenerator = new DefaultClassGenerator(this.registry,projectConfig.getId());
+        ClassGenerator classGenerator = new DefaultClassGenerator(this.registry, projectConfig.getId(), tableConfig.getTableName());
         placeHolder.put(PlaceholderKey.$module_prefix.name(), modulePrefix);
         placeHolder.put(PlaceholderKey.$origin_table_name.name(), tableName);
         placeHolder.put(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
@@ -97,37 +101,35 @@ public class DefaultCodeGenerator implements CodeGenerator {
         placeHolder.put(PlaceholderKey.$persistence_object_by_horizontal.name(), StringUtility.humpToLower(persistenceClassName, '-'));
         placeHolder.put(PlaceholderKey.$persistence_object_by_slash.name(), StringUtility.humpToLower(persistenceClassName, '/'));
         placeHolder.put(PlaceholderKey.$persistence_object_by_dot.name(), StringUtility.humpToLower(persistenceClassName, '.'));
-
         placeHolder.put(PlaceholderKey.$date.name(), DateTimeUtility.getFormatCurrentTime("yyyy-MM-dd HH:mm:ss"));
-
         placeHolder.put(PlaceholderKey.$package_po.name(), tableContext.getPoPackage());
-        placeHolder.put(PlaceholderKey.$package_bo.name(), classGenerator.getPackage( ClassKey.BO));
-        placeHolder.put(PlaceholderKey.$package_param.name(), classGenerator.getPackage( ClassKey.PARAM));
+        placeHolder.put(PlaceholderKey.$package_scan_base.name(), tableContext.getPoPackage().replace("." + ClassKey.PO.name().toLowerCase(), ""));
+        placeHolder.put(PlaceholderKey.$package_bo.name(), classGenerator.getPackage(ClassKey.BO));
+        placeHolder.put(PlaceholderKey.$package_param.name(), classGenerator.getPackage(ClassKey.PARAM));
+        placeHolder.put(PlaceholderKey.$package_query.name(), classGenerator.getPackage(ClassKey.QUERY));
+        placeHolder.put(PlaceholderKey.$package_dto.name(), classGenerator.getPackage(ClassKey.DTO));
+        placeHolder.put(PlaceholderKey.$package_vo.name(), classGenerator.getPackage(ClassKey.VO));
 
-        placeHolder.put(PlaceholderKey.$package_query.name(), classGenerator.getPackage( ClassKey.QUERY));
-        placeHolder.put(PlaceholderKey.$package_dto.name(), classGenerator.getPackage( ClassKey.DTO));
-        placeHolder.put(PlaceholderKey.$package_vo.name(), classGenerator.getPackage( ClassKey.VO));
-
-        placeHolder.put(PlaceholderKey.$package_dao.name(), classGenerator.getPackage( ClassKey.DAO));
+        placeHolder.put(PlaceholderKey.$package_dao.name(), classGenerator.getPackage(ClassKey.DAO));
         String pagerQuery = classGenerator.getPackage(ClassKey.PAGER_QUERY);
         placeHolder.put(PlaceholderKey.$package_pager_query.name(), StringUtility.replace(pagerQuery, placeHolder));
-        placeHolder.put(PlaceholderKey.$package_repository.name(), classGenerator.getPackage( ClassKey.REPOSITORY));
-        placeHolder.put(PlaceholderKey.$package_repository_impl.name(), classGenerator.getPackage( ClassKey.REPOSITORY_IMPL));
-        placeHolder.put(PlaceholderKey.$package_data_converter.name(), classGenerator.getPackage( ClassKey.DATA_CONVERTER));
-        placeHolder.put(PlaceholderKey.$package_assemble.name(), classGenerator.getPackage( ClassKey.ASSEMBLE));
+        placeHolder.put(PlaceholderKey.$package_repository.name(), classGenerator.getPackage(ClassKey.REPOSITORY));
+        placeHolder.put(PlaceholderKey.$package_repository_impl.name(), classGenerator.getPackage(ClassKey.REPOSITORY_IMPL));
+        placeHolder.put(PlaceholderKey.$package_data_converter.name(), classGenerator.getPackage(ClassKey.DATA_CONVERTER));
+        placeHolder.put(PlaceholderKey.$package_assemble.name(), classGenerator.getPackage(ClassKey.ASSEMBLE));
 
-        placeHolder.put(PlaceholderKey.$package_dao_impl.name(), classGenerator.getPackage( ClassKey.DAO_IMPL));
-        placeHolder.put(PlaceholderKey.$package_service.name(), classGenerator.getPackage( ClassKey.SERVICE));
-        placeHolder.put(PlaceholderKey.$package_controller.name(), classGenerator.getPackage( ClassKey.CONTROLLER));
+        placeHolder.put(PlaceholderKey.$package_dao_impl.name(), classGenerator.getPackage(ClassKey.DAO_IMPL));
+        placeHolder.put(PlaceholderKey.$package_service.name(), classGenerator.getPackage(ClassKey.SERVICE));
+        placeHolder.put(PlaceholderKey.$package_controller.name(), classGenerator.getPackage(ClassKey.CONTROLLER));
 
-        placeHolder.put(PlaceholderKey.$class_po.name(), classGenerator.getClassName( ClassKey.PO));
-        placeHolder.put(PlaceholderKey.$class_dao.name(), classGenerator.getClassName( ClassKey.DAO));
-        placeHolder.put(PlaceholderKey.$class_impl_dao.name(), classGenerator.getClassName( ClassKey.DAO_IMPL));
-        placeHolder.put(PlaceholderKey.$class_service.name(), classGenerator.getClassName( ClassKey.SERVICE));
+        placeHolder.put(PlaceholderKey.$class_po.name(), classGenerator.getClassName(ClassKey.PO));
+        placeHolder.put(PlaceholderKey.$class_dao.name(), classGenerator.getClassName(ClassKey.DAO));
+        placeHolder.put(PlaceholderKey.$class_impl_dao.name(), classGenerator.getClassName(ClassKey.DAO_IMPL));
+        placeHolder.put(PlaceholderKey.$class_service.name(), classGenerator.getClassName(ClassKey.SERVICE));
 
-        placeHolder.put(PlaceholderKey.$class_repository.name(), classGenerator.getClassName( ClassKey.REPOSITORY));
-        placeHolder.put(PlaceholderKey.$class_repositoryImpl.name(), classGenerator.getClassName( ClassKey.REPOSITORY_IMPL));
-        placeHolder.put(PlaceholderKey.$class_controller.name(), classGenerator.getClassName( ClassKey.CONTROLLER));
+        placeHolder.put(PlaceholderKey.$class_repository.name(), classGenerator.getClassName(ClassKey.REPOSITORY));
+        placeHolder.put(PlaceholderKey.$class_repositoryImpl.name(), classGenerator.getClassName(ClassKey.REPOSITORY_IMPL));
+        placeHolder.put(PlaceholderKey.$class_controller.name(), classGenerator.getClassName(ClassKey.CONTROLLER));
 
         placeHolder.put(PlaceholderKey.$object_dao.name(), StringUtility.setFirstByteLowerCase(placeHolder.get(PlaceholderKey.$class_dao.name())));
 
@@ -164,31 +166,31 @@ public class DefaultCodeGenerator implements CodeGenerator {
     }
 
     @Override
-    public void generate(Long projectId,String tableName) throws IOException {
-        ClassGenerator classGenerator = new DefaultClassGenerator(this.registry,projectId,tableName);
-        TableContext context = this.registry.getTableContext(projectId,tableName);
+    public void generate(String tableName) throws IOException {
+        ClassGenerator classGenerator = new DefaultClassGenerator(this.registry, projectId, tableName);
+        TableContext context = this.registry.getFirstTableContext(projectId, tableName);
         TableConfig tableConfig = context.getTableConfig();
         if (CodeSource.UPLOAD.name().equals(tableConfig.getSource())) {
             classGenerator.generate(ClassKey.PO);
         }
         classGenerator.generate(ClassKey.BO);
         classGenerator.generate(ClassKey.QUERY);
-        classGenerator.generate( ClassKey.PARAM);
-        classGenerator.generate( ClassKey.VO);
-        classGenerator.generate( ClassKey.DAO);
-        classGenerator.generate( ClassKey.DAO_IMPL);
-        classGenerator.generate( ClassKey.DAO_MYBATIS);
-        classGenerator.generate( ClassKey.DATA_CONVERTER);
-        classGenerator.generate( ClassKey.SERVICE);
-        classGenerator.generate( ClassKey.REPOSITORY);
-        classGenerator.generate( ClassKey.REPOSITORY_IMPL);
-        classGenerator.generate( ClassKey.ASSEMBLE);
-        classGenerator.generate( ClassKey.CONTROLLER);
-        classGenerator.generate( ClassKey.PAGER_QUERY);
+        classGenerator.generate(ClassKey.PARAM);
+        classGenerator.generate(ClassKey.VO);
+        classGenerator.generate(ClassKey.DAO);
+        classGenerator.generate(ClassKey.DAO_IMPL);
+        classGenerator.generate(ClassKey.DAO_MYBATIS);
+        classGenerator.generate(ClassKey.DATA_CONVERTER);
+        classGenerator.generate(ClassKey.SERVICE);
+        classGenerator.generate(ClassKey.REPOSITORY);
+        classGenerator.generate(ClassKey.REPOSITORY_IMPL);
+        classGenerator.generate(ClassKey.ASSEMBLE);
+        classGenerator.generate(ClassKey.CONTROLLER);
+        classGenerator.generate(ClassKey.PAGER_QUERY);
     }
 
     @Override
     public void initScaffold() {
-        ScaffoldCopier.copy(registry,1L);
+        ScaffoldCopier.copy(registry, this.projectId);
     }
 }

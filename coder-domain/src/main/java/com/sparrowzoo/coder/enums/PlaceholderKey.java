@@ -55,6 +55,8 @@ public enum PlaceholderKey {
      */
     $module_prefix,
 
+    $package_scan_base,
+
     /**
      * po: e.g com.sparrow.user.po
      */

@@ -12,7 +12,7 @@ public class BackendTest {
     @Test
     public void generate() throws IOException, ClassNotFoundException {
         CodeGenerator generator = new DefaultCodeGenerator(1L);
-        //generator.initScaffold();
+        generator.initScaffold();
         generator.generate("t_table_config");
     }
 }

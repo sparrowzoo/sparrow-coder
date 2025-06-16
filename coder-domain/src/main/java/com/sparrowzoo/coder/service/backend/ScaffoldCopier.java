@@ -32,7 +32,7 @@ public class ScaffoldCopier {
         File directory = new File(scaffoldHome);
         FileUtility.FolderFilter folderFilter = (sourceFile) -> {
             if (!projectConfig.getWrapWithParent()) {
-                if (sourceFile.contains("admin/pom.xml")) {
+                if (sourceFile.contains("admin"+File.separator+"pom.xml")) {
                     return true;
                 }
             }
@@ -64,24 +64,30 @@ public class ScaffoldCopier {
                 //scaffoldHome: /{home}/workspace/sparrow-example
                 String targetFileName = sourceFileName.replace(scaffoldHome, "").replace("example", projectConfig.getModulePrefix());
                 if (!projectConfig.getWrapWithParent()) {
-                    targetFileName = targetFileName.replace("admin/", "");
+                    targetFileName = targetFileName.replace("admin"+File.separator, "");
                     targetFileName = targetFileName.replace("admin-", "");
                 }
-                String targetPath = new FileNameBuilder(registry.getEnvConfig().getWorkspace()).joint(String.valueOf(projectConfig.getCreateUserId()))
-                        .joint(registry.getProjectConfig(projectId).getName()).joint(targetFileName).build();
+                String targetPath = new FileNameBuilder(registry.getEnvConfig().getWorkspace())
+                        .joint(String.valueOf(projectConfig.getCreateUserId()))
+                        .joint(registry.getProjectConfig(projectId).getName())
+                        .joint(targetFileName).build();
                 String content = null;
                 //如果不需要parent 包裹，并且是pom.xml，则需要读admin/pom.xml的内容处理
-                if (!projectConfig.getWrapWithParent() && targetFileName.equals("/pom.xml")) {
-                    sourceFileName = new FileNameBuilder(scaffoldHome).joint(targetFileName.replace("/pom.xml", "admin/pom.xml")).build();
+                if (!projectConfig.getWrapWithParent() && targetFileName.equals(File.separator + "pom.xml")) {
+                    sourceFileName = new FileNameBuilder(scaffoldHome)
+                            .joint(targetFileName.replace(File.separator+"pom.xml",""))
+                            .joint( "admin")
+                            .fileName("pom")
+                            .extension(".xml")
+                            .build();
                     content = FileUtility.getInstance().readFileContent(sourceFileName);
                     content = content.replaceAll("<!--po-->", "<module>" + projectConfig.getModulePrefix() + "-po</module>");
                 } else {
                     content = FileUtility.getInstance().readFileContent(sourceFileName);
                 }
 
-                Map<String, String> placeHolder = registry.getTableContext(tableName).getPlaceHolder();
+                Map<String, String> placeHolder = registry.getFirstTableContext(projectId).getPlaceHolder();
                 content = StringUtility.replace(content.trim(), placeHolder);
-
                 content = content.replaceAll("example", projectConfig.getModulePrefix());
                 if (!projectConfig.getWrapWithParent()) {
                     content = content.replaceAll(".admin", "");
