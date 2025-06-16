@@ -47,8 +47,7 @@
         </dependency>
         <dependency>
             <artifactId>coder-protocol</artifactId>
-            <groupId>com.sparrowzoo.coding</groupId>
-            <version>1.0.0-RELEASE</version>
+            <groupId>com.sparrowzoo.coder</groupId>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -69,33 +68,37 @@
             <groupId>com.sparrowzoo.coder</groupId>
             <artifactId>coder-po</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.sparrowzoo.coder</groupId>
+            <artifactId>coder-domain</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <finalName>sparrow-coder</finalName>
         <plugins>
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-assembly-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <archive>-->
-<!--                        <manifest>-->
-<!--                            <mainClass>com.sparrow.coding.JavaMain</mainClass>-->
-<!--                        </manifest>-->
-<!--                    </archive>-->
-<!--                    <descriptors>-->
-<!--                        <descriptor>src/main/resources/jar-with-dependencies.xml</descriptor>-->
-<!--                        <descriptor>src/main/resources/release-assembly.xml</descriptor>-->
-<!--                    </descriptors>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <phase>package</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>assembly</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-assembly-plugin</artifactId>-->
+            <!--                <configuration>-->
+            <!--                    <archive>-->
+            <!--                        <manifest>-->
+            <!--                            <mainClass>com.sparrow.coding.JavaMain</mainClass>-->
+            <!--                        </manifest>-->
+            <!--                    </archive>-->
+            <!--                    <descriptors>-->
+            <!--                        <descriptor>src/main/resources/jar-with-dependencies.xml</descriptor>-->
+            <!--                        <descriptor>src/main/resources/release-assembly.xml</descriptor>-->
+            <!--                    </descriptors>-->
+            <!--                </configuration>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <phase>package</phase>-->
+            <!--                        <goals>-->
+            <!--                            <goal>assembly</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
         </plugins>
     </build>
 

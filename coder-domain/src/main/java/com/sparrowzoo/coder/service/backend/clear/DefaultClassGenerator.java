@@ -1,0 +1,153 @@
+package com.sparrowzoo.coder.service.backend.clear;
+
+import com.sparrow.coding.api.backend.ClassGenerator;
+import com.sparrow.coding.enums.ClassKey;
+import com.sparrow.io.file.FileNameBuilder;
+import com.sparrow.protocol.constant.magic.Symbol;
+import com.sparrow.support.EnvironmentSupport;
+import com.sparrow.utility.FileUtility;
+import com.sparrow.utility.StringUtility;
+import com.sparrowzoo.coder.po.ProjectConfig;
+import com.sparrowzoo.coder.po.TableConfig;
+import com.sparrowzoo.coder.bo.TableContext;
+import com.sparrowzoo.coder.constant.Config;
+import com.sparrowzoo.coder.enums.PlaceholderKey;
+import com.sparrowzoo.coder.service.registry.TableConfigRegistry;
+import com.sparrowzoo.coder.utils.ConfigUtils;
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
+import java.util.Properties;
+
+@Slf4j
+public class DefaultClassGenerator implements ClassGenerator {
+    private TableConfigRegistry registry;
+
+    private ProjectConfig projectConfig;
+    private TableContext tableContext;
+    private Properties config;
+    private FileUtility fileUtility = FileUtility.getInstance();
+
+    public DefaultClassGenerator(TableConfigRegistry registry,Long projectId,String tableName) throws IOException {
+        this.registry = registry;
+        this.config = ConfigUtils.initPropertyConfig(registry.getProjectConfig(projectId).getConfig());
+        this.projectConfig=registry.getProjectConfig(projectId);
+        this.tableContext=registry.getTableContext(projectId,tableName);
+    }
+
+    @Override
+    public String getPackage(ClassKey classKey) {
+        String packageName = this.config.getProperty(Config.PACKAGE_PREFIX + classKey.name().toLowerCase());
+        if (packageName == null) {
+            return "";
+        }
+        if (!registry.getProjectConfig(1L).getWrapWithParent()) {
+            packageName = packageName.replaceAll("admin.", "");
+        }
+        String poPackage =this.tableContext.getPoPackage();
+        return fileUtility.replacePath(poPackage, ClassKey.PO.name(), packageName, Symbol.DOT);
+    }
+
+
+    public String getClassName(ClassKey classKey) {
+        String persistenceClassName = this.tableContext.getPlaceHolder().get(PlaceholderKey.$persistence_class_name.name());
+        String source = config.getProperty(Config.CLASS_PREFIX + classKey.name().toLowerCase());
+        if (persistenceClassName == null) {
+            return source;
+        }
+        return source.replace(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
+    }
+
+    public String getModule(ClassKey key) {
+        String parentModule = "admin";
+        String moduleKey = Config.MODULE_PREFIX;
+        if (!ClassKey.PO.equals(key)) {
+            moduleKey += parentModule + "." + key.getModule().toLowerCase();
+        } else {
+            moduleKey += key.getModule().toLowerCase();
+        }
+        String modulePath = config.getProperty(moduleKey);
+        if (modulePath == null) {
+            log.error("module path is null, module key is [{}]", moduleKey);
+        }
+        Map<String, String> placeHolder = tableContext.getPlaceHolder();
+        return StringUtility.replace(modulePath, placeHolder);
+    }
+
+
+    @Override
+    public String getFullPhysicalPath(ClassKey classKey) {
+        String modulePath = this.getModule(classKey);
+        String path = "";
+        if (ClassKey.DAO_MYBATIS.getModule().equals(classKey.getModule())) {
+            path = new FileNameBuilder("src").joint("main").joint("resources").joint("mapper").build();
+        } else {
+            String fullPackage = this.getPackage(classKey);
+            path = new FileNameBuilder("src")
+                    .joint("main")
+                    .joint("java")
+                    .joint(fullPackage.replace('.', File.separatorChar)).build();
+        }
+        String project = this.projectConfig.getName();
+        String parentModulePath = ClassKey.PO.equals(classKey) ? "" :
+                this.projectConfig.getWrapWithParent() ? "admin" : "";
+        String module = StringUtility.isNullOrEmpty(modulePath) ? "" : modulePath + File.separator;
+        String fullPath = new FileNameBuilder(registry.getEnvConfig().getWorkspace())
+                .joint(String.valueOf(this.projectConfig.getCreateUserId()))
+                .joint(project)
+                .joint(parentModulePath)
+                .joint(module)
+                .joint(path)
+                .build();
+        Map<String, String> placeHolder = tableContext.getPlaceHolder();
+        fullPath = StringUtility.replace(fullPath, placeHolder);
+        System.out.println("write to " + fullPath);
+        return fullPath;
+    }
+
+    public String readConfigContent(String templateFileName) {
+        String codeTemplateRoot =this.projectConfig.getArchitectures();
+        if (!codeTemplateRoot.startsWith("/")) {
+            codeTemplateRoot = "/" + codeTemplateRoot;
+        }
+        String configFilePath = codeTemplateRoot + "/" + templateFileName;
+        log.info("config file path is {}\n", configFilePath);
+        InputStream inputStream = EnvironmentSupport.getInstance().getFileInputStreamInCache(configFilePath);
+        if (inputStream == null) {
+            log.error("{} can't read", configFilePath);
+        }
+        return FileUtility.getInstance().readFileContent(inputStream, StandardCharsets.UTF_8.name());
+    }
+
+    @Override
+    public void generate(ClassKey classKey) throws IOException {
+        if (ClassKey.DAO_MYBATIS.equals(classKey)) {
+            return;
+        }
+        String workspace = registry.getEnvConfig().getWorkspace();
+        System.err.printf("current path is [%s]\n", workspace);
+        String licensed = FileUtility.getInstance().readFileContent("/Licensed.txt");
+        String content;
+        if (classKey.equals(ClassKey.PO)) {
+            TableConfig tableConfig = tableContext.getTableConfig();
+            content = tableConfig.getSourceCode();
+        } else {
+            content = readConfigContent(classKey.getTemplate());
+        }
+        Map<String, String> placeHolder = tableContext.getPlaceHolder();
+        content = StringUtility.replace(content.trim(), placeHolder);
+        content = licensed + "\n" + content;
+        String fullPhysicalPath = this.getFullPhysicalPath(classKey);
+        if (!this.projectConfig.getWrapWithParent()) {
+            fullPhysicalPath = fullPhysicalPath.replace("-admin", "");
+        }
+        String className = getClassName(classKey);
+        String extension = ".java";
+        String fileName = new FileNameBuilder(fullPhysicalPath).fileName(className).extension(extension).build();
+        this.fileUtility.writeFile(fileName, content);
+    }
+}

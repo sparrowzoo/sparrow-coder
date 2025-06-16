@@ -1,0 +1,12 @@
+package $package_dao;
+
+import com.sparrow.protocol.dao.DaoSupport;
+import $package_po.$persistence_class_name;
+import $package_pager_query.$persistence_class_nameDBPagerQuery;
+import java.util.List;
+
+public interface $persistence_class_nameDAO extends DaoSupport<$persistence_class_name, Long> {
+    List<$persistence_class_name> query$persistence_class_names($persistence_class_nameDBPagerQuery $persistence_object_namePagerQuery);
+
+    Long count$persistence_class_name($persistence_class_nameDBPagerQuery $persistence_object_namePagerQuery);
+}

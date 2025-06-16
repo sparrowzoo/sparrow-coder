@@ -1,4 +1,4 @@
-package com.sparrow.coding.enums;
+package com.sparrowzoo.coder.enums;
 
 public enum PlaceholderKey {
     /**
@@ -69,11 +69,6 @@ public enum PlaceholderKey {
      * po: e.g com.sparrow.user.param
      */
     $package_param,
-
-    /**
-     * batch operate param package
-     */
-    $package_batch_param,
 
     /**
      * po: e.g com.sparrow.user.query
@@ -203,6 +198,10 @@ public enum PlaceholderKey {
 
     $field_list,
 
-    $get_sets
+    $get_sets,
+
+    $set_status_default,
+
+    $set_status_b2v
 
 }

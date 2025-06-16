@@ -1,0 +1,30 @@
+package $package_dao_impl;
+
+import com.sparrow.orm.query.BooleanCriteria;
+import com.sparrow.orm.query.Criteria;
+import com.sparrow.orm.query.SearchCriteria;
+import com.sparrow.orm.template.impl.ORMStrategy;
+import $package_dao.$persistence_class_nameDAO;
+import $package_pager_query.$persistence_class_nameDBPagerQuery;
+import $package_po.$persistence_class_name;
+import java.util.List;
+import javax.inject.Named;
+
+@Named
+public class $persistence_class_nameDaoImpl extends ORMStrategy<$persistence_class_name, Long> implements $persistence_class_nameDAO {
+    @Override public List<$persistence_class_name> query$persistence_class_names($persistence_class_nameDBPagerQuery pager$persistence_class_nameQuery) {
+        SearchCriteria searchCriteria = new SearchCriteria(pager$persistence_class_nameQuery);
+        searchCriteria.setWhere(this.generateCriteria(pager$persistence_class_nameQuery));
+        return this.getList(searchCriteria);
+    }
+
+    private BooleanCriteria generateCriteria($persistence_class_nameDBPagerQuery count$persistence_class_nameQuery) {
+        return null;
+    }
+
+    @Override public Long count$persistence_class_name($persistence_class_nameDBPagerQuery $persistence_object_namePagerQuery) {
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.setWhere(this.generateCriteria($persistence_object_namePagerQuery));
+        return this.getCount(searchCriteria);
+    }
+}
