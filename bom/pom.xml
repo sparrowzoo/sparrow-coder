@@ -41,8 +41,8 @@
 
             <dependency>
                 <version>${coder_version}</version>
-                <groupId>com.sparrowzoo.coder.admin</groupId>
-                <artifactId>coder-admin-infrastructure</artifactId>
+                <groupId>com.sparrowzoo.coder</groupId>
+                <artifactId>coder-infrastructure</artifactId>
             </dependency>
 
             <dependency>
@@ -61,8 +61,8 @@
                 <artifactId>coder-main-spring-boot</artifactId>
             </dependency>
             <dependency>
-                <artifactId>coder-po</artifactId>
                 <groupId>com.sparrowzoo.coder</groupId>
+                <artifactId>coder-po</artifactId>
                 <version>${coder_version}</version>
             </dependency>
         </dependencies>

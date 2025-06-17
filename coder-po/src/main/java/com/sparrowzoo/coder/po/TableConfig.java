@@ -24,6 +24,8 @@ public class TableConfig extends PO {
     private String description;
     @Column(name = "checkable", nullable = false, columnDefinition = "tinyint(1)  default 0 comment '是否可勾选 0-不可 1-可'")
     private Boolean checkable;
+    @Column(name = "locked", nullable = false, columnDefinition = "tinyint(1)  default 0 comment '是否锁定 0-未锁定 1-锁定'")
+    private Boolean locked;
     @Column(name = "row_menu", nullable = false, columnDefinition = "tinyint(1)  default 0 comment '是否显示行操作 0-不显示 1-显示'")
     private Boolean rowMenu;
     @Column(name = "column_filter", nullable = false, columnDefinition = "tinyint(1)  default 0 comment '是否显示列过滤器 0-不显示 1-显示'")
@@ -34,6 +36,6 @@ public class TableConfig extends PO {
     private String columnConfigs;
     @Column(name = "source", nullable = false, columnDefinition = "varchar(255) null comment '数据源 CLASSPATH,UPLOAD'")
     private String source;
-    @Column(name = "source_code", columnDefinition = "text  default '' comment '上传源代码'")
+    @Column(name = "source_code", columnDefinition = "text null comment '上传源代码'")
     private String sourceCode;
 }

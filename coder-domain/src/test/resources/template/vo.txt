@@ -1,8 +1,0 @@
-package $package_vo;
-
-import com.sparrow.protocol.VO;
-import lombok.Data;
-@Data
-public class $persistence_class_nameVO implements VO {
-    $get_sets
-}

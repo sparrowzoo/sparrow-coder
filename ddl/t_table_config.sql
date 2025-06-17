@@ -1,0 +1,25 @@
+DROP TABLE IF EXISTS `t_table_config`;
+CREATE TABLE `t_table_config` (
+ `id` int NOT NULL AUTO_INCREMENT,
+ `project_id` int comment '项目ID'  NOT NULL,
+ `primary_key` varchar(32) default '' comment '主键'  NOT NULL,
+ `table_name` varchar(32)  default '' comment '表名'  NOT NULL,
+ `class_name` varchar(32)  default '' comment '类名'  NOT NULL,
+ `description` varchar(255)  default '' comment '描述'  NOT NULL,
+ `checkable` tinyint(1)  default 0 comment '是否可勾选 0-不可 1-可'  NOT NULL,
+ `row_menu` tinyint(1)  default 0 comment '是否显示行操作 0-不显示 1-显示'  NOT NULL,
+ `column_filter` tinyint(1)  default 0 comment '是否显示列过滤器 0-不显示 1-显示'  NOT NULL,
+ `status_command` tinyint(1)  default 0 comment '是否显示状态命令 0-不显示 1-显示'  NOT NULL,
+ `column_configs` text null comment '列配置'  ,
+ `source` varchar(255) null comment '数据源 CLASSPATH,UPLOAD'  NOT NULL,
+ `source_code` text null comment '上传源代码'  ,
+ `create_user_name` varchar(64)  DEFAULT '' COMMENT '创建人'  NOT NULL,
+ `create_user_id` int(11) UNSIGNED  DEFAULT 0 COMMENT '创建人ID'  NOT NULL,
+ `modified_user_id` int(11) unsigned  DEFAULT 0 COMMENT '更新人ID'  NOT NULL,
+ `modified_user_name` varchar(64)  DEFAULT '' COMMENT '更新人'  NOT NULL,
+ `gmt_create` bigint(11)  DEFAULT 0 COMMENT '创建时间'  NOT NULL,
+ `gmt_modified` bigint(11)  DEFAULT 0 COMMENT '更新时间'  NOT NULL,
+ `deleted` tinyint(1)  DEFAULT 0 COMMENT '是否删除'  NOT NULL,
+ `status` tinyint(3) UNSIGNED DEFAULT 0 COMMENT 'STATUS'  NOT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='t_table_config';

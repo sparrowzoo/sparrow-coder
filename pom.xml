@@ -2,16 +2,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <artifactId>sparrow-coder</artifactId>
+    <groupId>com.sparrowzoo.coder</groupId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <modelVersion>4.0.0</modelVersion>
     <modules>
-        <module>coder</module>
-        <module>coder-protocol</module>
-        <module>coder-po</module>
-        <module>bom</module>
+        <module>coder-adapter</module>
+        <module>coder-dao-api</module>
         <module>coder-domain</module>
+        <module>coder-infrastructure</module>
+        <module>coder-main-spring-boot</module>
+        <module>coder-protocol</module>
+        <module>coder-dao-sparrow</module>
+        <module>coder-dao-mybatis</module>
+        <module>coder-po</module>
     </modules>
-    <groupId>com.sparrowzoo.coder</groupId>
-    <artifactId>sparrow-coder</artifactId>
-    <version>1.0</version>
-    <packaging>pom</packaging>
 </project>

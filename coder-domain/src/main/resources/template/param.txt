@@ -1,0 +1,10 @@
+package $package_param;
+
+import com.sparrow.protocol.Param;
+import com.sparrow.protocol.enums.StatusRecord;
+import lombok.Data;
+
+@Data
+public class $persistence_class_nameParam implements Param {
+    $get_sets_params
+}

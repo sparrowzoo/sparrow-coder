@@ -1,6 +1,6 @@
 package com.sparrowzoo.coder.moke.beans;
 
-import com.sparrowzoo.coder.service.EnvConfig;
+import com.sparrowzoo.coder.domain.service.EnvConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 
