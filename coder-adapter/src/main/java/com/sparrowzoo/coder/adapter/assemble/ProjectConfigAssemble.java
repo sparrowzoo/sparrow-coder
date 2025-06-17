@@ -47,6 +47,8 @@ public class ProjectConfigAssemble implements BO2VOAssemble<ProjectConfigVO, Pro
         return projectConfig;
     }
 
+
+
     @Override public List<ProjectConfigVO> boListAssembleVOList(List<ProjectConfigBO> list) {
         if (CollectionsUtility.isNullOrEmpty(list)) {
             return Collections.emptyList();
