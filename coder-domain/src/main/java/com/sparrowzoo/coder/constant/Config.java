@@ -1,6 +1,7 @@
 package com.sparrowzoo.coder.constant;
 
 public class Config {
+
     /**
      * maven module 的配置前缀
      */
