@@ -30,9 +30,9 @@ public class TableConfig extends PO {
     private Boolean columnFilter;
     @Column(name = "status_command", nullable = false, columnDefinition = "tinyint(1)  default 0 comment '是否显示状态命令 0-不显示 1-显示'")
     private Boolean statusCommand;
-    @Column(name = "column_configs", columnDefinition = "text  default '' comment '列配置'")
+    @Column(name = "column_configs", columnDefinition = "text null comment '列配置'")
     private String columnConfigs;
-    @Column(name = "source", nullable = false, columnDefinition = "varchar(255)  default '' comment '数据源 CLASSPATH,UPLOAD'")
+    @Column(name = "source", nullable = false, columnDefinition = "varchar(255) null comment '数据源 CLASSPATH,UPLOAD'")
     private String source;
     @Column(name = "source_code", columnDefinition = "text  default '' comment '上传源代码'")
     private String sourceCode;

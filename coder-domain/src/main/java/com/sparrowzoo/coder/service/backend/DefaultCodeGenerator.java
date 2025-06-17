@@ -1,20 +1,22 @@
-package com.sparrowzoo.coder.service.backend.clear;
+package com.sparrowzoo.coder.service.backend;
 
-import com.sparrow.coding.api.backend.ClassGenerator;
-import com.sparrow.coding.enums.ClassKey;
-import com.sparrow.coding.enums.CodeSource;
-import com.sparrow.core.spi.ApplicationContext;
+import com.sparrow.io.file.FileNameBuilder;
 import com.sparrow.orm.EntityManager;
 import com.sparrow.orm.Field;
 import com.sparrow.orm.SparrowEntityManager;
 import com.sparrow.utility.DateTimeUtility;
+import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.bo.TableContext;
+import com.sparrowzoo.coder.enums.ArchitectureCategory;
+import com.sparrowzoo.coder.enums.ClassKey;
+import com.sparrowzoo.coder.enums.CodeSource;
 import com.sparrowzoo.coder.enums.PlaceholderKey;
 import com.sparrowzoo.coder.po.ProjectConfig;
 import com.sparrowzoo.coder.po.TableConfig;
 import com.sparrowzoo.coder.service.CodeGenerator;
-import com.sparrowzoo.coder.service.backend.ScaffoldCopier;
+import com.sparrowzoo.coder.service.EnvConfig;
+import com.sparrowzoo.coder.service.registry.ArchitectureRegistry;
 import com.sparrowzoo.coder.service.registry.TableConfigRegistry;
 
 import java.io.IOException;
@@ -27,15 +29,16 @@ public class DefaultCodeGenerator implements CodeGenerator {
     private TableConfigRegistry registry;
     private Long projectId;
 
-    public DefaultCodeGenerator(Long projectId) throws IOException, ClassNotFoundException {
+    public DefaultCodeGenerator(Long projectId, EnvConfig envConfig) throws IOException, ClassNotFoundException {
         this.projectId = projectId;
-        registry = ApplicationContext.getContainer().getBean(TableConfigRegistry.class);
-        this.initRegistry(projectId);
+        registry = new TableConfigRegistry();
+        this.initRegistry(projectId, envConfig);
     }
 
 
     @Override
-    public void initRegistry(Long projectId) throws ClassNotFoundException, IOException {
+    public void initRegistry(Long projectId, EnvConfig envConfig) throws ClassNotFoundException, IOException {
+        this.registry.setEnvConfig(envConfig);
         ProjectConfig projectConfig = new ProjectConfig();
         projectConfig.setId(1L);
         projectConfig.setName("sparrow-coder");
@@ -54,8 +57,10 @@ public class DefaultCodeGenerator implements CodeGenerator {
         projectConfig.setCreateUserName("harry");
         projectConfig.setModifiedUserName("");
         projectConfig.setWrapWithParent(false);
+        projectConfig.setImplanted(true);
 
         this.registry.register(projectConfig);
+
         TableConfig tableConfig = new TableConfig();
         tableConfig.setId(0L);
         tableConfig.setProjectId(1L);
@@ -68,7 +73,7 @@ public class DefaultCodeGenerator implements CodeGenerator {
         tableConfig.setColumnFilter(false);
         tableConfig.setStatusCommand(false);
         tableConfig.setColumnConfigs("");
-        tableConfig.setSource(CodeSource.UPLOAD.name());
+        tableConfig.setSource(CodeSource.INNER.name());
         tableConfig.setSourceCode("");
         tableConfig.setCreateUserId(0L);
         tableConfig.setModifiedUserId(0L);
@@ -79,7 +84,7 @@ public class DefaultCodeGenerator implements CodeGenerator {
 
         TableContext context = new TableContext();
         context.setTableConfig(tableConfig);
-        this.registry.register(projectId, tableConfig.getTableName(), context);
+        this.registry.register(tableConfig.getTableName(), context);
         this.initPlaceHolder(context);
     }
 
@@ -87,13 +92,14 @@ public class DefaultCodeGenerator implements CodeGenerator {
     private Map<String, String> initPlaceHolder(TableContext tableContext) throws IOException, ClassNotFoundException {
         Map<String, String> placeHolder = new TreeMap<>(Comparator.reverseOrder());
         tableContext.setPlaceHolder(placeHolder);
-        ProjectConfig projectConfig = this.registry.getProjectConfig(tableContext.getTableConfig().getProjectId());
+        ProjectConfig projectConfig = this.registry.getProjectConfig();
         TableConfig tableConfig = tableContext.getTableConfig();
         EntityManager entityManager = new SparrowEntityManager(Class.forName(tableConfig.getClassName()));
+        tableContext.setEntityManager(entityManager);
         String tableName = entityManager.getTableName();
         String persistenceClassName = entityManager.getSimpleClassName();
         String modulePrefix = projectConfig.getModulePrefix();
-        ClassGenerator classGenerator = new DefaultClassGenerator(this.registry, projectConfig.getId(), tableConfig.getTableName());
+        ClassGenerator classGenerator = new DefaultClassGenerator(this.registry, tableConfig.getTableName());
         placeHolder.put(PlaceholderKey.$module_prefix.name(), modulePrefix);
         placeHolder.put(PlaceholderKey.$origin_table_name.name(), tableName);
         placeHolder.put(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
@@ -167,30 +173,29 @@ public class DefaultCodeGenerator implements CodeGenerator {
 
     @Override
     public void generate(String tableName) throws IOException {
-        ClassGenerator classGenerator = new DefaultClassGenerator(this.registry, projectId, tableName);
-        TableContext context = this.registry.getFirstTableContext(projectId, tableName);
-        TableConfig tableConfig = context.getTableConfig();
-        if (CodeSource.UPLOAD.name().equals(tableConfig.getSource())) {
-            classGenerator.generate(ClassKey.PO);
-        }
-        classGenerator.generate(ClassKey.BO);
-        classGenerator.generate(ClassKey.QUERY);
-        classGenerator.generate(ClassKey.PARAM);
-        classGenerator.generate(ClassKey.VO);
-        classGenerator.generate(ClassKey.DAO);
-        classGenerator.generate(ClassKey.DAO_IMPL);
-        classGenerator.generate(ClassKey.DAO_MYBATIS);
-        classGenerator.generate(ClassKey.DATA_CONVERTER);
-        classGenerator.generate(ClassKey.SERVICE);
-        classGenerator.generate(ClassKey.REPOSITORY);
-        classGenerator.generate(ClassKey.REPOSITORY_IMPL);
-        classGenerator.generate(ClassKey.ASSEMBLE);
-        classGenerator.generate(ClassKey.CONTROLLER);
-        classGenerator.generate(ClassKey.PAGER_QUERY);
+        String architectures = registry.getProjectConfig().getArchitectures();
+        ArchitectureRegistry.getInstance().getRegistry()
+                .get(ArchitectureCategory.BACKEND)
+                .get("clearArchitectureGenerator").generate(registry, tableName);
+
+        ArchitectureRegistry.getInstance().getRegistry()
+                .get(ArchitectureCategory.DATABASE)
+                .get("mySqlArchitectureGenerator").generate(registry, tableName);
+
     }
 
     @Override
     public void initScaffold() {
-        ScaffoldCopier.copy(registry, this.projectId);
+        ScaffoldCopier.copy(registry);
+    }
+
+    @Override
+    public void clear() {
+        String targetDirectoryPath =
+                new FileNameBuilder(registry.getEnvConfig().getWorkspace())
+                        .joint(String.valueOf(registry.getProjectConfig().getCreateUserId()))
+                        .joint(registry.getProjectConfig().getName())
+                        .build();
+        FileUtility.getInstance().delete(targetDirectoryPath, System.currentTimeMillis());
     }
 }

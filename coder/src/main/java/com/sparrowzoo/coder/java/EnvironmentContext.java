@@ -2,6 +2,8 @@ package com.sparrowzoo.coder.java;
 
 import com.sparrowzoo.coder.config.CoderConfig;
 import com.sparrowzoo.coder.config.EnvConfig;
+import com.sparrowzoo.coder.enums.ClassKey;
+import com.sparrowzoo.coder.enums.PlaceholderKey;
 import com.sparrowzoo.coder.support.utils.ConfigUtils;
 import com.sparrow.orm.EntityManager;
 import com.sparrow.orm.SparrowEntityManager;

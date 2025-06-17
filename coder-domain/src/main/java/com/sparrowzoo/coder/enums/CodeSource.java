@@ -1,4 +1,4 @@
-package com.sparrow.coding.enums;
+package com.sparrowzoo.coder.enums;
 
 public enum CodeSource {
     INNER,

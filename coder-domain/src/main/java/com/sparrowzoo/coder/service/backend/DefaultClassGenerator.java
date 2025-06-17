@@ -1,12 +1,10 @@
-package com.sparrowzoo.coder.service.backend.clear;
-
-import com.sparrow.coding.api.backend.ClassGenerator;
-import com.sparrow.coding.enums.ClassKey;
+package com.sparrowzoo.coder.service.backend;
 import com.sparrow.io.file.FileNameBuilder;
 import com.sparrow.protocol.constant.magic.Symbol;
 import com.sparrow.support.EnvironmentSupport;
 import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
+import com.sparrowzoo.coder.enums.ClassKey;
 import com.sparrowzoo.coder.po.ProjectConfig;
 import com.sparrowzoo.coder.po.TableConfig;
 import com.sparrowzoo.coder.bo.TableContext;
@@ -32,11 +30,11 @@ public class DefaultClassGenerator implements ClassGenerator {
     private Properties config;
     private FileUtility fileUtility = FileUtility.getInstance();
 
-    public DefaultClassGenerator(TableConfigRegistry registry,Long projectId,String tableName) throws IOException {
+    public DefaultClassGenerator(TableConfigRegistry registry,String tableName) throws IOException {
         this.registry = registry;
-        this.config = ConfigUtils.initPropertyConfig(registry.getProjectConfig(projectId).getConfig());
-        this.projectConfig=registry.getProjectConfig(projectId);
-        this.tableContext=registry.getFirstTableContext(projectId,tableName);
+        this.config = ConfigUtils.initPropertyConfig(registry.getProjectConfig().getConfig());
+        this.projectConfig=registry.getProjectConfig();
+        this.tableContext=registry.getTableContext(tableName);
     }
 
     @Override
@@ -45,7 +43,7 @@ public class DefaultClassGenerator implements ClassGenerator {
         if (packageName == null) {
             return "";
         }
-        if (!registry.getProjectConfig(1L).getWrapWithParent()) {
+        if (!registry.getProjectConfig().getWrapWithParent()) {
             packageName = packageName.replaceAll("admin.", "");
         }
         String poPackage =this.tableContext.getPoPackage();
@@ -84,20 +82,27 @@ public class DefaultClassGenerator implements ClassGenerator {
         String modulePath = this.getModule(classKey);
         String path = "";
         if (ClassKey.DAO_MYBATIS.getModule().equals(classKey.getModule())) {
-            path = new FileNameBuilder("src").joint("main").joint("resources").joint("mapper").build();
+            path = new FileNameBuilder("src")
+                    .joint("main")
+                    .joint("resources")
+                    .joint("mapper")
+                    .build();
         } else {
             String fullPackage = this.getPackage(classKey);
             path = new FileNameBuilder("src")
                     .joint("main")
                     .joint("java")
-                    .joint(fullPackage.replace('.', File.separatorChar)).build();
+                    .joint(fullPackage.replace('.', File.separatorChar))
+                    .build();
         }
         String project = this.projectConfig.getName();
         String parentModulePath = ClassKey.PO.equals(classKey) ? "" :
                 this.projectConfig.getWrapWithParent() ? "admin" : "";
         String module = StringUtility.isNullOrEmpty(modulePath) ? "" : modulePath + File.separator;
+        String home=this.projectConfig.getImplanted()?"":String.valueOf(this.projectConfig.getCreateUserId());
         String fullPath = new FileNameBuilder(registry.getEnvConfig().getWorkspace())
-                .joint(String.valueOf(this.projectConfig.getCreateUserId()))
+                .joint(registry.getEnvConfig().getProjectRoot())
+                .joint(home)
                 .joint(project)
                 .joint(parentModulePath)
                 .joint(module)
@@ -111,10 +116,10 @@ public class DefaultClassGenerator implements ClassGenerator {
 
     public String readConfigContent(String templateFileName) {
         String codeTemplateRoot =this.projectConfig.getArchitectures();
-        if (!codeTemplateRoot.startsWith("/")) {
-            codeTemplateRoot = "/" + codeTemplateRoot;
+        if (!codeTemplateRoot.startsWith(File.separator)) {
+            codeTemplateRoot = File.separator + codeTemplateRoot;
         }
-        String configFilePath = codeTemplateRoot + "/" + templateFileName;
+        String configFilePath = codeTemplateRoot + File.separator + templateFileName;
         log.info("config file path is {}\n", configFilePath);
         InputStream inputStream = EnvironmentSupport.getInstance().getFileInputStreamInCache(configFilePath);
         if (inputStream == null) {
@@ -130,7 +135,7 @@ public class DefaultClassGenerator implements ClassGenerator {
         }
         String workspace = registry.getEnvConfig().getWorkspace();
         System.err.printf("current path is [%s]\n", workspace);
-        String licensed = FileUtility.getInstance().readFileContent("/Licensed.txt");
+        String licensed = FileUtility.getInstance().readFileContent(File.separator+"Licensed.txt");
         String content;
         if (classKey.equals(ClassKey.PO)) {
             TableConfig tableConfig = tableContext.getTableConfig();
@@ -147,7 +152,10 @@ public class DefaultClassGenerator implements ClassGenerator {
         }
         String className = getClassName(classKey);
         String extension = ".java";
-        String fileName = new FileNameBuilder(fullPhysicalPath).fileName(className).extension(extension).build();
+        String fileName = new FileNameBuilder(fullPhysicalPath)
+                .fileName(className)
+                .extension(extension)
+                .build();
         this.fileUtility.writeFile(fileName, content);
     }
 }

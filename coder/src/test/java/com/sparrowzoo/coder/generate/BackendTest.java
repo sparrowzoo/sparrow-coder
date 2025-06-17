@@ -6,7 +6,7 @@ import com.sparrow.container.Container;
 import com.sparrow.container.ContainerBuilder;
 import com.sparrow.core.spi.ApplicationContext;
 import com.sparrowzoo.coder.service.CodeGenerator;
-import com.sparrowzoo.coder.service.backend.clear.DefaultCodeGenerator;
+import com.sparrowzoo.coder.service.backend.DefaultCodeGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

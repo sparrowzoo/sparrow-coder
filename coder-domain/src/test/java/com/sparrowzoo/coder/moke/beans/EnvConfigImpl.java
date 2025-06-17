@@ -19,9 +19,17 @@ public class EnvConfigImpl implements EnvConfig {
     @Value("${scaffold}")
     private String scaffold;
 
+    @Value("${project_root}")
+    private String projectRoot;
+
     @Override
     public String getWorkspace() {
         return this.workspace;
+    }
+
+    @Override
+    public String getProjectRoot() {
+        return this.projectRoot;
     }
 
     @Override

@@ -159,6 +159,8 @@ public enum PlaceholderKey {
      */
     $class_controller,
 
+    $package_batch_param,
+
     /**
      * primary property name e.g userId
      */

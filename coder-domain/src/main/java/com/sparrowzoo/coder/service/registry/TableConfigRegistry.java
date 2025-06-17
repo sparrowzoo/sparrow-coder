@@ -4,6 +4,7 @@ import com.sparrowzoo.coder.po.ProjectConfig;
 import com.sparrowzoo.coder.po.TableConfig;
 import com.sparrowzoo.coder.bo.TableContext;
 import com.sparrowzoo.coder.service.EnvConfig;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
@@ -14,50 +15,49 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 每次源代码时，只初始化一次
+ * 考虑上线后多用户访问
+ * 为防止内存溢出，这里使用临时变量，每次用户请求量初始化，使用后释放
  */
-@Named
 @Slf4j
+@Data
 public class TableConfigRegistry {
     public TableConfigRegistry() {
         log.info("init table config ");
     }
 
-    private Map<Long,Map<String, TableContext>> registry = new HashMap<>();
-    private Map<Long,ProjectConfig> projects = new HashMap<>();
-    @Inject
+    private Map<String, TableContext> registry = new HashMap<>();
+    private ProjectConfig project;
     private EnvConfig envConfig;
 
     public EnvConfig getEnvConfig() {
         return envConfig;
     }
 
-    public void register(Long projectId, String tableName, TableContext tableContext) {
-        registry.putIfAbsent(projectId, new HashMap<>());
-        registry.get(projectId).put(tableName, tableContext);
+    public void register(String tableName, TableContext tableContext) {
+        registry.put(tableName, tableContext);
     }
 
-    public TableContext getFirstTableContext(Long projectId, String tableName) {
-        return registry.get(projectId).get(tableName);
+    public TableContext getTableContext(String tableName) {
+        return registry.get(tableName);
     }
 
-    public TableContext getFirstTableContext(Long projectId) {
-        return registry.get(projectId).values().iterator().next();
+    public TableContext getFirstTableContext() {
+        return registry.values().iterator().next();
     }
 
-    public List<TableConfig> getAllTableConfig(Long projectId) {
+    public List<TableConfig> getAllTableConfig() {
         List<TableConfig> tableConfigList = new ArrayList<>();
-        for (String tableName : this.registry.get(projectId).keySet()) {
-            tableConfigList.add(this.registry.get(projectId).get(tableName).getTableConfig());
+        for (String tableName : this.registry.keySet()) {
+            tableConfigList.add(this.registry.get(tableName).getTableConfig());
         }
         return tableConfigList;
     }
 
     public void register(ProjectConfig projectConfig) {
-        this.projects.put(projectConfig.getId(), projectConfig);
+        this.project = projectConfig;
     }
 
-    public ProjectConfig getProjectConfig(Long projectId) {
-        return this.projects.get(projectId);
+    public ProjectConfig getProjectConfig() {
+        return this.project;
     }
 }

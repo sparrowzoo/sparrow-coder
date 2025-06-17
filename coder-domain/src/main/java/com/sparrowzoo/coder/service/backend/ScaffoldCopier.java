@@ -22,17 +22,14 @@ import java.util.Map;
 public class ScaffoldCopier {
     private static Logger logger = LoggerFactory.getLogger(ScaffoldCopier.class);
 
-    public static void copy(TableConfigRegistry registry,Long projectId) {
-        ProjectConfig projectConfig = registry.getProjectConfig(projectId);
-        String targetDirectoryPath = new FileNameBuilder(registry.getEnvConfig().getWorkspace()).joint(String.valueOf(projectConfig.getCreateUserId()))
-                .joint(registry.getProjectConfig(projectId).getName()).build();
-        FileUtility.getInstance().delete(targetDirectoryPath, System.currentTimeMillis());
-
-        String scaffoldHome = new FileNameBuilder(registry.getEnvConfig().getWorkspace()).joint(registry.getEnvConfig().getScaffold()).build();
+    public static void copy(TableConfigRegistry registry) {
+        ProjectConfig projectConfig = registry.getProjectConfig();
+        String scaffoldHome = new FileNameBuilder(registry.getEnvConfig().getWorkspace())
+                .joint(registry.getEnvConfig().getScaffold()).build();
         File directory = new File(scaffoldHome);
         FileUtility.FolderFilter folderFilter = (sourceFile) -> {
             if (!projectConfig.getWrapWithParent()) {
-                if (sourceFile.contains("admin"+File.separator+"pom.xml")) {
+                if (sourceFile.contains("admin" + File.separator + "pom.xml")) {
                     return true;
                 }
             }
@@ -64,19 +61,24 @@ public class ScaffoldCopier {
                 //scaffoldHome: /{home}/workspace/sparrow-example
                 String targetFileName = sourceFileName.replace(scaffoldHome, "").replace("example", projectConfig.getModulePrefix());
                 if (!projectConfig.getWrapWithParent()) {
-                    targetFileName = targetFileName.replace("admin"+File.separator, "");
+                    targetFileName = targetFileName.replace("admin" + File.separator, "");
                     targetFileName = targetFileName.replace("admin-", "");
                 }
+                String home = String.valueOf(projectConfig.getCreateUserId());
+                if (projectConfig.getImplanted()) {
+                    home = "";
+                }
                 String targetPath = new FileNameBuilder(registry.getEnvConfig().getWorkspace())
-                        .joint(String.valueOf(projectConfig.getCreateUserId()))
-                        .joint(registry.getProjectConfig(projectId).getName())
+                        .joint(registry.getEnvConfig().getProjectRoot())
+                        .joint(home)
+                        .joint(registry.getProjectConfig().getName())
                         .joint(targetFileName).build();
                 String content = null;
                 //如果不需要parent 包裹，并且是pom.xml，则需要读admin/pom.xml的内容处理
                 if (!projectConfig.getWrapWithParent() && targetFileName.equals(File.separator + "pom.xml")) {
                     sourceFileName = new FileNameBuilder(scaffoldHome)
-                            .joint(targetFileName.replace(File.separator+"pom.xml",""))
-                            .joint( "admin")
+                            .joint(targetFileName.replace(File.separator + "pom.xml", ""))
+                            .joint("admin")
                             .fileName("pom")
                             .extension(".xml")
                             .build();
@@ -86,7 +88,7 @@ public class ScaffoldCopier {
                     content = FileUtility.getInstance().readFileContent(sourceFileName);
                 }
 
-                Map<String, String> placeHolder = registry.getFirstTableContext(projectId).getPlaceHolder();
+                Map<String, String> placeHolder = registry.getFirstTableContext().getPlaceHolder();
                 content = StringUtility.replace(content.trim(), placeHolder);
                 content = content.replaceAll("example", projectConfig.getModulePrefix());
                 if (!projectConfig.getWrapWithParent()) {
