@@ -55,8 +55,4 @@ public class TableConfigRegistry {
     public void register(ProjectConfigBO projectConfig) {
         this.project = projectConfig;
     }
-
-    public ProjectConfigBO getProjectConfig() {
-        return this.project;
-    }
 }

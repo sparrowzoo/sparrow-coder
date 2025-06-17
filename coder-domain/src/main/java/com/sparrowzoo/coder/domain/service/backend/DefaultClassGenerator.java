@@ -6,8 +6,10 @@ import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
+import com.sparrowzoo.coder.domain.service.ArchitectureGenerator;
 import com.sparrowzoo.coder.domain.service.registry.ArchitectureRegistry;
 import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
+import com.sparrowzoo.coder.enums.ArchitectureCategory;
 import com.sparrowzoo.coder.enums.ClassKey;
 import com.sparrowzoo.coder.po.ProjectConfig;
 import com.sparrowzoo.coder.po.TableConfig;
@@ -32,11 +34,14 @@ public class DefaultClassGenerator implements ClassGenerator {
     private TableContext tableContext;
     private Properties config;
     private FileUtility fileUtility = FileUtility.getInstance();
+    private ArchitectureGenerator architectureGenerator;
 
     public DefaultClassGenerator(TableConfigRegistry registry,String tableName) throws IOException {
         this.registry = registry;
-        this.config = ConfigUtils.initPropertyConfig(registry.getProjectConfig().getConfig());
-        this.projectConfig=registry.getProjectConfig();
+        this.architectureGenerator= ArchitectureRegistry.getInstance().parse(registry.getProject().getArchitectures()).get(ArchitectureCategory.BACKEND);
+
+        this.config = ConfigUtils.initPropertyConfig(registry.getProject().getConfig());
+        this.projectConfig=registry.getProject();
         this.tableContext=registry.getTableContext(tableName);
     }
 
@@ -46,7 +51,7 @@ public class DefaultClassGenerator implements ClassGenerator {
         if (packageName == null) {
             return "";
         }
-        if (!registry.getProjectConfig().getWrapWithParent()) {
+        if (!registry.getProject().getWrapWithParent()) {
             packageName = packageName.replaceAll("admin.", "");
         }
         String poPackage =this.tableContext.getPoPackage();
@@ -116,10 +121,8 @@ public class DefaultClassGenerator implements ClassGenerator {
         return fullPath;
     }
 
-    public String readConfigContent(String templateFileName) {
-         ArchitectureRegistry.getInstance().getGenerator();
-
-        String codeTemplateRoot =this.projectConfig.getArchitectures();
+    public String readConfigContent(String arch,String templateFileName) {
+        String codeTemplateRoot =arch;
         if (!codeTemplateRoot.startsWith(File.separator)) {
             codeTemplateRoot = File.separator + codeTemplateRoot;
         }
@@ -133,7 +136,7 @@ public class DefaultClassGenerator implements ClassGenerator {
     }
 
     @Override
-    public void generate(ClassKey classKey) throws IOException {
+    public void generate(String arch,ClassKey classKey) throws IOException {
         if (ClassKey.DAO_MYBATIS.equals(classKey)) {
             return;
         }
@@ -145,7 +148,7 @@ public class DefaultClassGenerator implements ClassGenerator {
             TableConfigBO tableConfig = tableContext.getTableConfig();
             content = tableConfig.getSourceCode();
         } else {
-            content = readConfigContent(classKey.getTemplate());
+            content = readConfigContent(arch,classKey.getTemplate());
         }
         Map<String, String> placeHolder = tableContext.getPlaceHolder();
         content = StringUtility.replace(content.trim(), placeHolder);

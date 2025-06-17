@@ -29,7 +29,6 @@ public class ProjectConfigBO implements BO {
     private String description;
     private String modulePrefix;
     private String scanPackage;
-    private String architectures;
     private String config;
     private Boolean wrapWithParent;
     private Boolean implanted;
@@ -41,4 +40,5 @@ public class ProjectConfigBO implements BO {
     private Long gmtModified;
     private Boolean deleted;
     private StatusRecord status;
+    private ProjectArchsBO projectArchs;
 }

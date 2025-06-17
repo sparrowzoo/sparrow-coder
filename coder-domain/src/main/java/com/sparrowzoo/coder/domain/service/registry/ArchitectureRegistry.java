@@ -22,19 +22,11 @@ public class ArchitectureRegistry {
     }
 
     public ArchitectureGenerator getGenerator(ArchitectureCategory category, String name) {
-        return registry.get(category).get(name);
-    }
-
-    public Map<ArchitectureCategory, ArchitectureGenerator> parse(String config) {
-        Map<ArchitectureCategory, ArchitectureGenerator> map = new HashMap<>();
-        Map<String, String> configPairs = JsonFactory.getProvider().parse(config, Map.class);
-        for (String category : configPairs.keySet()) {
-            ArchitectureCategory categoryEnum = ArchitectureCategory.valueOf(category);
-            String architecture = configPairs.get(category);
-            ArchitectureGenerator generator = this.getGenerator(categoryEnum, architecture);
-            map.put(categoryEnum, generator);
+        Map<String, ArchitectureGenerator> architectureMap = registry.get(category);
+        if (architectureMap.containsKey(name)) {
+            return architectureMap.get(name);
         }
-        return map;
+        return architectureMap.values().iterator().next();
     }
 
     private ArchitectureRegistry() {

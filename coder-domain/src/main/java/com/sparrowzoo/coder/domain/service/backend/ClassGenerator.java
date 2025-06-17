@@ -12,7 +12,7 @@ public interface ClassGenerator {
 
     String getFullPhysicalPath(ClassKey classKey);
 
-    String readConfigContent(String templateFileName);
+    String readConfigContent(String arch,String templateFileName);
 
-    void generate(ClassKey classKey) throws IOException;
+    void generate(String arch,ClassKey classKey) throws IOException;
 }
