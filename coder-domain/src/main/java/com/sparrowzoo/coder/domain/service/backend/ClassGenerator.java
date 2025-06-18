@@ -5,14 +5,11 @@ import com.sparrowzoo.coder.enums.ClassKey;
 
 import java.io.IOException;
 
-public interface ClassGenerator {
-    String getPackage(ClassKey classKey);
-
-    String getClassName(ClassKey classKey);
+public interface ClassGenerator extends ClassMetaAccessor{
 
     String getFullPhysicalPath(ClassKey classKey);
 
-    String readConfigContent(String arch,String templateFileName);
+    String readConfigContent(String templateFileName);
 
-    void generate(String arch,ClassKey classKey) throws IOException;
+    void generate(ClassKey classKey) throws IOException;
 }

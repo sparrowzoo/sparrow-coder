@@ -24,7 +24,7 @@ public class ScaffoldCopier {
     private static Logger logger = LoggerFactory.getLogger(ScaffoldCopier.class);
 
     public static void copy(TableConfigRegistry registry) {
-        ProjectConfigBO projectConfig = registry.getProjectConfig();
+        ProjectConfigBO projectConfig = registry.getProject();
         String scaffoldHome = new FileNameBuilder(registry.getEnvConfig().getWorkspace())
                 .joint(registry.getEnvConfig().getScaffold()).build();
         File directory = new File(scaffoldHome);
@@ -72,7 +72,7 @@ public class ScaffoldCopier {
                 String targetPath = new FileNameBuilder(registry.getEnvConfig().getWorkspace())
                         .joint(registry.getEnvConfig().getProjectRoot())
                         .joint(home)
-                        .joint(registry.getProjectConfig().getName())
+                        .joint(registry.getProject().getName())
                         .joint(targetFileName).build();
                 String content = null;
                 //如果不需要parent 包裹，并且是pom.xml，则需要读admin/pom.xml的内容处理

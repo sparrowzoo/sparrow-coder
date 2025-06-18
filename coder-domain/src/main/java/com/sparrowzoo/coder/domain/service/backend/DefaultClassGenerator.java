@@ -27,63 +27,14 @@ import java.util.Map;
 import java.util.Properties;
 
 @Slf4j
-public class DefaultClassGenerator implements ClassGenerator {
-    private TableConfigRegistry registry;
-
+public class DefaultClassGenerator extends DefaultClassMetaAccessor implements ClassGenerator {
+    private String template;
     private ProjectConfigBO projectConfig;
-    private TableContext tableContext;
-    private Properties config;
-    private FileUtility fileUtility = FileUtility.getInstance();
-    private ArchitectureGenerator architectureGenerator;
-
-    public DefaultClassGenerator(TableConfigRegistry registry,String tableName) throws IOException {
-        this.registry = registry;
-        this.architectureGenerator= ArchitectureRegistry.getInstance().parse(registry.getProject().getArchitectures()).get(ArchitectureCategory.BACKEND);
-
-        this.config = ConfigUtils.initPropertyConfig(registry.getProject().getConfig());
-        this.projectConfig=registry.getProject();
-        this.tableContext=registry.getTableContext(tableName);
+    public DefaultClassGenerator(TableConfigRegistry registry,String tableName,String template) throws IOException {
+        super(registry,tableName);
+        this.projectConfig = registry.getProject();
+        this.template= template;
     }
-
-    @Override
-    public String getPackage(ClassKey classKey) {
-        String packageName = this.config.getProperty(Config.PACKAGE_PREFIX + classKey.name().toLowerCase());
-        if (packageName == null) {
-            return "";
-        }
-        if (!registry.getProject().getWrapWithParent()) {
-            packageName = packageName.replaceAll("admin.", "");
-        }
-        String poPackage =this.tableContext.getPoPackage();
-        return fileUtility.replacePath(poPackage, ClassKey.PO.name(), packageName, Symbol.DOT);
-    }
-
-
-    public String getClassName(ClassKey classKey) {
-        String persistenceClassName = this.tableContext.getPlaceHolder().get(PlaceholderKey.$persistence_class_name.name());
-        String source = config.getProperty(Config.CLASS_PREFIX + classKey.name().toLowerCase());
-        if (persistenceClassName == null) {
-            return source;
-        }
-        return source.replace(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
-    }
-
-    public String getModule(ClassKey key) {
-        String parentModule = "admin";
-        String moduleKey = Config.MODULE_PREFIX;
-        if (!ClassKey.PO.equals(key)) {
-            moduleKey += parentModule + "." + key.getModule().toLowerCase();
-        } else {
-            moduleKey += key.getModule().toLowerCase();
-        }
-        String modulePath = config.getProperty(moduleKey);
-        if (modulePath == null) {
-            log.error("module path is null, module key is [{}]", moduleKey);
-        }
-        Map<String, String> placeHolder = tableContext.getPlaceHolder();
-        return StringUtility.replace(modulePath, placeHolder);
-    }
-
 
     @Override
     public String getFullPhysicalPath(ClassKey classKey) {
@@ -121,8 +72,8 @@ public class DefaultClassGenerator implements ClassGenerator {
         return fullPath;
     }
 
-    public String readConfigContent(String arch,String templateFileName) {
-        String codeTemplateRoot =arch;
+    public String readConfigContent(String templateFileName) {
+        String codeTemplateRoot =this.template;
         if (!codeTemplateRoot.startsWith(File.separator)) {
             codeTemplateRoot = File.separator + codeTemplateRoot;
         }
@@ -136,7 +87,7 @@ public class DefaultClassGenerator implements ClassGenerator {
     }
 
     @Override
-    public void generate(String arch,ClassKey classKey) throws IOException {
+    public void generate(ClassKey classKey) throws IOException {
         if (ClassKey.DAO_MYBATIS.equals(classKey)) {
             return;
         }
@@ -148,7 +99,7 @@ public class DefaultClassGenerator implements ClassGenerator {
             TableConfigBO tableConfig = tableContext.getTableConfig();
             content = tableConfig.getSourceCode();
         } else {
-            content = readConfigContent(arch,classKey.getTemplate());
+            content = readConfigContent(classKey.getTemplate());
         }
         Map<String, String> placeHolder = tableContext.getPlaceHolder();
         content = StringUtility.replace(content.trim(), placeHolder);

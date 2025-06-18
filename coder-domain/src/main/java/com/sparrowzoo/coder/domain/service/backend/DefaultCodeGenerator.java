@@ -9,20 +9,17 @@ import com.sparrow.utility.DateTimeUtility;
 import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.domain.DomainRegistry;
+import com.sparrowzoo.coder.domain.bo.ProjectArchsBO;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableContext;
 import com.sparrowzoo.coder.domain.service.CodeGenerator;
+import com.sparrowzoo.coder.domain.service.EnvConfig;
+import com.sparrowzoo.coder.domain.service.registry.ArchitectureRegistry;
 import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrowzoo.coder.enums.ArchitectureCategory;
 import com.sparrowzoo.coder.enums.ClassKey;
-import com.sparrowzoo.coder.enums.CodeSource;
 import com.sparrowzoo.coder.enums.PlaceholderKey;
-import com.sparrowzoo.coder.po.ProjectConfig;
-import com.sparrowzoo.coder.po.TableConfig;
-import com.sparrowzoo.coder.domain.service.EnvConfig;
-import com.sparrowzoo.coder.domain.service.registry.ArchitectureRegistry;
-import com.sparrowzoo.coder.protocol.query.ProjectConfigQuery;
 import com.sparrowzoo.coder.protocol.query.TableConfigQuery;
 
 import java.io.IOException;
@@ -65,14 +62,14 @@ public class DefaultCodeGenerator implements CodeGenerator {
     private Map<String, String> initPlaceHolder(TableContext tableContext) throws IOException, ClassNotFoundException {
         Map<String, String> placeHolder = new TreeMap<>(Comparator.reverseOrder());
         tableContext.setPlaceHolder(placeHolder);
-        ProjectConfigBO projectConfig = this.registry.getProjectConfig();
+        ProjectConfigBO projectConfig = this.registry.getProject();
         TableConfigBO tableConfig = tableContext.getTableConfig();
         EntityManager entityManager = new SparrowEntityManager(Class.forName(tableConfig.getClassName()));
         tableContext.setEntityManager(entityManager);
         String tableName = entityManager.getTableName();
         String persistenceClassName = entityManager.getSimpleClassName();
         String modulePrefix = projectConfig.getModulePrefix();
-        ClassGenerator classGenerator = new DefaultClassGenerator(this.registry, tableConfig.getTableName());
+        ClassMetaAccessor classMetaAccessor = new DefaultClassMetaAccessor(this.registry, tableConfig.getTableName());
         placeHolder.put(PlaceholderKey.$module_prefix.name(), modulePrefix);
         placeHolder.put(PlaceholderKey.$origin_table_name.name(), tableName);
         placeHolder.put(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
@@ -83,32 +80,31 @@ public class DefaultCodeGenerator implements CodeGenerator {
         placeHolder.put(PlaceholderKey.$date.name(), DateTimeUtility.getFormatCurrentTime("yyyy-MM-dd HH:mm:ss"));
         placeHolder.put(PlaceholderKey.$package_po.name(), tableContext.getPoPackage());
         placeHolder.put(PlaceholderKey.$package_scan_base.name(), tableContext.getPoPackage().replace("." + ClassKey.PO.name().toLowerCase(), ""));
-        placeHolder.put(PlaceholderKey.$package_bo.name(), classGenerator.getPackage(ClassKey.BO));
-        placeHolder.put(PlaceholderKey.$package_param.name(), classGenerator.getPackage(ClassKey.PARAM));
-        placeHolder.put(PlaceholderKey.$package_query.name(), classGenerator.getPackage(ClassKey.QUERY));
-        placeHolder.put(PlaceholderKey.$package_dto.name(), classGenerator.getPackage(ClassKey.DTO));
-        placeHolder.put(PlaceholderKey.$package_vo.name(), classGenerator.getPackage(ClassKey.VO));
-
-        placeHolder.put(PlaceholderKey.$package_dao.name(), classGenerator.getPackage(ClassKey.DAO));
-        String pagerQuery = classGenerator.getPackage(ClassKey.PAGER_QUERY);
+        placeHolder.put(PlaceholderKey.$package_bo.name(), classMetaAccessor.getPackage(ClassKey.BO));
+        placeHolder.put(PlaceholderKey.$package_param.name(), classMetaAccessor.getPackage(ClassKey.PARAM));
+        placeHolder.put(PlaceholderKey.$package_query.name(), classMetaAccessor.getPackage(ClassKey.QUERY));
+        placeHolder.put(PlaceholderKey.$package_dto.name(), classMetaAccessor.getPackage(ClassKey.DTO));
+        placeHolder.put(PlaceholderKey.$package_vo.name(), classMetaAccessor.getPackage(ClassKey.VO));
+        placeHolder.put(PlaceholderKey.$package_dao.name(), classMetaAccessor.getPackage(ClassKey.DAO));
+        String pagerQuery = classMetaAccessor.getPackage(ClassKey.PAGER_QUERY);
         placeHolder.put(PlaceholderKey.$package_pager_query.name(), StringUtility.replace(pagerQuery, placeHolder));
-        placeHolder.put(PlaceholderKey.$package_repository.name(), classGenerator.getPackage(ClassKey.REPOSITORY));
-        placeHolder.put(PlaceholderKey.$package_repository_impl.name(), classGenerator.getPackage(ClassKey.REPOSITORY_IMPL));
-        placeHolder.put(PlaceholderKey.$package_data_converter.name(), classGenerator.getPackage(ClassKey.DATA_CONVERTER));
-        placeHolder.put(PlaceholderKey.$package_assemble.name(), classGenerator.getPackage(ClassKey.ASSEMBLE));
+        placeHolder.put(PlaceholderKey.$package_repository.name(), classMetaAccessor.getPackage(ClassKey.REPOSITORY));
+        placeHolder.put(PlaceholderKey.$package_repository_impl.name(), classMetaAccessor.getPackage(ClassKey.REPOSITORY_IMPL));
+        placeHolder.put(PlaceholderKey.$package_data_converter.name(), classMetaAccessor.getPackage(ClassKey.DATA_CONVERTER));
+        placeHolder.put(PlaceholderKey.$package_assemble.name(), classMetaAccessor.getPackage(ClassKey.ASSEMBLE));
 
-        placeHolder.put(PlaceholderKey.$package_dao_impl.name(), classGenerator.getPackage(ClassKey.DAO_IMPL));
-        placeHolder.put(PlaceholderKey.$package_service.name(), classGenerator.getPackage(ClassKey.SERVICE));
-        placeHolder.put(PlaceholderKey.$package_controller.name(), classGenerator.getPackage(ClassKey.CONTROLLER));
+        placeHolder.put(PlaceholderKey.$package_dao_impl.name(), classMetaAccessor.getPackage(ClassKey.DAO_IMPL));
+        placeHolder.put(PlaceholderKey.$package_service.name(), classMetaAccessor.getPackage(ClassKey.SERVICE));
+        placeHolder.put(PlaceholderKey.$package_controller.name(), classMetaAccessor.getPackage(ClassKey.CONTROLLER));
 
-        placeHolder.put(PlaceholderKey.$class_po.name(), classGenerator.getClassName(ClassKey.PO));
-        placeHolder.put(PlaceholderKey.$class_dao.name(), classGenerator.getClassName(ClassKey.DAO));
-        placeHolder.put(PlaceholderKey.$class_impl_dao.name(), classGenerator.getClassName(ClassKey.DAO_IMPL));
-        placeHolder.put(PlaceholderKey.$class_service.name(), classGenerator.getClassName(ClassKey.SERVICE));
+        placeHolder.put(PlaceholderKey.$class_po.name(), classMetaAccessor.getClassName(ClassKey.PO));
+        placeHolder.put(PlaceholderKey.$class_dao.name(), classMetaAccessor.getClassName(ClassKey.DAO));
+        placeHolder.put(PlaceholderKey.$class_impl_dao.name(), classMetaAccessor.getClassName(ClassKey.DAO_IMPL));
+        placeHolder.put(PlaceholderKey.$class_service.name(), classMetaAccessor.getClassName(ClassKey.SERVICE));
 
-        placeHolder.put(PlaceholderKey.$class_repository.name(), classGenerator.getClassName(ClassKey.REPOSITORY));
-        placeHolder.put(PlaceholderKey.$class_repositoryImpl.name(), classGenerator.getClassName(ClassKey.REPOSITORY_IMPL));
-        placeHolder.put(PlaceholderKey.$class_controller.name(), classGenerator.getClassName(ClassKey.CONTROLLER));
+        placeHolder.put(PlaceholderKey.$class_repository.name(), classMetaAccessor.getClassName(ClassKey.REPOSITORY));
+        placeHolder.put(PlaceholderKey.$class_repositoryImpl.name(), classMetaAccessor.getClassName(ClassKey.REPOSITORY_IMPL));
+        placeHolder.put(PlaceholderKey.$class_controller.name(), classMetaAccessor.getClassName(ClassKey.CONTROLLER));
 
         placeHolder.put(PlaceholderKey.$object_dao.name(), StringUtility.setFirstByteLowerCase(placeHolder.get(PlaceholderKey.$class_dao.name())));
 
@@ -133,7 +129,6 @@ public class DefaultCodeGenerator implements CodeGenerator {
         Map<String, Field> fields = entityManager.getPropertyFieldMap();
         StringBuilder fieldBuild = new StringBuilder();
         StringBuilder paramFieldBuild = new StringBuilder();
-        String statusProperty = null;
         for (Field field : fields.values()) {
             Class<?> fieldClazz = field.getType();
             String property = String.format("private %s %s; \n", fieldClazz.getSimpleName(), field.getPropertyName());
@@ -149,11 +144,16 @@ public class DefaultCodeGenerator implements CodeGenerator {
 
     @Override
     public void generate(String tableName) throws IOException {
-        String architectures = registry.getProjectConfig().getArchitectures();
+        ProjectArchsBO architectures = registry.getProject().getProjectArchs();
+        for(String architectureCategory : architectures.getArchs().keySet()){
+            architectures.getArch(architectureCategory).generate(registry, tableName);
+        }
+
         ArchitectureRegistry.getInstance().getRegistry()
                 .get(ArchitectureCategory.BACKEND)
                 .get("clearArchitectureGenerator").generate(registry, tableName);
 
+        architectures.getArch(ArchitectureCategory.DATABASE).generate(registry, tableName);
         ArchitectureRegistry.getInstance().getRegistry()
                 .get(ArchitectureCategory.DATABASE)
                 .get("mySqlArchitectureGenerator").generate(registry, tableName);
@@ -169,8 +169,8 @@ public class DefaultCodeGenerator implements CodeGenerator {
     public void clear() {
         String targetDirectoryPath =
                 new FileNameBuilder(registry.getEnvConfig().getWorkspace())
-                        .joint(String.valueOf(registry.getProjectConfig().getCreateUserId()))
-                        .joint(registry.getProjectConfig().getName())
+                        .joint(String.valueOf(registry.getProject().getCreateUserId()))
+                        .joint(registry.getProject().getName())
                         .build();
         FileUtility.getInstance().delete(targetDirectoryPath, System.currentTimeMillis());
     }
