@@ -2,7 +2,6 @@ package com.sparrowzoo.coder.moke.beans;
 
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
 import com.sparrowzoo.coder.enums.CodeSource;
-import com.sparrowzoo.coder.po.TableConfig;
 import com.sparrowzoo.coder.protocol.param.TableConfigParam;
 import com.sparrowzoo.coder.protocol.query.TableConfigQuery;
 import com.sparrowzoo.coder.repository.TableConfigRepository;
@@ -64,6 +63,7 @@ public class MockTableConfigRepository implements TableConfigRepository {
         TableConfigBO tableConfig = new TableConfigBO();
         tableConfig.setId(1L);
         tableConfig.setProjectId(1L);
+        tableConfig.setLocked(true);
         tableConfig.setPrimaryKey("id");
         tableConfig.setTableName("t_table_config");
         tableConfig.setClassName("com.sparrowzoo.coder.po.TableConfig");
@@ -89,6 +89,8 @@ public class MockTableConfigRepository implements TableConfigRepository {
         projectTable.setPrimaryKey("id");
         projectTable.setTableName("t_project_config");
         projectTable.setClassName("com.sparrowzoo.coder.po.ProjectConfig");
+        projectTable.setLocked(true);
+
         projectTable.setDescription("");
         projectTable.setCheckable(false);
         projectTable.setRowMenu(false);
@@ -103,10 +105,10 @@ public class MockTableConfigRepository implements TableConfigRepository {
         projectTable.setGmtModified(0L);
         projectTable.setCreateUserName("harry");
         projectTable.setModifiedUserName("");
-       List<TableConfigBO> list=new ArrayList<>();
-       list.add(tableConfig);
-       list.add(projectTable);
-       return list;
+        List<TableConfigBO> list = new ArrayList<>();
+        list.add(tableConfig);
+        list.add(projectTable);
+        return list;
     }
 
     @Override

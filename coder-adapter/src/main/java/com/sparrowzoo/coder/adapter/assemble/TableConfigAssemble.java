@@ -24,26 +24,31 @@ import com.sparrowzoo.coder.domain.bo.TableConfigBO;
 import com.sparrowzoo.coder.protocol.param.TableConfigParam;
 import com.sparrow.support.assemble.BO2VOAssemble;
 import com.sparrow.support.assemble.Param2VOAssemble;
-import com.sparrow.utility.BeanUtility;
 import com.sparrow.utility.CollectionsUtility;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.inject.Named;
+import javax.inject.Inject;
+import com.sparrow.protocol.BeanCopier;
+
 
 @Named
 public class TableConfigAssemble implements BO2VOAssemble<TableConfigVO, TableConfigBO>,
     Param2VOAssemble<TableConfigVO,TableConfigParam> {
 
+    @Inject
+    private BeanCopier beanCopier;
+
     public TableConfigVO paramAssembleVO(TableConfigParam param){
         TableConfigVO tableConfig = new TableConfigVO();
-        BeanUtility.copyProperties(param, tableConfig);
+        beanCopier.copyProperties(param, tableConfig);
         return tableConfig;
     }
 
     @Override public TableConfigVO boAssembleVO(TableConfigBO bo) {
         TableConfigVO tableConfig = new TableConfigVO();
-        BeanUtility.copyProperties(bo, tableConfig);
+        beanCopier.copyProperties(bo, tableConfig);
         return tableConfig;
     }
 

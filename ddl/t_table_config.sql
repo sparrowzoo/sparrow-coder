@@ -7,6 +7,7 @@ CREATE TABLE `t_table_config` (
  `class_name` varchar(32)  default '' comment '类名'  NOT NULL,
  `description` varchar(255)  default '' comment '描述'  NOT NULL,
  `checkable` tinyint(1)  default 0 comment '是否可勾选 0-不可 1-可'  NOT NULL,
+ `locked` tinyint(1)  default 0 comment '是否锁定 0-未锁定 1-锁定'  NOT NULL,
  `row_menu` tinyint(1)  default 0 comment '是否显示行操作 0-不显示 1-显示'  NOT NULL,
  `column_filter` tinyint(1)  default 0 comment '是否显示列过滤器 0-不显示 1-显示'  NOT NULL,
  `status_command` tinyint(1)  default 0 comment '是否显示状态命令 0-不显示 1-显示'  NOT NULL,

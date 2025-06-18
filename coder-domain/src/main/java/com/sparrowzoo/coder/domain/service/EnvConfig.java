@@ -4,6 +4,4 @@ public interface EnvConfig {
     public String getWorkspace();
 
     public String getProjectRoot();
-
-    public String getScaffold();
 }

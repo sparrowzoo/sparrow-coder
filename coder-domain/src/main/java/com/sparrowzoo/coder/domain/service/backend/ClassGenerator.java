@@ -5,7 +5,7 @@ import com.sparrowzoo.coder.enums.ClassKey;
 
 import java.io.IOException;
 
-public interface ClassGenerator extends ClassMetaAccessor{
+public interface ClassGenerator extends ClassArchAccessor {
 
     String getFullPhysicalPath(ClassKey classKey);
 

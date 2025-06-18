@@ -1,4 +1,4 @@
-package com.sparrowzoo.coder.domain.service.backend;
+package com.sparrowzoo.coder.domain.service;
 
 import com.sparrow.io.file.FileNameBuilder;
 import com.sparrow.orm.EntityManager;
@@ -13,14 +13,14 @@ import com.sparrowzoo.coder.domain.bo.ProjectArchsBO;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableContext;
-import com.sparrowzoo.coder.domain.service.CodeGenerator;
-import com.sparrowzoo.coder.domain.service.EnvConfig;
-import com.sparrowzoo.coder.domain.service.registry.ArchitectureRegistry;
+import com.sparrowzoo.coder.domain.service.backend.ClassArchAccessor;
+import com.sparrowzoo.coder.domain.service.backend.DefaultClassArchAccessor;
+import com.sparrowzoo.coder.domain.service.backend.ScaffoldCopier;
 import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
-import com.sparrowzoo.coder.enums.ArchitectureCategory;
 import com.sparrowzoo.coder.enums.ClassKey;
 import com.sparrowzoo.coder.enums.PlaceholderKey;
 import com.sparrowzoo.coder.protocol.query.TableConfigQuery;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 
+@Slf4j
 public class DefaultCodeGenerator implements CodeGenerator {
     private TableConfigRegistry registry;
     private DomainRegistry domainRegistry;
@@ -45,11 +46,11 @@ public class DefaultCodeGenerator implements CodeGenerator {
 
     @Override
     public void initRegistry(TableConfigRegistry registry) throws ClassNotFoundException, IOException {
-        TableConfigQuery projectConfigQuery = new TableConfigQuery();
-        projectConfigQuery.setProjectId(registry.getProject().getId());
-        projectConfigQuery.setDeleted(false);
-        projectConfigQuery.setStatus(StatusRecord.ENABLE.ordinal());
-        List<TableConfigBO> tableConfigs = domainRegistry.getTableConfigRepository().queryTableConfigs(projectConfigQuery);
+        TableConfigQuery tableConfigQuery = new TableConfigQuery();
+        tableConfigQuery.setProjectId(registry.getProject().getId());
+        tableConfigQuery.setDeleted(false);
+        tableConfigQuery.setStatus(StatusRecord.ENABLE.ordinal());
+        List<TableConfigBO> tableConfigs = domainRegistry.getTableConfigRepository().queryTableConfigs(tableConfigQuery);
         for (TableConfigBO tableConfigBO : tableConfigs) {
             TableContext context = new TableContext();
             context.setTableConfig(tableConfigBO);
@@ -69,7 +70,7 @@ public class DefaultCodeGenerator implements CodeGenerator {
         String tableName = entityManager.getTableName();
         String persistenceClassName = entityManager.getSimpleClassName();
         String modulePrefix = projectConfig.getModulePrefix();
-        ClassMetaAccessor classMetaAccessor = new DefaultClassMetaAccessor(this.registry, tableConfig.getTableName());
+        ClassArchAccessor classMetaAccessor = new DefaultClassArchAccessor(this.registry, tableConfig.getTableName());
         placeHolder.put(PlaceholderKey.$module_prefix.name(), modulePrefix);
         placeHolder.put(PlaceholderKey.$origin_table_name.name(), tableName);
         placeHolder.put(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
@@ -144,19 +145,23 @@ public class DefaultCodeGenerator implements CodeGenerator {
 
     @Override
     public void generate(String tableName) throws IOException {
-        ProjectArchsBO architectures = registry.getProject().getProjectArchs();
-        for(String architectureCategory : architectures.getArchs().keySet()){
+        TableContext context = registry.getTableContext(tableName);
+        if (context.getTableConfig().getLocked()) {
+            log.info("table {} is locked, skip generate", context.getTableConfig().getTableName());
+            return;
+        }
+        ProjectArchsBO architectures = new ProjectArchsBO(registry.getProject().getArchitectures());
+        for (String architectureCategory : architectures.getArchs().keySet()) {
             architectures.getArch(architectureCategory).generate(registry, tableName);
         }
 
-        ArchitectureRegistry.getInstance().getRegistry()
-                .get(ArchitectureCategory.BACKEND)
-                .get("clearArchitectureGenerator").generate(registry, tableName);
-
-        architectures.getArch(ArchitectureCategory.DATABASE).generate(registry, tableName);
-        ArchitectureRegistry.getInstance().getRegistry()
-                .get(ArchitectureCategory.DATABASE)
-                .get("mySqlArchitectureGenerator").generate(registry, tableName);
+//        ArchitectureRegistry.getInstance().getRegistry()
+//                .get(ArchitectureCategory.BACKEND)
+//                .get("clearArchitectureGenerator").generate(registry, tableName);
+//
+//        ArchitectureRegistry.getInstance().getRegistry()
+//                .get(ArchitectureCategory.DATABASE)
+//                .get("mySqlArchitectureGenerator").generate(registry, tableName);
 
     }
 

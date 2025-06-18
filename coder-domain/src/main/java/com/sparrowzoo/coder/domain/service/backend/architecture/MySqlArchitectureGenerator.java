@@ -5,10 +5,9 @@ import com.sparrow.orm.EntityManager;
 import com.sparrow.utility.FileUtility;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.domain.service.AbstractArchitectureGenerator;
-import com.sparrowzoo.coder.enums.ArchitectureCategory;
-import com.sparrowzoo.coder.po.ProjectConfig;
 import com.sparrowzoo.coder.domain.service.EnvConfig;
 import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
+import com.sparrowzoo.coder.enums.ArchitectureCategory;
 
 import javax.inject.Named;
 import java.io.IOException;

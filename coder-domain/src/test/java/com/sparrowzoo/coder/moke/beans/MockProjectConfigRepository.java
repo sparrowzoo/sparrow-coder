@@ -1,7 +1,7 @@
 package com.sparrowzoo.coder.moke.beans;
 
+import com.sparrowzoo.coder.domain.bo.ProjectArchsBO;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
-import com.sparrowzoo.coder.po.ProjectConfig;
 import com.sparrowzoo.coder.protocol.param.ProjectConfigParam;
 import com.sparrowzoo.coder.protocol.query.ProjectConfigQuery;
 import com.sparrowzoo.coder.repository.ProjectConfigRepository;
@@ -37,25 +37,20 @@ public class MockProjectConfigRepository implements ProjectConfigRepository {
         projectConfig.setWrapWithParent(false);
         projectConfig.setImplanted(true);
         projectConfig.setFrontendName("react-sparrow-admin");
-        projectConfig.setChineseName("授权管理");
+        projectConfig.setChineseName("代码生成器模拟");
         projectConfig.setModulePrefix("coder");
         projectConfig.setScanPackage("com.sparrow");
-        projectConfig.setDescription("");
+        projectConfig.setDescription("代码生成器模拟");
         projectConfig.setId(1L);
         projectConfig.setName("sparrow-coder");
-        projectConfig.setDescription("授权");
-        projectConfig.setArchitectures("{\"FRONTEND\":\"react\",\"BACKEND\":\"springboot\"}");
-        projectConfig.setFrontendName("react-sparrow-admin");
-        projectConfig.setChineseName("授权管理");
-        projectConfig.setDescription("");
-        projectConfig.setModulePrefix("coder");
+        projectConfig.setArchitectures("{\"DATABASE\":\"mySqlArchitectureGenerator\",\"BACKEND\":\"clearArchitectureGenerator\"}");
         projectConfig.setConfig("");
         projectConfig.setCreateUserId(1L);
-        projectConfig.setModifiedUserId(0L);
-        projectConfig.setGmtCreate(1L);
+        projectConfig.setModifiedUserId(1L);
+        projectConfig.setGmtCreate(0L);
         projectConfig.setGmtModified(0L);
         projectConfig.setCreateUserName("harry");
-        projectConfig.setModifiedUserName("");
+        projectConfig.setModifiedUserName("harry");
         return projectConfig;
     }
 

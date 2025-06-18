@@ -5,7 +5,6 @@ import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
-import com.sparrowzoo.coder.po.ProjectConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +25,7 @@ public class ScaffoldCopier {
     public static void copy(TableConfigRegistry registry) {
         ProjectConfigBO projectConfig = registry.getProject();
         String scaffoldHome = new FileNameBuilder(registry.getEnvConfig().getWorkspace())
-                .joint(registry.getEnvConfig().getScaffold()).build();
+                .joint("sparrow-example").build();
         File directory = new File(scaffoldHome);
         FileUtility.FolderFilter folderFilter = (sourceFile) -> {
             if (!projectConfig.getWrapWithParent()) {

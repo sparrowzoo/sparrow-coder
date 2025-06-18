@@ -1,22 +1,13 @@
 package com.sparrowzoo.coder.domain.service.backend;
+
 import com.sparrow.io.file.FileNameBuilder;
-import com.sparrow.protocol.constant.magic.Symbol;
 import com.sparrow.support.EnvironmentSupport;
 import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
-import com.sparrowzoo.coder.domain.service.ArchitectureGenerator;
-import com.sparrowzoo.coder.domain.service.registry.ArchitectureRegistry;
 import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
-import com.sparrowzoo.coder.enums.ArchitectureCategory;
 import com.sparrowzoo.coder.enums.ClassKey;
-import com.sparrowzoo.coder.po.ProjectConfig;
-import com.sparrowzoo.coder.po.TableConfig;
-import com.sparrowzoo.coder.domain.bo.TableContext;
-import com.sparrowzoo.coder.constant.Config;
-import com.sparrowzoo.coder.enums.PlaceholderKey;
-import com.sparrowzoo.coder.utils.ConfigUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -24,12 +15,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import java.util.Properties;
 
 @Slf4j
-public class DefaultClassGenerator extends DefaultClassMetaAccessor implements ClassGenerator {
-    private String template;
-    private ProjectConfigBO projectConfig;
+public class DefaultClassGenerator extends DefaultClassArchAccessor implements ClassGenerator {
+    private final String template;
+    private final ProjectConfigBO projectConfig;
     public DefaultClassGenerator(TableConfigRegistry registry,String tableName,String template) throws IOException {
         super(registry,tableName);
         this.projectConfig = registry.getProject();

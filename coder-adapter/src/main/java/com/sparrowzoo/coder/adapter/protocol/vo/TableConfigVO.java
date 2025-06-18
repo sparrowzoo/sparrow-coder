@@ -29,6 +29,7 @@ private String tableName;
 private String className; 
 private String description; 
 private Boolean checkable; 
+private Boolean locked; 
 private Boolean rowMenu; 
 private Boolean columnFilter; 
 private Boolean statusCommand; 

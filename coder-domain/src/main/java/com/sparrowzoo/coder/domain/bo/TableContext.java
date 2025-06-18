@@ -1,7 +1,6 @@
 package com.sparrowzoo.coder.domain.bo;
 
 import com.sparrow.orm.EntityManager;
-import com.sparrowzoo.coder.po.TableConfig;
 import lombok.Data;
 
 import java.util.Map;

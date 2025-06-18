@@ -2,6 +2,7 @@ package com.sparrowzoo.coder.boot.config;
 
 import com.sparrow.mq.DefaultQueueHandlerMappingContainer;
 import com.sparrow.mq.EventHandlerMappingContainer;
+import com.sparrow.protocol.BeanCopier;
 import com.sparrow.spring.starter.config.SparrowConfig;
 import com.sparrow.spring.starter.filter.AccessMonitorFilter;
 import com.sparrow.spring.starter.monitor.Monitor;
@@ -9,6 +10,7 @@ import com.sparrow.support.Authenticator;
 import com.sparrow.support.DefaultAuthenticatorService;
 import com.sparrow.support.IpSupport;
 import com.sparrow.support.web.MonolithicLoginUserFilter;
+import com.sparrow.utility.SparrowBeanCopier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,11 @@ public class MvcConfigurerAdapter implements WebMvcConfigurer {
     @Bean
     public Monitor monitor() {
         return new Monitor(this.ipSupport);
+    }
+
+    @Bean
+    public BeanCopier beanCopier() {
+        return new SparrowBeanCopier();
     }
 
     @Bean

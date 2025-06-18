@@ -19,26 +19,27 @@ package com.sparrowzoo.coder.domain.bo;
 import com.sparrow.protocol.BO;
 import com.sparrow.protocol.enums.StatusRecord;
 import lombok.Data;
-
 @Data
 public class ProjectConfigBO implements BO {
-    private Long id;
-    private String name;
-    private String frontendName;
-    private String chineseName;
-    private String description;
-    private String modulePrefix;
-    private String scanPackage;
-    private String config;
-    private Boolean wrapWithParent;
-    private Boolean implanted;
-    private String createUserName;
-    private Long createUserId;
-    private Long modifiedUserId;
-    private String modifiedUserName;
-    private Long gmtCreate;
-    private Long gmtModified;
-    private Boolean deleted;
-    private StatusRecord status;
-    private ProjectArchsBO projectArchs;
+    private Long id; 
+private String name; 
+private String frontendName; 
+private String chineseName; 
+private String description; 
+private String modulePrefix; 
+private String scanPackage; 
+private String architectures; 
+private String config; 
+private Boolean wrapWithParent; 
+private Boolean implanted; 
+private String scaffold; 
+private String createUserName; 
+private Long createUserId; 
+private Long modifiedUserId; 
+private String modifiedUserName; 
+private Long gmtCreate; 
+private Long gmtModified; 
+private Boolean deleted; 
+private StatusRecord status; 
+
 }

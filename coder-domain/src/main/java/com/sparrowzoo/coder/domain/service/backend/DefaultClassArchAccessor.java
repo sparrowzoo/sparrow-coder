@@ -8,20 +8,19 @@ import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrowzoo.coder.enums.ClassKey;
 import com.sparrowzoo.coder.enums.PlaceholderKey;
 import com.sparrowzoo.coder.utils.ConfigUtils;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Properties;
 
 @Slf4j
-public class DefaultClassMetaAccessor implements ClassMetaAccessor{
+public class DefaultClassArchAccessor implements ClassArchAccessor {
     protected final TableConfigRegistry registry;
     protected final TableContext tableContext;
     protected final Properties config;
     protected final FileUtility fileUtility = FileUtility.getInstance();
 
-    public DefaultClassMetaAccessor(TableConfigRegistry registry,String tableName) throws IOException {
+    public DefaultClassArchAccessor(TableConfigRegistry registry, String tableName) throws IOException {
         this.registry = registry;
         this.config = ConfigUtils.initPropertyConfig(registry.getProject().getConfig());
         this.tableContext=registry.getTableContext(tableName);

@@ -11,33 +11,38 @@ import $package_query.$persistence_class_nameQuery;
 import com.sparrow.support.converter.PO2BOConverter;
 import com.sparrow.support.converter.Param2POConverter;
 import $package_pager_query.$persistence_class_nameDBPagerQuery;
-import com.sparrow.utility.BeanUtility;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Named;
+import javax.inject.Inject;
+import com.sparrow.protocol.BeanCopier;
+
 
 @Named
 public class $persistence_class_nameConverter implements Param2POConverter<$persistence_class_nameParam, $persistence_class_name>, PO2BOConverter<$persistence_class_nameBO, $persistence_class_name> {
+
+    @Inject
+    private BeanCopier beanCopier;
 
     public $persistence_class_nameDBPagerQuery toDbPagerQuery($persistence_class_nameQuery $persistence_object_nameQuery) {
            if ($persistence_object_nameQuery == null) {
                return new $persistence_class_nameDBPagerQuery();
            }
            $persistence_class_nameDBPagerQuery $persistence_object_name = new $persistence_class_nameDBPagerQuery();
-           BeanUtility.copyProperties($persistence_object_nameQuery, $persistence_object_name);
+           beanCopier.copyProperties($persistence_object_nameQuery, $persistence_object_name);
            return $persistence_object_name;
        }
 
     @Override public $persistence_class_name param2po($persistence_class_nameParam param) {
         $persistence_class_name $persistence_object_name = new $persistence_class_name();
-        BeanUtility.copyProperties(param, $persistence_object_name);
+        beanCopier.copyProperties(param, $persistence_object_name);
         $init_po
         return $persistence_object_name;
     }
 
     @Override public $persistence_class_nameBO po2bo($persistence_class_name $persistence_object_name) {
         $persistence_class_nameBO $persistence_object_nameBO = new $persistence_class_nameBO();
-        BeanUtility.copyProperties($persistence_object_name, $persistence_object_nameBO);
+        beanCopier.copyProperties($persistence_object_name, $persistence_object_nameBO);
         return $persistence_object_nameBO;
     }
 

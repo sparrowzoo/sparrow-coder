@@ -33,6 +33,7 @@ private String architectures;
 private String config; 
 private Boolean wrapWithParent; 
 private Boolean implanted; 
+private String scaffold; 
 private String createUserName; 
 private Long createUserId; 
 private Long modifiedUserId; 

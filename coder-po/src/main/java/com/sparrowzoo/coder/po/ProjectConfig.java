@@ -24,7 +24,7 @@ public class ProjectConfig extends PO {
     private String modulePrefix;
     @Column(name = "scan_package", columnDefinition = "varchar(512) default '' comment '扫描的包路径'")
     private String scanPackage;
-    @Column(name = "architectures", columnDefinition = "varchar(50) default 'template' comment '代码架构'")
+    @Column(name = "architectures", columnDefinition = "varchar(50) default '' comment '代码架构'")
     private String architectures;
     @Column(name = "config", columnDefinition = "varchar(512) default '' comment '脚手架配置'")
     private String config;
@@ -32,4 +32,6 @@ public class ProjectConfig extends PO {
     private Boolean wrapWithParent;
     @Column(name = "implanted", columnDefinition = "tinyint(1) default 0 comment '是否项目本身，内嵌代码生成器'")
     private Boolean implanted;
+    @Column(name = "scaffold", columnDefinition = "varchar(50) default '' comment '脚手架'")
+    private String scaffold;
 }

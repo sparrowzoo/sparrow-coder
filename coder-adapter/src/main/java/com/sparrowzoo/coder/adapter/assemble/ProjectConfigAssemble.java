@@ -24,30 +24,33 @@ import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.protocol.param.ProjectConfigParam;
 import com.sparrow.support.assemble.BO2VOAssemble;
 import com.sparrow.support.assemble.Param2VOAssemble;
-import com.sparrow.utility.BeanUtility;
 import com.sparrow.utility.CollectionsUtility;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.inject.Named;
+import javax.inject.Inject;
+import com.sparrow.protocol.BeanCopier;
+
 
 @Named
 public class ProjectConfigAssemble implements BO2VOAssemble<ProjectConfigVO, ProjectConfigBO>,
     Param2VOAssemble<ProjectConfigVO,ProjectConfigParam> {
 
+    @Inject
+    private BeanCopier beanCopier;
+
     public ProjectConfigVO paramAssembleVO(ProjectConfigParam param){
         ProjectConfigVO projectConfig = new ProjectConfigVO();
-        BeanUtility.copyProperties(param, projectConfig);
+        beanCopier.copyProperties(param, projectConfig);
         return projectConfig;
     }
 
     @Override public ProjectConfigVO boAssembleVO(ProjectConfigBO bo) {
         ProjectConfigVO projectConfig = new ProjectConfigVO();
-        BeanUtility.copyProperties(bo, projectConfig);
+        beanCopier.copyProperties(bo, projectConfig);
         return projectConfig;
     }
-
-
 
     @Override public List<ProjectConfigVO> boListAssembleVOList(List<ProjectConfigBO> list) {
         if (CollectionsUtility.isNullOrEmpty(list)) {

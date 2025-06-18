@@ -9,7 +9,6 @@ import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrowzoo.coder.enums.ArchitectureCategory;
 import com.sparrowzoo.coder.enums.ClassKey;
 import com.sparrowzoo.coder.enums.CodeSource;
-import com.sparrowzoo.coder.po.TableConfig;
 
 import javax.inject.Named;
 import java.io.IOException;

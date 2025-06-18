@@ -25,5 +25,5 @@ public class ProjectArchsBO implements BO {
         return ArchitectureRegistry.getInstance().getGenerator(categoryEnum, arch);
     }
 
-    private Map<String,String> archs;
+    private final Map<String,String> archs;
 }

@@ -23,10 +23,6 @@
             <artifactId>coder-protocol</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.sparrowzoo.coder</groupId>
-            <artifactId>coder-po</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.sparrowzoo</groupId>
             <artifactId>sparrow-orm</artifactId>
         </dependency>
@@ -37,6 +33,16 @@
         <dependency>
             <groupId>com.sparrowzoo</groupId>
             <artifactId>sparrow-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sparrowzoo.coder</groupId>
+            <artifactId>coder-po</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sparrowzoo</groupId>
+            <artifactId>sparrow-container</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -4,7 +4,6 @@ import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableContext;
 import com.sparrowzoo.coder.domain.service.EnvConfig;
-import com.sparrowzoo.coder.po.TableConfig;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 

@@ -27,26 +27,31 @@ import com.sparrowzoo.coder.protocol.query.TableConfigQuery;
 import com.sparrow.support.converter.PO2BOConverter;
 import com.sparrow.support.converter.Param2POConverter;
 import com.sparrowzoo.coder.dao.query.TableConfigDBPagerQuery;
-import com.sparrow.utility.BeanUtility;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Named;
+import javax.inject.Inject;
+import com.sparrow.protocol.BeanCopier;
+
 
 @Named
 public class TableConfigConverter implements Param2POConverter<TableConfigParam, TableConfig>, PO2BOConverter<TableConfigBO, TableConfig> {
+
+    @Inject
+    private BeanCopier beanCopier;
 
     public TableConfigDBPagerQuery toDbPagerQuery(TableConfigQuery tableConfigQuery) {
            if (tableConfigQuery == null) {
                return new TableConfigDBPagerQuery();
            }
            TableConfigDBPagerQuery tableConfig = new TableConfigDBPagerQuery();
-           BeanUtility.copyProperties(tableConfigQuery, tableConfig);
+           beanCopier.copyProperties(tableConfigQuery, tableConfig);
            return tableConfig;
        }
 
     @Override public TableConfig param2po(TableConfigParam param) {
         TableConfig tableConfig = new TableConfig();
-        BeanUtility.copyProperties(param, tableConfig);
+        beanCopier.copyProperties(param, tableConfig);
         POInitUtils.init(tableConfig);
 
         return tableConfig;
@@ -54,7 +59,7 @@ public class TableConfigConverter implements Param2POConverter<TableConfigParam,
 
     @Override public TableConfigBO po2bo(TableConfig tableConfig) {
         TableConfigBO tableConfigBO = new TableConfigBO();
-        BeanUtility.copyProperties(tableConfig, tableConfigBO);
+        beanCopier.copyProperties(tableConfig, tableConfigBO);
         return tableConfigBO;
     }
 

@@ -27,26 +27,31 @@ import com.sparrowzoo.coder.protocol.query.ProjectConfigQuery;
 import com.sparrow.support.converter.PO2BOConverter;
 import com.sparrow.support.converter.Param2POConverter;
 import com.sparrowzoo.coder.dao.query.ProjectConfigDBPagerQuery;
-import com.sparrow.utility.BeanUtility;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Named;
+import javax.inject.Inject;
+import com.sparrow.protocol.BeanCopier;
+
 
 @Named
 public class ProjectConfigConverter implements Param2POConverter<ProjectConfigParam, ProjectConfig>, PO2BOConverter<ProjectConfigBO, ProjectConfig> {
+
+    @Inject
+    private BeanCopier beanCopier;
 
     public ProjectConfigDBPagerQuery toDbPagerQuery(ProjectConfigQuery projectConfigQuery) {
            if (projectConfigQuery == null) {
                return new ProjectConfigDBPagerQuery();
            }
            ProjectConfigDBPagerQuery projectConfig = new ProjectConfigDBPagerQuery();
-           BeanUtility.copyProperties(projectConfigQuery, projectConfig);
+           beanCopier.copyProperties(projectConfigQuery, projectConfig);
            return projectConfig;
        }
 
     @Override public ProjectConfig param2po(ProjectConfigParam param) {
         ProjectConfig projectConfig = new ProjectConfig();
-        BeanUtility.copyProperties(param, projectConfig);
+        beanCopier.copyProperties(param, projectConfig);
         POInitUtils.init(projectConfig);
 
         return projectConfig;
@@ -54,7 +59,7 @@ public class ProjectConfigConverter implements Param2POConverter<ProjectConfigPa
 
     @Override public ProjectConfigBO po2bo(ProjectConfig projectConfig) {
         ProjectConfigBO projectConfigBO = new ProjectConfigBO();
-        BeanUtility.copyProperties(projectConfig, projectConfigBO);
+        beanCopier.copyProperties(projectConfig, projectConfigBO);
         return projectConfigBO;
     }
 
