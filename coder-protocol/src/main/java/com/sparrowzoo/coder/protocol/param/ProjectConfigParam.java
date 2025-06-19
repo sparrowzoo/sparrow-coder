@@ -32,7 +32,6 @@ private String scanPackage;
 private String architectures; 
 private String config; 
 private Boolean wrapWithParent; 
-private Boolean implanted; 
 private String scaffold; 
 
 }

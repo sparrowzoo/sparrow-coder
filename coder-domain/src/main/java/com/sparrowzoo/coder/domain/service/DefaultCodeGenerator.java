@@ -2,31 +2,26 @@ package com.sparrowzoo.coder.domain.service;
 
 import com.sparrow.io.file.FileNameBuilder;
 import com.sparrow.orm.EntityManager;
-import com.sparrow.orm.Field;
 import com.sparrow.orm.SparrowEntityManager;
 import com.sparrow.protocol.enums.StatusRecord;
-import com.sparrow.utility.DateTimeUtility;
 import com.sparrow.utility.FileUtility;
-import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.domain.DomainRegistry;
 import com.sparrowzoo.coder.domain.bo.ProjectArchsBO;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableContext;
-import com.sparrowzoo.coder.domain.service.backend.ClassArchAccessor;
-import com.sparrowzoo.coder.domain.service.backend.DefaultClassArchAccessor;
+import com.sparrowzoo.coder.domain.service.backend.ClassPlaceholder;
+import com.sparrowzoo.coder.domain.service.backend.DefaultClassPlaceholder;
 import com.sparrowzoo.coder.domain.service.backend.ScaffoldCopier;
+import com.sparrowzoo.coder.domain.service.frontend.DefaultFrontendPlaceholder;
+import com.sparrowzoo.coder.domain.service.frontend.FrontendPlaceholder;
 import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
-import com.sparrowzoo.coder.enums.ClassKey;
-import com.sparrowzoo.coder.enums.PlaceholderKey;
 import com.sparrowzoo.coder.protocol.query.TableConfigQuery;
+import com.sparrowzoo.coder.utils.ConfigUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 
 @Slf4j
@@ -40,6 +35,8 @@ public class DefaultCodeGenerator implements CodeGenerator {
         this.registry.setProject(projectConfig);
         this.registry.setEnvConfig(envConfig);
         this.domainRegistry = domainRegistry;
+        Properties config = ConfigUtils.initPropertyConfig(registry.getProject().getConfig());
+        registry.setProjectConfig(config);
         this.initRegistry(registry);
     }
 
@@ -60,86 +57,16 @@ public class DefaultCodeGenerator implements CodeGenerator {
     }
 
 
-    private Map<String, String> initPlaceHolder(TableContext tableContext) throws IOException, ClassNotFoundException {
+    private Map<String, String> initPlaceHolder(TableContext tableContext) throws ClassNotFoundException {
         Map<String, String> placeHolder = new TreeMap<>(Comparator.reverseOrder());
         tableContext.setPlaceHolder(placeHolder);
-        ProjectConfigBO projectConfig = this.registry.getProject();
         TableConfigBO tableConfig = tableContext.getTableConfig();
         EntityManager entityManager = new SparrowEntityManager(Class.forName(tableConfig.getClassName()));
         tableContext.setEntityManager(entityManager);
-        String tableName = entityManager.getTableName();
-        String persistenceClassName = entityManager.getSimpleClassName();
-        String modulePrefix = projectConfig.getModulePrefix();
-        ClassArchAccessor classMetaAccessor = new DefaultClassArchAccessor(this.registry, tableConfig.getTableName());
-        placeHolder.put(PlaceholderKey.$module_prefix.name(), modulePrefix);
-        placeHolder.put(PlaceholderKey.$origin_table_name.name(), tableName);
-        placeHolder.put(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
-        placeHolder.put(PlaceholderKey.$persistence_object_name.name(), StringUtility.setFirstByteLowerCase(persistenceClassName));
-        placeHolder.put(PlaceholderKey.$persistence_object_by_horizontal.name(), StringUtility.humpToLower(persistenceClassName, '-'));
-        placeHolder.put(PlaceholderKey.$persistence_object_by_slash.name(), StringUtility.humpToLower(persistenceClassName, '/'));
-        placeHolder.put(PlaceholderKey.$persistence_object_by_dot.name(), StringUtility.humpToLower(persistenceClassName, '.'));
-        placeHolder.put(PlaceholderKey.$date.name(), DateTimeUtility.getFormatCurrentTime("yyyy-MM-dd HH:mm:ss"));
-        placeHolder.put(PlaceholderKey.$package_po.name(), tableContext.getPoPackage());
-        placeHolder.put(PlaceholderKey.$package_scan_base.name(), tableContext.getPoPackage().replace("." + ClassKey.PO.name().toLowerCase(), ""));
-        placeHolder.put(PlaceholderKey.$package_bo.name(), classMetaAccessor.getPackage(ClassKey.BO));
-        placeHolder.put(PlaceholderKey.$package_param.name(), classMetaAccessor.getPackage(ClassKey.PARAM));
-        placeHolder.put(PlaceholderKey.$package_query.name(), classMetaAccessor.getPackage(ClassKey.QUERY));
-        placeHolder.put(PlaceholderKey.$package_dto.name(), classMetaAccessor.getPackage(ClassKey.DTO));
-        placeHolder.put(PlaceholderKey.$package_vo.name(), classMetaAccessor.getPackage(ClassKey.VO));
-        placeHolder.put(PlaceholderKey.$package_dao.name(), classMetaAccessor.getPackage(ClassKey.DAO));
-        String pagerQuery = classMetaAccessor.getPackage(ClassKey.PAGER_QUERY);
-        placeHolder.put(PlaceholderKey.$package_pager_query.name(), StringUtility.replace(pagerQuery, placeHolder));
-        placeHolder.put(PlaceholderKey.$package_repository.name(), classMetaAccessor.getPackage(ClassKey.REPOSITORY));
-        placeHolder.put(PlaceholderKey.$package_repository_impl.name(), classMetaAccessor.getPackage(ClassKey.REPOSITORY_IMPL));
-        placeHolder.put(PlaceholderKey.$package_data_converter.name(), classMetaAccessor.getPackage(ClassKey.DATA_CONVERTER));
-        placeHolder.put(PlaceholderKey.$package_assemble.name(), classMetaAccessor.getPackage(ClassKey.ASSEMBLE));
-
-        placeHolder.put(PlaceholderKey.$package_dao_impl.name(), classMetaAccessor.getPackage(ClassKey.DAO_IMPL));
-        placeHolder.put(PlaceholderKey.$package_service.name(), classMetaAccessor.getPackage(ClassKey.SERVICE));
-        placeHolder.put(PlaceholderKey.$package_controller.name(), classMetaAccessor.getPackage(ClassKey.CONTROLLER));
-
-        placeHolder.put(PlaceholderKey.$class_po.name(), classMetaAccessor.getClassName(ClassKey.PO));
-        placeHolder.put(PlaceholderKey.$class_dao.name(), classMetaAccessor.getClassName(ClassKey.DAO));
-        placeHolder.put(PlaceholderKey.$class_impl_dao.name(), classMetaAccessor.getClassName(ClassKey.DAO_IMPL));
-        placeHolder.put(PlaceholderKey.$class_service.name(), classMetaAccessor.getClassName(ClassKey.SERVICE));
-
-        placeHolder.put(PlaceholderKey.$class_repository.name(), classMetaAccessor.getClassName(ClassKey.REPOSITORY));
-        placeHolder.put(PlaceholderKey.$class_repositoryImpl.name(), classMetaAccessor.getClassName(ClassKey.REPOSITORY_IMPL));
-        placeHolder.put(PlaceholderKey.$class_controller.name(), classMetaAccessor.getClassName(ClassKey.CONTROLLER));
-
-        placeHolder.put(PlaceholderKey.$object_dao.name(), StringUtility.setFirstByteLowerCase(placeHolder.get(PlaceholderKey.$class_dao.name())));
-
-        placeHolder.put(PlaceholderKey.$object_service.name(), StringUtility.setFirstByteLowerCase(placeHolder.get(PlaceholderKey.$class_service.name())));
-
-        Field primary = entityManager.getPrimary();
-        placeHolder.put(PlaceholderKey.$primary_property_name.name(), primary.getColumnName());
-        placeHolder.put(PlaceholderKey.$upper_primary_property_name.name(), StringUtility.setFirstByteUpperCase(primary.getPropertyName()));
-        placeHolder.put(PlaceholderKey.$primary_type.name(), primary.getType().getSimpleName());
-        placeHolder.put(PlaceholderKey.$sql_insert.name(), entityManager.getInsert());
-        placeHolder.put(PlaceholderKey.$sql_delete.name(), entityManager.getDelete());
-        placeHolder.put(PlaceholderKey.$sql_update.name(), entityManager.getUpdate());
-        placeHolder.put(PlaceholderKey.$field_list.name(), entityManager.getFields());
-        if (entityManager.getPoPropertyNames() != null) {
-            String initPO = String.format("POInitUtils.init(%s);\n", placeHolder.get(PlaceholderKey.$persistence_object_name.name()));
-            placeHolder.put(PlaceholderKey.$init_po.name(), initPO);
-        } else {
-            placeHolder.put(PlaceholderKey.$init_po.name(), "");
-        }
-
-
-        Map<String, Field> fields = entityManager.getPropertyFieldMap();
-        StringBuilder fieldBuild = new StringBuilder();
-        StringBuilder paramFieldBuild = new StringBuilder();
-        for (Field field : fields.values()) {
-            Class<?> fieldClazz = field.getType();
-            String property = String.format("private %s %s; \n", fieldClazz.getSimpleName(), field.getPropertyName());
-            fieldBuild.append(property);
-            if (entityManager.getPoPropertyNames() != null && !entityManager.getPoPropertyNames().contains(field.getPropertyName())) {
-                paramFieldBuild.append(property);
-            }
-        }
-        placeHolder.put(PlaceholderKey.$get_sets.name(), fieldBuild.toString());
-        placeHolder.put(PlaceholderKey.$get_sets_params.name(), paramFieldBuild.toString());
+        ClassPlaceholder classMetaAccessor = new DefaultClassPlaceholder(this.registry, tableConfig.getTableName());
+        classMetaAccessor.init();
+        FrontendPlaceholder frontendArchAccessor = new DefaultFrontendPlaceholder(this.registry, tableConfig.getTableName());
+        frontendArchAccessor.init();
         return placeHolder;
     }
 
@@ -148,7 +75,7 @@ public class DefaultCodeGenerator implements CodeGenerator {
         TableContext context = registry.getTableContext(tableName);
         if (context.getTableConfig().getLocked()) {
             log.info("table {} is locked, skip generate", context.getTableConfig().getTableName());
-            return;
+            //return;
         }
         ProjectArchsBO architectures = new ProjectArchsBO(registry.getProject().getArchitectures());
         for (String architectureCategory : architectures.getArchs().keySet()) {

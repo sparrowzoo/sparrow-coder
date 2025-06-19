@@ -19,7 +19,7 @@ public class MySqlArchitectureGenerator extends AbstractArchitectureGenerator {
         EntityManager entityManager = registry.getTableContext(tableName).getEntityManager();
         EnvConfig envConfig = registry.getEnvConfig();
         ProjectConfigBO projectConfig = registry.getProject();
-        String home = projectConfig.getImplanted() ? "" : String.valueOf(projectConfig.getCreateUserId());
+        String home =registry.getEnvConfig().getHome(projectConfig.getCreateUserId());
         String fullPath = new FileNameBuilder(envConfig.getWorkspace())
                 .joint(envConfig.getProjectRoot())
                 .joint(home)

@@ -64,10 +64,7 @@ public class ScaffoldCopier {
                     targetFileName = targetFileName.replace("admin" + File.separator, "");
                     targetFileName = targetFileName.replace("admin-", "");
                 }
-                String home = String.valueOf(projectConfig.getCreateUserId());
-                if (projectConfig.getImplanted()) {
-                    home = "";
-                }
+                String home =registry.getEnvConfig().getHome(projectConfig.getCreateUserId());
                 String targetPath = new FileNameBuilder(registry.getEnvConfig().getWorkspace())
                         .joint(registry.getEnvConfig().getProjectRoot())
                         .joint(home)

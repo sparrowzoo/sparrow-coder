@@ -35,15 +35,15 @@ public class MockProjectConfigRepository implements ProjectConfigRepository {
     public ProjectConfigBO getProjectConfig(Long projectConfigId) {
         ProjectConfigBO projectConfig = new ProjectConfigBO();
         projectConfig.setWrapWithParent(false);
-        projectConfig.setImplanted(true);
-        projectConfig.setFrontendName("react-sparrow-admin");
+        projectConfig.setFrontendName("react-next-admin");
         projectConfig.setChineseName("代码生成器模拟");
         projectConfig.setModulePrefix("coder");
         projectConfig.setScanPackage("com.sparrow");
         projectConfig.setDescription("代码生成器模拟");
         projectConfig.setId(1L);
         projectConfig.setName("sparrow-coder");
-        projectConfig.setArchitectures("{\"DATABASE\":\"mySqlArchitectureGenerator\",\"BACKEND\":\"clearArchitectureGenerator\"}");
+        projectConfig.setArchitectures("{\"FRONTEND\":\"reactArchitectureGenerator\",\"DATABASE\":\"mySqlArchitectureGenerator\",\"BACKEND\":\"clearArchitectureGenerator\"}");
+
         projectConfig.setConfig("");
         projectConfig.setCreateUserId(1L);
         projectConfig.setModifiedUserId(1L);

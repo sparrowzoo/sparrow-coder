@@ -2,13 +2,14 @@ package com.sparrowzoo.coder.domain.bo;
 
 import com.sparrowzoo.coder.domain.bo.validate.Validator;
 import com.sparrowzoo.coder.enums.CellType;
+import com.sparrowzoo.coder.enums.ColumnType;
+import com.sparrowzoo.coder.enums.ControlType;
 import com.sparrowzoo.coder.enums.HeaderType;
 import lombok.Data;
 
 @Data
 public class ColumnDef {
     private String name;
-    private boolean primaryKey;
     private boolean i18n;
     private String text;
     private String sqlType;
@@ -22,7 +23,10 @@ public class ColumnDef {
     private Condition condition;
     private String validateType;
     private Validator validator;
-    private Boolean visible;
+    //是否默认隐藏
+    private Boolean hidden;
+    private ColumnType columnType;
     private HeaderType headerType;
     private CellType cellType;
+    private ControlType controlType;
 }

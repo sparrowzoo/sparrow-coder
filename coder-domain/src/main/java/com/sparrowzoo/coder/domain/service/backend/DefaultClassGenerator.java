@@ -6,6 +6,7 @@ import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
+import com.sparrowzoo.coder.domain.bo.TableContext;
 import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrowzoo.coder.enums.ClassKey;
 import lombok.extern.slf4j.Slf4j;
@@ -17,18 +18,29 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Slf4j
-public class DefaultClassGenerator extends DefaultClassArchAccessor implements ClassGenerator {
+public class DefaultClassGenerator implements ClassGenerator {
     private final String template;
     private final ProjectConfigBO projectConfig;
-    public DefaultClassGenerator(TableConfigRegistry registry,String tableName,String template) throws IOException {
-        super(registry,tableName);
+
+    private TableContext tableContext;
+    private TableConfigRegistry registry;
+
+    protected final FileUtility fileUtility = FileUtility.getInstance();
+
+    private ClassPlaceholder classPlaceholder;
+
+    public DefaultClassGenerator(TableConfigRegistry registry, String tableName, String template) throws IOException {
+        this.registry = registry;
+        this.tableContext = registry.getTableContext(tableName);
         this.projectConfig = registry.getProject();
         this.template= template;
+        this.classPlaceholder=new DefaultClassPlaceholder(registry,tableName);
     }
+
 
     @Override
     public String getFullPhysicalPath(ClassKey classKey) {
-        String modulePath = this.getModule(classKey);
+        String modulePath =this.classPlaceholder.getModule(classKey);
         String path = "";
         if (ClassKey.DAO_MYBATIS.getModule().equals(classKey.getModule())) {
             path = new FileNameBuilder("src")
@@ -37,7 +49,7 @@ public class DefaultClassGenerator extends DefaultClassArchAccessor implements C
                     .joint("mapper")
                     .build();
         } else {
-            String fullPackage = this.getPackage(classKey);
+            String fullPackage =classPlaceholder.getPackage(classKey);
             path = new FileNameBuilder("src")
                     .joint("main")
                     .joint("java")
@@ -48,18 +60,24 @@ public class DefaultClassGenerator extends DefaultClassArchAccessor implements C
         String parentModulePath = ClassKey.PO.equals(classKey) ? "" :
                 this.projectConfig.getWrapWithParent() ? "admin" : "";
         String module = StringUtility.isNullOrEmpty(modulePath) ? "" : modulePath + File.separator;
-        String home=this.projectConfig.getImplanted()?"":String.valueOf(this.projectConfig.getCreateUserId());
-        String fullPath = new FileNameBuilder(registry.getEnvConfig().getWorkspace())
+        String home=registry.getEnvConfig().getHome(this.projectConfig.getCreateUserId());
+        String className = this.classPlaceholder.getClassName(classKey);
+        String extension = ".java";
+        String fullPhysicalPath = new FileNameBuilder(registry.getEnvConfig().getWorkspace())
                 .joint(registry.getEnvConfig().getProjectRoot())
                 .joint(home)
                 .joint(project)
                 .joint(parentModulePath)
                 .joint(module)
                 .joint(path)
+                .fileName(className)
+                .extension(extension)
                 .build();
-        Map<String, String> placeHolder = tableContext.getPlaceHolder();
-        fullPath = StringUtility.replace(fullPath, placeHolder);
-        return fullPath;
+        fullPhysicalPath = StringUtility.replace(fullPhysicalPath, tableContext.getPlaceHolder());
+        if (!this.projectConfig.getWrapWithParent()) {
+            fullPhysicalPath = fullPhysicalPath.replace("-admin", "");
+        }
+        return fullPhysicalPath;
     }
 
     public String readConfigContent(String templateFileName) {
@@ -81,8 +99,6 @@ public class DefaultClassGenerator extends DefaultClassArchAccessor implements C
         if (ClassKey.DAO_MYBATIS.equals(classKey)) {
             return;
         }
-        String workspace = registry.getEnvConfig().getWorkspace();
-        System.err.printf("current path is [%s]\n", workspace);
         String licensed = FileUtility.getInstance().readFileContent(File.separator+"Licensed.txt");
         String content;
         if (classKey.equals(ClassKey.PO)) {
@@ -95,16 +111,7 @@ public class DefaultClassGenerator extends DefaultClassArchAccessor implements C
         content = StringUtility.replace(content.trim(), placeHolder);
         content = licensed + "\n" + content;
         String fullPhysicalPath = this.getFullPhysicalPath(classKey);
-        if (!this.projectConfig.getWrapWithParent()) {
-            fullPhysicalPath = fullPhysicalPath.replace("-admin", "");
-        }
-        String className = getClassName(classKey);
-        String extension = ".java";
-        String fileName = new FileNameBuilder(fullPhysicalPath)
-                .fileName(className)
-                .extension(extension)
-                .build();
-        log.info("generate file name is [{}]", fileName);
-        this.fileUtility.writeFile(fileName, content);
+        log.info("generate file name is [{}]", fullPhysicalPath);
+        this.fileUtility.writeFile(fullPhysicalPath, content);
     }
 }

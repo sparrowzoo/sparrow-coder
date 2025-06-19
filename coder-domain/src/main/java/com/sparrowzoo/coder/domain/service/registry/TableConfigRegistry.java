@@ -7,10 +7,7 @@ import com.sparrowzoo.coder.domain.service.EnvConfig;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 考虑上线后多用户访问
@@ -25,6 +22,7 @@ public class TableConfigRegistry {
 
     private Map<String, TableContext> registry = new HashMap<>();
     private ProjectConfigBO project;
+    private Properties projectConfig;
     private EnvConfig envConfig;
 
     public EnvConfig getEnvConfig() {

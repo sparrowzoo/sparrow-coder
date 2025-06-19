@@ -1,0 +1,32 @@
+import * as React from "react";
+import {$persistence_class_name} from "@/components/$persistence_object_by_horizontal/columns";
+import {TableOperationProps} from "@/common/lib/table/DataTableProperty";
+import {Button} from "@/components/ui/button";
+import {Dialog, DialogContent, DialogTrigger} from "@/components/ui/dialog";
+import AddPage from "@/components/$persistence_object_by_horizontal/add";
+import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizontal";
+import toast from "react-hot-toast";
+import {getSelectedIds} from "@/common/lib/table/TableUtils";
+
+export default function Operation({table}: TableOperationProps<$persistence_class_name>) {
+    return (<div className="flex justify-between gap-4">
+            <Dialog>
+                <DialogTrigger asChild>
+                    <Button variant="outline">新增</Button>
+                </DialogTrigger>
+                <DialogContent className="w-[800px] sm:max-w-[625px]">
+                    <AddPage/>
+                </DialogContent>
+            </Dialog>
+            <Button onClick={() => {
+                const translate = () => "";
+                const selectedIds = getSelectedIds(table);
+                $persistence_class_nameApi.save(selectedIds, translate).then(
+                    (res) => {
+                        toast.success("操作成功！");
+                    }
+                )
+            }} variant="outline">删除</Button>
+        </div>
+    );
+}

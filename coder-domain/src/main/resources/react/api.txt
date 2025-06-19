@@ -1,0 +1,44 @@
+import Fetcher from "@/common/lib/Fetcher";
+import {IDENTITY} from "@/common/lib/table/DataTableProperty";
+
+export default class $persistence_class_nameApi {
+    public static search(
+        query: {},
+        translator: (key: string) => string
+    ): Promise<any> {
+        const body = JSON.stringify(query);
+        return Fetcher.post("/$persistence_object_by_slash/search.json", body, translator);
+    }
+
+    public static  save(
+        params: {},
+        translator: (key: string) => string
+    ): Promise<any> {
+        const body = JSON.stringify(params);
+        return Fetcher.post("/$persistence_object_by_slash/save.json", body, translator);
+    }
+
+    public static  delete(
+        params: IDENTITY[],
+        translator: (key: string) => string
+    ): Promise<any> {
+        const body = JSON.stringify(params);
+        return Fetcher.post("/$persistence_object_by_slash/delete.json", body, translator);
+    }
+
+    public static  disable(
+        params: IDENTITY[],
+        translator: (key: string) => string
+    ): Promise<any> {
+        const body = JSON.stringify(params);
+        return Fetcher.post("/$persistence_object_by_slash/disable.json", body, translator);
+    }
+
+    public static  enable(
+        params: IDENTITY[],
+        translator: (key: string) => string
+    ): Promise<any> {
+        const body = JSON.stringify(params);
+        return Fetcher.post("/$persistence_object_by_slash/enable.json", body, translator);
+    }
+}

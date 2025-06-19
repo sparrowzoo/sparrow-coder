@@ -1,0 +1,44 @@
+"use client";
+
+import * as React from "react";
+import {useEffect, useState} from "react";
+import {columns, $persistence_class_name} from "@/components/$persistence_object_by_horizontal/columns";
+import {DataTable} from "@/common/components/table/data-table";
+import Search from "@/components/$persistence_object_by_horizontal/search";
+import Operation from "@/components/$persistence_object_by_horizontal/operation";
+import EditPage from "@/components/$persistence_object_by_horizontal/edit";
+import ThreeDotLoading from "@/common/components/ThreeDotLoading";
+import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizontal";
+
+const translate = (key: string) => {
+    return "zhangsan";
+}
+export default function Page() {
+
+const [dataState, setDataState] = useState<$persistence_class_name[] | undefined>();
+
+    useEffect(() => {
+        $persistence_class_nameApi.search({}, translate).then(
+            (res) => {
+                setDataState(res.data)
+            }
+        )
+    }, [])
+    if (!dataState) {
+        return <ThreeDotLoading/>
+    }
+    return (
+        <div className="w-full">
+            <DataTable
+                SearchComponent={Search}
+                OperationComponent={Operation}
+                EditComponent={EditPage}
+                primary={"$primary_key"}
+                data={dataState.list}
+                columns={columns}
+                filterColumn={$frontend_column_filter}
+                setData={setDataState}
+            ></DataTable>
+        </div>
+    );
+}

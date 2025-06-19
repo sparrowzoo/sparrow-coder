@@ -22,13 +22,13 @@ public class TableConfig extends PO {
     private String className;
     @Column(name = "description", nullable = false, columnDefinition = "varchar(255)  default '' comment '描述'")
     private String description;
-    @Column(name = "checkable", nullable = false, columnDefinition = "tinyint(1)  default 0 comment '是否可勾选 0-不可 1-可'")
-    private Boolean checkable;
     @Column(name = "locked", nullable = false, columnDefinition = "tinyint(1)  default 0 comment '是否锁定 0-未锁定 1-锁定'")
     private Boolean locked;
-    @Column(name = "row_menu", nullable = false, columnDefinition = "tinyint(1)  default 0 comment '是否显示行操作 0-不显示 1-显示'")
+    @Column(name = "checkable", nullable = false, columnDefinition = "tinyint(4)  default 0 comment '是否可勾选 -1:不可 >=0:列序号'")
+    private Integer checkable;
+    @Column(name = "row_menu", nullable = false, columnDefinition = "tinyint(1)  default 0 comment '是否显示行操作 -1：不显示 >=0:列序号'")
     private Boolean rowMenu;
-    @Column(name = "column_filter", nullable = false, columnDefinition = "tinyint(1)  default 0 comment '是否显示列过滤器 0-不显示 1-显示'")
+    @Column(name = "column_filter", nullable = false, columnDefinition = "tinyint(1)  default 0 comment '是否显示列过滤器 -1:不显示 >=0:列序号'")
     private Boolean columnFilter;
     @Column(name = "status_command", nullable = false, columnDefinition = "tinyint(1)  default 0 comment '是否显示状态命令 0-不显示 1-显示'")
     private Boolean statusCommand;

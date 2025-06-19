@@ -5,8 +5,7 @@ import com.sparrowzoo.coder.enums.ClassKey;
 
 import java.io.IOException;
 
-public interface ClassGenerator extends ClassArchAccessor {
-
+public interface ClassGenerator {
     String getFullPhysicalPath(ClassKey classKey);
 
     String readConfigContent(String templateFileName);

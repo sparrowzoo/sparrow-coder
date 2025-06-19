@@ -15,5 +15,6 @@ public interface Validator {
 
     String getEmptyMessage();
 
+    //国际化message.tsx 文件内容
     List<Pair<String, String>> getI18nConfig();
 }
