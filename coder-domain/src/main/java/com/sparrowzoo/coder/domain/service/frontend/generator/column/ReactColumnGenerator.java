@@ -56,5 +56,4 @@ public class ReactColumnGenerator extends AbstractColumnGenerator{
                 return "";
         }
     }
-
 }
