@@ -1,16 +1,62 @@
 package com.sparrowzoo.coder.domain.service.frontend.generator.column;
 
+import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.domain.bo.ColumnDef;
 import com.sparrowzoo.coder.enums.CellType;
 import com.sparrowzoo.coder.enums.HeaderType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ReactColumnGenerator extends AbstractColumnGenerator{
+    /**
+     * {
+     *         id: "expander",
+     *         enableHiding: false,
+     *         header: EmptyHeader,
+     *         cell: TreeCell("status")
+     *     }
+     * @param columnDef
+     * @return
+     */
     @Override
     public String column(ColumnDef columnDef) {
+        List<String> columnDefList =new ArrayList<>();
+        columnDefList.add(this.renderColumnType(columnDef));
+        columnDefList.add(this.renderHeader(columnDef));
+        columnDefList.add(this.renderCell(columnDef));
+        columnDefList.add(String.format("enableHiding: %s",columnDef.getHidden()));
+        return String.format("{\n%s\n}",StringUtility.join(columnDefList, ",\n"));
+    }
+
+
+    @Override
+    public String edit(ColumnDef columnDef) {
 
     }
 
-    public String renderHeader(HeaderType headerType, String columnTitle, String i18nPrefix) {
+
+    public String renderColumnType(ColumnDef columnDef) {
+        switch (columnDef.getColumnType()) {
+            case ACTION:
+                return " id: \"actions\"";
+            case FILTER:
+                return " id: \"filter-column\"";
+            case TREE:
+                return " id: \"expander\"";
+            case CHECK:
+                return " id: \"select\"";
+            case NORMAL:
+                return String.format(" accessorKey: \"%s\"", columnDef.getName());
+            default:
+                return "";
+        }
+    }
+
+    public String renderHeader(ColumnDef columnDef) {
+        HeaderType headerType = columnDef.getHeaderType();
+        String columnTitle = columnDef.getText();
+        String i18nPrefix = columnDef.getTableName();
         switch (headerType) {
             case CHECK_BOX:
                 return "header: CheckboxHeader";
@@ -40,7 +86,9 @@ public class ReactColumnGenerator extends AbstractColumnGenerator{
         }
     }
 
-    public String renderCell(CellType cellType, String columnName, String currency) {
+    public String renderCell(ColumnDef columnDef) {
+        CellType cellType=columnDef.getCellType();
+         String columnName=columnDef.getName();
         switch (cellType) {
             case TREE:
                 return String.format("cell: TreeCell(\"%s\")", columnName);
@@ -49,7 +97,7 @@ public class ReactColumnGenerator extends AbstractColumnGenerator{
             case NORMAL:
                 return String.format("cell: NormalCell(\"%s\")", columnName);
             case CURRENCY:
-                return String.format("cell: CurrencyCell(\"%1$s\", \"%2$s\")", columnName, currency);
+                return String.format("cell: CurrencyCell(\"%1$s\", \"%2$s\")", columnName, columnDef.getSubsidiaryFields());
             case OPERATION:
                 return "cell:Actions";
             default:

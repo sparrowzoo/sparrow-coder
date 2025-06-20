@@ -9,6 +9,7 @@ import lombok.Data;
 
 @Data
 public class ColumnDef {
+    private String tableName;
     private String name;
     private boolean i18n;
     private String text;
@@ -28,5 +29,6 @@ public class ColumnDef {
     private ColumnType columnType;
     private HeaderType headerType;
     private CellType cellType;
+    private String subsidiaryFields;
     private ControlType controlType;
 }
