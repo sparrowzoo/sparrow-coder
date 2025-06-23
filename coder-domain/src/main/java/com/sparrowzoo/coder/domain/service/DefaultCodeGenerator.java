@@ -16,6 +16,7 @@ import com.sparrowzoo.coder.domain.service.backend.ScaffoldCopier;
 import com.sparrowzoo.coder.domain.service.frontend.DefaultFrontendPlaceholder;
 import com.sparrowzoo.coder.domain.service.frontend.FrontendPlaceholder;
 import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
+import com.sparrowzoo.coder.enums.ArchitectureCategory;
 import com.sparrowzoo.coder.protocol.query.TableConfigQuery;
 import com.sparrowzoo.coder.utils.ConfigUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ import java.util.*;
 public class DefaultCodeGenerator implements CodeGenerator {
     private TableConfigRegistry registry;
     private DomainRegistry domainRegistry;
+    private ProjectArchsBO projectArchs;
 
     public DefaultCodeGenerator(Long projectId, EnvConfig envConfig, DomainRegistry domainRegistry) throws IOException, ClassNotFoundException {
         this.registry = new TableConfigRegistry();
@@ -35,6 +37,8 @@ public class DefaultCodeGenerator implements CodeGenerator {
         this.registry.setProject(projectConfig);
         this.registry.setEnvConfig(envConfig);
         this.domainRegistry = domainRegistry;
+        this.projectArchs = new ProjectArchsBO(registry.getProject().getArchitectures());
+
         Properties config = ConfigUtils.initPropertyConfig(registry.getProject().getConfig());
         registry.setProjectConfig(config);
         this.initRegistry(registry);
@@ -49,8 +53,7 @@ public class DefaultCodeGenerator implements CodeGenerator {
         tableConfigQuery.setStatus(StatusRecord.ENABLE.ordinal());
         List<TableConfigBO> tableConfigs = domainRegistry.getTableConfigRepository().queryTableConfigs(tableConfigQuery);
         for (TableConfigBO tableConfigBO : tableConfigs) {
-            TableContext context = new TableContext();
-            context.setTableConfig(tableConfigBO);
+            TableContext context = new TableContext(tableConfigBO);
             this.registry.register(tableConfigBO.getTableName(), context);
             this.initPlaceHolder(context);
         }
@@ -58,14 +61,16 @@ public class DefaultCodeGenerator implements CodeGenerator {
 
 
     private Map<String, String> initPlaceHolder(TableContext tableContext) throws ClassNotFoundException {
+
         Map<String, String> placeHolder = new TreeMap<>(Comparator.reverseOrder());
         tableContext.setPlaceHolder(placeHolder);
         TableConfigBO tableConfig = tableContext.getTableConfig();
         EntityManager entityManager = new SparrowEntityManager(Class.forName(tableConfig.getClassName()));
         tableContext.setEntityManager(entityManager);
-        ClassPlaceholder classMetaAccessor = new DefaultClassPlaceholder(this.registry, tableConfig.getTableName());
-        classMetaAccessor.init();
-        FrontendPlaceholder frontendArchAccessor = new DefaultFrontendPlaceholder(this.registry, tableConfig.getTableName());
+        ClassPlaceholder classPlaceHolder = new DefaultClassPlaceholder(this.registry, tableConfig.getTableName());
+        classPlaceHolder.init();
+        ArchitectureGenerator frontGenerator = this.projectArchs.getArch(ArchitectureCategory.FRONTEND);
+        FrontendPlaceholder frontendArchAccessor = new DefaultFrontendPlaceholder(this.registry, tableConfig.getTableName(),frontGenerator.getName());
         frontendArchAccessor.init();
         return placeHolder;
     }

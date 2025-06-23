@@ -3,18 +3,19 @@ package com.sparrowzoo.coder.domain.service.registry;
 import com.sparrow.container.FactoryBean;
 import com.sparrowzoo.coder.domain.service.frontend.generator.column.ColumnGenerator;
 
-import javax.inject.Named;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-@Named
 public class ColumnGeneratorRegistry implements FactoryBean<ColumnGenerator> {
     private Map<String, ColumnGenerator> container = new HashMap<>();
 
+    private ColumnGeneratorRegistry() {
+    }
+
     @Override
     public void pubObject(String s, ColumnGenerator columnGenerator) {
-        this.pubObject(s, columnGenerator);
+        this.container.put(s, columnGenerator);
     }
 
     @Override
@@ -36,4 +37,15 @@ public class ColumnGeneratorRegistry implements FactoryBean<ColumnGenerator> {
     public Iterator<String> keyIterator() {
         return this.container.keySet().iterator();
     }
+
+
+    static class Inner {
+        private static final ColumnGeneratorRegistry columnGeneratorRegistry = new ColumnGeneratorRegistry();
+    }
+
+    public static ColumnGeneratorRegistry getInstance() {
+        return Inner.columnGeneratorRegistry;
+    }
+
+
 }

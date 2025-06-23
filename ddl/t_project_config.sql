@@ -4,6 +4,7 @@ CREATE TABLE `t_project_config` (
  `name` varchar(50) default '' comment '项目名称'  NOT NULL,
  `frontend_name` varchar(50) default '' comment '前端项目名称'  ,
  `chinese_name` varchar(50) default '' comment '项目中文名称'  ,
+ `i18n` tinyint(1) default 0 comment '是否支持国际化'  ,
  `description` varchar(512) default '' comment '项目描述'  ,
  `module_prefix` varchar(50) default '' comment '模块前缀'  ,
  `scan_package` varchar(512) default '' comment '扫描的包路径'  ,

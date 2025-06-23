@@ -1,5 +1,6 @@
 package com.sparrowzoo.coder.domain.service.frontend;
 
+import com.sparrow.core.spi.JsonFactory;
 import com.sparrow.io.file.FileNameBuilder;
 import com.sparrow.support.EnvironmentSupport;
 import com.sparrow.utility.FileUtility;
@@ -15,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -22,6 +24,8 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
     private final ProjectConfigBO projectConfig;
     private TableConfigRegistry registry;
     private FrontendPlaceholder frontendArchAccessor;
+
+    private Map<String, String> i18n = new HashMap<>();
 
     private String template;
 
@@ -31,7 +35,7 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
         this.template = template;
         this.registry = registry;
         this.projectConfig = registry.getProject();
-        this.frontendArchAccessor = new DefaultFrontendPlaceholder(registry, tableName);
+        this.frontendArchAccessor = new DefaultFrontendPlaceholder(registry, tableName, template);
         this.tableContext = registry.getTableContext(tableName);
     }
 
@@ -64,11 +68,20 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
 
     @Override
     public void generate(FrontendKey key) throws IOException {
-        String content = readConfigContent(key.getTemplate());
-        Map<String, String> placeHolder = tableContext.getPlaceHolder();
-        content = StringUtility.replace(content.trim(), placeHolder);
+        String content = null;
+        if (key.equals(FrontendKey.MESSAGE)) {
+            content = toi18nMessage();
+        } else {
+            content= readConfigContent(key.getTemplate());
+            Map<String, String> placeHolder = tableContext.getPlaceHolder();
+            content = StringUtility.replace(content.trim(), placeHolder);
+        }
         String fullPhysicalPath = this.getFullPhysicalPath(key);
         log.info("generate file name is [{}]", fullPhysicalPath);
         FileUtility.getInstance().writeFile(fullPhysicalPath, content);
+    }
+
+    private String toi18nMessage() {
+        return JsonFactory.getProvider().toString(tableContext.getI18nMap());
     }
 }

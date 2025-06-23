@@ -1,11 +1,14 @@
 package com.sparrowzoo.coder.domain.bo.validate;
 
-import com.sparrow.core.Pair;
-
 import java.util.Collections;
-import java.util.List;
+import java.util.Map;
 
 public class NoneValidator implements Validator {
+
+    @Override
+    public void setI18n(Boolean i18n) {
+
+    }
 
     @Override
     public Boolean getI18n() {
@@ -13,12 +16,12 @@ public class NoneValidator implements Validator {
     }
 
     @Override
-    public void setI18nFieldName(String i18nFieldName) {
+    public void setPropertyName(String i18nFieldName) {
 
     }
 
     @Override
-    public String getI18nFieldName() {
+    public String getPropertyName() {
         return "";
     }
 
@@ -33,8 +36,13 @@ public class NoneValidator implements Validator {
     }
 
     @Override
-    public List<Pair<String, String>> getI18nConfig() {
-        return Collections.emptyList();
+    public Map<String, String> getI18nConfig() {
+        return Collections.emptyMap();
+    }
+
+    @Override
+    public void setI18nConfig(Map<String, String> i18nConfig) {
+
     }
 
 }

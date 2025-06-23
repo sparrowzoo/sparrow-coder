@@ -3,6 +3,7 @@ package com.sparrowzoo.coder.domain.service.backend.architecture;
 import com.sparrow.io.file.FileNameBuilder;
 import com.sparrow.orm.EntityManager;
 import com.sparrow.utility.FileUtility;
+import com.sparrowzoo.coder.constant.ArchitectureNames;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.domain.service.AbstractArchitectureGenerator;
 import com.sparrowzoo.coder.domain.service.EnvConfig;
@@ -19,7 +20,7 @@ public class MySqlArchitectureGenerator extends AbstractArchitectureGenerator {
         EntityManager entityManager = registry.getTableContext(tableName).getEntityManager();
         EnvConfig envConfig = registry.getEnvConfig();
         ProjectConfigBO projectConfig = registry.getProject();
-        String home =registry.getEnvConfig().getHome(projectConfig.getCreateUserId());
+        String home = registry.getEnvConfig().getHome(projectConfig.getCreateUserId());
         String fullPath = new FileNameBuilder(envConfig.getWorkspace())
                 .joint(envConfig.getProjectRoot())
                 .joint(home)
@@ -40,7 +41,7 @@ public class MySqlArchitectureGenerator extends AbstractArchitectureGenerator {
     }
 
     @Override
-    public String template() {
-        return "mysql";
+    public String getName() {
+        return ArchitectureNames.MYSQL;
     }
 }

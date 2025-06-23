@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class ValidatorTest {
     @Test
     public void test() {
-        ValidatorMessageGenerator messageGenerator = ValidatorRegistry.getInstance().getValidatorMessageGenerator("valibot",
+        ValidatorMessageGenerator messageGenerator = ValidatorRegistry.getInstance().getValidatorMessageGenerator("react",
                 "emailValidatorMessageGenerator");
 
         RegexValidator validator = new RegexValidator();

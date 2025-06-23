@@ -1,7 +1,7 @@
 package com.sparrowzoo.coder.domain.service.frontend.architecture;
 
+import com.sparrowzoo.coder.constant.ArchitectureNames;
 import com.sparrowzoo.coder.domain.service.AbstractArchitectureGenerator;
-import com.sparrowzoo.coder.domain.service.ArchitectureGenerator;
 import com.sparrowzoo.coder.domain.service.frontend.DefaultFrontendGenerator;
 import com.sparrowzoo.coder.domain.service.frontend.FrontendGenerator;
 import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
@@ -15,8 +15,7 @@ import java.io.IOException;
 public class ReactArchitectureGenerator extends AbstractArchitectureGenerator {
     @Override
     public void generate(TableConfigRegistry registry, String tableName) throws IOException {
-        FrontendGenerator frontendGenerator = new DefaultFrontendGenerator(registry, tableName, this.template());
-
+        FrontendGenerator frontendGenerator = new DefaultFrontendGenerator(registry, tableName, this.getName());
         frontendGenerator.generate(FrontendKey.PAGE);
         frontendGenerator.generate(FrontendKey.API);
         frontendGenerator.generate(FrontendKey.ADD);
@@ -25,7 +24,7 @@ public class ReactArchitectureGenerator extends AbstractArchitectureGenerator {
         frontendGenerator.generate(FrontendKey.OPERATION);
         frontendGenerator.generate(FrontendKey.SCHEMA);
         frontendGenerator.generate(FrontendKey.COLUMNS);
-
+        frontendGenerator.generate(FrontendKey.MESSAGE);
     }
 
     @Override
@@ -34,7 +33,7 @@ public class ReactArchitectureGenerator extends AbstractArchitectureGenerator {
     }
 
     @Override
-    public String template() {
-        return "react";
+    public String getName() {
+        return ArchitectureNames.REACT;
     }
 }

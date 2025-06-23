@@ -1,7 +1,14 @@
 package com.sparrowzoo.coder.moke.beans;
 
+import com.alibaba.fastjson.JSON;
+import com.sparrow.utility.StringUtility;
+import com.sparrowzoo.coder.domain.bo.ColumnDef;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
-import com.sparrowzoo.coder.enums.CodeSource;
+import com.sparrowzoo.coder.domain.bo.validate.DigitalValidator;
+import com.sparrowzoo.coder.domain.bo.validate.RegexValidator;
+import com.sparrowzoo.coder.domain.bo.validate.StringValidator;
+import com.sparrowzoo.coder.domain.bo.validate.Validator;
+import com.sparrowzoo.coder.enums.*;
 import com.sparrowzoo.coder.protocol.param.TableConfigParam;
 import com.sparrowzoo.coder.protocol.query.TableConfigQuery;
 import com.sparrowzoo.coder.repository.TableConfigRepository;
@@ -32,6 +39,57 @@ public class MockTableConfigRepository implements TableConfigRepository {
         return null;
     }
 
+    private List<ColumnDef> getColumnDefs() {
+        List<ColumnDef> columnDefs = new ArrayList<>();
+        columnDefs.add(getColumnDef("id", "ProjectConfig", "", ColumnType.CHECK, HeaderType.CHECK_BOX, CellType.CHECK_BOX, ControlType.INPUT_HIDDEN, DataSourceType.NULL, false, true,null,null));
+        columnDefs.add(getColumnDef("name", "ProjectConfig", "项目名称", ColumnType.NORMAL, HeaderType.NORMAL_SORT_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,"stringValidatorMessageGenerator",this.generateString("name")));
+        columnDefs.add(getColumnDef("frontend_name", "ProjectConfig", "前端项目名称", ColumnType.NORMAL, HeaderType.NORMAL_SORT, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,"stringValidatorMessageGenerator",this.generateString("frontendName")));
+        columnDefs.add(getColumnDef("chinese_name", "ProjectConfig", "项目中文名", ColumnType.NORMAL, HeaderType.NORMAL_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,"stringValidatorMessageGenerator",this.generateString("chineseName")));
+        columnDefs.add(getColumnDef("description", "ProjectConfig", "项目描述", ColumnType.NORMAL, HeaderType.NORMAL_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,"stringValidatorMessageGenerator",this.generateString("description")));
+        columnDefs.add(getColumnDef("module_prefix", "ProjectConfig", "模块前缀", ColumnType.NORMAL, HeaderType.NORMAL_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,null,null));
+        columnDefs.add(getColumnDef("scan_package", "ProjectConfig", "扫描的包路径", ColumnType.NORMAL, HeaderType.NORMAL_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,null,null));
+        columnDefs.add(getColumnDef("architectures", "ProjectConfig", "代码架构", ColumnType.NORMAL, HeaderType.NORMAL_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,null,null));
+        columnDefs.add(getColumnDef("config", "ProjectConfig", "脚手架配置", ColumnType.NORMAL, HeaderType.NORMAL_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,null,null));
+        columnDefs.add(getColumnDef("wrap_with_parent", "ProjectConfig", "是否使用父module", ColumnType.NORMAL, HeaderType.NORMAL, CellType.NORMAL, ControlType.CHECK_BOX, DataSourceType.NULL, false, true,null,null));
+        columnDefs.add(getColumnDef("scaffold", "ProjectConfig", "脚手架", ColumnType.NORMAL, HeaderType.NORMAL, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, false, true,null,null));
+        columnDefs.add(getColumnDef("Actions", "ProjectConfig", "操作", ColumnType.ACTION, HeaderType.NORMAL, CellType.OPERATION, ControlType.INPUT_TEXT, DataSourceType.NULL, false, true,null,null));
+        columnDefs.add(getColumnDef("Filters", "ProjectConfig", "过滤", ColumnType.FILTER, HeaderType.COLUMN_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, false, true,null,null));
+        return columnDefs;
+    }
+
+    private ColumnDef getColumnDef(String name,
+                                   String tableClassName,
+                                   String chineseName,
+                                   ColumnType columnType,
+                                   HeaderType headerType,
+                                   CellType cellType,
+                                   ControlType controlType,
+                                   DataSourceType dataSourceType,
+                                   Boolean enableHiding,
+                                   Boolean showInList,
+                                   String validateType,
+                                   Validator validator
+    ) {
+        ColumnDef columnDef = new ColumnDef();
+        columnDef.setName(name);
+        columnDef.setTableClassName(tableClassName);
+        columnDef.setChineseName(chineseName);
+        columnDef.setCellType(cellType);
+        columnDef.setColumnType(columnType);
+        columnDef.setHeaderType(headerType);
+        columnDef.setControlType(controlType);
+        columnDef.setDataSourceType(dataSourceType);
+        columnDef.setEnableHidden(enableHiding);
+        columnDef.setSubsidiaryColumns("");
+        columnDef.setShowInList(showInList);
+        columnDef.setValidateType(validateType);
+        if(StringUtility.isNullOrEmpty(validateType)){
+            columnDef.setValidateType("nullableValidatorMessageGenerator");
+        }
+        columnDef.setValidator(validator);
+        return columnDef;
+    }
+
     @Override
     public TableConfigBO getTableConfig(Long tableConfigId) {
         TableConfigBO tableConfig = new TableConfigBO();
@@ -41,9 +99,9 @@ public class MockTableConfigRepository implements TableConfigRepository {
         tableConfig.setTableName("t_table_config");
         tableConfig.setClassName("com.sparrowzoo.coder.po.TableConfig");
         tableConfig.setDescription("");
-        tableConfig.setCheckable(false);
-        tableConfig.setRowMenu(false);
-        tableConfig.setColumnFilter(false);
+        tableConfig.setCheckable(1);
+        tableConfig.setRowMenu(99);
+        tableConfig.setColumnFilter(100);
         tableConfig.setStatusCommand(false);
         tableConfig.setColumnConfigs("");
         tableConfig.setSource(CodeSource.INNER.name());
@@ -54,12 +112,12 @@ public class MockTableConfigRepository implements TableConfigRepository {
         tableConfig.setGmtModified(0L);
         tableConfig.setCreateUserName("harry");
         tableConfig.setModifiedUserName("");
+        tableConfig.setColumnConfigs(JSON.toJSONString(getColumnDefs()));
         return tableConfig;
     }
 
     @Override
     public List<TableConfigBO> queryTableConfigs(TableConfigQuery tableConfigQuery) {
-
         TableConfigBO tableConfig = new TableConfigBO();
         tableConfig.setId(1L);
         tableConfig.setProjectId(1L);
@@ -68,9 +126,9 @@ public class MockTableConfigRepository implements TableConfigRepository {
         tableConfig.setTableName("t_table_config");
         tableConfig.setClassName("com.sparrowzoo.coder.po.TableConfig");
         tableConfig.setDescription("");
-        tableConfig.setCheckable(false);
-        tableConfig.setRowMenu(false);
-        tableConfig.setColumnFilter(false);
+        tableConfig.setCheckable(1);
+        tableConfig.setRowMenu(99);
+        tableConfig.setColumnFilter(100);
         tableConfig.setStatusCommand(false);
         tableConfig.setColumnConfigs("");
         tableConfig.setSource(CodeSource.INNER.name());
@@ -92,9 +150,9 @@ public class MockTableConfigRepository implements TableConfigRepository {
         projectTable.setLocked(true);
 
         projectTable.setDescription("");
-        projectTable.setCheckable(false);
-        projectTable.setRowMenu(false);
-        projectTable.setColumnFilter(false);
+        projectTable.setCheckable(1);
+        projectTable.setRowMenu(99);
+        projectTable.setColumnFilter(100);
         projectTable.setStatusCommand(false);
         projectTable.setColumnConfigs("");
         projectTable.setSource(CodeSource.INNER.name());
@@ -105,6 +163,7 @@ public class MockTableConfigRepository implements TableConfigRepository {
         projectTable.setGmtModified(0L);
         projectTable.setCreateUserName("harry");
         projectTable.setModifiedUserName("");
+        projectTable.setColumnConfigs(JSON.toJSONString(getColumnDefs()));
         List<TableConfigBO> list = new ArrayList<>();
         list.add(tableConfig);
         list.add(projectTable);
@@ -114,5 +173,36 @@ public class MockTableConfigRepository implements TableConfigRepository {
     @Override
     public Long getTableConfigCount(TableConfigQuery tableConfigQuery) {
         return null;
+    }
+
+    public RegexValidator generateRegex(String propertyName) {
+        RegexValidator validator = new RegexValidator();
+        validator.setAllowEmpty(true);
+        validator.setI18n(false);
+        validator.setMinLength(5);
+        validator.setMaxLength(30);
+        validator.setPropertyName(propertyName);
+        return validator;
+    }
+
+    public StringValidator generateString(String propertyName) {
+        RegexValidator validator = new RegexValidator();
+        validator.setAllowEmpty(true);
+        validator.setI18n(false);
+        validator.setMinLength(5);
+        validator.setMaxLength(30);
+        validator.setPropertyName(propertyName);
+        return validator;
+    }
+
+    public DigitalValidator generateDigital(String propertyName) {
+        DigitalValidator validator = new DigitalValidator();
+        validator.setAllowEmpty(true);
+        validator.setI18n(false);
+        validator.setMinValue(5);
+        validator.setMaxValue(30);
+        validator.setCategory(DigitalCategory.INTEGER);
+        validator.setPropertyName(propertyName);
+        return validator;
     }
 }

@@ -1,5 +1,6 @@
-package com.sparrowzoo.coder.domain.service.frontend.validate.valibot;
+package com.sparrowzoo.coder.domain.service.frontend.validate.react;
 
+import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.domain.bo.validate.RegexValidator;
 
 import javax.inject.Named;
@@ -13,11 +14,19 @@ public class RegexValidatorMessageGenerator extends AbstractValidatorMessageGene
         StringBuilder pipeline = new StringBuilder();
         pipeline.append(this.pipeline());
         pipeline.append(this.nonEmpty(validator));
-        pipeline.append(this.check(validator,validator.getRegex(),validator.getFormatMessage()));
+        if (StringUtility.isNullOrEmpty(validator.getFormatMessage())) {
+            validator.setFormatMessage(this.defaultValidator.getFormatMessage() + validator.getRegex());
+        }
+        pipeline.append(this.check(validator, validator.getRegex(), validator.getFormatMessage()));
         this.finish(pipeline);
         if (validator.getAllowEmpty()) {
             return this.allowEmpty(pipeline.toString());
         }
         return pipeline.toString();
+    }
+
+    @Override
+    public RegexValidator defaultValidator() {
+        return RegexValidator.defaultValidator();
     }
 }

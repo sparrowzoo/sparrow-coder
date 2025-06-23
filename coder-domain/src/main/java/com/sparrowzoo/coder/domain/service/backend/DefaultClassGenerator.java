@@ -19,7 +19,7 @@ import java.util.Map;
 
 @Slf4j
 public class DefaultClassGenerator implements ClassGenerator {
-    private final String template;
+    private final String architecture;
     private final ProjectConfigBO projectConfig;
 
     private TableContext tableContext;
@@ -29,11 +29,11 @@ public class DefaultClassGenerator implements ClassGenerator {
 
     private ClassPlaceholder classPlaceholder;
 
-    public DefaultClassGenerator(TableConfigRegistry registry, String tableName, String template) throws IOException {
+    public DefaultClassGenerator(TableConfigRegistry registry, String tableName, String architecture) throws IOException {
         this.registry = registry;
         this.tableContext = registry.getTableContext(tableName);
         this.projectConfig = registry.getProject();
-        this.template= template;
+        this.architecture = architecture;
         this.classPlaceholder=new DefaultClassPlaceholder(registry,tableName);
     }
 
@@ -81,7 +81,7 @@ public class DefaultClassGenerator implements ClassGenerator {
     }
 
     public String readConfigContent(String templateFileName) {
-        String codeTemplateRoot =this.template;
+        String codeTemplateRoot =this.architecture;
         if (!codeTemplateRoot.startsWith(File.separator)) {
             codeTemplateRoot = File.separator + codeTemplateRoot;
         }

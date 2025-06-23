@@ -207,14 +207,17 @@ public enum PlaceholderKey {
     $get_sets_params,
 
     $init_po,
-    $frontend_page,
-    $frontend_api,
-    $frontend_add,
-    $frontend_edit,
-    $frontend_search,
-    $frontend_operation,
-    $frontend_columns,
-    $frontend_schema,
-    $frontend_vo,
-    $frontend_column_filter;
+    $frontend_path_page,
+    $frontend_path_api,
+    $frontend_path_add,
+    $frontend_path_edit,
+    $frontend_path_search,
+    $frontend_path_operation,
+    $frontend_path_columns,
+    $frontend_path_schema,
+    $frontend_class,
+    $frontend_column_filter,
+    $frontend_column_defs,
+    $frontend_column_import,
+    $frontend_schema
 }

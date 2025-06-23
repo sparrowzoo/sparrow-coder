@@ -1,6 +1,5 @@
 package com.sparrowzoo.coder.moke.beans;
 
-import com.sparrowzoo.coder.domain.bo.ProjectArchsBO;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.protocol.param.ProjectConfigParam;
 import com.sparrowzoo.coder.protocol.query.ProjectConfigQuery;
@@ -40,9 +39,10 @@ public class MockProjectConfigRepository implements ProjectConfigRepository {
         projectConfig.setModulePrefix("coder");
         projectConfig.setScanPackage("com.sparrow");
         projectConfig.setDescription("代码生成器模拟");
+        projectConfig.setI18n(true);
         projectConfig.setId(1L);
         projectConfig.setName("sparrow-coder");
-        projectConfig.setArchitectures("{\"FRONTEND\":\"reactArchitectureGenerator\",\"DATABASE\":\"mySqlArchitectureGenerator\",\"BACKEND\":\"clearArchitectureGenerator\"}");
+        projectConfig.setArchitectures("{\"FRONTEND\":\"react\",\"DATABASE\":\"mysql\",\"BACKEND\":\"clear\"}");
 
         projectConfig.setConfig("");
         projectConfig.setCreateUserId(1L);

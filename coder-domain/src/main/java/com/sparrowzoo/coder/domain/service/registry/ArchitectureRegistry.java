@@ -1,8 +1,5 @@
 package com.sparrowzoo.coder.domain.service.registry;
 
-import com.alibaba.fastjson.JSON;
-import com.sparrow.core.spi.JsonFactory;
-import com.sparrow.json.Json;
 import com.sparrowzoo.coder.domain.service.ArchitectureGenerator;
 import com.sparrowzoo.coder.enums.ArchitectureCategory;
 

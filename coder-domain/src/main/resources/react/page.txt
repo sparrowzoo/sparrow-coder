@@ -9,14 +9,12 @@ import Operation from "@/components/$persistence_object_by_horizontal/operation"
 import EditPage from "@/components/$persistence_object_by_horizontal/edit";
 import ThreeDotLoading from "@/common/components/ThreeDotLoading";
 import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizontal";
+import {useTranslations} from "next-intl";
 
-const translate = (key: string) => {
-    return "zhangsan";
-}
+
 export default function Page() {
-
+const  translate=useTranslations("$persistence_class_name.ErrorMessage")
 const [dataState, setDataState] = useState<$persistence_class_name[] | undefined>();
-
     useEffect(() => {
         $persistence_class_nameApi.search({}, translate).then(
             (res) => {
@@ -36,7 +34,6 @@ const [dataState, setDataState] = useState<$persistence_class_name[] | undefined
                 primary={"$primary_key"}
                 data={dataState.list}
                 columns={columns}
-                filterColumn={$frontend_column_filter}
                 setData={setDataState}
             ></DataTable>
         </div>

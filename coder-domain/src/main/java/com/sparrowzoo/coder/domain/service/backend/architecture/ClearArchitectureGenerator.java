@@ -1,5 +1,6 @@
 package com.sparrowzoo.coder.domain.service.backend.architecture;
 
+import com.sparrowzoo.coder.constant.ArchitectureNames;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableContext;
 import com.sparrowzoo.coder.domain.service.AbstractArchitectureGenerator;
@@ -17,7 +18,7 @@ import java.io.IOException;
 public class ClearArchitectureGenerator extends AbstractArchitectureGenerator {
     @Override
     public void generate(TableConfigRegistry registry, String tableName) throws IOException {
-        ClassGenerator classGenerator = new DefaultClassGenerator(registry, tableName,this.template());
+        ClassGenerator classGenerator = new DefaultClassGenerator(registry, tableName,this.getName());
         TableContext context = registry.getTableContext(tableName);
         TableConfigBO tableConfig = context.getTableConfig();
         if (CodeSource.UPLOAD.name().equals(tableConfig.getSource())) {
@@ -45,7 +46,7 @@ public class ClearArchitectureGenerator extends AbstractArchitectureGenerator {
     }
 
     @Override
-    public String template() {
-        return "clear";
+    public String getName() {
+        return ArchitectureNames.CLEAR;
     }
 }

@@ -1,9 +1,5 @@
 package com.sparrowzoo.coder.validator;
 
-import com.sparrowzoo.coder.ApplicationBoot;
-import com.sparrow.coding.api.ValidatorMessageGenerator;
-import com.sparrow.coding.api.ValidatorRegistry;
-import com.sparrow.coding.protocol.validate.RegexValidator;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

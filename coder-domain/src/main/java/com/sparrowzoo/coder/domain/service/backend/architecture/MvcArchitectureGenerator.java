@@ -18,7 +18,7 @@ public class MvcArchitectureGenerator extends AbstractArchitectureGenerator {
     }
 
     @Override
-    public String template() {
+    public String getName() {
         return null;
     }
 }

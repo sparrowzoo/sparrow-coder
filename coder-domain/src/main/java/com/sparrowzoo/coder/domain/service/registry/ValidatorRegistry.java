@@ -1,6 +1,7 @@
 package com.sparrowzoo.coder.domain.service.registry;
 
 import com.sparrow.utility.ClassUtility;
+import com.sparrowzoo.coder.domain.bo.validate.Validator;
 import com.sparrowzoo.coder.domain.service.ValidatorMessageGenerator;
 
 import java.util.HashMap;
@@ -12,7 +13,7 @@ public class ValidatorRegistry {
      * key: namespace
      * value: Map<validatorName, ValidatorMessageGenerator>
      */
-    private Map<String, Map<String, ValidatorMessageGenerator<?>>> registry;
+    private Map<String, Map<String, ValidatorMessageGenerator>> registry;
 
     private ValidatorRegistry() {
         registry = new HashMap<>();
@@ -23,7 +24,7 @@ public class ValidatorRegistry {
     }
 
 
-    public void registry(ValidatorMessageGenerator<?> validatorMessageGenerator) {
+    public void registry(ValidatorMessageGenerator validatorMessageGenerator) {
         String packageName = validatorMessageGenerator.getClass().getPackage().getName();
         String namespace = packageName.substring(packageName.lastIndexOf(".") + 1);
         String validatorName = ClassUtility.getBeanNameByClass(validatorMessageGenerator.getClass());
@@ -38,7 +39,7 @@ public class ValidatorRegistry {
         return this.registry.get(namespace).get(validatorName);
     }
 
-    public Map<String, Map<String, ValidatorMessageGenerator<?>>> getRegistry() {
+    public Map<String, Map<String, ValidatorMessageGenerator>> getRegistry() {
         return registry;
     }
 

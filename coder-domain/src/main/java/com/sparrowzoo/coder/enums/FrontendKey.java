@@ -11,6 +11,7 @@ public enum FrontendKey {
     SEARCH("search.txt"),
     OPERATION("operation.txt"),
     COLUMNS("columns.txt"),
+    MESSAGE(""),
     SCHEMA("schema.txt");
 
 

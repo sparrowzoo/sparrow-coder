@@ -18,6 +18,8 @@ public class ProjectConfig extends PO {
     private String frontendName;
     @Column(name = "chinese_name", columnDefinition = "varchar(50) default '' comment '项目中文名称'")
     private String chineseName;
+    @Column(name = "i18n", columnDefinition = "tinyint(1) default 0 comment '是否支持国际化'")
+    private Boolean i18n;
     @Column(name = "description", columnDefinition = "varchar(512) default '' comment '项目描述'")
     private String description;
     @Column(name = "module_prefix", columnDefinition = "varchar(50) default '' comment '模块前缀'")

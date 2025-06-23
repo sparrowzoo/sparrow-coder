@@ -29,6 +29,7 @@
         <dependency>
             <groupId>com.sparrowzoo</groupId>
             <artifactId>sparrow-json</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.sparrowzoo</groupId>

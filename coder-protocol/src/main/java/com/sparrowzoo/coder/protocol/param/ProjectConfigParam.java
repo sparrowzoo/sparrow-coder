@@ -26,6 +26,7 @@ public class ProjectConfigParam implements Param {
 private String name; 
 private String frontendName; 
 private String chineseName; 
+private Boolean i18n; 
 private String description; 
 private String modulePrefix; 
 private String scanPackage; 

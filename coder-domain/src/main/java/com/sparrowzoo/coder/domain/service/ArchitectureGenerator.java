@@ -9,5 +9,5 @@ public interface ArchitectureGenerator {
     void generate(TableConfigRegistry registry, String tableName) throws IOException;
     ArchitectureCategory getCategory();
 
-    String template();
+    String getName();
 }

@@ -1,38 +1,57 @@
 package com.sparrowzoo.coder.domain.service.frontend.generator.column;
 
 import com.sparrow.utility.StringUtility;
+import com.sparrowzoo.coder.constant.ArchitectureNames;
 import com.sparrowzoo.coder.domain.bo.ColumnDef;
 import com.sparrowzoo.coder.enums.CellType;
 import com.sparrowzoo.coder.enums.HeaderType;
 
+import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReactColumnGenerator extends AbstractColumnGenerator{
+@Named
+public class ReactColumnGenerator extends AbstractColumnGenerator {
     /**
      * {
-     *         id: "expander",
-     *         enableHiding: false,
-     *         header: EmptyHeader,
-     *         cell: TreeCell("status")
-     *     }
+     * id: "expander",
+     * enableHiding: false,
+     * header: EmptyHeader,
+     * cell: TreeCell("status")
+     * }
+     *
      * @param columnDef
      * @return
      */
     @Override
     public String column(ColumnDef columnDef) {
-        List<String> columnDefList =new ArrayList<>();
+        List<String> columnDefList = new ArrayList<>();
         columnDefList.add(this.renderColumnType(columnDef));
         columnDefList.add(this.renderHeader(columnDef));
         columnDefList.add(this.renderCell(columnDef));
-        columnDefList.add(String.format("enableHiding: %s",columnDef.getHidden()));
-        return String.format("{\n%s\n}",StringUtility.join(columnDefList, ",\n"));
+        columnDefList.add(String.format("enableHiding: %s", columnDef.getEnableHidden()));
+        return String.format("{\n%s\n}", StringUtility.join(columnDefList, ",\n"));
     }
 
 
     @Override
     public String edit(ColumnDef columnDef) {
+        return null;
+    }
 
+    @Override
+    public String importHeader(HeaderType headerType) {
+        return String.format("import %1$s from \"@/common/components/table/header/%2$s\";", headerType.getComponentName(), headerType.getFileName());
+    }
+
+    @Override
+    public String importCell(CellType cellType) {
+        return String.format("import %1$s from \"@/common/components/table/cell/%2$s\";", cellType.getComponentName(), cellType.getFileName());
+    }
+
+    @Override
+    public String getName() {
+        return ArchitectureNames.REACT;
     }
 
 
@@ -47,7 +66,7 @@ public class ReactColumnGenerator extends AbstractColumnGenerator{
             case CHECK:
                 return " id: \"select\"";
             case NORMAL:
-                return String.format(" accessorKey: \"%s\"", columnDef.getName());
+                return String.format(" accessorKey: \"%s\"", columnDef.getPropertyName());
             default:
                 return "";
         }
@@ -55,8 +74,8 @@ public class ReactColumnGenerator extends AbstractColumnGenerator{
 
     public String renderHeader(ColumnDef columnDef) {
         HeaderType headerType = columnDef.getHeaderType();
-        String columnTitle = columnDef.getText();
-        String i18nPrefix = columnDef.getTableName();
+        String columnTitle = columnDef.getChineseName();
+        String i18nPrefix = columnDef.getTableClassName();
         switch (headerType) {
             case CHECK_BOX:
                 return "header: CheckboxHeader";
@@ -80,15 +99,15 @@ public class ReactColumnGenerator extends AbstractColumnGenerator{
                         headerType.getFilterable(),
                         columnTitle,
                         i18nPrefix,
-                        headerType.getSortable() ? ";\nfilterFn: filterFns.includesString" : "");
+                        headerType.getSortable() ? ",\nfilterFn: filterFns.includesString" : "");
             default:
                 return "";
         }
     }
 
     public String renderCell(ColumnDef columnDef) {
-        CellType cellType=columnDef.getCellType();
-         String columnName=columnDef.getName();
+        CellType cellType = columnDef.getCellType();
+        String columnName = columnDef.getPropertyName();
         switch (cellType) {
             case TREE:
                 return String.format("cell: TreeCell(\"%s\")", columnName);
@@ -97,9 +116,9 @@ public class ReactColumnGenerator extends AbstractColumnGenerator{
             case NORMAL:
                 return String.format("cell: NormalCell(\"%s\")", columnName);
             case CURRENCY:
-                return String.format("cell: CurrencyCell(\"%1$s\", \"%2$s\")", columnName, columnDef.getSubsidiaryFields());
+                return String.format("cell: CurrencyCell(\"%1$s\", \"%2$s\")", columnName, columnDef.getSubsidiaryColumns());
             case OPERATION:
-                return "cell:Actions";
+                return "cell:\"Actions\"";
             default:
                 return "";
         }

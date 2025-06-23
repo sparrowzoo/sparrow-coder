@@ -1,5 +1,6 @@
-package com.sparrowzoo.coder.domain.service.frontend.validate.valibot;
+package com.sparrowzoo.coder.domain.service.frontend.validate.react;
 
+import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.domain.bo.validate.DigitalValidator;
 
 import javax.inject.Named;
@@ -8,6 +9,9 @@ import javax.inject.Named;
 public class DigitalValidatorMessageGenerator extends AbstractValidatorMessageGenerator<DigitalValidator> {
     @Override
     public String outerGenerateMessage(String propertyName, DigitalValidator validator) {
+        if(StringUtility.isNullOrEmpty(validator.getDigitalMessage())){
+            validator.setDigitalMessage(this.defaultValidator.getDigitalMessage());
+        }
         StringBuilder pipeline = new StringBuilder();
         pipeline.append(this.pipeline());
         pipeline.append(this.nonEmpty(validator));
@@ -20,5 +24,11 @@ public class DigitalValidatorMessageGenerator extends AbstractValidatorMessageGe
             return this.allowEmpty(pipeline.toString());
         }
         return pipeline.toString();
+    }
+
+
+    @Override
+    public DigitalValidator defaultValidator() {
+        return DigitalValidator.defaultValidator();
     }
 }

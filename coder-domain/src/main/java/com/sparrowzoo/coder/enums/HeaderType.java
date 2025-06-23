@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum HeaderType {
     CHECK_BOX("CheckboxHeader", "check-box", false, false, "选择"),
     COLUMN_FILTER("ColumnFilter", "column-filter", false, false, "过滤"),
-    NORMAL("NormalHeader", "normal", false, false, "标准"),
+    NORMAL("PlainTextHeader", "plain-text", false, false, "标准"),
     NORMAL_SORT("NormalHeader", "normal", true, false, "标准(可排序)"),
     NORMAL_FILTER("NormalHeader", "normal", false, false, "标准(可过滤)"),
     NORMAL_SORT_FILTER("NormalHeader", "normal", true, true, "标准(可过滤,可排序)"),
