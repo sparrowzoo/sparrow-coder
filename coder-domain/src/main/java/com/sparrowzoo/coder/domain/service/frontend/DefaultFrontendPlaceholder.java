@@ -102,11 +102,8 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholder {
         placeholder.put(PlaceholderKey.$frontend_column_defs.name(), this.generatorColumns());
         placeholder.put(PlaceholderKey.$frontend_column_import.name(), this.generateImport());
         placeholder.put(PlaceholderKey.$frontend_schema.name(), this.generateSchema());
-        placeholder.put(PlaceholderKey.$frontend_operation.name(), this.generateOperation());
-
     }
 
-    public String generate
 
     private String generateClass() {
         Map<String, Field> fields = tableContext.getEntityManager().getPropertyFieldMap();

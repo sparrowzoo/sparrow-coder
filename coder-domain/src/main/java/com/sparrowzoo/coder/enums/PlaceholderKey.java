@@ -25,6 +25,8 @@ public enum PlaceholderKey {
      */
     $origin_table_name,
 
+    $primary_key,
+
     /**
      * e.g UserAddress
      */

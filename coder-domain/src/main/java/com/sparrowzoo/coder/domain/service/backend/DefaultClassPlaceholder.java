@@ -96,6 +96,7 @@ public class DefaultClassPlaceholder implements ClassPlaceholder {
         placeHolder.put(PlaceholderKey.$object_service.name(), StringUtility.setFirstByteLowerCase(placeHolder.get(PlaceholderKey.$class_service.name())));
 
         placeHolder.put(PlaceholderKey.$module_prefix.name(), modulePrefix);
+        placeHolder.put(PlaceholderKey.$primary_key.name(), entityManager.getPrimary().getPropertyName());
         placeHolder.put(PlaceholderKey.$origin_table_name.name(), tableName);
         placeHolder.put(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
         placeHolder.put(PlaceholderKey.$persistence_object_name.name(), StringUtility.setFirstByteLowerCase(persistenceClassName));

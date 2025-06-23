@@ -121,7 +121,7 @@ public class MockTableConfigRepository implements TableConfigRepository {
         TableConfigBO tableConfig = new TableConfigBO();
         tableConfig.setId(1L);
         tableConfig.setProjectId(1L);
-        tableConfig.setLocked(true);
+        tableConfig.setLocked(false);
         tableConfig.setPrimaryKey("id");
         tableConfig.setTableName("t_table_config");
         tableConfig.setClassName("com.sparrowzoo.coder.po.TableConfig");
@@ -147,7 +147,7 @@ public class MockTableConfigRepository implements TableConfigRepository {
         projectTable.setPrimaryKey("id");
         projectTable.setTableName("t_project_config");
         projectTable.setClassName("com.sparrowzoo.coder.po.ProjectConfig");
-        projectTable.setLocked(true);
+        projectTable.setLocked(false);
 
         projectTable.setDescription("");
         projectTable.setCheckable(1);
