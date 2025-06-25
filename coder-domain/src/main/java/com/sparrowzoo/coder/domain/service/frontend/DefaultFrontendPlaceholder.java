@@ -1,5 +1,6 @@
 package com.sparrowzoo.coder.domain.service.frontend;
 
+import com.sparrow.core.Pair;
 import com.sparrow.core.spi.JsonFactory;
 import com.sparrow.io.file.FileNameBuilder;
 import com.sparrow.io.file.FileNameProperty;
@@ -99,7 +100,9 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholder {
 
         placeholder.put(PlaceholderKey.$frontend_class.name(), this.generateClass());
         placeholder.put(PlaceholderKey.$frontend_column_filter.name(), tableContext.getTableConfig().getColumnFilter().toString());
-        placeholder.put(PlaceholderKey.$frontend_column_defs.name(), this.generatorColumns());
+        Pair<String, String> pair = this.generatorColumns();
+        placeholder.put(PlaceholderKey.$frontend_column_defs.name(), pair.getFirst());
+        placeholder.put(PlaceholderKey.$frontend_editable_form_items.name(), pair.getSecond());
         placeholder.put(PlaceholderKey.$frontend_column_import.name(), this.generateImport());
         placeholder.put(PlaceholderKey.$frontend_schema.name(), this.generateSchema());
     }
@@ -159,23 +162,26 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholder {
         return String.join(",", schemas);
     }
 
-    private String generatorColumns() {
+    private Pair<String, String> generatorColumns() {
         if (CollectionsUtility.isNullOrEmpty(this.columnDefs)) {
-            return "";
+            return new Pair<>("", "");
         }
         List<String> columns = new ArrayList<>();
+        List<String> formItems = new ArrayList<>();
         Map<String, Object> columnI18nMap = tableContext.getI18nMap();
         for (ColumnDef columnDef : this.columnDefs) {
             if (!columnDef.getShowInList()) {
                 continue;
             }
+            formItems.add(columnGenerator.edit(columnDef));
             columns.add(columnGenerator.column(columnDef));
             columnI18nMap.put(columnDef.getPropertyName(), columnDef.getChineseName());
         }
         String columnStr = String.join(",", columns);
-        String className = tableContext.getTableConfig().getClassName();
-        className = className.substring(className.lastIndexOf(".") + 1);
-        return String.format("export const columns: ColumnDef<%1$s>[] = [\n%2$s\n];", className, columnStr);
+        String formItemStr = String.join("\n", formItems);
+        String className = tableContext.getEntityManager().getSimpleClassName();
+        String columnDefs = String.format("export const columns: ColumnDef<%1$s>[] = [\n%2$s\n];", className, columnStr);
+        return new Pair<>(columnDefs, formItemStr);
     }
 
     private String toType(Class<?> clazz) {

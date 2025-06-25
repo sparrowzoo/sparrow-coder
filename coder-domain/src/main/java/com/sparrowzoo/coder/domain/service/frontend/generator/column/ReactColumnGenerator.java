@@ -34,9 +34,30 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
     }
 
 
+    /**
+     * <ValidatableInput {...register("name")}
+     * type={"text"}
+     * isSubmitted={isSubmitted}
+     * pageTranslate={pageTranslate}
+     * validateTranslate={validateTranslate}
+     * errorMessage={errors.name?.message}
+     * fieldPropertyName={"name"}/>
+     *
+     * @param columnDef
+     * @return
+     */
     @Override
     public String edit(ColumnDef columnDef) {
-        return null;
+        return String.format("<ValidatableInput {...register(\"%1$s\")}\n" +
+                        "                                  type={\"%2$s\"}\n" +
+                        "                                  isSubmitted={isSubmitted}\n" +
+                        "                                  pageTranslate={pageTranslate}\n" +
+                        "                                  validateTranslate={validateTranslate}\n" +
+                        "                                  errorMessage={errors.name?.message}\n" +
+                        "                                  fieldPropertyName={\"%1$s\"}/>",
+                columnDef.getPropertyName(),
+                columnDef.getControlType().getInputType()
+        );
     }
 
     @Override
