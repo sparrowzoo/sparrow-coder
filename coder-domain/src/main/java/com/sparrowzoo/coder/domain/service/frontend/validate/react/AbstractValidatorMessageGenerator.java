@@ -117,7 +117,7 @@ public abstract class AbstractValidatorMessageGenerator<T extends Validator> imp
      * * @return
      */
     protected String check(T validator, String regex, String message) {
-        return String.format(",\nv.check((val) => {return /%1$s/.test(val);},%2$s)",
+        return String.format(",\nv.check((val) => {return %1$s.test(val);},%2$s)",
                 regex,
                 this.getMessage(validator, "check-message", message));
     }
@@ -127,6 +127,9 @@ public abstract class AbstractValidatorMessageGenerator<T extends Validator> imp
     }
 
     protected String minValue(DigitalValidator validator) {
+        if (validator.getMinValue()==null) {
+            return "";
+        }
         String message = validator.getMinValueMessage();
         if(StringUtility.isNullOrEmpty(message)){
             message=String.format(DigitalValidator.defaultValidator().getMinValueMessage(), validator.getMinValue());
@@ -135,6 +138,9 @@ public abstract class AbstractValidatorMessageGenerator<T extends Validator> imp
     }
 
     protected String maxValue(DigitalValidator validator) {
+        if (validator.getMaxValue()==null) {
+            return "";
+        }
         String message = validator.getMaxValueMessage();
         if(StringUtility.isNullOrEmpty(message)){
             message=String.format(DigitalValidator.defaultValidator().getMaxValueMessage(), validator.getMaxValue());

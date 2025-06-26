@@ -14,9 +14,9 @@ public class DigitalValidator implements Validator {
     private String emptyMessage;
     private Boolean allowEmpty;
     private String digitalMessage;
-    private int minValue;
+    private Integer minValue;
     private String minValueMessage;
-    private int maxValue;
+    private Integer maxValue;
     private String maxValueMessage;
     //INT FLOAT 科学计数法
     private DigitalCategory category;

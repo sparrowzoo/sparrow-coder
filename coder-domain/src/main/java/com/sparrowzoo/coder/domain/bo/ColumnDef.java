@@ -36,10 +36,7 @@ public class ColumnDef {
     private CellType cellType;
     private ControlType controlType;
     private Integer sort;
-
-    public String getPropertyName() {
-        return StringUtility.toHump(name, "_");
-    }
+    private Boolean readOnly;
 
     public static ColumnDef createRowMenu(String tableClassName,int sort) {
         ColumnDef columnDef = new ColumnDef();
@@ -47,13 +44,12 @@ public class ColumnDef {
         columnDef.setHeaderType(HeaderType.NORMAL);
         columnDef.setCellType(CellType.OPERATION);
         columnDef.setTableClassName(tableClassName);
-        columnDef.setName("actions");
+        columnDef.setPropertyName("actions");
         columnDef.setChineseName("操作");
         columnDef.setSubsidiaryColumns("");
         columnDef.setJavaType(null);
         columnDef.setEnableHidden(false);
         columnDef.setDefaultHidden(false);
-        columnDef.setShowInInsert(false);
         columnDef.setShowInEdit(false);
         columnDef.setShowInList(true);
         columnDef.setShowInSearch(false);
@@ -68,22 +64,22 @@ public class ColumnDef {
         columnDef.setDataSourceParams("");
         columnDef.setControlType(null);
         columnDef.setSort(sort);
+        columnDef.setReadOnly(true);
         return columnDef;
     }
 
     public static ColumnDef createFilter(String tableClassName,int sort) {
         ColumnDef columnDef = new ColumnDef();
         columnDef.setColumnType(ColumnType.FILTER);
-        columnDef.setHeaderType(HeaderType.EMPTY);
+        columnDef.setHeaderType(HeaderType.COLUMN_FILTER);
         columnDef.setCellType(null);
         columnDef.setTableClassName(tableClassName);
-        columnDef.setName("filter");
+        columnDef.setPropertyName("filter");
         columnDef.setChineseName("过滤列");
         columnDef.setSubsidiaryColumns("");
         columnDef.setJavaType(null);
         columnDef.setEnableHidden(false);
         columnDef.setDefaultHidden(false);
-        columnDef.setShowInInsert(false);
         columnDef.setShowInEdit(false);
         columnDef.setShowInList(true);
         columnDef.setShowInSearch(false);
@@ -98,6 +94,7 @@ public class ColumnDef {
         columnDef.setDataSourceParams("");
         columnDef.setControlType(null);
         columnDef.setSort(sort);
+        columnDef.setReadOnly(true);
         return columnDef;
     }
 
@@ -107,13 +104,12 @@ public class ColumnDef {
         columnDef.setHeaderType(HeaderType.CHECK_BOX);
         columnDef.setCellType(CellType.CHECK_BOX);
         columnDef.setTableClassName(tableClassName);
-        columnDef.setName("check-box");
+        columnDef.setPropertyName("check-box");
         columnDef.setChineseName("");
         columnDef.setSubsidiaryColumns("");
         columnDef.setJavaType(null);
         columnDef.setEnableHidden(false);
         columnDef.setDefaultHidden(false);
-        columnDef.setShowInInsert(false);
         columnDef.setShowInEdit(false);
         columnDef.setShowInList(true);
         columnDef.setShowInSearch(false);
@@ -128,7 +124,7 @@ public class ColumnDef {
         columnDef.setDataSourceParams("");
         columnDef.setControlType(null);
         columnDef.setSort(sort);
+        columnDef.setReadOnly(true);
         return columnDef;
     }
-
 }

@@ -4,8 +4,8 @@ import com.sparrow.orm.EntityManager;
 import com.sparrow.orm.Field;
 import com.sparrow.orm.SparrowEntityManager;
 import com.sparrow.protocol.constant.SparrowError;
-import com.sparrow.utility.ClassUtility;
 import com.sparrow.utility.StringUtility;
+import com.sparrowzoo.coder.domain.bo.validate.DigitalValidator;
 import com.sparrowzoo.coder.domain.bo.validate.NoneValidator;
 import com.sparrowzoo.coder.enums.*;
 import lombok.Data;
@@ -60,6 +60,18 @@ public class TableContext {
         return chineseName.replace("\"", "").replace("'", "");
     }
 
+
+    public DigitalValidator generatePrimaryKeyValidator(String propertyName) {
+        DigitalValidator validator = new DigitalValidator();
+        validator.setAllowEmpty(true);
+        validator.setI18n(false);
+        validator.setMinValue(null);
+        validator.setMaxValue(null);
+        validator.setCategory(DigitalCategory.INTEGER);
+        validator.setPropertyName(propertyName);
+        return validator;
+    }
+
     public List<ColumnDef> getDefaultColumns() {
         String tableClassName = this.getEntityManager().getSimpleClassName();
 
@@ -70,15 +82,15 @@ public class TableContext {
             Field field = fieldMap.get(propertyName);
             ColumnDef columnDef = new ColumnDef();
             columnDef.setTableClassName(tableClassName);
-            columnDef.setName(propertyName);
+            columnDef.setPropertyName(propertyName);
             columnDef.setChineseName(this.parseChineseName(field.getColumnDefinition()));
             columnDef.setSubsidiaryColumns("");
             columnDef.setJavaType(field.getType().getName());
-            columnDef.setEnableHidden(false);
+            columnDef.setEnableHidden(true);
             columnDef.setDefaultHidden(false);
-            columnDef.setShowInInsert(false);
             if (entityManager.getPoPropertyNames() != null && entityManager.getPoPropertyNames().contains(field.getPropertyName())) {
                 columnDef.setShowInEdit(false);
+                columnDef.setReadOnly(true);
             } else {
                 columnDef.setShowInEdit(true);
             }
@@ -98,6 +110,8 @@ public class TableContext {
             columnDef.setCellType(CellType.NORMAL);
             if (columnDef.getPropertyName().equals(entityManager.getPrimary().getPropertyName())) {
                 columnDef.setControlType(ControlType.INPUT_HIDDEN);
+                columnDef.setValidateType("digitalValidatorMessageGenerator");
+                columnDef.setValidator(this.generatePrimaryKeyValidator(columnDef.getPropertyName()));
             } else {
                 columnDef.setControlType(JavaTypeController.getByJavaType(columnDef.getJavaType()).getControlTypes()[0]);
             }
