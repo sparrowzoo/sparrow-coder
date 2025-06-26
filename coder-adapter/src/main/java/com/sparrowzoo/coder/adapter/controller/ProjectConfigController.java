@@ -50,7 +50,6 @@ public class ProjectConfigController {
 
     @PostMapping("save.json")
             @ApiOperation("保存")
-
     public Long saveProjectConfig(@RequestBody ProjectConfigParam projectConfigParam) throws BusinessException {
        return  this.projectConfigService.saveProjectConfig(projectConfigParam);
     }
