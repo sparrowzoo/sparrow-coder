@@ -42,22 +42,22 @@ public class MockTableConfigRepository implements TableConfigRepository {
     private List<ColumnDef> getColumnDefs() {
         List<ColumnDef> columnDefs = new ArrayList<>();
         columnDefs.add(getColumnDef("id", "ProjectConfig", "", ColumnType.CHECK, HeaderType.CHECK_BOX, CellType.CHECK_BOX, ControlType.INPUT_HIDDEN, DataSourceType.NULL, false, true,null,null));
-        columnDefs.add(getColumnDef("name", "ProjectConfig", "项目名称", ColumnType.NORMAL, HeaderType.NORMAL_SORT_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,"stringValidatorMessageGenerator",this.generateString("name")));
-        columnDefs.add(getColumnDef("frontend_name", "ProjectConfig", "前端项目名称", ColumnType.NORMAL, HeaderType.NORMAL_SORT, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,"stringValidatorMessageGenerator",this.generateString("frontendName")));
-        columnDefs.add(getColumnDef("chinese_name", "ProjectConfig", "项目中文名", ColumnType.NORMAL, HeaderType.NORMAL_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,"stringValidatorMessageGenerator",this.generateString("chineseName")));
+        columnDefs.add(getColumnDef("propertyName", "ProjectConfig", "项目名称", ColumnType.NORMAL, HeaderType.NORMAL_SORT_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,"stringValidatorMessageGenerator",this.generateString("propertyName")));
+        columnDefs.add(getColumnDef("frontendName", "ProjectConfig", "前端项目名称", ColumnType.NORMAL, HeaderType.NORMAL_SORT, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,"stringValidatorMessageGenerator",this.generateString("frontendName")));
+        columnDefs.add(getColumnDef("chineseName", "ProjectConfig", "项目中文名", ColumnType.NORMAL, HeaderType.NORMAL_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,"stringValidatorMessageGenerator",this.generateString("chineseName")));
         columnDefs.add(getColumnDef("description", "ProjectConfig", "项目描述", ColumnType.NORMAL, HeaderType.NORMAL_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,"stringValidatorMessageGenerator",this.generateString("description")));
-        columnDefs.add(getColumnDef("module_prefix", "ProjectConfig", "模块前缀", ColumnType.NORMAL, HeaderType.NORMAL_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,null,null));
-        columnDefs.add(getColumnDef("scan_package", "ProjectConfig", "扫描的包路径", ColumnType.NORMAL, HeaderType.NORMAL_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,null,null));
+        columnDefs.add(getColumnDef("modulePrefix", "ProjectConfig", "模块前缀", ColumnType.NORMAL, HeaderType.NORMAL_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,null,null));
+        columnDefs.add(getColumnDef("scanPackage", "ProjectConfig", "扫描的包路径", ColumnType.NORMAL, HeaderType.NORMAL_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,null,null));
         columnDefs.add(getColumnDef("architectures", "ProjectConfig", "代码架构", ColumnType.NORMAL, HeaderType.NORMAL_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,null,null));
         columnDefs.add(getColumnDef("config", "ProjectConfig", "脚手架配置", ColumnType.NORMAL, HeaderType.NORMAL_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,null,null));
-        columnDefs.add(getColumnDef("wrap_with_parent", "ProjectConfig", "是否使用父module", ColumnType.NORMAL, HeaderType.NORMAL, CellType.NORMAL, ControlType.CHECK_BOX, DataSourceType.NULL, false, true,null,null));
+        columnDefs.add(getColumnDef("wrapWithParent", "ProjectConfig", "是否使用父module", ColumnType.NORMAL, HeaderType.NORMAL, CellType.NORMAL, ControlType.CHECK_BOX, DataSourceType.NULL, false, true,null,null));
         columnDefs.add(getColumnDef("scaffold", "ProjectConfig", "脚手架", ColumnType.NORMAL, HeaderType.NORMAL, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, false, true,null,null));
         columnDefs.add(getColumnDef("Actions", "ProjectConfig", "操作", ColumnType.ACTION, HeaderType.NORMAL, CellType.OPERATION, ControlType.INPUT_TEXT, DataSourceType.NULL, false, true,null,null));
         columnDefs.add(getColumnDef("Filters", "ProjectConfig", "过滤", ColumnType.FILTER, HeaderType.COLUMN_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, false, true,null,null));
         return columnDefs;
     }
 
-    private ColumnDef getColumnDef(String name,
+    private ColumnDef getColumnDef(String propertyName,
                                    String tableClassName,
                                    String chineseName,
                                    ColumnType columnType,
@@ -71,7 +71,7 @@ public class MockTableConfigRepository implements TableConfigRepository {
                                    Validator validator
     ) {
         ColumnDef columnDef = new ColumnDef();
-        columnDef.setName(name);
+        columnDef.setPropertyName(propertyName);
         columnDef.setTableClassName(tableClassName);
         columnDef.setChineseName(chineseName);
         columnDef.setCellType(cellType);
@@ -82,6 +82,7 @@ public class MockTableConfigRepository implements TableConfigRepository {
         columnDef.setEnableHidden(enableHiding);
         columnDef.setSubsidiaryColumns("");
         columnDef.setShowInList(showInList);
+        columnDef.setShowInEdit(true);
         columnDef.setValidateType(validateType);
         if(StringUtility.isNullOrEmpty(validateType)){
             columnDef.setValidateType("nullableValidatorMessageGenerator");

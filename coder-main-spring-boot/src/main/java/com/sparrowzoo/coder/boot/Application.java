@@ -23,7 +23,7 @@ public class Application {
         /**
          * 在spring 容器启动前 通过sparrow容器提供proxy 代理类反射加速
          *
-         * 因为orm template 初始化时需要method accessor 提速s
+         * 因为orm template 初始化时需要method accessor 提速
          */
         springApplication.addListeners(new ApplicationListener<ApplicationStartingEvent>() {
             @Override

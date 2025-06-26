@@ -4,6 +4,7 @@ import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.constant.ArchitectureNames;
 import com.sparrowzoo.coder.domain.bo.ColumnDef;
 import com.sparrowzoo.coder.enums.CellType;
+import com.sparrowzoo.coder.enums.ColumnType;
 import com.sparrowzoo.coder.enums.HeaderType;
 
 import javax.inject.Named;
@@ -76,6 +77,19 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
         HeaderType headerType = columnDef.getHeaderType();
         String columnTitle = columnDef.getChineseName();
         String i18nPrefix = columnDef.getTableClassName();
+        if (columnDef.getColumnType().equals(ColumnType.CHECK)) {
+            return "header: CheckboxHeader";
+        }
+        if (columnDef.getColumnType().equals(ColumnType.FILTER)) {
+            return "header: ColumnFilter";
+        }
+        if (columnDef.getColumnType().equals(ColumnType.TREE)) {
+            return "header:\"\"";
+        }
+        if (columnDef.getColumnType().equals(ColumnType.ACTION)) {
+            return String.format("header: PlainTextHeader({columnTitle: \"%1$s\", i18nPrefix: \"%2$s\"} as ColumnOperationProps)", columnTitle, i18nPrefix);
+        }
+
         switch (headerType) {
             case CHECK_BOX:
                 return "header: CheckboxHeader";
@@ -106,6 +120,18 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
     }
 
     public String renderCell(ColumnDef columnDef) {
+        if (columnDef.getColumnType().equals(ColumnType.FILTER)) {
+            return "cell:\"\"";
+        }
+        if (columnDef.getColumnType().equals(ColumnType.CHECK)) {
+            return "cell: CheckBoxCell";
+        }
+        if (columnDef.getColumnType().equals(ColumnType.TREE)) {
+            return String.format("cell: TreeCell(\"%s\")", columnDef.getPropertyName());
+        }
+        if (columnDef.getColumnType().equals(ColumnType.ACTION)) {
+            return "cell:\"Actions\"";
+        }
         CellType cellType = columnDef.getCellType();
         String columnName = columnDef.getPropertyName();
         switch (cellType) {

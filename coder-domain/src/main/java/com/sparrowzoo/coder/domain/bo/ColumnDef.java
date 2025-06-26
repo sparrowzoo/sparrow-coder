@@ -1,6 +1,5 @@
 package com.sparrowzoo.coder.domain.bo;
 
-import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.domain.bo.validate.Validator;
 import com.sparrowzoo.coder.enums.*;
 import lombok.Data;
@@ -8,14 +7,12 @@ import lombok.Data;
 @Data
 public class ColumnDef {
     private String tableClassName;
-    private String name;
+    private String propertyName;
     private String chineseName;
     private String subsidiaryColumns;
-    private String sqlType;
     private String javaType;
     private Boolean enableHidden;
     private Boolean defaultHidden;
-    private Boolean showInInsert=true;
     private Boolean showInEdit=true;
     private Boolean showInList=true;
     private Boolean showInSearch=true;
@@ -38,8 +35,4 @@ public class ColumnDef {
     private HeaderType headerType;
     private CellType cellType;
     private ControlType controlType;
-
-    public String getPropertyName() {
-        return StringUtility.toHump(name, "_");
-    }
 }

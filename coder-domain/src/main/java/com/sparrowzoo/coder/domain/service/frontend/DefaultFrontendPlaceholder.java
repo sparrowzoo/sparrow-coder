@@ -143,7 +143,7 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholder {
         List<String> schemas = new ArrayList<>();
         ProjectConfigBO projectConfig = registry.getProject();
         for (ColumnDef columnDef : this.columnDefs) {
-            if (!columnDef.getShowInEdit() && !columnDef.getShowInInsert()) {
+            if (!columnDef.getShowInEdit()) {
                 continue;
             }
             ValidatorMessageGenerator messageGenerator = validateContainer.get(columnDef.getValidateType());
