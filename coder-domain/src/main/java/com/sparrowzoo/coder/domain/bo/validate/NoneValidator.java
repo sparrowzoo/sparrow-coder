@@ -1,9 +1,14 @@
 package com.sparrowzoo.coder.domain.bo.validate;
 
+import lombok.Data;
+
 import java.util.Collections;
 import java.util.Map;
 
+@Data
 public class NoneValidator implements Validator {
+
+    private String clazz;
 
     @Override
     public void setI18n(Boolean i18n) {

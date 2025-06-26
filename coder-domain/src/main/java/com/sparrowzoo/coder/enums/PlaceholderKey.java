@@ -221,5 +221,8 @@ public enum PlaceholderKey {
     $frontend_column_filter,
     $frontend_column_defs,
     $frontend_column_import,
-    $frontend_schema
+    $frontend_schema,
+
+    $frontend_editable_form_items,
+
 }

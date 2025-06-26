@@ -65,8 +65,6 @@ public class DefaultCodeGenerator implements CodeGenerator {
         Map<String, String> placeHolder = new TreeMap<>(Comparator.reverseOrder());
         tableContext.setPlaceHolder(placeHolder);
         TableConfigBO tableConfig = tableContext.getTableConfig();
-        EntityManager entityManager = new SparrowEntityManager(Class.forName(tableConfig.getClassName()));
-        tableContext.setEntityManager(entityManager);
         ClassPlaceholder classPlaceHolder = new DefaultClassPlaceholder(this.registry, tableConfig.getTableName());
         classPlaceHolder.init();
         ArchitectureGenerator frontGenerator = this.projectArchs.getArch(ArchitectureCategory.FRONTEND);

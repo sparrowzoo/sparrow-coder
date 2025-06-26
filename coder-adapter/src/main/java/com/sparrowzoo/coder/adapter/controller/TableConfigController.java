@@ -46,7 +46,7 @@ public class TableConfigController {
 
     @PostMapping("search.json")
     @ApiOperation("搜索")
-    public PagerResult<TableConfigVO> search(TableConfigQuery tableConfigQuery) {
+    public PagerResult<TableConfigVO> search(@RequestBody TableConfigQuery tableConfigQuery) {
         ListRecordTotalBO<TableConfigBO> tableConfigListTotalRecord = this.tableConfigService.queryTableConfig(tableConfigQuery);
         return this.tableConfigAssemble.assemblePager(tableConfigListTotalRecord, tableConfigQuery);
     }
@@ -54,13 +54,13 @@ public class TableConfigController {
     @PostMapping("save.json")
             @ApiOperation("保存")
 
-    public Long saveTableConfig(TableConfigParam tableConfigParam) throws BusinessException {
+    public Long saveTableConfig(@RequestBody TableConfigParam tableConfigParam) throws BusinessException {
        return  this.tableConfigService.saveTableConfig(tableConfigParam);
     }
 
     @GetMapping("detail.json")
             @ApiOperation("详情页")
-    public TableConfigVO getTableConfig(Long tableConfigId) throws BusinessException {
+    public TableConfigVO getTableConfig( Long tableConfigId) throws BusinessException {
         TableConfigBO tableConfigBo = tableConfigService.getTableConfig(tableConfigId);
         return this.tableConfigAssemble.boAssembleVO(tableConfigBo);
     }
@@ -68,20 +68,20 @@ public class TableConfigController {
     @PostMapping("delete.json")
             @ApiOperation("删除")
 
-    public Integer deleteTableConfig(String ids) throws BusinessException {
+    public Integer deleteTableConfig(@RequestBody String ids) throws BusinessException {
        return this.tableConfigService.deleteTableConfig(ids);
     }
 
     @PostMapping("enable.json")
             @ApiOperation("启用")
 
-    public Integer enableTableConfig(String ids) throws BusinessException {
+    public Integer enableTableConfig(@RequestBody String ids) throws BusinessException {
         return  this.tableConfigService.enableTableConfig(ids);
     }
 
     @PostMapping("disable.json")
     @ApiOperation("禁用")
-    public Integer disableTableConfig(String ids) throws BusinessException {
+    public Integer disableTableConfig(@RequestBody String ids) throws BusinessException {
        return  this.tableConfigService.disableTableConfig(ids);
     }
 }

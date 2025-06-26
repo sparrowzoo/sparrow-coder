@@ -1,5 +1,6 @@
 package com.sparrowzoo.coder.domain.service.frontend;
 
+import com.sparrow.core.Pair;
 import com.sparrow.core.spi.JsonFactory;
 import com.sparrow.io.file.FileNameBuilder;
 import com.sparrow.io.file.FileNameProperty;
@@ -17,6 +18,7 @@ import com.sparrowzoo.coder.domain.service.frontend.generator.column.ColumnGener
 import com.sparrowzoo.coder.domain.service.registry.ColumnGeneratorRegistry;
 import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrowzoo.coder.domain.service.registry.ValidatorRegistry;
+import com.sparrowzoo.coder.enums.ColumnType;
 import com.sparrowzoo.coder.enums.FrontendKey;
 import com.sparrowzoo.coder.enums.PlaceholderKey;
 
@@ -57,8 +59,10 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholder {
 
     public void parseValidator(TableConfigRegistry registry, ColumnDef columnDef, Object jsonValidator) {
         String validateType = columnDef.getValidateType();
-        if (validateType.startsWith("nullable")) {
-            columnDef.setValidator(new NoneValidator());
+        if (StringUtility.isNullOrEmpty(validateType) || validateType.startsWith("nullable")) {
+            NoneValidator noneValidator = new NoneValidator();
+            noneValidator.setClazz(columnDef.getJavaType());
+            columnDef.setValidator(noneValidator);
             return;
         }
         if (validateType.startsWith("digital")) {
@@ -99,7 +103,9 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholder {
 
         placeholder.put(PlaceholderKey.$frontend_class.name(), this.generateClass());
         placeholder.put(PlaceholderKey.$frontend_column_filter.name(), tableContext.getTableConfig().getColumnFilter().toString());
-        placeholder.put(PlaceholderKey.$frontend_column_defs.name(), this.generatorColumns());
+        Pair<String, String> pair = this.generatorColumns();
+        placeholder.put(PlaceholderKey.$frontend_column_defs.name(), pair.getFirst());
+        placeholder.put(PlaceholderKey.$frontend_editable_form_items.name(), pair.getSecond());
         placeholder.put(PlaceholderKey.$frontend_column_import.name(), this.generateImport());
         placeholder.put(PlaceholderKey.$frontend_schema.name(), this.generateSchema());
     }
@@ -125,10 +131,10 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholder {
         }
         HashMap<String, String> imports = new HashMap<>();
         for (ColumnDef columnDef : this.columnDefs) {
-            if (!imports.containsKey(columnDef.getHeaderType().getComponentName())) {
+            if (columnDef.getHeaderType() != null && !imports.containsKey(columnDef.getHeaderType().getComponentName())) {
                 imports.put(columnDef.getHeaderType().getComponentName(), this.columnGenerator.importHeader(columnDef.getHeaderType()));
             }
-            if (!imports.containsKey(columnDef.getCellType().getComponentName())) {
+            if (columnDef.getCellType() != null && !imports.containsKey(columnDef.getCellType().getComponentName())) {
                 imports.put(columnDef.getCellType().getComponentName(), this.columnGenerator.importCell(columnDef.getCellType()));
             }
         }
@@ -146,7 +152,14 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholder {
             if (!columnDef.getShowInEdit()) {
                 continue;
             }
-            ValidatorMessageGenerator messageGenerator = validateContainer.get(columnDef.getValidateType());
+            if (columnDef.getColumnType().equals(ColumnType.ACTION) ||
+                    columnDef.getColumnType().equals(ColumnType.CHECK) ||
+                    columnDef.getColumnType().equals(ColumnType.FILTER)
+            ) {
+                continue;
+            }
+            String validateType = columnDef.getValidateType() == null ? "nullableValidatorMessageGenerator" : columnDef.getValidateType();
+            ValidatorMessageGenerator messageGenerator = validateContainer.get(validateType);
             Validator validator = columnDef.getValidator();
             if (validator != null) {
                 Map<String, String> columnI18nMap = tableContext.getValidateI18nMap(columnDef.getPropertyName());
@@ -159,23 +172,27 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholder {
         return String.join(",", schemas);
     }
 
-    private String generatorColumns() {
+    private Pair<String, String> generatorColumns() {
         if (CollectionsUtility.isNullOrEmpty(this.columnDefs)) {
-            return "";
+            return new Pair<>("", "");
         }
         List<String> columns = new ArrayList<>();
+        List<String> formItems = new ArrayList<>();
         Map<String, Object> columnI18nMap = tableContext.getI18nMap();
         for (ColumnDef columnDef : this.columnDefs) {
-            if (!columnDef.getShowInList()) {
-                continue;
+            if (columnDef.getShowInList()) {
+                columns.add(columnGenerator.column(columnDef));
             }
-            columns.add(columnGenerator.column(columnDef));
+            if (columnDef.getShowInEdit()) {
+                formItems.add(columnGenerator.edit(columnDef));
+            }
             columnI18nMap.put(columnDef.getPropertyName(), columnDef.getChineseName());
         }
         String columnStr = String.join(",", columns);
-        String className = tableContext.getTableConfig().getClassName();
-        className = className.substring(className.lastIndexOf(".") + 1);
-        return String.format("export const columns: ColumnDef<%1$s>[] = [\n%2$s\n];", className, columnStr);
+        String formItemStr = String.join("\n", formItems);
+        String className = tableContext.getEntityManager().getSimpleClassName();
+        String columnDefs = String.format("export const columns: ColumnDef<%1$s>[] = [\n%2$s\n];", className, columnStr);
+        return new Pair<>(columnDefs, formItemStr);
     }
 
     private String toType(Class<?> clazz) {

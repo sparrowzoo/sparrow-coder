@@ -1,34 +1,35 @@
 package com.sparrowzoo.coder.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum ControlType {
-    LABEL("lbl"),
-    LINK("lnk"),
-    INPUT_TEXT("txt"),
-    INPUT_HIDDEN("hdn"),
-    INPUT_PASSWORD("txt"),
-    TEXT_AREA("txt"),
-    DROPDOWN_LIST("ddl"),
-    RADIO_LIST("rdl"),
-    CHECK_BOX_LIST("cbl"),
-    CODE("txt"),
-    EDITOR("divEditor"),
-    DATE("txt"),
-    DATE_HHMMSS("txt"),
-    CHECK_BOX("ckb"),
-    RADIO("rdb"),
-    SELECT("slt"),
-    FILE("flb"),
-    ENABLE_DISABLE(""),
-    IMAGE("img");
+    LABEL("lbl","label"),
+    LINK("lnk","link"),
+    INPUT_TEXT("txt","text"),
+    INPUT_HIDDEN("hdn","hidden"),
+    INPUT_PASSWORD("txt","password"),
+    TEXT_AREA("txt","textarea"),
+    SELECT("ddl","select"),
+    RADIO_LIST("rdl","radio-list"),
+    CHECK_BOX_LIST("cbl","checkbox-list"),
+    CODE("txt","text"),
+    EDITOR("divEditor","editor"),
+    DATE("txt","date"),
+    DATE_HHMMSS("txt","time"),
+    CHECK_BOX("ckb","checkbox"),
+    RADIO("rdb","radio"),
+    FILE("flb","file"),
+    ENABLE_DISABLE("","button"),
+    SLIDER("sld","slider"),
+    IMAGE("img","image");
 
 
     private final String prefix;
+    private final String inputType;
 
-    ControlType(String prefix) {
+    ControlType(String prefix,String inputType) {
         this.prefix = prefix;
-    }
-
-    public String getPrefix() {
-        return prefix;
+        this.inputType = inputType;
     }
 }
