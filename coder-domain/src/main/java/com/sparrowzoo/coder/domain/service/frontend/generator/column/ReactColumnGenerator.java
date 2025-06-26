@@ -4,6 +4,8 @@ import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.constant.ArchitectureNames;
 import com.sparrowzoo.coder.domain.bo.ColumnDef;
 import com.sparrowzoo.coder.enums.CellType;
+import com.sparrowzoo.coder.enums.ColumnType;
+import com.sparrowzoo.coder.enums.ControlType;
 import com.sparrowzoo.coder.enums.HeaderType;
 
 import javax.inject.Named;
@@ -48,15 +50,37 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
      */
     @Override
     public String edit(ColumnDef columnDef) {
+        if (columnDef.getColumnType().equals(ColumnType.ACTION) ||
+                columnDef.getColumnType().equals(ColumnType.CHECK) ||
+                columnDef.getColumnType().equals(ColumnType.FILTER)
+        ) {
+            return "";
+        }
+        if (columnDef.getControlType().equals(ControlType.INPUT_HIDDEN)) {
+            return String.format("<ValidatableInput {...register(\"%1$s\")}\n" +
+                            "                                  type={\"%2$s\"}\n" +
+                            "                                  fieldPropertyName={\"%1$s\"}/>",
+                    columnDef.getPropertyName(),
+                    columnDef.getControlType().getInputType()
+            );
+        }
+
+        String message = "";
+        if (!StringUtility.isNullOrEmpty(columnDef.getValidateType()) &&
+                !columnDef.getValidateType().equals("nullableValidatorMessageGenerator")) {
+            message = String.format("errorMessage={errors.%1$s?.message}", columnDef.getPropertyName());
+        }
         return String.format("<ValidatableInput {...register(\"%1$s\")}\n" +
                         "                                  type={\"%2$s\"}\n" +
                         "                                  isSubmitted={isSubmitted}\n" +
                         "                                  pageTranslate={pageTranslate}\n" +
                         "                                  validateTranslate={validateTranslate}\n" +
-                        "                                  errorMessage={errors.name?.message}\n" +
+                        "                                  %3$s" +
                         "                                  fieldPropertyName={\"%1$s\"}/>",
                 columnDef.getPropertyName(),
-                columnDef.getControlType().getInputType()
+                columnDef.getControlType().getInputType(),
+                message
+
         );
     }
 
@@ -94,7 +118,11 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
     }
 
     public String renderHeader(ColumnDef columnDef) {
+
         HeaderType headerType = columnDef.getHeaderType();
+        if (headerType == null) {
+            return "header:''";
+        }
         String columnTitle = columnDef.getChineseName();
         String i18nPrefix = columnDef.getTableClassName();
         switch (headerType) {
@@ -122,12 +150,15 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
                         i18nPrefix,
                         headerType.getSortable() ? ",\nfilterFn: filterFns.includesString" : "");
             default:
-                return "";
+                return "header:''";
         }
     }
 
     public String renderCell(ColumnDef columnDef) {
         CellType cellType = columnDef.getCellType();
+        if (cellType == null) {
+            return "cell:''";
+        }
         String columnName = columnDef.getPropertyName();
         switch (cellType) {
             case TREE:
@@ -141,7 +172,7 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
             case OPERATION:
                 return "cell:\"Actions\"";
             default:
-                return "";
+                return "cell:''";
         }
     }
 }

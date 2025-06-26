@@ -18,6 +18,7 @@ import com.sparrowzoo.coder.domain.service.frontend.generator.column.ColumnGener
 import com.sparrowzoo.coder.domain.service.registry.ColumnGeneratorRegistry;
 import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrowzoo.coder.domain.service.registry.ValidatorRegistry;
+import com.sparrowzoo.coder.enums.ColumnType;
 import com.sparrowzoo.coder.enums.FrontendKey;
 import com.sparrowzoo.coder.enums.PlaceholderKey;
 
@@ -58,8 +59,10 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholder {
 
     public void parseValidator(TableConfigRegistry registry, ColumnDef columnDef, Object jsonValidator) {
         String validateType = columnDef.getValidateType();
-        if (validateType.startsWith("nullable")) {
-            columnDef.setValidator(new NoneValidator());
+        if (StringUtility.isNullOrEmpty(validateType) || validateType.startsWith("nullable")) {
+            NoneValidator noneValidator = new NoneValidator();
+            noneValidator.setClazz(columnDef.getJavaType());
+            columnDef.setValidator(noneValidator);
             return;
         }
         if (validateType.startsWith("digital")) {
@@ -128,10 +131,10 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholder {
         }
         HashMap<String, String> imports = new HashMap<>();
         for (ColumnDef columnDef : this.columnDefs) {
-            if (!imports.containsKey(columnDef.getHeaderType().getComponentName())) {
+            if (columnDef.getHeaderType() != null && !imports.containsKey(columnDef.getHeaderType().getComponentName())) {
                 imports.put(columnDef.getHeaderType().getComponentName(), this.columnGenerator.importHeader(columnDef.getHeaderType()));
             }
-            if (!imports.containsKey(columnDef.getCellType().getComponentName())) {
+            if (columnDef.getCellType() != null && !imports.containsKey(columnDef.getCellType().getComponentName())) {
                 imports.put(columnDef.getCellType().getComponentName(), this.columnGenerator.importCell(columnDef.getCellType()));
             }
         }
@@ -146,10 +149,17 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholder {
         List<String> schemas = new ArrayList<>();
         ProjectConfigBO projectConfig = registry.getProject();
         for (ColumnDef columnDef : this.columnDefs) {
-            if (!columnDef.getShowInEdit() && !columnDef.getShowInInsert()) {
+            if (!columnDef.getShowInEdit()) {
                 continue;
             }
-            ValidatorMessageGenerator messageGenerator = validateContainer.get(columnDef.getValidateType());
+            if (columnDef.getColumnType().equals(ColumnType.ACTION) ||
+                    columnDef.getColumnType().equals(ColumnType.CHECK) ||
+                    columnDef.getColumnType().equals(ColumnType.FILTER)
+            ) {
+                continue;
+            }
+            String validateType = columnDef.getValidateType() == null ? "nullableValidatorMessageGenerator" : columnDef.getValidateType();
+            ValidatorMessageGenerator messageGenerator = validateContainer.get(validateType);
             Validator validator = columnDef.getValidator();
             if (validator != null) {
                 Map<String, String> columnI18nMap = tableContext.getValidateI18nMap(columnDef.getPropertyName());
@@ -170,11 +180,12 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholder {
         List<String> formItems = new ArrayList<>();
         Map<String, Object> columnI18nMap = tableContext.getI18nMap();
         for (ColumnDef columnDef : this.columnDefs) {
-            if (!columnDef.getShowInList()) {
-                continue;
+            if (columnDef.getShowInList()) {
+                columns.add(columnGenerator.column(columnDef));
             }
-            formItems.add(columnGenerator.edit(columnDef));
-            columns.add(columnGenerator.column(columnDef));
+            if (columnDef.getShowInEdit()) {
+                formItems.add(columnGenerator.edit(columnDef));
+            }
             columnI18nMap.put(columnDef.getPropertyName(), columnDef.getChineseName());
         }
         String columnStr = String.join(",", columns);

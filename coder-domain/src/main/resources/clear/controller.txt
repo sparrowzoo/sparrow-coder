@@ -30,7 +30,7 @@ public class $persistence_class_nameController {
 
     @PostMapping("search.json")
     @ApiOperation("搜索")
-    public PagerResult<$persistence_class_nameVO> search($persistence_class_nameQuery $persistence_object_nameQuery) {
+    public PagerResult<$persistence_class_nameVO> search(@RequestBody $persistence_class_nameQuery $persistence_object_nameQuery) {
         ListRecordTotalBO<$persistence_class_nameBO> $persistence_object_nameListTotalRecord = this.$persistence_object_nameService.query$persistence_class_name($persistence_object_nameQuery);
         return this.$persistence_object_nameAssemble.assemblePager($persistence_object_nameListTotalRecord, $persistence_object_nameQuery);
     }
@@ -38,13 +38,13 @@ public class $persistence_class_nameController {
     @PostMapping("save.json")
             @ApiOperation("保存")
 
-    public $primary_type save$persistence_class_name($persistence_class_nameParam $persistence_object_nameParam) throws BusinessException {
+    public $primary_type save$persistence_class_name(@RequestBody $persistence_class_nameParam $persistence_object_nameParam) throws BusinessException {
        return  this.$persistence_object_nameService.save$persistence_class_name($persistence_object_nameParam);
     }
 
     @GetMapping("detail.json")
             @ApiOperation("详情页")
-    public $persistence_class_nameVO get$persistence_class_name(Long $persistence_object_nameId) throws BusinessException {
+    public $persistence_class_nameVO get$persistence_class_name( Long $persistence_object_nameId) throws BusinessException {
         $persistence_class_nameBO $persistence_object_nameBo = $persistence_object_nameService.get$persistence_class_name($persistence_object_nameId);
         return this.$persistence_object_nameAssemble.boAssembleVO($persistence_object_nameBo);
     }
@@ -52,20 +52,20 @@ public class $persistence_class_nameController {
     @PostMapping("delete.json")
             @ApiOperation("删除")
 
-    public Integer delete$persistence_class_name(String ids) throws BusinessException {
+    public Integer delete$persistence_class_name(@RequestBody String ids) throws BusinessException {
        return this.$persistence_object_nameService.delete$persistence_class_name(ids);
     }
 
     @PostMapping("enable.json")
             @ApiOperation("启用")
 
-    public Integer enable$persistence_class_name(String ids) throws BusinessException {
+    public Integer enable$persistence_class_name(@RequestBody String ids) throws BusinessException {
         return  this.$persistence_object_nameService.enable$persistence_class_name(ids);
     }
 
     @PostMapping("disable.json")
     @ApiOperation("禁用")
-    public Integer disable$persistence_class_name(String ids) throws BusinessException {
+    public Integer disable$persistence_class_name(@RequestBody String ids) throws BusinessException {
        return  this.$persistence_object_nameService.disable$persistence_class_name(ids);
     }
 }

@@ -46,7 +46,7 @@ public class ProjectConfigController {
 
     @PostMapping("search.json")
     @ApiOperation("搜索")
-    public PagerResult<ProjectConfigVO> search(ProjectConfigQuery projectConfigQuery) {
+    public PagerResult<ProjectConfigVO> search(@RequestBody ProjectConfigQuery projectConfigQuery) {
         ListRecordTotalBO<ProjectConfigBO> projectConfigListTotalRecord = this.projectConfigService.queryProjectConfig(projectConfigQuery);
         return this.projectConfigAssemble.assemblePager(projectConfigListTotalRecord, projectConfigQuery);
     }
@@ -54,13 +54,13 @@ public class ProjectConfigController {
     @PostMapping("save.json")
             @ApiOperation("保存")
 
-    public Long saveProjectConfig(ProjectConfigParam projectConfigParam) throws BusinessException {
+    public Long saveProjectConfig(@RequestBody ProjectConfigParam projectConfigParam) throws BusinessException {
        return  this.projectConfigService.saveProjectConfig(projectConfigParam);
     }
 
     @GetMapping("detail.json")
             @ApiOperation("详情页")
-    public ProjectConfigVO getProjectConfig(Long projectConfigId) throws BusinessException {
+    public ProjectConfigVO getProjectConfig( Long projectConfigId) throws BusinessException {
         ProjectConfigBO projectConfigBo = projectConfigService.getProjectConfig(projectConfigId);
         return this.projectConfigAssemble.boAssembleVO(projectConfigBo);
     }
@@ -68,20 +68,20 @@ public class ProjectConfigController {
     @PostMapping("delete.json")
             @ApiOperation("删除")
 
-    public Integer deleteProjectConfig(String ids) throws BusinessException {
+    public Integer deleteProjectConfig(@RequestBody String ids) throws BusinessException {
        return this.projectConfigService.deleteProjectConfig(ids);
     }
 
     @PostMapping("enable.json")
             @ApiOperation("启用")
 
-    public Integer enableProjectConfig(String ids) throws BusinessException {
+    public Integer enableProjectConfig(@RequestBody String ids) throws BusinessException {
         return  this.projectConfigService.enableProjectConfig(ids);
     }
 
     @PostMapping("disable.json")
     @ApiOperation("禁用")
-    public Integer disableProjectConfig(String ids) throws BusinessException {
+    public Integer disableProjectConfig(@RequestBody String ids) throws BusinessException {
        return  this.projectConfigService.disableProjectConfig(ids);
     }
 }

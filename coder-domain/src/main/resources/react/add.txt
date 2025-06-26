@@ -3,11 +3,8 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import {valibotResolver} from "@hookform/resolvers/valibot";
 import React from "react";
 import crateScheme from "@/schema/project-config";
-import ErrorMessage from "@/common/components/i18n/ErrorMessage";
 import {Button} from "@/components/ui/button";
 import {DialogClose, DialogDescription, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
-import {Label} from "@/components/ui/label";
-import {Input} from "@/components/ui/input";
 import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizontal";
 import toast from "react-hot-toast";
 import * as v from "valibot";
@@ -23,7 +20,7 @@ export default function Page() {
     const pageTranslate = useTranslations("$persistence_class_name")
     const validateTranslate = useTranslations("$persistence_class_name.validate")
 
-    const FormSchema = crateScheme(translate);
+    const FormSchema = crateScheme(validateTranslate);
     type FormData = v.InferOutput<typeof FormSchema>;
 
 

@@ -10,7 +10,7 @@ public enum ControlType {
     INPUT_HIDDEN("hdn","hidden"),
     INPUT_PASSWORD("txt","password"),
     TEXT_AREA("txt","textarea"),
-    DROPDOWN_LIST("ddl","select"),
+    SELECT("ddl","select"),
     RADIO_LIST("rdl","radio-list"),
     CHECK_BOX_LIST("cbl","checkbox-list"),
     CODE("txt","text"),
@@ -21,6 +21,7 @@ public enum ControlType {
     RADIO("rdb","radio"),
     FILE("flb","file"),
     ENABLE_DISABLE("","button"),
+    SLIDER("sld","slider"),
     IMAGE("img","image");
 
 
