@@ -11,8 +11,8 @@ public class StringValidator implements Validator {
     private String propertyName;
     private String emptyMessage;
     private Boolean allowEmpty;
-    protected int minLength;
-    protected int maxLength;
+    protected Integer minLength;
+    protected Integer maxLength;
     private String minLengthMessage;
     private String maxLengthMessage;
     private Map<String, String> i18nConfig;

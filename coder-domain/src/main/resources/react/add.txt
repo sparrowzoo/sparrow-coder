@@ -2,7 +2,7 @@
 import {SubmitHandler, useForm} from "react-hook-form";
 import {valibotResolver} from "@hookform/resolvers/valibot";
 import React from "react";
-import crateScheme from "@/schema/project-config";
+import crateScheme from "@/schema/$persistence_object_by_horizontal";
 import {Button} from "@/components/ui/button";
 import {DialogClose, DialogDescription, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizontal";
@@ -32,7 +32,7 @@ export default function Page() {
             (res) => {
                 toast.success(globalTranslate("save")+globalTranslate("operation-success"));
             }
-        )
+        ).catch(()=>{});
     };
 
     const {
@@ -65,7 +65,7 @@ export default function Page() {
                 </DialogDescription>
             </DialogHeader>
             <div className="flex flex-col">
-                $frontend_editable_form_items
+                $frontend_add_form_items
             </div>
              <DialogFooter>
                             <DialogClose asChild>

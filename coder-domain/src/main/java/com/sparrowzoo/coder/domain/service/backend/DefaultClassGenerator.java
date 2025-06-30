@@ -4,10 +4,12 @@ import com.sparrow.io.file.FileNameBuilder;
 import com.sparrow.support.EnvironmentSupport;
 import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
+import com.sparrowzoo.coder.domain.bo.ProjectBO;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableContext;
-import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
+import com.sparrowzoo.coder.domain.service.ArchitectureGenerator;
+import com.sparrowzoo.coder.enums.ArchitectureCategory;
 import com.sparrowzoo.coder.enums.ClassKey;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,27 +21,21 @@ import java.util.Map;
 
 @Slf4j
 public class DefaultClassGenerator implements ClassGenerator {
-    private final String architecture;
-    private final ProjectConfigBO projectConfig;
-
+    private final ProjectBO project;
     private TableContext tableContext;
-    private TableConfigRegistry registry;
-
     protected final FileUtility fileUtility = FileUtility.getInstance();
 
-    private ClassPlaceholder classPlaceholder;
+    private ClassPlaceholderGenerator classPlaceholder;
 
-    public DefaultClassGenerator(TableConfigRegistry registry, String tableName, String architecture) throws IOException {
-        this.registry = registry;
-        this.tableContext = registry.getTableContext(tableName);
-        this.projectConfig = registry.getProject();
-        this.architecture = architecture;
-        this.classPlaceholder=new DefaultClassPlaceholder(registry,tableName);
+    public DefaultClassGenerator(ProjectBO project, TableContext tableContext){
+        this.tableContext =tableContext;
+        this.project = project;
+        this.classPlaceholder=tableContext.getClassPlaceholderGenerator();
     }
 
 
     @Override
-    public String getFullPhysicalPath(ClassKey classKey) {
+    public String getClassPhysicalPath(ClassKey classKey) {
         String modulePath =this.classPlaceholder.getModule(classKey);
         String path = "";
         if (ClassKey.DAO_MYBATIS.getModule().equals(classKey.getModule())) {
@@ -56,17 +52,18 @@ public class DefaultClassGenerator implements ClassGenerator {
                     .joint(fullPackage.replace('.', File.separatorChar))
                     .build();
         }
-        String project = this.projectConfig.getName();
+        ProjectConfigBO projectConfig=this.project.getProjectConfig();
+        String projectName = projectConfig.getName();
         String parentModulePath = ClassKey.PO.equals(classKey) ? "" :
-                this.projectConfig.getWrapWithParent() ? "admin" : "";
+                this.project.getProjectConfig().getWrapWithParent() ? "admin" : "";
         String module = StringUtility.isNullOrEmpty(modulePath) ? "" : modulePath + File.separator;
-        String home=registry.getEnvConfig().getHome(this.projectConfig.getCreateUserId());
+        String home=this.project.getEnvConfig().getHome(this.project.getProjectConfig().getCreateUserId());
         String className = this.classPlaceholder.getClassName(classKey);
         String extension = ".java";
-        String fullPhysicalPath = new FileNameBuilder(registry.getEnvConfig().getWorkspace())
-                .joint(registry.getEnvConfig().getProjectRoot())
+        String fullPhysicalPath = new FileNameBuilder(this.project.getEnvConfig().getWorkspace())
+                .joint(this.project.getEnvConfig().getProjectRoot())
                 .joint(home)
-                .joint(project)
+                .joint(projectName)
                 .joint(parentModulePath)
                 .joint(module)
                 .joint(path)
@@ -74,14 +71,16 @@ public class DefaultClassGenerator implements ClassGenerator {
                 .extension(extension)
                 .build();
         fullPhysicalPath = StringUtility.replace(fullPhysicalPath, tableContext.getPlaceHolder());
-        if (!this.projectConfig.getWrapWithParent()) {
+        if (!this.project.getProjectConfig().getWrapWithParent()) {
             fullPhysicalPath = fullPhysicalPath.replace("-admin", "");
         }
         return fullPhysicalPath;
     }
 
-    public String readConfigContent(String templateFileName) {
-        String codeTemplateRoot =this.architecture;
+    public String readTemplateContent(ClassKey classKey) {
+        String templateFileName=classKey.getTemplate();
+        ArchitectureGenerator architectureGenerator= this.project.getArchitecture(ArchitectureCategory.BACKEND);
+        String codeTemplateRoot =architectureGenerator.getName();
         if (!codeTemplateRoot.startsWith(File.separator)) {
             codeTemplateRoot = File.separator + codeTemplateRoot;
         }
@@ -105,12 +104,12 @@ public class DefaultClassGenerator implements ClassGenerator {
             TableConfigBO tableConfig = tableContext.getTableConfig();
             content = tableConfig.getSourceCode();
         } else {
-            content = readConfigContent(classKey.getTemplate());
+            content = readTemplateContent(classKey);
         }
         Map<String, String> placeHolder = tableContext.getPlaceHolder();
         content = StringUtility.replace(content.trim(), placeHolder);
         content = licensed + "\n" + content;
-        String fullPhysicalPath = this.getFullPhysicalPath(classKey);
+        String fullPhysicalPath = this.getClassPhysicalPath(classKey);
         log.info("generate file name is [{}]", fullPhysicalPath);
         this.fileUtility.writeFile(fullPhysicalPath, content);
     }

@@ -18,9 +18,9 @@ public class MySqlArchitectureGenerator extends AbstractArchitectureGenerator {
     @Override
     public void generate(TableConfigRegistry registry, String tableName) throws IOException {
         EntityManager entityManager = registry.getTableContext(tableName).getEntityManager();
-        EnvConfig envConfig = registry.getEnvConfig();
-        ProjectConfigBO projectConfig = registry.getProject();
-        String home = registry.getEnvConfig().getHome(projectConfig.getCreateUserId());
+        EnvConfig envConfig = registry.getProject().getEnvConfig();
+        ProjectConfigBO projectConfig = registry.getProject().getProjectConfig();
+        String home = envConfig.getHome(projectConfig.getCreateUserId());
         String fullPath = new FileNameBuilder(envConfig.getWorkspace())
                 .joint(envConfig.getProjectRoot())
                 .joint(home)

@@ -21,7 +21,7 @@ export default function Operation({table}: TableOperationProps<$persistence_clas
             <Button onClick={() => {
                 const translate = () => "";
                 const selectedIds = getSelectedIds(table);
-                $persistence_class_nameApi.save(selectedIds, translate).then(
+                $persistence_class_nameApi.delete(selectedIds, translate).then(
                     (res) => {
                         toast.success("操作成功！");
                     }

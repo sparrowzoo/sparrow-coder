@@ -18,8 +18,8 @@ import java.io.IOException;
 public class ClearArchitectureGenerator extends AbstractArchitectureGenerator {
     @Override
     public void generate(TableConfigRegistry registry, String tableName) throws IOException {
-        ClassGenerator classGenerator = new DefaultClassGenerator(registry, tableName,this.getName());
         TableContext context = registry.getTableContext(tableName);
+        ClassGenerator classGenerator = context.getClassGenerator();
         TableConfigBO tableConfig = context.getTableConfig();
         if (CodeSource.UPLOAD.name().equals(tableConfig.getSource())) {
             classGenerator.generate(ClassKey.PO);

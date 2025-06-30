@@ -29,6 +29,8 @@ import javax.inject.Inject;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.Set;
+
 
 @RestController
 @RequestMapping("project/config")
@@ -50,13 +52,14 @@ public class ProjectConfigController {
 
     @PostMapping("save.json")
             @ApiOperation("保存")
+
     public Long saveProjectConfig(@RequestBody ProjectConfigParam projectConfigParam) throws BusinessException {
        return  this.projectConfigService.saveProjectConfig(projectConfigParam);
     }
 
     @GetMapping("detail.json")
             @ApiOperation("详情页")
-    public ProjectConfigVO getProjectConfig( Long projectConfigId) throws BusinessException {
+    public ProjectConfigVO getProjectConfig(Long projectConfigId) throws BusinessException {
         ProjectConfigBO projectConfigBo = projectConfigService.getProjectConfig(projectConfigId);
         return this.projectConfigAssemble.boAssembleVO(projectConfigBo);
     }
@@ -64,20 +67,20 @@ public class ProjectConfigController {
     @PostMapping("delete.json")
             @ApiOperation("删除")
 
-    public Integer deleteProjectConfig(@RequestBody String ids) throws BusinessException {
+    public Integer deleteProjectConfig(@RequestBody Set<Long> ids) throws BusinessException {
        return this.projectConfigService.deleteProjectConfig(ids);
     }
 
     @PostMapping("enable.json")
             @ApiOperation("启用")
 
-    public Integer enableProjectConfig(@RequestBody String ids) throws BusinessException {
+    public Integer enableProjectConfig(@RequestBody Set<Long> ids) throws BusinessException {
         return  this.projectConfigService.enableProjectConfig(ids);
     }
 
     @PostMapping("disable.json")
     @ApiOperation("禁用")
-    public Integer disableProjectConfig(@RequestBody String ids) throws BusinessException {
+    public Integer disableProjectConfig(@RequestBody Set<Long> ids) throws BusinessException {
        return  this.projectConfigService.disableProjectConfig(ids);
     }
 }

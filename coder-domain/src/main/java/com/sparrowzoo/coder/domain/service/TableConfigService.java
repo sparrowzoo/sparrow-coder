@@ -24,8 +24,10 @@ import com.sparrowzoo.coder.domain.bo.TableConfigBO;
 import com.sparrowzoo.coder.repository.TableConfigRepository;
 import com.sparrowzoo.coder.protocol.param.TableConfigParam;
 import com.sparrowzoo.coder.protocol.query.TableConfigQuery;
-import com.sparrow.utility.StringUtility;
+import com.sparrow.utility.CollectionsUtility;
 import java.util.List;
+import java.util.Set;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -43,19 +45,18 @@ public class TableConfigService {
         return this.tableConfigRepository.save(tableConfigParam);
     }
 
-    public Integer deleteTableConfig(String tableConfigIds) throws BusinessException {
-        Asserts.isTrue(StringUtility.isNullOrEmpty(tableConfigIds), SparrowError.GLOBAL_PARAMETER_NULL);
+    public Integer deleteTableConfig(Set<Long> tableConfigIds) throws BusinessException {
+        Asserts.isTrue(CollectionsUtility.isNullOrEmpty(tableConfigIds), SparrowError.GLOBAL_PARAMETER_NULL);
         return this.tableConfigRepository.delete(tableConfigIds);
     }
 
-    public Integer enableTableConfig(String tableConfigIds) throws BusinessException {
-
-         Asserts.isTrue(StringUtility.isNullOrEmpty(tableConfigIds), SparrowError.GLOBAL_PARAMETER_NULL);
+    public Integer enableTableConfig(Set<Long> tableConfigIds) throws BusinessException {
+        Asserts.isTrue(CollectionsUtility.isNullOrEmpty(tableConfigIds), SparrowError.GLOBAL_PARAMETER_NULL);
         return this.tableConfigRepository.enable(tableConfigIds);
     }
 
-    public Integer disableTableConfig(String tableConfigIds) throws BusinessException {
-        Asserts.isTrue(StringUtility.isNullOrEmpty(tableConfigIds), SparrowError.GLOBAL_PARAMETER_NULL);
+    public Integer disableTableConfig(Set<Long> tableConfigIds) throws BusinessException {
+        Asserts.isTrue(CollectionsUtility.isNullOrEmpty(tableConfigIds), SparrowError.GLOBAL_PARAMETER_NULL);
         return this.tableConfigRepository.disable(tableConfigIds);
     }
 

@@ -8,6 +8,5 @@ import java.io.IOException;
 public interface ArchitectureGenerator {
     void generate(TableConfigRegistry registry, String tableName) throws IOException;
     ArchitectureCategory getCategory();
-
     String getName();
 }

@@ -27,6 +27,7 @@ import com.sparrowzoo.coder.repository.TableConfigRepository;
 import com.sparrowzoo.coder.protocol.query.TableConfigQuery;
 
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -48,20 +49,19 @@ public class TableConfigRepositoryImpl implements TableConfigRepository {
         return tableConfig.getId();
     }
 
-    @Override public Integer delete(String tableConfigIds) {
+    @Override public Integer delete(Set<Long> tableConfigIds) {
         return this.tableConfigDao.batchDelete(tableConfigIds);
     }
 
-    @Override public Integer disable(String tableConfigIds) {
-        StatusCriteria statusCriteria = new StatusCriteria(tableConfigIds, StatusRecord.DISABLE);
+    @Override public Integer disable(Set<Long> tableConfigIds) {
+        StatusCriteria<Long> statusCriteria = new StatusCriteria(tableConfigIds, StatusRecord.DISABLE);
         this.tableConfigConverter.convertStatus(statusCriteria);
         return this.tableConfigDao.changeStatus(statusCriteria);
     }
 
-    @Override public Integer enable(String tableConfigIds) {
-        StatusCriteria statusCriteria = new StatusCriteria(tableConfigIds, StatusRecord.ENABLE);
+    @Override public Integer enable(Set<Long> tableConfigIds) {
+        StatusCriteria<Long> statusCriteria = new StatusCriteria(tableConfigIds, StatusRecord.ENABLE);
         this.tableConfigConverter.convertStatus(statusCriteria);
-
         return this.tableConfigDao.changeStatus(statusCriteria);
     }
 

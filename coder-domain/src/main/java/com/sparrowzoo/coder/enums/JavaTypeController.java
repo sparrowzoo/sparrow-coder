@@ -20,7 +20,7 @@ public enum JavaTypeController {
             ControlType.IMAGE,
             ControlType.INPUT_HIDDEN}),
     NUMBER(new ControlType[]{
-            ControlType.SLIDER,
+            ControlType.NUMBER,
             ControlType.INPUT_TEXT,
             ControlType.INPUT_HIDDEN,
             ControlType.SELECT}),

@@ -13,9 +13,9 @@ public class ColumnDef {
     private String javaType;
     private Boolean enableHidden;
     private Boolean defaultHidden;
-    private Boolean showInEdit=true;
-    private Boolean showInList=true;
-    private Boolean showInSearch=true;
+    private Boolean showInEdit = true;
+    private Boolean showInList = true;
+    private Boolean showInSearch = true;
     private Boolean allowNull;
     private String placeholder;
     private String defaultValue;
@@ -38,7 +38,7 @@ public class ColumnDef {
     private Integer sort;
     private Boolean readOnly;
 
-    public static ColumnDef createRowMenu(String tableClassName,int sort) {
+    public static ColumnDef createRowMenu(String tableClassName, int sort) {
         ColumnDef columnDef = new ColumnDef();
         columnDef.setColumnType(ColumnType.ACTION);
         columnDef.setHeaderType(HeaderType.NORMAL);
@@ -68,7 +68,7 @@ public class ColumnDef {
         return columnDef;
     }
 
-    public static ColumnDef createFilter(String tableClassName,int sort) {
+    public static ColumnDef createFilter(String tableClassName, int sort) {
         ColumnDef columnDef = new ColumnDef();
         columnDef.setColumnType(ColumnType.FILTER);
         columnDef.setHeaderType(HeaderType.COLUMN_FILTER);
@@ -98,7 +98,7 @@ public class ColumnDef {
         return columnDef;
     }
 
-    public static ColumnDef createCheckBox(String tableClassName,int sort) {
+    public static ColumnDef createCheckBox(String tableClassName, int sort) {
         ColumnDef columnDef = new ColumnDef();
         columnDef.setColumnType(ColumnType.CHECK);
         columnDef.setHeaderType(HeaderType.CHECK_BOX);
@@ -126,5 +126,12 @@ public class ColumnDef {
         columnDef.setSort(sort);
         columnDef.setReadOnly(true);
         return columnDef;
+    }
+
+    public Boolean isNumber() {
+        return this.javaType.equals("java.lang.Integer") ||
+                this.javaType.equals("java.lang.Long") ||
+                this.javaType.equals("java.lang.Double") ||
+                this.javaType.equals("java.lang.Float");
     }
 }

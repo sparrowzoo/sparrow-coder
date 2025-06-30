@@ -222,7 +222,7 @@ public enum PlaceholderKey {
     $frontend_column_defs,
     $frontend_column_import,
     $frontend_schema,
-
-    $frontend_editable_form_items,
+    $frontend_add_form_items,
+    $frontend_edit_form_items,
 
 }

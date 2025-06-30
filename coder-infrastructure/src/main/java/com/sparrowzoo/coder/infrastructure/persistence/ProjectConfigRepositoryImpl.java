@@ -27,6 +27,7 @@ import com.sparrowzoo.coder.repository.ProjectConfigRepository;
 import com.sparrowzoo.coder.protocol.query.ProjectConfigQuery;
 
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -48,20 +49,19 @@ public class ProjectConfigRepositoryImpl implements ProjectConfigRepository {
         return projectConfig.getId();
     }
 
-    @Override public Integer delete(String projectConfigIds) {
+    @Override public Integer delete(Set<Long> projectConfigIds) {
         return this.projectConfigDao.batchDelete(projectConfigIds);
     }
 
-    @Override public Integer disable(String projectConfigIds) {
-        StatusCriteria statusCriteria = new StatusCriteria(projectConfigIds, StatusRecord.DISABLE);
+    @Override public Integer disable(Set<Long> projectConfigIds) {
+        StatusCriteria<Long> statusCriteria = new StatusCriteria(projectConfigIds, StatusRecord.DISABLE);
         this.projectConfigConverter.convertStatus(statusCriteria);
         return this.projectConfigDao.changeStatus(statusCriteria);
     }
 
-    @Override public Integer enable(String projectConfigIds) {
-        StatusCriteria statusCriteria = new StatusCriteria(projectConfigIds, StatusRecord.ENABLE);
+    @Override public Integer enable(Set<Long> projectConfigIds) {
+        StatusCriteria<Long> statusCriteria = new StatusCriteria(projectConfigIds, StatusRecord.ENABLE);
         this.projectConfigConverter.convertStatus(statusCriteria);
-
         return this.projectConfigDao.changeStatus(statusCriteria);
     }
 

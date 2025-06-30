@@ -17,6 +17,7 @@ import com.sparrowzoo.coder.repository.TableConfigRepository;
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Named
 public class MockTableConfigRepository implements TableConfigRepository {
@@ -26,23 +27,21 @@ public class MockTableConfigRepository implements TableConfigRepository {
     }
 
     @Override
-    public Integer delete(String tableConfigIds) {
+    public Integer delete(Set<Long> tableConfigIds) {
         return null;
     }
 
     @Override
-    public Integer disable(String tableConfigIds) {
+    public Integer disable(Set<Long> tableConfigIds) {
         return null;
     }
 
     @Override
-    public Integer enable(String tableConfigIds) {
+    public Integer enable(Set<Long> tableConfigIds) {
         return null;
     }
 
-    private List<ColumnDef> getColumnDefs(TableContext tableContext) {
-        List<ColumnDef> columnDefs =tableContext.getDefaultColumns();
-
+    private void getColumnDefs(TableContext tableContext) {
 //
 //        columnDefs.add(getColumnDef("id", tableClassName, "", ColumnType.CHECK, HeaderType.CHECK_BOX, CellType.CHECK_BOX, ControlType.INPUT_HIDDEN, DataSourceType.NULL, false, true,null,null));
 //        columnDefs.add(getColumnDef("name", tableClassName, "项目名称", ColumnType.NORMAL, HeaderType.NORMAL_SORT_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, true, true,"stringValidatorMessageGenerator",this.generateString("name")));
@@ -59,7 +58,6 @@ public class MockTableConfigRepository implements TableConfigRepository {
 //        columnDefs.add(getColumnDef("scaffold", "ProjectConfig", "脚手架", ColumnType.NORMAL, HeaderType.NORMAL, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, false, true,null,null));
 //        columnDefs.add(getColumnDef("Actions", "ProjectConfig", "操作", ColumnType.ACTION, HeaderType.NORMAL, CellType.OPERATION, ControlType.INPUT_TEXT, DataSourceType.NULL, false, true,null,null));
 //        columnDefs.add(getColumnDef("Filters", "ProjectConfig", "过滤", ColumnType.FILTER, HeaderType.COLUMN_FILTER, CellType.NORMAL, ControlType.INPUT_TEXT, DataSourceType.NULL, false, true,null,null));
-        return columnDefs;
     }
 
     private ColumnDef getColumnDef(String propertyName,
@@ -119,10 +117,10 @@ public class MockTableConfigRepository implements TableConfigRepository {
         tableConfig.setCreateUserName("harry");
         tableConfig.setModifiedUserName("");
 
+        TableContext tableContext=new TableContext(tableConfig,null);
+        List<ColumnDef> columnDefs =tableContext.getDefaultColumns();
 
-TableContext tableContext = new TableContext(tableConfig);
-
-        tableConfig.setColumnConfigs(JSON.toJSONString(getColumnDefs(tableContext)));
+        tableConfig.setColumnConfigs(JSON.toJSONString(columnDefs));
         return tableConfig;
     }
 
@@ -150,7 +148,6 @@ TableContext tableContext = new TableContext(tableConfig);
         tableConfig.setCreateUserName("harry");
         tableConfig.setModifiedUserName("");
 
-
         TableConfigBO projectTable = new TableConfigBO();
         projectTable.setId(2L);
         projectTable.setProjectId(1L);
@@ -173,8 +170,6 @@ TableContext tableContext = new TableContext(tableConfig);
         projectTable.setGmtModified(0L);
         projectTable.setCreateUserName("harry");
         projectTable.setModifiedUserName("");
-        TableContext tableContext=new TableContext(projectTable);
-        projectTable.setColumnConfigs(JSON.toJSONString(getColumnDefs(tableContext)));
         List<TableConfigBO> list = new ArrayList<>();
         list.add(tableConfig);
         list.add(projectTable);

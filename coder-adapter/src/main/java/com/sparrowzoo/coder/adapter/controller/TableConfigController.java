@@ -29,6 +29,8 @@ import javax.inject.Inject;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.Set;
+
 
 @RestController
 @RequestMapping("table/config")
@@ -57,7 +59,7 @@ public class TableConfigController {
 
     @GetMapping("detail.json")
             @ApiOperation("详情页")
-    public TableConfigVO getTableConfig( Long tableConfigId) throws BusinessException {
+    public TableConfigVO getTableConfig(Long tableConfigId) throws BusinessException {
         TableConfigBO tableConfigBo = tableConfigService.getTableConfig(tableConfigId);
         return this.tableConfigAssemble.boAssembleVO(tableConfigBo);
     }
@@ -65,20 +67,20 @@ public class TableConfigController {
     @PostMapping("delete.json")
             @ApiOperation("删除")
 
-    public Integer deleteTableConfig(@RequestBody String ids) throws BusinessException {
+    public Integer deleteTableConfig(@RequestBody Set<Long> ids) throws BusinessException {
        return this.tableConfigService.deleteTableConfig(ids);
     }
 
     @PostMapping("enable.json")
             @ApiOperation("启用")
 
-    public Integer enableTableConfig(@RequestBody String ids) throws BusinessException {
+    public Integer enableTableConfig(@RequestBody Set<Long> ids) throws BusinessException {
         return  this.tableConfigService.enableTableConfig(ids);
     }
 
     @PostMapping("disable.json")
     @ApiOperation("禁用")
-    public Integer disableTableConfig(@RequestBody String ids) throws BusinessException {
+    public Integer disableTableConfig(@RequestBody Set<Long> ids) throws BusinessException {
        return  this.tableConfigService.disableTableConfig(ids);
     }
 }

@@ -19,17 +19,19 @@ import com.sparrowzoo.coder.domain.bo.TableConfigBO;
 import com.sparrowzoo.coder.protocol.param.TableConfigParam;
 import com.sparrowzoo.coder.protocol.query.TableConfigQuery;
 import java.util.List;
+import java.util.Set;
+
 
 
 
 public interface TableConfigRepository {
     Long save(TableConfigParam tableConfigParam);
 
-    Integer delete(String tableConfigIds);
+    Integer delete(Set<Long> tableConfigIds);
 
-    Integer disable(String tableConfigIds);
+    Integer disable(Set<Long> tableConfigIds);
 
-    Integer enable(String tableConfigIds);
+    Integer enable(Set<Long> tableConfigIds);
 
     TableConfigBO getTableConfig(Long tableConfigId);
 

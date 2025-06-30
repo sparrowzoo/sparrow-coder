@@ -1,13 +1,15 @@
 package com.sparrowzoo.coder.domain.service.registry;
 
-import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
+import com.sparrowzoo.coder.domain.bo.ProjectBO;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableContext;
-import com.sparrowzoo.coder.domain.service.EnvConfig;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 考虑上线后多用户访问
@@ -16,18 +18,16 @@ import java.util.*;
 @Slf4j
 @Data
 public class TableConfigRegistry {
-    public TableConfigRegistry() {
-        log.info("init table config ");
+    public TableConfigRegistry(ProjectBO project) {
+        this.project=project;
+        this.registry=new HashMap<>();
     }
 
-    private Map<String, TableContext> registry = new HashMap<>();
-    private ProjectConfigBO project;
-    private Properties projectConfig;
-    private EnvConfig envConfig;
 
-    public EnvConfig getEnvConfig() {
-        return envConfig;
-    }
+
+    private Map<String, TableContext> registry;
+    //封装project 维度变量，避免table context 引用registry循环依赖
+    private ProjectBO project;
 
     public void register(String tableName, TableContext tableContext) {
         registry.put(tableName, tableContext);
@@ -47,9 +47,5 @@ public class TableConfigRegistry {
             tableConfigList.add(this.registry.get(tableName).getTableConfig());
         }
         return tableConfigList;
-    }
-
-    public void register(ProjectConfigBO projectConfig) {
-        this.project = projectConfig;
     }
 }

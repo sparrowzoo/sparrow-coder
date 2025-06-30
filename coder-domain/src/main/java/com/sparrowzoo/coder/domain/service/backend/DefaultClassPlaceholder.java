@@ -7,8 +7,8 @@ import com.sparrow.utility.DateTimeUtility;
 import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.constant.Config;
+import com.sparrowzoo.coder.domain.bo.ProjectBO;
 import com.sparrowzoo.coder.domain.bo.TableContext;
-import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrowzoo.coder.enums.ClassKey;
 import com.sparrowzoo.coder.enums.PlaceholderKey;
 import lombok.extern.slf4j.Slf4j;
@@ -17,16 +17,17 @@ import java.util.Map;
 import java.util.Properties;
 
 @Slf4j
-public class DefaultClassPlaceholder implements ClassPlaceholder {
-    protected final TableConfigRegistry registry;
+public class DefaultClassPlaceholder implements ClassPlaceholderGenerator {
+    protected final ProjectBO project;
     protected final TableContext tableContext;
-    protected final Properties config;
+    protected final Properties scaffoldConfig;
     protected final FileUtility fileUtility = FileUtility.getInstance();
 
-    public DefaultClassPlaceholder(TableConfigRegistry registry, String tableName){
-        this.registry = registry;
-        this.config = registry.getProjectConfig();
-        this.tableContext = registry.getTableContext(tableName);
+    public DefaultClassPlaceholder(ProjectBO project,TableContext tableContext){
+        this.project = project;
+        this.scaffoldConfig = project.getScaffoldConfig();
+        this.tableContext =tableContext;
+        this.init();
     }
 
     public String getModule(ClassKey key) {
@@ -37,20 +38,20 @@ public class DefaultClassPlaceholder implements ClassPlaceholder {
         } else {
             moduleKey += key.getModule().toLowerCase();
         }
-        String modulePath = config.getProperty(moduleKey);
+        String modulePath = this.scaffoldConfig.getProperty(moduleKey);
         if (modulePath == null) {
             log.error("module path is null, module key is [{}]", moduleKey);
             return "";
         }
-        return modulePath.replace(PlaceholderKey.$module_prefix.name(), registry.getProject().getModulePrefix());
+        return modulePath.replace(PlaceholderKey.$module_prefix.name(), this.project.getProjectConfig().getModulePrefix());
     }
     @Override
     public String getPackage(ClassKey classKey) {
-        String packageName = this.config.getProperty(Config.PACKAGE_PREFIX + classKey.name().toLowerCase());
+        String packageName = this.scaffoldConfig.getProperty(Config.PACKAGE_PREFIX + classKey.name().toLowerCase());
         if (packageName == null) {
             return "";
         }
-        if (!registry.getProject().getWrapWithParent()) {
+        if (!this.project.getProjectConfig().getWrapWithParent()) {
             packageName = packageName.replaceAll("admin.", "");
         }
         String poPackage = this.tableContext.getPoPackage();
@@ -59,18 +60,17 @@ public class DefaultClassPlaceholder implements ClassPlaceholder {
 
 
     public String getClassName(ClassKey classKey) {
-        String originClassName = config.getProperty(Config.CLASS_PREFIX + classKey.name().toLowerCase());
+        String originClassName = this.scaffoldConfig.getProperty(Config.CLASS_PREFIX + classKey.name().toLowerCase());
         String persistenceClassName =tableContext.getEntityManager().getSimpleClassName();
         return originClassName.replace(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
     }
 
-    @Override
     public void init() {
         Map<String, String> placeHolder=tableContext.getPlaceHolder();
         EntityManager entityManager=tableContext.getEntityManager();
         String tableName = entityManager.getTableName();
         String persistenceClassName = entityManager.getSimpleClassName();
-        String modulePrefix = registry.getProject().getModulePrefix();
+        String modulePrefix = this.project.getProjectConfig().getModulePrefix();
         placeHolder.put(PlaceholderKey.$package_bo.name(), this.getPackage(ClassKey.BO));
         placeHolder.put(PlaceholderKey.$package_param.name(), this.getPackage(ClassKey.PARAM));
         placeHolder.put(PlaceholderKey.$package_query.name(), this.getPackage(ClassKey.QUERY));

@@ -8,6 +8,10 @@ import java.util.Map;
 @Data
 public class NoneValidator implements Validator {
 
+    public NoneValidator(String clazz) {
+        this.clazz = clazz;
+    }
+
     private String clazz;
 
     @Override

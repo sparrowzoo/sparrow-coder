@@ -8,16 +8,17 @@ import com.sparrow.json.Json;
 import com.sparrow.orm.Field;
 import com.sparrow.utility.CollectionsUtility;
 import com.sparrow.utility.FileUtility;
-import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.domain.bo.ColumnDef;
+import com.sparrowzoo.coder.domain.bo.ProjectBO;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableContext;
 import com.sparrowzoo.coder.domain.bo.validate.*;
+import com.sparrowzoo.coder.domain.service.ArchitectureGenerator;
 import com.sparrowzoo.coder.domain.service.ValidatorMessageGenerator;
 import com.sparrowzoo.coder.domain.service.frontend.generator.column.ColumnGenerator;
 import com.sparrowzoo.coder.domain.service.registry.ColumnGeneratorRegistry;
-import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrowzoo.coder.domain.service.registry.ValidatorRegistry;
+import com.sparrowzoo.coder.enums.ArchitectureCategory;
 import com.sparrowzoo.coder.enums.ColumnType;
 import com.sparrowzoo.coder.enums.FrontendKey;
 import com.sparrowzoo.coder.enums.PlaceholderKey;
@@ -25,63 +26,30 @@ import com.sparrowzoo.coder.enums.PlaceholderKey;
 import java.io.File;
 import java.util.*;
 
-public class DefaultFrontendPlaceholder implements FrontendPlaceholder {
-    protected final TableConfigRegistry registry;
+public class DefaultFrontendPlaceholder implements FrontendPlaceholderGenerator {
+    protected final ProjectBO project;
     protected final TableContext tableContext;
-    protected final Properties config;
     protected final ColumnGenerator columnGenerator;
     protected List<ColumnDef> columnDefs;
-
     protected Json json = JsonFactory.getProvider();
 
     protected Map<String, ValidatorMessageGenerator> validateContainer;
 
-    public DefaultFrontendPlaceholder(TableConfigRegistry registry, String tableName, String architecture) {
-        this.registry = registry;
-        this.config = registry.getProjectConfig();
-        this.tableContext = registry.getTableContext(tableName);
+    public DefaultFrontendPlaceholder(ProjectBO project, TableContext tableContext) {
+        this.project = project;
+        this.tableContext = tableContext;
+        this.columnDefs = tableContext.getColumns();
         ColumnGeneratorRegistry columnGeneratorRegistry = ColumnGeneratorRegistry.getInstance();
-        this.columnGenerator = columnGeneratorRegistry.getObject(architecture);
-        String columnConfig = tableContext.getTableConfig().getColumnConfigs();
-        if (!StringUtility.isNullOrEmpty(columnConfig)) {
-            this.columnDefs = new ArrayList<>();
-            List<Object> jsonObjects = json.parseArray(columnConfig);
-            for (int i = 0; i < jsonObjects.size(); i++) {
-                Object jsonObject = jsonObjects.get(i);
-                ColumnDef columnDef = json.toJavaObject(jsonObject, ColumnDef.class);
-                this.columnDefs.add(columnDef);
-                Object jsonValidator = json.getJSONObject(jsonObject, "validator");
-                this.parseValidator(registry, columnDef, jsonValidator);
-            }
-        }
-        validateContainer = ValidatorRegistry.getInstance().getRegistry().get(architecture);
-    }
-
-    public void parseValidator(TableConfigRegistry registry, ColumnDef columnDef, Object jsonValidator) {
-        String validateType = columnDef.getValidateType();
-        if (StringUtility.isNullOrEmpty(validateType) || validateType.startsWith("nullable")) {
-            NoneValidator noneValidator = new NoneValidator();
-            noneValidator.setClazz(columnDef.getJavaType());
-            columnDef.setValidator(noneValidator);
-            return;
-        }
-        if (validateType.startsWith("digital")) {
-            DigitalValidator validatorString = json.toJavaObject(jsonValidator, DigitalValidator.class);
-            columnDef.setValidator(validatorString);
-            return;
-        }
-        if (validateType.startsWith("string")) {
-            StringValidator validatorString = json.toJavaObject(jsonValidator, StringValidator.class);
-            columnDef.setValidator(validatorString);
-            return;
-        }
-        RegexValidator validatorString = json.toJavaObject(jsonValidator, RegexValidator.class);
-        columnDef.setValidator(validatorString);
+        ArchitectureGenerator architectureGenerator = this.project.getArchitecture(ArchitectureCategory.FRONTEND);
+        String architectureName = architectureGenerator.getName();
+        this.columnGenerator = columnGeneratorRegistry.getObject(architectureName);
+        validateContainer = ValidatorRegistry.getInstance().getRegistry().get(architectureName);
+        this.init();
     }
 
     @Override
     public String getPath(FrontendKey key) {
-        String originPath = this.config.getProperty(key.name().toLowerCase());
+        String originPath = this.project.getScaffoldConfig().getProperty(key.name().toLowerCase());
         String persistenceObjectByDot = tableContext.getPlaceHolder().get(PlaceholderKey.$persistence_object_by_horizontal.name());
         originPath = originPath.replace(PlaceholderKey.$persistence_object_by_horizontal.name(), persistenceObjectByDot);
         originPath = originPath.replace(PlaceholderKey.$persistence_class_name.name(), tableContext.getEntityManager().getSimpleClassName());
@@ -89,7 +57,6 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholder {
         return new FileNameBuilder(fileNameProperty.getName().replace(".", File.separator)).extension(fileNameProperty.getExtension()).build();
     }
 
-    @Override
     public void init() {
         Map<String, String> placeholder = tableContext.getPlaceHolder();
         placeholder.put(PlaceholderKey.$frontend_path_page.name(), this.getPath(FrontendKey.PAGE));
@@ -103,9 +70,7 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholder {
 
         placeholder.put(PlaceholderKey.$frontend_class.name(), this.generateClass());
         placeholder.put(PlaceholderKey.$frontend_column_filter.name(), tableContext.getTableConfig().getColumnFilter().toString());
-        Pair<String, String> pair = this.generatorColumns();
-        placeholder.put(PlaceholderKey.$frontend_column_defs.name(), pair.getFirst());
-        placeholder.put(PlaceholderKey.$frontend_editable_form_items.name(), pair.getSecond());
+        this.generatorColumns();
         placeholder.put(PlaceholderKey.$frontend_column_import.name(), this.generateImport());
         placeholder.put(PlaceholderKey.$frontend_schema.name(), this.generateSchema());
     }
@@ -147,7 +112,7 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholder {
             return "";
         }
         List<String> schemas = new ArrayList<>();
-        ProjectConfigBO projectConfig = registry.getProject();
+        ProjectConfigBO projectConfig = project.getProjectConfig();
         for (ColumnDef columnDef : this.columnDefs) {
             if (!columnDef.getShowInEdit()) {
                 continue;
@@ -172,27 +137,35 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholder {
         return String.join(",", schemas);
     }
 
-    private Pair<String, String> generatorColumns() {
+    private void generatorColumns() {
         if (CollectionsUtility.isNullOrEmpty(this.columnDefs)) {
-            return new Pair<>("", "");
+            return;
         }
+        Map<String,String> placeholder=this.tableContext.getPlaceHolder();
         List<String> columns = new ArrayList<>();
-        List<String> formItems = new ArrayList<>();
+        List<String> addFormItems = new ArrayList<>();
+        List<String> editFormItems = new ArrayList<>();
+
         Map<String, Object> columnI18nMap = tableContext.getI18nMap();
         for (ColumnDef columnDef : this.columnDefs) {
             if (columnDef.getShowInList()) {
                 columns.add(columnGenerator.column(columnDef));
             }
             if (columnDef.getShowInEdit()) {
-                formItems.add(columnGenerator.edit(columnDef));
+                addFormItems.add(columnGenerator.edit(columnDef,true));
+                editFormItems.add(columnGenerator.edit(columnDef,false));
             }
             columnI18nMap.put(columnDef.getPropertyName(), columnDef.getChineseName());
         }
         String columnStr = String.join(",", columns);
-        String formItemStr = String.join("\n", formItems);
+        String addFormItemStr = String.join("\n", addFormItems);
+        String editFormItemStr=String.join("\n",editFormItems);
         String className = tableContext.getEntityManager().getSimpleClassName();
         String columnDefs = String.format("export const columns: ColumnDef<%1$s>[] = [\n%2$s\n];", className, columnStr);
-        return new Pair<>(columnDefs, formItemStr);
+        placeholder.put(PlaceholderKey.$frontend_column_defs.name(),columnDefs);
+        placeholder.put(PlaceholderKey.$frontend_add_form_items.name(),addFormItemStr);
+        placeholder.put(PlaceholderKey.$frontend_edit_form_items.name(),editFormItemStr);
+
     }
 
     private String toType(Class<?> clazz) {

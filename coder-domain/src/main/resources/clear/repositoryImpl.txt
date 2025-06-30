@@ -11,6 +11,7 @@ import $package_repository.$persistence_class_nameRepository;
 import $package_query.$persistence_class_nameQuery;
 
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -32,20 +33,19 @@ public class $persistence_class_nameRepositoryImpl implements $persistence_class
         return $persistence_object_name.get$upper_primary_property_name();
     }
 
-    @Override public Integer delete(String $persistence_object_nameIds) {
+    @Override public Integer delete(Set<Long> $persistence_object_nameIds) {
         return this.$persistence_object_nameDao.batchDelete($persistence_object_nameIds);
     }
 
-    @Override public Integer disable(String $persistence_object_nameIds) {
-        StatusCriteria statusCriteria = new StatusCriteria($persistence_object_nameIds, StatusRecord.DISABLE);
+    @Override public Integer disable(Set<Long> $persistence_object_nameIds) {
+        StatusCriteria<Long> statusCriteria = new StatusCriteria($persistence_object_nameIds, StatusRecord.DISABLE);
         this.$persistence_object_nameConverter.convertStatus(statusCriteria);
         return this.$persistence_object_nameDao.changeStatus(statusCriteria);
     }
 
-    @Override public Integer enable(String $persistence_object_nameIds) {
-        StatusCriteria statusCriteria = new StatusCriteria($persistence_object_nameIds, StatusRecord.ENABLE);
+    @Override public Integer enable(Set<Long> $persistence_object_nameIds) {
+        StatusCriteria<Long> statusCriteria = new StatusCriteria($persistence_object_nameIds, StatusRecord.ENABLE);
         this.$persistence_object_nameConverter.convertStatus(statusCriteria);
-
         return this.$persistence_object_nameDao.changeStatus(statusCriteria);
     }
 

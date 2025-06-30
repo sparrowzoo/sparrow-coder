@@ -7,7 +7,7 @@ import com.sparrowzoo.coder.enums.HeaderType;
 public interface ColumnGenerator {
     String column(ColumnDef columnDef);
 
-    String edit(ColumnDef columnDef);
+    String edit(ColumnDef columnDef,Boolean add);
 
     String importHeader(HeaderType headerType);
 

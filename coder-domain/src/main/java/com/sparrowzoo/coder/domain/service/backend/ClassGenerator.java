@@ -6,9 +6,9 @@ import com.sparrowzoo.coder.enums.ClassKey;
 import java.io.IOException;
 
 public interface ClassGenerator {
-    String getFullPhysicalPath(ClassKey classKey);
+    String getClassPhysicalPath(ClassKey classKey);
 
-    String readConfigContent(String templateFileName);
+    String readTemplateContent(ClassKey classKey);
 
     void generate(ClassKey classKey) throws IOException;
 }

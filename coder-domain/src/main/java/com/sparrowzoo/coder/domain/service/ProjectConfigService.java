@@ -24,8 +24,10 @@ import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.repository.ProjectConfigRepository;
 import com.sparrowzoo.coder.protocol.param.ProjectConfigParam;
 import com.sparrowzoo.coder.protocol.query.ProjectConfigQuery;
-import com.sparrow.utility.StringUtility;
+import com.sparrow.utility.CollectionsUtility;
 import java.util.List;
+import java.util.Set;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -43,19 +45,18 @@ public class ProjectConfigService {
         return this.projectConfigRepository.save(projectConfigParam);
     }
 
-    public Integer deleteProjectConfig(String projectConfigIds) throws BusinessException {
-        Asserts.isTrue(StringUtility.isNullOrEmpty(projectConfigIds), SparrowError.GLOBAL_PARAMETER_NULL);
+    public Integer deleteProjectConfig(Set<Long> projectConfigIds) throws BusinessException {
+        Asserts.isTrue(CollectionsUtility.isNullOrEmpty(projectConfigIds), SparrowError.GLOBAL_PARAMETER_NULL);
         return this.projectConfigRepository.delete(projectConfigIds);
     }
 
-    public Integer enableProjectConfig(String projectConfigIds) throws BusinessException {
-
-         Asserts.isTrue(StringUtility.isNullOrEmpty(projectConfigIds), SparrowError.GLOBAL_PARAMETER_NULL);
+    public Integer enableProjectConfig(Set<Long> projectConfigIds) throws BusinessException {
+        Asserts.isTrue(CollectionsUtility.isNullOrEmpty(projectConfigIds), SparrowError.GLOBAL_PARAMETER_NULL);
         return this.projectConfigRepository.enable(projectConfigIds);
     }
 
-    public Integer disableProjectConfig(String projectConfigIds) throws BusinessException {
-        Asserts.isTrue(StringUtility.isNullOrEmpty(projectConfigIds), SparrowError.GLOBAL_PARAMETER_NULL);
+    public Integer disableProjectConfig(Set<Long> projectConfigIds) throws BusinessException {
+        Asserts.isTrue(CollectionsUtility.isNullOrEmpty(projectConfigIds), SparrowError.GLOBAL_PARAMETER_NULL);
         return this.projectConfigRepository.disable(projectConfigIds);
     }
 

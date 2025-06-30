@@ -12,18 +12,17 @@ import java.util.Map;
 @Getter
 public class ProjectArchsBO implements BO {
     public ProjectArchsBO(String configs) {
-           this.archs = JsonFactory.getProvider().parse(configs, Map.class);
+        this.archs = JsonFactory.getProvider().parse(configs, Map.class);
     }
-    public ArchitectureGenerator getArch(ArchitectureCategory category){
+
+    public ArchitectureGenerator getArch(ArchitectureCategory category) {
         String arch = this.archs.get(category.name());
         return ArchitectureRegistry.getInstance().getGenerator(category, arch);
     }
 
-    public ArchitectureGenerator getArch(String category){
-        String arch = this.archs.get(category);
-        ArchitectureCategory categoryEnum = ArchitectureCategory.valueOf(category);
-        return ArchitectureRegistry.getInstance().getGenerator(categoryEnum, arch);
+    public ArchitectureGenerator getArch(String category) {
+        return this.getArch(ArchitectureCategory.valueOf(category));
     }
 
-    private final Map<String,String> archs;
+    private final Map<String, String> archs;
 }

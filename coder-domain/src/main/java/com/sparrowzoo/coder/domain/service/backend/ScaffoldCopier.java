@@ -4,6 +4,7 @@ import com.sparrow.io.file.FileNameBuilder;
 import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
+import com.sparrowzoo.coder.domain.service.EnvConfig;
 import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +24,8 @@ public class ScaffoldCopier {
     private static Logger logger = LoggerFactory.getLogger(ScaffoldCopier.class);
 
     public static void copy(TableConfigRegistry registry) {
-        ProjectConfigBO projectConfig = registry.getProject();
-        String scaffoldHome = new FileNameBuilder(registry.getEnvConfig().getWorkspace())
+        ProjectConfigBO projectConfig = registry.getProject().getProjectConfig();
+        String scaffoldHome = new FileNameBuilder(registry.getProject().getEnvConfig().getWorkspace())
                 .joint("sparrow-example").build();
         File directory = new File(scaffoldHome);
         FileUtility.FolderFilter folderFilter = (sourceFile) -> {
@@ -64,11 +65,12 @@ public class ScaffoldCopier {
                     targetFileName = targetFileName.replace("admin" + File.separator, "");
                     targetFileName = targetFileName.replace("admin-", "");
                 }
-                String home =registry.getEnvConfig().getHome(projectConfig.getCreateUserId());
-                String targetPath = new FileNameBuilder(registry.getEnvConfig().getWorkspace())
-                        .joint(registry.getEnvConfig().getProjectRoot())
+                EnvConfig envConfig = registry.getProject().getEnvConfig();
+                String home = envConfig.getHome(projectConfig.getCreateUserId());
+                String targetPath = new FileNameBuilder(envConfig.getWorkspace())
+                        .joint(envConfig.getProjectRoot())
                         .joint(home)
-                        .joint(registry.getProject().getName())
+                        .joint(registry.getProject().getProjectConfig().getName())
                         .joint(targetFileName).build();
                 String content = null;
                 //如果不需要parent 包裹，并且是pom.xml，则需要读admin/pom.xml的内容处理

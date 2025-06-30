@@ -96,6 +96,9 @@ public abstract class AbstractValidatorMessageGenerator<T extends Validator> imp
     }
 
     protected String minLength(StringValidator validator) {
+        if(validator.getMinLength()==null){
+            return "";
+        }
         String message = validator.getMinLengthMessage();
         if(StringUtility.isNullOrEmpty(message)){
             message=String.format(StringValidator.defaultValidator.getMinLengthMessage(), validator.getMinLength());
@@ -104,6 +107,9 @@ public abstract class AbstractValidatorMessageGenerator<T extends Validator> imp
     }
 
     protected String maxLength(StringValidator validator) {
+        if(validator.getMaxLength()==null){
+            return "";
+        }
         String message = validator.getMinLengthMessage();
         if(StringUtility.isNullOrEmpty(message)){
             message=String.format(StringValidator.defaultValidator.getMaxLengthMessage(), validator.getMaxLength());

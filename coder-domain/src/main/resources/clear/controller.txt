@@ -13,6 +13,8 @@ import javax.inject.Inject;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.Set;
+
 
 @RestController
 @RequestMapping("$persistence_object_by_slash")
@@ -41,7 +43,7 @@ public class $persistence_class_nameController {
 
     @GetMapping("detail.json")
             @ApiOperation("详情页")
-    public $persistence_class_nameVO get$persistence_class_name( Long $persistence_object_nameId) throws BusinessException {
+    public $persistence_class_nameVO get$persistence_class_name(Long $persistence_object_nameId) throws BusinessException {
         $persistence_class_nameBO $persistence_object_nameBo = $persistence_object_nameService.get$persistence_class_name($persistence_object_nameId);
         return this.$persistence_object_nameAssemble.boAssembleVO($persistence_object_nameBo);
     }
@@ -49,20 +51,20 @@ public class $persistence_class_nameController {
     @PostMapping("delete.json")
             @ApiOperation("删除")
 
-    public Integer delete$persistence_class_name(@RequestBody String ids) throws BusinessException {
+    public Integer delete$persistence_class_name(@RequestBody Set<Long> ids) throws BusinessException {
        return this.$persistence_object_nameService.delete$persistence_class_name(ids);
     }
 
     @PostMapping("enable.json")
             @ApiOperation("启用")
 
-    public Integer enable$persistence_class_name(@RequestBody String ids) throws BusinessException {
+    public Integer enable$persistence_class_name(@RequestBody Set<Long> ids) throws BusinessException {
         return  this.$persistence_object_nameService.enable$persistence_class_name(ids);
     }
 
     @PostMapping("disable.json")
     @ApiOperation("禁用")
-    public Integer disable$persistence_class_name(@RequestBody String ids) throws BusinessException {
+    public Integer disable$persistence_class_name(@RequestBody Set<Long> ids) throws BusinessException {
        return  this.$persistence_object_nameService.disable$persistence_class_name(ids);
     }
 }

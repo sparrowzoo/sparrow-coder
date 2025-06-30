@@ -49,7 +49,7 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
      * @return
      */
     @Override
-    public String edit(ColumnDef columnDef) {
+    public String edit(ColumnDef columnDef, Boolean add) {
         if (columnDef.getColumnType().equals(ColumnType.ACTION) ||
                 columnDef.getColumnType().equals(ColumnType.CHECK) ||
                 columnDef.getColumnType().equals(ColumnType.FILTER)
@@ -70,7 +70,7 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
                 !columnDef.getValidateType().equals("nullableValidatorMessageGenerator")) {
             message = String.format("errorMessage={errors.%1$s?.message}", columnDef.getPropertyName());
         }
-        return String.format("<ValidatableInput {...register(\"%1$s\")}\n" +
+        return String.format("<ValidatableInput %4$s {...register(\"%1$s\")}\n" +
                         "                                  type={\"%2$s\"}\n" +
                         "                                  isSubmitted={isSubmitted}\n" +
                         "                                  pageTranslate={pageTranslate}\n" +
@@ -79,9 +79,19 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
                         "                                  fieldPropertyName={\"%1$s\"}/>",
                 columnDef.getPropertyName(),
                 columnDef.getControlType().getInputType(),
-                message
-
+                message,
+                this.defaultValue(columnDef, add)
         );
+    }
+
+    private String defaultValue(ColumnDef columnDef, Boolean add) {
+        if (add) {
+            return "";
+        }
+        if (columnDef.getControlType().equals(ControlType.CHECK_BOX)) {
+            return String.format("defaultChecked={original.%s}", columnDef.getPropertyName());
+        }
+        return String.format("defaultValue={original.%s}", columnDef.getPropertyName());
     }
 
     @Override
@@ -129,7 +139,8 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
             return "header: CheckboxHeader";
         }
         if (columnDef.getColumnType().equals(ColumnType.FILTER)) {
-            return "header: ColumnFilter";
+            return String.format("header: ColumnFilter({i18nPrefix: \"%1$s\"} as ColumnOperationProps)", i18nPrefix);
+
         }
         if (columnDef.getColumnType().equals(ColumnType.TREE)) {
             return "header:\"\"";

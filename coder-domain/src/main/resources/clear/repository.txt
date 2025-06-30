@@ -3,17 +3,19 @@ import $package_bo.$persistence_class_nameBO;
 import $package_param.$persistence_class_nameParam;
 import $package_query.$persistence_class_nameQuery;
 import java.util.List;
+import java.util.Set;
+
 
 
 
 public interface $persistence_class_nameRepository {
     Long save($persistence_class_nameParam $persistence_object_nameParam);
 
-    Integer delete(String $persistence_object_nameIds);
+    Integer delete(Set<Long> $persistence_object_nameIds);
 
-    Integer disable(String $persistence_object_nameIds);
+    Integer disable(Set<Long> $persistence_object_nameIds);
 
-    Integer enable(String $persistence_object_nameIds);
+    Integer enable(Set<Long> $persistence_object_nameIds);
 
     $persistence_class_nameBO get$persistence_class_name(Long $persistence_object_nameId);
 

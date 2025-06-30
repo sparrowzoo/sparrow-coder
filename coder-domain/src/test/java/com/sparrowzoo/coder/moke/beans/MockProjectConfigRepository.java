@@ -7,6 +7,7 @@ import com.sparrowzoo.coder.repository.ProjectConfigRepository;
 
 import javax.inject.Named;
 import java.util.List;
+import java.util.Set;
 
 @Named
 public class MockProjectConfigRepository implements ProjectConfigRepository {
@@ -16,17 +17,17 @@ public class MockProjectConfigRepository implements ProjectConfigRepository {
     }
 
     @Override
-    public Integer delete(String projectConfigIds) {
+    public Integer delete(Set<Long> projectConfigIds) {
         return null;
     }
 
     @Override
-    public Integer disable(String projectConfigIds) {
+    public Integer disable(Set<Long> projectConfigIds) {
         return null;
     }
 
     @Override
-    public Integer enable(String projectConfigIds) {
+    public Integer enable(Set<Long> projectConfigIds) {
         return null;
     }
 

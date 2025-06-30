@@ -12,6 +12,8 @@ public enum FrontendKey {
     OPERATION("operation.txt"),
     COLUMNS("columns.txt"),
     MESSAGE(""),
+    MESSAGE_FILE_LIST(""),
+
     SCHEMA("schema.txt");
 
 

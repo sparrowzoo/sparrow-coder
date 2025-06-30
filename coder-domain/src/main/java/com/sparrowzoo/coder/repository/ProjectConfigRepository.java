@@ -19,17 +19,19 @@ import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.protocol.param.ProjectConfigParam;
 import com.sparrowzoo.coder.protocol.query.ProjectConfigQuery;
 import java.util.List;
+import java.util.Set;
+
 
 
 
 public interface ProjectConfigRepository {
     Long save(ProjectConfigParam projectConfigParam);
 
-    Integer delete(String projectConfigIds);
+    Integer delete(Set<Long> projectConfigIds);
 
-    Integer disable(String projectConfigIds);
+    Integer disable(Set<Long> projectConfigIds);
 
-    Integer enable(String projectConfigIds);
+    Integer enable(Set<Long> projectConfigIds);
 
     ProjectConfigBO getProjectConfig(Long projectConfigId);
 

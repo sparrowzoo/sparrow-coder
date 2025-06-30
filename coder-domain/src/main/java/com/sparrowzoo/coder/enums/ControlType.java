@@ -21,7 +21,7 @@ public enum ControlType {
     RADIO("rdb","radio"),
     FILE("flb","file"),
     ENABLE_DISABLE("","button"),
-    SLIDER("sld","slider"),
+    NUMBER("num","text"),
     IMAGE("img","image");
 
 
