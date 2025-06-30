@@ -18,13 +18,22 @@ export default class $persistence_class_nameApi {
         return Fetcher.post("/$persistence_object_by_slash/save.json", body, translator);
     }
 
-    public static  delete(
+    public static  batchDelete(
         params: IDENTITY[],
         translator: (key: string) => string
     ): Promise<any> {
         const body = JSON.stringify(params);
         return Fetcher.post("/$persistence_object_by_slash/delete.json", body, translator);
     }
+
+       public static  delete(
+            id: IDENTITY,
+            translator: (key: string) => string
+        ): Promise<any> {
+            const body = JSON.stringify([id]);
+            return Fetcher.post("/$persistence_object_by_slash/delete.json", body, translator);
+        }
+
 
     public static  disable(
         params: IDENTITY[],

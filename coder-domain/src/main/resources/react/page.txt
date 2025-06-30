@@ -10,10 +10,14 @@ import EditPage from "@/components/$persistence_object_by_horizontal/edit";
 import ThreeDotLoading from "@/common/components/ThreeDotLoading";
 import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizontal";
 import {useTranslations} from "next-intl";
+import toast from "react-hot-toast";
+
 
 
 export default function Page() {
-    const errorTranslate = useTranslations("$persistence_class_name.ErrorMessage")
+    const errorTranslate = useTranslations("$persistence_class_name.ErrorMessage");
+    const globalTranslate = useTranslations("GlobalForm");
+
     const [dataState, setDataState] = useState<$persistence_class_name[] | undefined>();
     useEffect(() => {
         $persistence_class_nameApi.search({}, errorTranslate).then(
@@ -22,7 +26,15 @@ export default function Page() {
                                               }
                                            ).catch(()=>{});
 
-    }, [])
+    }, []);
+
+
+      const deleteHandler= (id: number) => {
+            $persistence_class_nameApi.delete(id, errorTranslate).then(()=>{
+                toast.success(globalTranslate("delete")+globalTranslate("operation-success"));
+            }).catch(()=>{});
+        }
+
     if (!dataState) {
         return <ThreeDotLoading/>
     }
@@ -36,6 +48,8 @@ export default function Page() {
                 data={dataState.list}
                 columns={columns}
                 setData={setDataState}
+                tableName={"ProjectConfig"}
+                deleteHandler={deleteHandler}
             ></DataTable>
         </div>
     );

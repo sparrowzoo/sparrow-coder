@@ -15,9 +15,9 @@ import * as v from "valibot";
 
 export default function EditPage({id,cellContext}: RowEditProps) {
      const globalTranslate = useTranslations("GlobalForm");
-        const errorTranslate = useTranslations("TableConfig.ErrorMessage")
-        const pageTranslate = useTranslations("TableConfig")
-        const validateTranslate = useTranslations("TableConfig.validate")
+        const errorTranslate = useTranslations("$persistence_class_name.ErrorMessage")
+        const pageTranslate = useTranslations("$persistence_class_name")
+        const validateTranslate = useTranslations("$persistence_class_name.validate")
         const FormSchema = crateScheme(validateTranslate);
         type FormData = v.InferOutput<typeof FormSchema>;
         const original = cellContext.row.original;
@@ -59,10 +59,9 @@ export default function EditPage({id,cellContext}: RowEditProps) {
         //正确
         <form onSubmit={handleSubmit(onSubmit)}>
             <DialogHeader>
-                <DialogTitle>Edit profile</DialogTitle>
+                <DialogTitle>{globalTranslate("edit")}</DialogTitle>
                 <DialogDescription>
-                    Make changes to your profile here. Click save when you&apos;re
-                    done.
+
                 </DialogDescription>
             </DialogHeader>
             <div className="flex flex-col">
