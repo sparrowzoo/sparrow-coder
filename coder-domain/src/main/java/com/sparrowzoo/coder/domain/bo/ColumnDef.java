@@ -4,41 +4,69 @@ import com.sparrowzoo.coder.domain.bo.validate.Validator;
 import com.sparrowzoo.coder.enums.*;
 import lombok.Data;
 
+import javax.persistence.Column;
+import javax.persistence.Table;
+
 @Data
+@Table(name = "column_def")
 public class ColumnDef {
+    @Column(name = "table_class_name", updatable = false, columnDefinition = "varchar(255) comment '类名'")
     private String tableClassName;
+    @Column(name = "property_name", updatable = false, columnDefinition = "varchar(255) comment '属性名'")
     private String propertyName;
+    @Column(name = "chinese_name", columnDefinition = "varchar(255) comment '中文名'")
     private String chineseName;
+    @Column(name = "subsidiary_columns", columnDefinition = "varchar(255) comment '附加列'")
     private String subsidiaryColumns;
+    @Column(name = "java_type", updatable = false, columnDefinition = "varchar(255) comment 'java类型'")
     private String javaType;
+    @Column(name = "enable_hidden", columnDefinition = "bit(1) comment '是否隐藏'")
     private Boolean enableHidden;
+    @Column(name = "default_hidden", columnDefinition = "bit(1) comment '默认隐藏'")
     private Boolean defaultHidden;
+    @Column(name = "show_in_edit", columnDefinition = "bit(1) comment '是否显示在编辑页面'")
     private Boolean showInEdit = true;
+    @Column(name = "show_in_list", columnDefinition = "bit(1) comment '是否显示在列表页面'")
     private Boolean showInList = true;
+    @Column(name = "show_in_search", columnDefinition = "bit(1) comment '是否显示在搜索页面'")
     private Boolean showInSearch = true;
+    @Column(name = "allow_null", columnDefinition = "bit(1) comment '是否允许为空'")
     private Boolean allowNull;
+    @Column(name = "placeholder", columnDefinition = "varchar(255) comment '提示信息'")
     private String placeholder;
+    @Column(name = "default_value", columnDefinition = "varchar(255) comment '默认值'")
     private String defaultValue;
     /**
      * 查询方式
      */
-    private SearchType searchType;
+    @Column(name = "search_type", columnDefinition = "int comment '查询方式'")
+    private Integer searchType;
+    @Column(name = "validate_type", columnDefinition = "varchar(255) comment '验证类型'")
     private String validateType;
+    @Column(name = "validator", columnDefinition = "varchar(255) comment '验证器'")
     private Validator validator;
-    private DataSourceType dataSourceType;
+    @Column(name = "data_source_type", columnDefinition = "int comment '数据源类型'")
+    private Integer dataSourceType;
+    @Column(name = "data_source_params", columnDefinition = "varchar(255) comment '数据源参数'")
     private String dataSourceParams;
-    private ColumnType columnType;
-    private HeaderType headerType;
-    private CellType cellType;
-    private ControlType controlType;
+    @Column(name = "column_type", updatable = false, columnDefinition = "int comment '列类型'")
+    private Integer columnType;
+    @Column(name = "header_type", columnDefinition = "int comment '表头类型'")
+    private Integer headerType;
+    @Column(name = "cell_type", columnDefinition = "int comment '单元格类型'")
+    private Integer cellType;
+    @Column(name = "control_type", columnDefinition = "int comment '控件类型'")
+    private Integer controlType;
+    @Column(name = "sort", columnDefinition = "int comment '排序'")
     private Integer sort;
+    @Column(name = "read_only", columnDefinition = "bit(1) comment '是否只读'")
     private Boolean readOnly;
 
     public static ColumnDef createRowMenu(String tableClassName, int sort) {
         ColumnDef columnDef = new ColumnDef();
-        columnDef.setColumnType(ColumnType.ACTION);
-        columnDef.setHeaderType(HeaderType.NORMAL);
-        columnDef.setCellType(CellType.OPERATION);
+        columnDef.setColumnType(ColumnType.ACTION.getIdentity());
+        columnDef.setHeaderType(HeaderType.NORMAL.getIdentity());
+        columnDef.setCellType(CellType.OPERATION.getIdentity());
         columnDef.setTableClassName(tableClassName);
         columnDef.setPropertyName("actions");
         columnDef.setChineseName("操作");
@@ -52,10 +80,10 @@ public class ColumnDef {
         columnDef.setAllowNull(false);
         columnDef.setPlaceholder("");
         columnDef.setDefaultValue("");
-        columnDef.setSearchType(SearchType.EQUAL);
+        columnDef.setSearchType(SearchType.EQUAL.getIdentity());
         columnDef.setValidateType("");
         columnDef.setValidator(null);
-        columnDef.setDataSourceType(DataSourceType.NULL);
+        columnDef.setDataSourceType(DataSourceType.NULL.getIdentity());
         columnDef.setDataSourceParams("");
         columnDef.setControlType(null);
         columnDef.setSort(sort);
@@ -65,8 +93,8 @@ public class ColumnDef {
 
     public static ColumnDef createFilter(String tableClassName, int sort) {
         ColumnDef columnDef = new ColumnDef();
-        columnDef.setColumnType(ColumnType.FILTER);
-        columnDef.setHeaderType(HeaderType.COLUMN_FILTER);
+        columnDef.setColumnType(ColumnType.FILTER.getIdentity());
+        columnDef.setHeaderType(HeaderType.COLUMN_FILTER.getIdentity());
         columnDef.setCellType(null);
         columnDef.setTableClassName(tableClassName);
         columnDef.setPropertyName("filter");
@@ -81,10 +109,10 @@ public class ColumnDef {
         columnDef.setAllowNull(false);
         columnDef.setPlaceholder("");
         columnDef.setDefaultValue("");
-        columnDef.setSearchType(SearchType.EQUAL);
+        columnDef.setSearchType(SearchType.EQUAL.getIdentity());
         columnDef.setValidateType("");
         columnDef.setValidator(null);
-        columnDef.setDataSourceType(DataSourceType.NULL);
+        columnDef.setDataSourceType(DataSourceType.NULL.getIdentity());
         columnDef.setDataSourceParams("");
         columnDef.setControlType(null);
         columnDef.setSort(sort);
@@ -94,9 +122,9 @@ public class ColumnDef {
 
     public static ColumnDef createCheckBox(String tableClassName, int sort) {
         ColumnDef columnDef = new ColumnDef();
-        columnDef.setColumnType(ColumnType.CHECK);
-        columnDef.setHeaderType(HeaderType.CHECK_BOX);
-        columnDef.setCellType(CellType.CHECK_BOX);
+        columnDef.setColumnType(ColumnType.CHECK.getIdentity());
+        columnDef.setHeaderType(HeaderType.CHECK_BOX.getIdentity());
+        columnDef.setCellType(CellType.CHECK_BOX.getIdentity());
         columnDef.setTableClassName(tableClassName);
         columnDef.setPropertyName("check-box");
         columnDef.setChineseName("");
@@ -110,10 +138,10 @@ public class ColumnDef {
         columnDef.setAllowNull(false);
         columnDef.setPlaceholder("");
         columnDef.setDefaultValue("");
-        columnDef.setSearchType(SearchType.EQUAL);
+        columnDef.setSearchType(SearchType.EQUAL.getIdentity());
         columnDef.setValidateType("");
         columnDef.setValidator(null);
-        columnDef.setDataSourceType(DataSourceType.NULL);
+        columnDef.setDataSourceType(DataSourceType.NULL.getIdentity());
         columnDef.setDataSourceParams("");
         columnDef.setControlType(null);
         columnDef.setSort(sort);

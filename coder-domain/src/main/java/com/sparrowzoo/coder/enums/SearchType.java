@@ -1,22 +1,37 @@
 package com.sparrowzoo.coder.enums;
 
-import com.sparrow.protocol.NameAccessor;
+import com.sparrow.protocol.EnumIdentityAccessor;
 
-public enum SearchType implements NameAccessor {
-    EQUAL,
-    PREFIX_LIKE,
-    SUFFIX_LIKE,
-    LIKE,
-    DATE_RANGE,
-    LESS,
-    LESS_EQUAL,
-    GREATER,
-    GREATER_EQUAL,
-    BETWEEN,
-    NOT_EQUAL;
+public enum SearchType implements EnumIdentityAccessor {
+    EQUAL(1),
+    PREFIX_LIKE(2),
+    SUFFIX_LIKE(3),
+    LIKE(4),
+    DATE_RANGE(5),
+    LESS(6),
+    LESS_EQUAL(7),
+    GREATER(8),
+    GREATER_EQUAL(9),
+    BETWEEN(10),
+    NOT_EQUAL(11);
+
+    private Integer id;
+
+    SearchType(Integer id) {
+        this.id = id;
+    }
 
     @Override
-    public String getName() {
-        return this.name();
+    public Integer getIdentity() {
+        return this.id;
+    }
+
+    public static SearchType getById(Integer id) {
+        for (SearchType type : SearchType.values()) {
+            if (type.getIdentity().equals(id)) {
+                return type;
+            }
+        }
+        return null;
     }
 }

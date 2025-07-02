@@ -1,29 +1,25 @@
 package com.sparrowzoo.coder.enums;
 
-import com.sparrow.protocol.NameAccessor;
+import com.sparrow.protocol.EnumIdentityAccessor;
+import lombok.Getter;
 
-public enum DigitalCategory implements NameAccessor {
-    INTEGER("/^\\d+$/","parseInt(input,10)"),
-    SIGNED_INTEGER("/^-?\\d+$/","parseInt(input,10)"),
-    FLOAT("/^-?\\d+\\.\\d+$/","parseFloat(input)");
+@Getter
+public enum DigitalCategory implements EnumIdentityAccessor {
+    INTEGER("/^\\d+$/", "parseInt(input,10)", 1),
+    SIGNED_INTEGER("/^-?\\d+$/", "parseInt(input,10)", 2),
+    FLOAT("/^-?\\d+\\.\\d+$/", "parseFloat(input)", 3);
     private final String regex;
     private final String converter;
+    private final Integer id;
 
-    DigitalCategory(String regex,String converter) {
+    DigitalCategory(String regex, String converter, Integer id) {
         this.regex = regex;
         this.converter = converter;
-    }
-
-    public String getRegex() {
-        return regex;
-    }
-
-    public String getConverter() {
-        return converter;
+        this.id = id;
     }
 
     @Override
-    public String getName() {
-        return this.name();
+    public Integer getIdentity() {
+        return this.id;
     }
 }

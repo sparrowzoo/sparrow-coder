@@ -77,11 +77,11 @@ public class MockTableConfigRepository implements TableConfigRepository {
         columnDef.setPropertyName(propertyName);
         columnDef.setTableClassName(tableClassName);
         columnDef.setChineseName(chineseName);
-        columnDef.setCellType(cellType);
-        columnDef.setColumnType(columnType);
-        columnDef.setHeaderType(headerType);
-        columnDef.setControlType(controlType);
-        columnDef.setDataSourceType(dataSourceType);
+        columnDef.setCellType(cellType.getIdentity());
+        columnDef.setColumnType(columnType.getIdentity());
+        columnDef.setHeaderType(headerType.getIdentity());
+        columnDef.setControlType(controlType.getIdentity());
+        columnDef.setDataSourceType(dataSourceType.getIdentity());
         columnDef.setEnableHidden(enableHiding);
         columnDef.setSubsidiaryColumns("");
         columnDef.setShowInList(showInList);

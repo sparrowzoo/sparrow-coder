@@ -1,41 +1,53 @@
 package com.sparrowzoo.coder.enums;
 
-import com.sparrow.protocol.NameAccessor;
+import com.sparrow.protocol.EnumIdentityAccessor;
 import lombok.Getter;
 
 @Getter
-public enum ControlType implements NameAccessor {
-    LABEL("lbl","label"),
-    LINK("lnk","link"),
-    INPUT_TEXT("txt","text"),
-    INPUT_HIDDEN("hdn","hidden"),
-    INPUT_PASSWORD("txt","password"),
-    TEXT_AREA("txt","textarea"),
-    SELECT("ddl","select"),
-    RADIO_LIST("rdl","radio-list"),
-    CHECK_BOX_LIST("cbl","checkbox-list"),
-    CODE("txt","text"),
-    EDITOR("divEditor","editor"),
-    DATE("txt","date"),
-    DATE_HHMMSS("txt","time"),
-    CHECK_BOX("ckb","checkbox"),
-    RADIO("rdb","radio"),
-    FILE("flb","file"),
-    ENABLE_DISABLE("","button"),
-    NUMBER("num","text"),
-    IMAGE("img","image");
+public enum ControlType implements EnumIdentityAccessor {
+    LABEL("lbl", "label", 1),
+    LINK("lnk", "link", 2),
+    INPUT_TEXT("txt", "text", 3),
+    INPUT_HIDDEN("hdn", "hidden", 4),
+    INPUT_PASSWORD("txt", "password", 5),
+    TEXT_AREA("txt", "textarea", 6),
+    SELECT("ddl", "select", 7),
+    RADIO_LIST("rdl", "radio-list", 8),
+    CHECK_BOX_LIST("cbl", "checkbox-list", 9),
+    CODE("txt", "text", 10),
+    EDITOR("divEditor", "editor", 11),
+    DATE("txt", "date", 12),
+    DATE_HHMMSS("txt", "time", 13),
+    CHECK_BOX("ckb", "checkbox", 14),
+    RADIO("rdb", "radio", 15),
+    FILE("flb", "file", 16),
+    ENABLE_DISABLE("", "button", 17),
+    NUMBER("num", "text", 18),
+    IMAGE("img", "image", 19);
 
 
     private final String prefix;
     private final String inputType;
+    private Integer id;
 
-    ControlType(String prefix,String inputType) {
+
+    ControlType(String prefix, String inputType, Integer id) {
         this.prefix = prefix;
         this.inputType = inputType;
+        this.id = id;
     }
 
     @Override
-    public String getName() {
-        return this.name();
+    public Integer getIdentity() {
+        return id;
+    }
+
+    public static ControlType getControlType(Integer inputType) {
+        for (ControlType controlType : ControlType.values()) {
+            if (controlType.id.equals(inputType)) {
+                return controlType;
+            }
+        }
+        return null;
     }
 }

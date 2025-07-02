@@ -1,24 +1,36 @@
 package com.sparrowzoo.coder.enums;
 
-import com.sparrow.protocol.NameAccessor;
+import com.sparrow.protocol.EnumIdentityAccessor;
 import lombok.Getter;
 
 @Getter
-public enum ColumnType implements NameAccessor {
-    ACTION("菜单"),
-    CHECK("选择"),
-    FILTER("过滤列"),
-    TREE("树型"),
-    NORMAL("正常");
+public enum ColumnType implements EnumIdentityAccessor {
+    ACTION(1, "菜单"),
+    CHECK(2, "选择"),
+    FILTER(3, "过滤列"),
+    TREE(4, "树型"),
+    NORMAL(5, "正常");
 
     private String description;
 
-    ColumnType(String description) {
+    private Integer id;
+
+    ColumnType(Integer id, String description) {
+        this.id = id;
         this.description = description;
     }
 
     @Override
-    public String getName() {
-        return this.name();
+    public Integer getIdentity() {
+        return this.id;
+    }
+
+    public static ColumnType getById(Integer id) {
+        for (ColumnType type : ColumnType.values()) {
+            if (type.getId().equals(id)) {
+                return type;
+            }
+        }
+        return null;
     }
 }

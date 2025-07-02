@@ -62,7 +62,7 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
                             "                                  type={\"%2$s\"}\n" +
                             "                                  fieldPropertyName={\"%1$s\"}/>",
                     columnDef.getPropertyName(),
-                    columnDef.getControlType().getInputType()
+                    ControlType.getControlType(columnDef.getControlType()).getInputType()
             );
         }
 
@@ -79,7 +79,7 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
                         "                                  %3$s" +
                         "                                  fieldPropertyName={\"%1$s\"}/>",
                 columnDef.getPropertyName(),
-                columnDef.getControlType().getInputType(),
+                ControlType.getControlType(columnDef.getControlType()).getInputType(),
                 message,
                 this.defaultValue(columnDef, add)
         );
@@ -112,7 +112,8 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
 
 
     public String renderColumnType(ColumnDef columnDef) {
-        switch (columnDef.getColumnType()) {
+        ColumnType columnType =ColumnType.getById(columnDef.getColumnType());
+        switch (columnType) {
             case ACTION:
                 return " id: \"actions\"";
             case FILTER:
@@ -129,25 +130,24 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
     }
 
     public String renderHeader(ColumnDef columnDef,ProjectBO project) {
-        HeaderType headerType = columnDef.getHeaderType();
+        HeaderType headerType =HeaderType.getById(columnDef.getHeaderType());
         if (headerType == null) {
             return "header:''";
         }
         String columnTitle = columnDef.getChineseName();
-        if (columnDef.getColumnType().equals(ColumnType.CHECK)) {
+        if (ColumnType.CHECK.getId().equals(columnDef.getColumnType())) {
             return "header: CheckboxHeader";
         }
-        if (columnDef.getColumnType().equals(ColumnType.FILTER)) {
+        if (ColumnType.FILTER.getId().equals(columnDef.getColumnType())) {
             return "header: ColumnFilter()";
 
         }
-        if (columnDef.getColumnType().equals(ColumnType.TREE)) {
+        if (ColumnType.TREE.getId().equals(columnDef.getColumnType())) {
             return "header:\"\"";
         }
-        if (columnDef.getColumnType().equals(ColumnType.ACTION)) {
+        if (ColumnType.ACTION.getId().equals(columnDef.getColumnType())) {
             return String.format("header: PlainTextHeader({columnTitle: \"%1$s\"} as ColumnOperationProps)", columnTitle);
         }
-
         switch (headerType) {
             case CHECK_BOX:
                 return "header: CheckboxHeader";
@@ -188,7 +188,7 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
         if (columnDef.getColumnType().equals(ColumnType.ACTION)) {
             return "cell:\"Actions\"";
         }
-        CellType cellType = columnDef.getCellType();
+        CellType cellType =CellType.getById(columnDef.getCellType());
         if (cellType == null) {
             return "cell:''";
         }

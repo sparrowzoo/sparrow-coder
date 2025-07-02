@@ -1,8 +1,5 @@
 package com.sparrowzoo.coder.enums;
 
-import com.sparrow.protocol.NameAccessor;
-import com.sparrow.utility.StringUtility;
-
 /**
  * 生成类的key
  * <p>
@@ -12,7 +9,7 @@ import com.sparrow.utility.StringUtility;
  * <p>
  * 具体的配置见config.properties
  */
-public enum ClassKey implements NameAccessor {
+public enum ClassKey {
     PO("", "persistence"),
     BO("bo.txt", "domain"),
     PARAM("param.txt", "protocol"),
@@ -45,10 +42,5 @@ public enum ClassKey implements NameAccessor {
 
     public String getModule() {
         return module;
-    }
-
-    @Override
-    public String getName() {
-        return this.name();
     }
 }

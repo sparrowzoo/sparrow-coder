@@ -172,17 +172,16 @@ public class TableContext {
             columnDef.setAllowNull(false);
             columnDef.setPlaceholder("");
             columnDef.setDefaultValue("");
-            columnDef.setSearchType(SearchType.EQUAL);
+            columnDef.setSearchType(SearchType.EQUAL.getIdentity());
             columnDef.setValidateType(null);
             columnDef.setValidator(new NoneValidator(columnDef.getJavaType()));
-            columnDef.setDataSourceType(DataSourceType.NULL);
-            columnDef.setDataSourceApi("");
+            columnDef.setDataSourceType(DataSourceType.NULL.getIdentity());
             columnDef.setDataSourceParams("");
-            columnDef.setColumnType(ColumnType.NORMAL);
-            columnDef.setHeaderType(HeaderType.NORMAL);
-            columnDef.setCellType(CellType.NORMAL);
+            columnDef.setColumnType(ColumnType.NORMAL.getIdentity());
+            columnDef.setHeaderType(HeaderType.NORMAL.getIdentity());
+            columnDef.setCellType(CellType.NORMAL.getIdentity());
             if (columnDef.getPropertyName().equals(entityManager.getPrimary().getPropertyName())) {
-                columnDef.setControlType(ControlType.INPUT_HIDDEN);
+                columnDef.setControlType(ControlType.INPUT_HIDDEN.getIdentity());
                 columnDef.setValidateType("digitalValidatorMessageGenerator");
                 columnDef.setValidator(this.generateDefaultNumberValidator(columnDef.getPropertyName(), true));
             } else {
@@ -193,7 +192,7 @@ public class TableContext {
                     columnDef.setValidateType("stringValidatorMessageGenerator");
                     columnDef.setValidator(this.generateDefaultStringValidator(columnDef.getPropertyName()));
                 }
-                columnDef.setControlType(JavaTypeController.getByJavaType(columnDef.getJavaType()).getControlTypes()[0]);
+                columnDef.setControlType(JavaTypeController.getByJavaType(columnDef.getJavaType()).getControlTypes()[0].getIdentity());
             }
             columnDef.setSort(i++);
             columnDefs.add(columnDef);

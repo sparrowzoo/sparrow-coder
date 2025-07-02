@@ -1,6 +1,5 @@
 package com.sparrowzoo.coder.domain.service.frontend;
 
-import com.sparrow.core.Pair;
 import com.sparrow.core.spi.JsonFactory;
 import com.sparrow.io.file.FileNameBuilder;
 import com.sparrow.io.file.FileNameProperty;
@@ -12,19 +11,19 @@ import com.sparrowzoo.coder.domain.bo.ColumnDef;
 import com.sparrowzoo.coder.domain.bo.ProjectBO;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableContext;
-import com.sparrowzoo.coder.domain.bo.validate.*;
+import com.sparrowzoo.coder.domain.bo.validate.Validator;
 import com.sparrowzoo.coder.domain.service.ArchitectureGenerator;
 import com.sparrowzoo.coder.domain.service.ValidatorMessageGenerator;
 import com.sparrowzoo.coder.domain.service.frontend.generator.column.ColumnGenerator;
 import com.sparrowzoo.coder.domain.service.registry.ColumnGeneratorRegistry;
 import com.sparrowzoo.coder.domain.service.registry.ValidatorRegistry;
-import com.sparrowzoo.coder.enums.ArchitectureCategory;
-import com.sparrowzoo.coder.enums.ColumnType;
-import com.sparrowzoo.coder.enums.FrontendKey;
-import com.sparrowzoo.coder.enums.PlaceholderKey;
+import com.sparrowzoo.coder.enums.*;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DefaultFrontendPlaceholder implements FrontendPlaceholderGenerator {
     protected final ProjectBO project;
@@ -96,11 +95,18 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholderGenerator 
         }
         HashMap<String, String> imports = new HashMap<>();
         for (ColumnDef columnDef : this.columnDefs) {
-            if (columnDef.getHeaderType() != null && !imports.containsKey(columnDef.getHeaderType().getComponentName())) {
-                imports.put(columnDef.getHeaderType().getComponentName(), this.columnGenerator.importHeader(columnDef.getHeaderType(),project));
+            if (columnDef.getHeaderType() != null) {
+                HeaderType headerType = HeaderType.getById(columnDef.getHeaderType());
+                if (headerType != null && !imports.containsKey(headerType.getComponentName())) {
+                    imports.put(headerType.getComponentName(), this.columnGenerator.importHeader(headerType, project));
+                }
             }
-            if (columnDef.getCellType() != null && !imports.containsKey(columnDef.getCellType().getComponentName())) {
-                imports.put(columnDef.getCellType().getComponentName(), this.columnGenerator.importCell(columnDef.getCellType(),project));
+
+            if (columnDef.getCellType() != null) {
+                CellType cellType = CellType.getById(columnDef.getCellType());
+                if (cellType != null && !imports.containsKey(cellType.getComponentName())) {
+                    imports.put(cellType.getComponentName(), this.columnGenerator.importCell(cellType, project));
+                }
             }
         }
         return String.join("\n", imports.values());
@@ -141,7 +147,7 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholderGenerator 
         if (CollectionsUtility.isNullOrEmpty(this.columnDefs)) {
             return;
         }
-        Map<String,String> placeholder=this.tableContext.getPlaceHolder();
+        Map<String, String> placeholder = this.tableContext.getPlaceHolder();
         List<String> columns = new ArrayList<>();
         List<String> addFormItems = new ArrayList<>();
         List<String> editFormItems = new ArrayList<>();
@@ -149,22 +155,22 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholderGenerator 
         Map<String, Object> columnI18nMap = tableContext.getI18nMap();
         for (ColumnDef columnDef : this.columnDefs) {
             if (columnDef.getShowInList()) {
-                columns.add(columnGenerator.column(columnDef,project));
+                columns.add(columnGenerator.column(columnDef, project));
             }
             if (columnDef.getShowInEdit()) {
-                addFormItems.add(columnGenerator.edit(columnDef,project,true));
-                editFormItems.add(columnGenerator.edit(columnDef,project,false));
+                addFormItems.add(columnGenerator.edit(columnDef, project, true));
+                editFormItems.add(columnGenerator.edit(columnDef, project, false));
             }
             columnI18nMap.put(columnDef.getPropertyName(), columnDef.getChineseName());
         }
         String columnStr = String.join(",", columns);
         String addFormItemStr = String.join("\n", addFormItems);
-        String editFormItemStr=String.join("\n",editFormItems);
+        String editFormItemStr = String.join("\n", editFormItems);
         String className = tableContext.getEntityManager().getSimpleClassName();
         String columnDefs = String.format("export const columns: ColumnDef<%1$s>[] = [\n%2$s\n];", className, columnStr);
-        placeholder.put(PlaceholderKey.$frontend_column_defs.name(),columnDefs);
-        placeholder.put(PlaceholderKey.$frontend_add_form_items.name(),addFormItemStr);
-        placeholder.put(PlaceholderKey.$frontend_edit_form_items.name(),editFormItemStr);
+        placeholder.put(PlaceholderKey.$frontend_column_defs.name(), columnDefs);
+        placeholder.put(PlaceholderKey.$frontend_add_form_items.name(), addFormItemStr);
+        placeholder.put(PlaceholderKey.$frontend_edit_form_items.name(), editFormItemStr);
 
     }
 
