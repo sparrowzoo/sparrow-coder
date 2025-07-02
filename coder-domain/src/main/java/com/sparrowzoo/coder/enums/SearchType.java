@@ -1,6 +1,8 @@
 package com.sparrowzoo.coder.enums;
 
-public enum SearchType {
+import com.sparrow.protocol.NameAccessor;
+
+public enum SearchType implements NameAccessor {
     EQUAL,
     PREFIX_LIKE,
     SUFFIX_LIKE,
@@ -11,5 +13,10 @@ public enum SearchType {
     GREATER,
     GREATER_EQUAL,
     BETWEEN,
-    NOT_EQUAL
+    NOT_EQUAL;
+
+    @Override
+    public String getName() {
+        return this.name();
+    }
 }

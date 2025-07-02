@@ -1,9 +1,10 @@
 package com.sparrowzoo.coder.enums;
 
+import com.sparrow.protocol.NameAccessor;
 import lombok.Getter;
 
 @Getter
-public enum HeaderType {
+public enum HeaderType implements NameAccessor {
     CHECK_BOX("CheckboxHeader", "check-box", false, false, "选择"),
     COLUMN_FILTER("ColumnFilter", "column-filter", false, false, "过滤"),
     NORMAL("PlainTextHeader", "plain-text", false, false, "标准"),
@@ -27,5 +28,10 @@ public enum HeaderType {
         this.description = description;
         this.sortable = sortable;
         this.filterable = filterable;
+    }
+
+    @Override
+    public String getName() {
+        return this.name();
     }
 }

@@ -97,10 +97,10 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholderGenerator 
         HashMap<String, String> imports = new HashMap<>();
         for (ColumnDef columnDef : this.columnDefs) {
             if (columnDef.getHeaderType() != null && !imports.containsKey(columnDef.getHeaderType().getComponentName())) {
-                imports.put(columnDef.getHeaderType().getComponentName(), this.columnGenerator.importHeader(columnDef.getHeaderType()));
+                imports.put(columnDef.getHeaderType().getComponentName(), this.columnGenerator.importHeader(columnDef.getHeaderType(),project));
             }
             if (columnDef.getCellType() != null && !imports.containsKey(columnDef.getCellType().getComponentName())) {
-                imports.put(columnDef.getCellType().getComponentName(), this.columnGenerator.importCell(columnDef.getCellType()));
+                imports.put(columnDef.getCellType().getComponentName(), this.columnGenerator.importCell(columnDef.getCellType(),project));
             }
         }
         return String.join("\n", imports.values());
@@ -149,11 +149,11 @@ public class DefaultFrontendPlaceholder implements FrontendPlaceholderGenerator 
         Map<String, Object> columnI18nMap = tableContext.getI18nMap();
         for (ColumnDef columnDef : this.columnDefs) {
             if (columnDef.getShowInList()) {
-                columns.add(columnGenerator.column(columnDef));
+                columns.add(columnGenerator.column(columnDef,project));
             }
             if (columnDef.getShowInEdit()) {
-                addFormItems.add(columnGenerator.edit(columnDef,true));
-                editFormItems.add(columnGenerator.edit(columnDef,false));
+                addFormItems.add(columnGenerator.edit(columnDef,project,true));
+                editFormItems.add(columnGenerator.edit(columnDef,project,false));
             }
             columnI18nMap.put(columnDef.getPropertyName(), columnDef.getChineseName());
         }

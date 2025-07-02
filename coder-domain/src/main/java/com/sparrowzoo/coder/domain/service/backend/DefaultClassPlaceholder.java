@@ -72,6 +72,7 @@ public class DefaultClassPlaceholder implements ClassPlaceholderGenerator {
         String persistenceClassName = entityManager.getSimpleClassName();
         String modulePrefix = this.project.getProjectConfig().getModulePrefix();
         placeHolder.put(PlaceholderKey.$package_bo.name(), this.getPackage(ClassKey.BO));
+        placeHolder.put(PlaceholderKey.$project_i18n.name(), project.getProjectConfig().getI18n().toString());
         placeHolder.put(PlaceholderKey.$package_param.name(), this.getPackage(ClassKey.PARAM));
         placeHolder.put(PlaceholderKey.$package_query.name(), this.getPackage(ClassKey.QUERY));
         placeHolder.put(PlaceholderKey.$package_dto.name(), this.getPackage(ClassKey.DTO));

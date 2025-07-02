@@ -26,10 +26,6 @@ public class ColumnDef {
     private String validateType;
     private Validator validator;
     private DataSourceType dataSourceType;
-    /**
-     * 后台接口
-     */
-    private String dataSourceApi;
     private String dataSourceParams;
     private ColumnType columnType;
     private HeaderType headerType;
@@ -60,7 +56,6 @@ public class ColumnDef {
         columnDef.setValidateType("");
         columnDef.setValidator(null);
         columnDef.setDataSourceType(DataSourceType.NULL);
-        columnDef.setDataSourceApi("");
         columnDef.setDataSourceParams("");
         columnDef.setControlType(null);
         columnDef.setSort(sort);
@@ -90,7 +85,6 @@ public class ColumnDef {
         columnDef.setValidateType("");
         columnDef.setValidator(null);
         columnDef.setDataSourceType(DataSourceType.NULL);
-        columnDef.setDataSourceApi("");
         columnDef.setDataSourceParams("");
         columnDef.setControlType(null);
         columnDef.setSort(sort);
@@ -120,7 +114,6 @@ public class ColumnDef {
         columnDef.setValidateType("");
         columnDef.setValidator(null);
         columnDef.setDataSourceType(DataSourceType.NULL);
-        columnDef.setDataSourceApi("");
         columnDef.setDataSourceParams("");
         columnDef.setControlType(null);
         columnDef.setSort(sort);

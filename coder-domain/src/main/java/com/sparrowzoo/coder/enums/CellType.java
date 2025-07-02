@@ -1,9 +1,10 @@
 package com.sparrowzoo.coder.enums;
 
+import com.sparrow.protocol.NameAccessor;
 import lombok.Getter;
 
 @Getter
-public enum CellType {
+public enum CellType implements NameAccessor {
     CHECK_BOX("CheckBoxCell", "check-box", "选择"),
     NORMAL("NormalCell", "normal", "标准"),
     CURRENCY("CurrencyCell", "currency", "货币"),
@@ -18,5 +19,10 @@ public enum CellType {
         this.componentName = componentName;
         this.fileName = fileName;
         this.description = description;
+    }
+
+    @Override
+    public String getName() {
+        return this.componentName;
     }
 }

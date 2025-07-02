@@ -3,6 +3,7 @@ package com.sparrowzoo.coder.domain.service.frontend.generator.column;
 import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.constant.ArchitectureNames;
 import com.sparrowzoo.coder.domain.bo.ColumnDef;
+import com.sparrowzoo.coder.domain.bo.ProjectBO;
 import com.sparrowzoo.coder.enums.CellType;
 import com.sparrowzoo.coder.enums.ColumnType;
 import com.sparrowzoo.coder.enums.ControlType;
@@ -26,10 +27,10 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
      * @return
      */
     @Override
-    public String column(ColumnDef columnDef) {
+    public String column(ColumnDef columnDef, ProjectBO project) {
         List<String> columnDefList = new ArrayList<>();
         columnDefList.add(this.renderColumnType(columnDef));
-        columnDefList.add(this.renderHeader(columnDef));
+        columnDefList.add(this.renderHeader(columnDef,project));
         columnDefList.add(this.renderCell(columnDef));
         columnDefList.add(String.format("enableHiding: %s", columnDef.getEnableHidden()));
         return String.format("{\n%s\n}", StringUtility.join(columnDefList, ",\n"));
@@ -49,7 +50,7 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
      * @return
      */
     @Override
-    public String edit(ColumnDef columnDef, Boolean add) {
+    public String edit(ColumnDef columnDef,ProjectBO project, Boolean add) {
         if (columnDef.getColumnType().equals(ColumnType.ACTION) ||
                 columnDef.getColumnType().equals(ColumnType.CHECK) ||
                 columnDef.getColumnType().equals(ColumnType.FILTER)
@@ -95,12 +96,12 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
     }
 
     @Override
-    public String importHeader(HeaderType headerType) {
+    public String importHeader(HeaderType headerType,ProjectBO project) {
         return String.format("import %1$s from \"@/common/components/table/header/%2$s\";", headerType.getComponentName(), headerType.getFileName());
     }
 
     @Override
-    public String importCell(CellType cellType) {
+    public String importCell(CellType cellType,ProjectBO project) {
         return String.format("import %1$s from \"@/common/components/table/cell/%2$s\";", cellType.getComponentName(), cellType.getFileName());
     }
 
@@ -127,26 +128,24 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
         }
     }
 
-    public String renderHeader(ColumnDef columnDef) {
-
+    public String renderHeader(ColumnDef columnDef,ProjectBO project) {
         HeaderType headerType = columnDef.getHeaderType();
         if (headerType == null) {
             return "header:''";
         }
         String columnTitle = columnDef.getChineseName();
-        String i18nPrefix = columnDef.getTableClassName();
         if (columnDef.getColumnType().equals(ColumnType.CHECK)) {
             return "header: CheckboxHeader";
         }
         if (columnDef.getColumnType().equals(ColumnType.FILTER)) {
-            return String.format("header: ColumnFilter({i18nPrefix: \"%1$s\"} as ColumnOperationProps)", i18nPrefix);
+            return "header: ColumnFilter()";
 
         }
         if (columnDef.getColumnType().equals(ColumnType.TREE)) {
             return "header:\"\"";
         }
         if (columnDef.getColumnType().equals(ColumnType.ACTION)) {
-            return String.format("header: PlainTextHeader({columnTitle: \"%1$s\", i18nPrefix: \"%2$s\"} as ColumnOperationProps)", columnTitle, i18nPrefix);
+            return String.format("header: PlainTextHeader({columnTitle: \"%1$s\"} as ColumnOperationProps)", columnTitle);
         }
 
         switch (headerType) {
@@ -158,20 +157,18 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
                 return "header: ColumnFilter";
             case PLAIN_TEXT:
             case NORMAL:
-                return String.format("header: PlainTextHeader({columnTitle: \"%1$s\", i18nPrefix: \"%2$s\"} as ColumnOperationProps)", columnTitle, i18nPrefix);
+                return String.format("header: PlainTextHeader({columnTitle: \"%1$s\"} as ColumnOperationProps)", columnTitle);
             case NORMAL_FILTER:
             case NORMAL_SORT:
             case NORMAL_SORT_FILTER:
                 return String.format("header: NormalHeader({\n" +
                                 "            showSort: %1$s,\n" +
                                 "            showFilter: %2$s,\n" +
-                                "            columnTitle: \"%3$s\",\n" +
-                                "            i18nPrefix: \"%4$s\",\n" +
-                                "        } as ColumnOperationProps)%5$s",
+                                "            columnTitle: \"%3$s\",\n"+
+                                "        } as ColumnOperationProps)%4$s",
                         headerType.getSortable(),
                         headerType.getFilterable(),
                         columnTitle,
-                        i18nPrefix,
                         headerType.getSortable() ? ",\nfilterFn: filterFns.includesString" : "");
             default:
                 return "header:''";

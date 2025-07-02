@@ -17,6 +17,7 @@
 package com.sparrowzoo.coder.adapter.controller;
 
 import com.sparrow.protocol.BusinessException;
+import com.sparrow.protocol.KeyValue;
 import com.sparrow.protocol.ListRecordTotalBO;
 import com.sparrow.protocol.pager.PagerResult;
 import com.sparrowzoo.coder.adapter.assemble.ProjectConfigAssemble;
@@ -29,6 +30,8 @@ import javax.inject.Inject;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
+import java.util.List;
 import java.util.Set;
 
 
@@ -52,9 +55,13 @@ public class ProjectConfigController {
 
     @PostMapping("save.json")
             @ApiOperation("保存")
-
     public Long saveProjectConfig(@RequestBody ProjectConfigParam projectConfigParam) throws BusinessException {
        return  this.projectConfigService.saveProjectConfig(projectConfigParam);
+    }
+
+    @PostMapping("get-project-list.json")
+    public List<KeyValue> getProjectList(@RequestBody Boolean lang){
+        //
     }
 
     @GetMapping("detail.json")

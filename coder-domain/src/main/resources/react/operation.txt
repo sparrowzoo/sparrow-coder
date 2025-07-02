@@ -12,7 +12,7 @@ import {useTranslations} from "next-intl";
 
 export default function Operation({table}: TableOperationProps<$persistence_class_name>) {
     const globalTranslate = useTranslations("GlobalForm");
-
+    const errorTranslate = useTranslations("$persistence_class_name.ErrorMessage")
     return (<div className="flex justify-between gap-4">
             <Dialog>
                 <DialogTrigger asChild>
@@ -23,14 +23,44 @@ export default function Operation({table}: TableOperationProps<$persistence_clas
                 </DialogContent>
             </Dialog>
             <Button onClick={() => {
-                const translate = () => "";
                 const selectedIds = getSelectedIds(table);
-                $persistence_class_nameApi.batchDelete(selectedIds, translate).then(
+                if (selectedIds.length === 0) {
+                                    toast(globalTranslate("no-record-checked"));
+                                    return;
+                }
+                $persistence_class_nameApi.batchDelete(selectedIds, errorTranslate).then(
                     (res) => {
                         toast.success(globalTranslate("delete")+globalTranslate("operation-success"));
                     }
                 )
             }} variant="outline">{globalTranslate("delete")}</Button>
+
+            <Button onClick={() => {
+                            const selectedIds = getSelectedIds(table);
+                            if (selectedIds.length === 0) {
+                                                toast(globalTranslate("no-record-checked"));
+                                                return;
+                            }
+                            $persistence_class_nameApi.enable(selectedIds, errorTranslate).then(
+                                (res) => {
+                                    toast.success(globalTranslate("enable")+globalTranslate("operation-success"));
+                                }
+                            )
+                        }} variant="outline">{globalTranslate("enable")}</Button>
+
+
+                        <Button onClick={() => {
+                                        const selectedIds = getSelectedIds(table);
+                                        if (selectedIds.length === 0) {
+                                                            toast(globalTranslate("no-record-checked"));
+                                                            return;
+                                        }
+                                        $persistence_class_nameApi.disable(selectedIds, errorTranslate).then(
+                                            (res) => {
+                                                toast.success(globalTranslate("disable")+globalTranslate("operation-success"));
+                                            }
+                                        )
+                                    }} variant="outline">{globalTranslate("disable")}</Button>
         </div>
     );
 }

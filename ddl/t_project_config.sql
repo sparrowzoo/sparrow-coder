@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS `t_project_config`;
 CREATE TABLE `t_project_config` (
- `id` int NOT NULL AUTO_INCREMENT,
+ `id` int comment 'ID NOT NULL AUTO_INCREMENT,
  `name` varchar(50) default '' comment '项目名称'  NOT NULL,
  `frontend_name` varchar(50) default '' comment '前端项目名称'  ,
  `chinese_name` varchar(50) default '' comment '项目中文名称'  ,

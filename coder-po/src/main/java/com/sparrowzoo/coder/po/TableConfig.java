@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class TableConfig extends PO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "int")
+    @Column(name = "id", columnDefinition = "int COMMENT 'ID")
     private Long id;
     @Column(name = "project_id", updatable = false, nullable = false, columnDefinition = "int comment '项目ID'")
     private Long projectId;

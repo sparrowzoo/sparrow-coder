@@ -1,9 +1,10 @@
 package com.sparrowzoo.coder.enums;
 
+import com.sparrow.protocol.NameAccessor;
 import lombok.Getter;
 
 @Getter
-public enum ColumnType {
+public enum ColumnType implements NameAccessor {
     ACTION("菜单"),
     CHECK("选择"),
     FILTER("过滤列"),
@@ -14,5 +15,10 @@ public enum ColumnType {
 
     ColumnType(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String getName() {
+        return this.name();
     }
 }

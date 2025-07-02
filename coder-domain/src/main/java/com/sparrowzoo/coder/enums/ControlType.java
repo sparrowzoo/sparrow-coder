@@ -1,9 +1,10 @@
 package com.sparrowzoo.coder.enums;
 
+import com.sparrow.protocol.NameAccessor;
 import lombok.Getter;
 
 @Getter
-public enum ControlType {
+public enum ControlType implements NameAccessor {
     LABEL("lbl","label"),
     LINK("lnk","link"),
     INPUT_TEXT("txt","text"),
@@ -31,5 +32,10 @@ public enum ControlType {
     ControlType(String prefix,String inputType) {
         this.prefix = prefix;
         this.inputType = inputType;
+    }
+
+    @Override
+    public String getName() {
+        return this.name();
     }
 }

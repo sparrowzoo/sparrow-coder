@@ -20,6 +20,8 @@ public enum PlaceholderKey {
      * 项目名
      */
     $project,
+
+    $project_i18n,
     /**
      * origin table name e.g user_address
      */

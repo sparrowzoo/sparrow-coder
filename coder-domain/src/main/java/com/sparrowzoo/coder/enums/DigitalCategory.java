@@ -1,6 +1,8 @@
 package com.sparrowzoo.coder.enums;
 
-public enum DigitalCategory {
+import com.sparrow.protocol.NameAccessor;
+
+public enum DigitalCategory implements NameAccessor {
     INTEGER("/^\\d+$/","parseInt(input,10)"),
     SIGNED_INTEGER("/^-?\\d+$/","parseInt(input,10)"),
     FLOAT("/^-?\\d+\\.\\d+$/","parseFloat(input)");
@@ -18,5 +20,10 @@ public enum DigitalCategory {
 
     public String getConverter() {
         return converter;
+    }
+
+    @Override
+    public String getName() {
+        return this.name();
     }
 }

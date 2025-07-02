@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class ProjectConfig extends PO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "int")
+    @Column(name = "id", columnDefinition = "int comment 'ID")
     private Long id;
     @Column(name = "name", updatable = false, nullable = false, columnDefinition = "varchar(50) default '' comment '项目名称'")
     private String name;
