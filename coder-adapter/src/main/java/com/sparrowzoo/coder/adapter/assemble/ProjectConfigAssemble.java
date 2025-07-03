@@ -19,11 +19,9 @@ package com.sparrowzoo.coder.adapter.assemble;
 import com.sparrow.protocol.ListRecordTotalBO;
 import com.sparrow.protocol.pager.PagerResult;
 import com.sparrow.protocol.pager.SimplePager;
-import com.sparrowzoo.coder.adapter.protocol.vo.ProjectConfigVO;
+import com.sparrowzoo.coder.protocol.dto.ProjectConfigDTO;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.protocol.param.ProjectConfigParam;
-import com.sparrow.support.assemble.BO2VOAssemble;
-import com.sparrow.support.assemble.Param2VOAssemble;
 import com.sparrow.utility.CollectionsUtility;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,40 +32,33 @@ import com.sparrow.protocol.BeanCopier;
 
 
 @Named
-public class ProjectConfigAssemble implements BO2VOAssemble<ProjectConfigVO, ProjectConfigBO>,
-    Param2VOAssemble<ProjectConfigVO,ProjectConfigParam> {
+public class ProjectConfigAssemble{
 
     @Inject
     private BeanCopier beanCopier;
 
-    public ProjectConfigVO paramAssembleVO(ProjectConfigParam param){
-        ProjectConfigVO projectConfig = new ProjectConfigVO();
-        beanCopier.copyProperties(param, projectConfig);
-        return projectConfig;
-    }
-
-    @Override public ProjectConfigVO boAssembleVO(ProjectConfigBO bo) {
-        ProjectConfigVO projectConfig = new ProjectConfigVO();
+     public ProjectConfigDTO boAssembleDTO(ProjectConfigBO bo) {
+        ProjectConfigDTO projectConfig = new ProjectConfigDTO();
         beanCopier.copyProperties(bo, projectConfig);
         return projectConfig;
     }
 
-    @Override public List<ProjectConfigVO> boListAssembleVOList(List<ProjectConfigBO> list) {
+     public List<ProjectConfigDTO> boListAssembleDTOList(List<ProjectConfigBO> list) {
         if (CollectionsUtility.isNullOrEmpty(list)) {
             return Collections.emptyList();
         }
-        List<ProjectConfigVO> projectConfigVOList = new ArrayList<>(list.size());
+        List<ProjectConfigDTO> projectConfigDTOList = new ArrayList<>(list.size());
         for (ProjectConfigBO projectConfigBo : list) {
-            projectConfigVOList.add(this.boAssembleVO(projectConfigBo));
+            projectConfigDTOList.add(this.boAssembleDTO(projectConfigBo));
         }
-        return projectConfigVOList;
+        return projectConfigDTOList;
     }
 
-    public PagerResult<ProjectConfigVO> assemblePager(ListRecordTotalBO<ProjectConfigBO> projectConfigListTotalRecord,
+    public PagerResult<ProjectConfigDTO> assemblePager(ListRecordTotalBO<ProjectConfigBO> projectConfigListTotalRecord,
         SimplePager projectConfigQuery) {
-        List<ProjectConfigVO> projectConfigVOList = this.boListAssembleVOList(projectConfigListTotalRecord.getList());
-        PagerResult<ProjectConfigVO> pagerResult = new PagerResult<>(projectConfigQuery);
-        pagerResult.setList(projectConfigVOList);
+        List<ProjectConfigDTO> projectConfigDTOList = this.boListAssembleDTOList(projectConfigListTotalRecord.getList());
+        PagerResult<ProjectConfigDTO> pagerResult = new PagerResult<>(projectConfigQuery);
+        pagerResult.setList(projectConfigDTOList);
         pagerResult.setRecordTotal(projectConfigListTotalRecord.getTotal());
         return pagerResult;
     }

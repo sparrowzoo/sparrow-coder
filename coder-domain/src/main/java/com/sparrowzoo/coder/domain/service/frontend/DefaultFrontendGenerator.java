@@ -3,7 +3,6 @@ package com.sparrowzoo.coder.domain.service.frontend;
 import com.sparrow.core.spi.JsonFactory;
 import com.sparrow.io.file.FileNameBuilder;
 import com.sparrow.json.Json;
-import com.sparrow.support.EnvironmentSupport;
 import com.sparrow.utility.FileUtility;
 import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.domain.bo.ProjectBO;
@@ -17,9 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -43,7 +39,7 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
     @Override
     public String getTargetPhysicalPath(FrontendKey key) {
         ProjectConfigBO projectConfig = this.project.getProjectConfig();
-        EnvConfig envConfig= project.getEnvConfig();
+        EnvConfig envConfig = project.getEnvConfig();
         String projectName = projectConfig.getFrontendName();
         String home = envConfig.getHome(projectConfig.getCreateUserId());
         return new FileNameBuilder(envConfig.getWorkspace())
@@ -88,7 +84,7 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
 
     private String toi18nMessageFileList() {
         String messageFileList = FileUtility.getInstance().readFileContent(this.getTargetPhysicalPath(FrontendKey.MESSAGE_FILE_LIST));
-        Set<String> newFileList=new LinkedHashSet<>();
+        Set<String> newFileList = new LinkedHashSet<>();
         newFileList.add("default");//default 必须排第一,否则国际化会有问题
         Set<String> oldFileList = json.parse(messageFileList, Set.class);
         newFileList.addAll(oldFileList);

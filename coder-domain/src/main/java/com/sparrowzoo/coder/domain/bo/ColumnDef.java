@@ -1,5 +1,7 @@
 package com.sparrowzoo.coder.domain.bo;
 
+import com.sparrow.protocol.POJO;
+import com.sparrow.protocol.dao.PO;
 import com.sparrowzoo.coder.domain.bo.validate.Validator;
 import com.sparrowzoo.coder.enums.*;
 import lombok.Data;
@@ -9,7 +11,7 @@ import javax.persistence.Table;
 
 @Data
 @Table(name = "column_def")
-public class ColumnDef {
+public class ColumnDef implements POJO {
     @Column(name = "table_class_name", updatable = false, columnDefinition = "varchar(255) comment '类名'")
     private String tableClassName;
     @Column(name = "property_name", updatable = false, columnDefinition = "varchar(255) comment '属性名'")

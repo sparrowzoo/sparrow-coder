@@ -23,7 +23,7 @@ import com.sparrowzoo.coder.adapter.assemble.TableConfigAssemble;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
 import com.sparrowzoo.coder.protocol.param.TableConfigParam;
 import com.sparrowzoo.coder.protocol.query.TableConfigQuery;
-import com.sparrowzoo.coder.adapter.protocol.vo.TableConfigVO;
+import com.sparrowzoo.coder.protocol.dto.TableConfigDTO;
 import com.sparrowzoo.coder.domain.service.TableConfigService;
 import javax.inject.Inject;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +45,7 @@ public class TableConfigController {
 
     @PostMapping("search.json")
     @ApiOperation("搜索")
-    public PagerResult<TableConfigVO> search(@RequestBody TableConfigQuery tableConfigQuery) {
+    public PagerResult<TableConfigDTO> search(@RequestBody TableConfigQuery tableConfigQuery) {
         ListRecordTotalBO<TableConfigBO> tableConfigListTotalRecord = this.tableConfigService.queryTableConfig(tableConfigQuery);
         return this.tableConfigAssemble.assemblePager(tableConfigListTotalRecord, tableConfigQuery);
     }
@@ -59,9 +59,9 @@ public class TableConfigController {
 
     @GetMapping("detail.json")
             @ApiOperation("详情页")
-    public TableConfigVO getTableConfig(Long tableConfigId) throws BusinessException {
+    public TableConfigDTO getTableConfig(Long tableConfigId) throws BusinessException {
         TableConfigBO tableConfigBo = tableConfigService.getTableConfig(tableConfigId);
-        return this.tableConfigAssemble.boAssembleVO(tableConfigBo);
+        return this.tableConfigAssemble.boAssembleDTO(tableConfigBo);
     }
 
     @PostMapping("delete.json")

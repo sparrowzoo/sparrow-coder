@@ -1,5 +1,7 @@
 package com.sparrowzoo.coder.domain.service;
 
+import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
+
 import java.io.IOException;
 
 public interface CodeGenerator {
@@ -8,4 +10,7 @@ public interface CodeGenerator {
     void initScaffold();
 
     void clear();
+
+    TableConfigRegistry getRegistry();
+
 }

@@ -1,0 +1,10 @@
+package $package_dto;
+
+import com.sparrow.protocol.DTO;
+import lombok.Data;
+import com.sparrow.protocol.enums.StatusRecord;
+
+@Data
+public class $persistence_class_nameDTO implements DTO {
+    $get_sets
+}

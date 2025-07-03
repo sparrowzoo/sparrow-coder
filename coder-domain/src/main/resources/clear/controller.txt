@@ -7,7 +7,7 @@ import $package_assemble.$persistence_class_nameAssemble;
 import $package_bo.$persistence_class_nameBO;
 import $package_param.$persistence_class_nameParam;
 import $package_query.$persistence_class_nameQuery;
-import $package_vo.$persistence_class_nameVO;
+import $package_dto.$persistence_class_nameDTO;
 import $package_service.$persistence_class_nameService;
 import javax.inject.Inject;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +29,7 @@ public class $persistence_class_nameController {
 
     @PostMapping("search.json")
     @ApiOperation("搜索")
-    public PagerResult<$persistence_class_nameVO> search(@RequestBody $persistence_class_nameQuery $persistence_object_nameQuery) {
+    public PagerResult<$persistence_class_nameDTO> search(@RequestBody $persistence_class_nameQuery $persistence_object_nameQuery) {
         ListRecordTotalBO<$persistence_class_nameBO> $persistence_object_nameListTotalRecord = this.$persistence_object_nameService.query$persistence_class_name($persistence_object_nameQuery);
         return this.$persistence_object_nameAssemble.assemblePager($persistence_object_nameListTotalRecord, $persistence_object_nameQuery);
     }
@@ -43,9 +43,9 @@ public class $persistence_class_nameController {
 
     @GetMapping("detail.json")
             @ApiOperation("详情页")
-    public $persistence_class_nameVO get$persistence_class_name(Long $persistence_object_nameId) throws BusinessException {
+    public $persistence_class_nameDTO get$persistence_class_name(Long $persistence_object_nameId) throws BusinessException {
         $persistence_class_nameBO $persistence_object_nameBo = $persistence_object_nameService.get$persistence_class_name($persistence_object_nameId);
-        return this.$persistence_object_nameAssemble.boAssembleVO($persistence_object_nameBo);
+        return this.$persistence_object_nameAssemble.boAssembleDTO($persistence_object_nameBo);
     }
 
     @PostMapping("delete.json")

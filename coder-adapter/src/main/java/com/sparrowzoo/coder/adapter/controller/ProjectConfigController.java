@@ -23,7 +23,7 @@ import com.sparrowzoo.coder.adapter.assemble.ProjectConfigAssemble;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.protocol.param.ProjectConfigParam;
 import com.sparrowzoo.coder.protocol.query.ProjectConfigQuery;
-import com.sparrowzoo.coder.adapter.protocol.vo.ProjectConfigVO;
+import com.sparrowzoo.coder.protocol.dto.ProjectConfigDTO;
 import com.sparrowzoo.coder.domain.service.ProjectConfigService;
 import javax.inject.Inject;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +45,7 @@ public class ProjectConfigController {
 
     @PostMapping("search.json")
     @ApiOperation("搜索")
-    public PagerResult<ProjectConfigVO> search(@RequestBody ProjectConfigQuery projectConfigQuery) {
+    public PagerResult<ProjectConfigDTO> search(@RequestBody ProjectConfigQuery projectConfigQuery) {
         ListRecordTotalBO<ProjectConfigBO> projectConfigListTotalRecord = this.projectConfigService.queryProjectConfig(projectConfigQuery);
         return this.projectConfigAssemble.assemblePager(projectConfigListTotalRecord, projectConfigQuery);
     }
@@ -59,9 +59,9 @@ public class ProjectConfigController {
 
     @GetMapping("detail.json")
             @ApiOperation("详情页")
-    public ProjectConfigVO getProjectConfig(Long projectConfigId) throws BusinessException {
+    public ProjectConfigDTO getProjectConfig(Long projectConfigId) throws BusinessException {
         ProjectConfigBO projectConfigBo = projectConfigService.getProjectConfig(projectConfigId);
-        return this.projectConfigAssemble.boAssembleVO(projectConfigBo);
+        return this.projectConfigAssemble.boAssembleDTO(projectConfigBo);
     }
 
     @PostMapping("delete.json")
