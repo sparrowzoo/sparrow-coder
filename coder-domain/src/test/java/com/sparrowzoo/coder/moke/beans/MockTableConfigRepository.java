@@ -117,10 +117,9 @@ public class MockTableConfigRepository implements TableConfigRepository {
         tableConfig.setCreateUserName("harry");
         tableConfig.setModifiedUserName("");
 
-        TableContext tableContext=new TableContext(tableConfig,null);
-        List<ColumnDef> columnDefs =tableContext.getDefaultColumns();
-
-        tableConfig.setColumnConfigs(JSON.toJSONString(columnDefs));
+//        TableContext tableContext=new TableContext(tableConfig,null);
+//        List<ColumnDef> columnDefs =tableContext.getDefaultColumns();
+//        tableConfig.setColumnConfigs(JSON.toJSONString(columnDefs));
         return tableConfig;
     }
 
@@ -170,9 +169,36 @@ public class MockTableConfigRepository implements TableConfigRepository {
         projectTable.setGmtModified(0L);
         projectTable.setCreateUserName("harry");
         projectTable.setModifiedUserName("");
+
+
+        TableConfigBO columnConfig = new TableConfigBO();
+        columnConfig.setId(2L);
+        columnConfig.setProjectId(1L);
+        columnConfig.setPrimaryKey("id");
+        columnConfig.setTableName("t_column_config");
+        columnConfig.setClassName("com.sparrowzoo.coder.domain.bo.ColumnDef");
+        columnConfig.setLocked(false);
+
+        columnConfig.setDescription("");
+        columnConfig.setCheckable(-1);
+        columnConfig.setRowMenu(-1);
+        columnConfig.setColumnFilter(-1);
+        columnConfig.setStatusCommand(false);
+        columnConfig.setColumnConfigs("");
+        columnConfig.setSource(CodeSource.INNER.name());
+        columnConfig.setSourceCode("");
+        columnConfig.setCreateUserId(0L);
+        columnConfig.setModifiedUserId(0L);
+        columnConfig.setGmtCreate(0L);
+        columnConfig.setGmtModified(0L);
+        columnConfig.setCreateUserName("harry");
+        columnConfig.setModifiedUserName("");
+
+
         List<TableConfigBO> list = new ArrayList<>();
         list.add(tableConfig);
         list.add(projectTable);
+        list.add(columnConfig);
         return list;
     }
 

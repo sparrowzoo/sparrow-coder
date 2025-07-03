@@ -1,5 +1,6 @@
 package com.sparrowzoo.coder;
 
+import com.alibaba.fastjson.JSON;
 import com.sparrowzoo.coder.domain.bo.validate.RegexValidator;
 import com.sparrowzoo.coder.domain.service.ValidatorMessageGenerator;
 import com.sparrowzoo.coder.domain.service.registry.ValidatorRegistry;
@@ -11,7 +12,7 @@ public class ValidatorTest {
     @Test
     public void test() {
         ValidatorMessageGenerator messageGenerator = ValidatorRegistry.getInstance().getValidatorMessageGenerator("react",
-                "emailValidatorMessageGenerator");
+                "email");
 
         RegexValidator validator = new RegexValidator();
         validator.setAllowEmpty(true);
@@ -24,5 +25,6 @@ public class ValidatorTest {
 
         String validateMessage = messageGenerator.generateConfig("email", validator);
         System.out.println(validateMessage);
+        System.out.println(JSON.toJSONString(messageGenerator.defaultValidator()));
     }
 }

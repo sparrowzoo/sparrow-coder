@@ -27,7 +27,7 @@ public class ValidatorRegistry {
     public void registry(ValidatorMessageGenerator validatorMessageGenerator) {
         String packageName = validatorMessageGenerator.getClass().getPackage().getName();
         String namespace = packageName.substring(packageName.lastIndexOf(".") + 1);
-        String validatorName = ClassUtility.getBeanNameByClass(validatorMessageGenerator.getClass());
+        String validatorName = ClassUtility.getBeanNameByClass(validatorMessageGenerator.getClass(),ValidatorMessageGenerator.class);
         if (!this.registry.containsKey(namespace)) {
             this.registry.putIfAbsent(namespace, new HashMap<>());
         }

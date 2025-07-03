@@ -64,7 +64,7 @@ public class DefaultCodeGenerator implements CodeGenerator {
 
     @Override
     public void clear() {
-        ProjectBO project=registry.getProject();
+        ProjectBO project = registry.getProject();
         String targetDirectoryPath =
                 new FileNameBuilder(project.getEnvConfig().getWorkspace())
                         .joint(String.valueOf(project.getProjectConfig().getCreateUserId()))
@@ -72,4 +72,11 @@ public class DefaultCodeGenerator implements CodeGenerator {
                         .build();
         FileUtility.getInstance().delete(targetDirectoryPath, System.currentTimeMillis());
     }
+
+    @Override
+    public TableConfigRegistry getRegistry() {
+        return this.registry;
+    }
+
+
 }

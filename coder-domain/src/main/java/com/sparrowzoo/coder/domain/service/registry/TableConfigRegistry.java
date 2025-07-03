@@ -29,8 +29,11 @@ public class TableConfigRegistry {
     //封装project 维度变量，避免table context 引用registry循环依赖
     private ProjectBO project;
 
+    private PlaceholderExtensionRegistry placeholderExtensionRegistry=PlaceholderExtensionRegistry.getInstance();
+
     public void register(String tableName, TableContext tableContext) {
         registry.put(tableName, tableContext);
+        this.placeholderExtensionRegistry.extension(tableContext);
     }
 
     public TableContext getTableContext(String tableName) {

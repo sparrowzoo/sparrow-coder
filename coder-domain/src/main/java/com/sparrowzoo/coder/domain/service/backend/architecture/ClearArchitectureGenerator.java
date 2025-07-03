@@ -27,7 +27,7 @@ public class ClearArchitectureGenerator extends AbstractArchitectureGenerator {
         classGenerator.generate(ClassKey.BO);
         classGenerator.generate(ClassKey.QUERY);
         classGenerator.generate(ClassKey.PARAM);
-        classGenerator.generate(ClassKey.VO);
+        classGenerator.generate(ClassKey.DTO);
         classGenerator.generate(ClassKey.DAO);
         classGenerator.generate(ClassKey.DAO_IMPL);
         classGenerator.generate(ClassKey.DAO_MYBATIS);

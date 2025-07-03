@@ -3,11 +3,9 @@ package $package_assemble;
 import com.sparrow.protocol.ListRecordTotalBO;
 import com.sparrow.protocol.pager.PagerResult;
 import com.sparrow.protocol.pager.SimplePager;
-import $package_vo.$persistence_class_nameVO;
+import $package_dto.$persistence_class_nameDTO;
 import $package_bo.$persistence_class_nameBO;
 import $package_param.$persistence_class_nameParam;
-import com.sparrow.support.assemble.BO2VOAssemble;
-import com.sparrow.support.assemble.Param2VOAssemble;
 import com.sparrow.utility.CollectionsUtility;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,40 +16,33 @@ import com.sparrow.protocol.BeanCopier;
 
 
 @Named
-public class $persistence_class_nameAssemble implements BO2VOAssemble<$persistence_class_nameVO, $persistence_class_nameBO>,
-    Param2VOAssemble<$persistence_class_nameVO,$persistence_class_nameParam> {
+public class $persistence_class_nameAssemble{
 
     @Inject
     private BeanCopier beanCopier;
 
-    public $persistence_class_nameVO paramAssembleVO($persistence_class_nameParam param){
-        $persistence_class_nameVO $persistence_object_name = new $persistence_class_nameVO();
-        beanCopier.copyProperties(param, $persistence_object_name);
-        return $persistence_object_name;
-    }
-
-    @Override public $persistence_class_nameVO boAssembleVO($persistence_class_nameBO bo) {
-        $persistence_class_nameVO $persistence_object_name = new $persistence_class_nameVO();
+     public $persistence_class_nameDTO boAssembleDTO($persistence_class_nameBO bo) {
+        $persistence_class_nameDTO $persistence_object_name = new $persistence_class_nameDTO();
         beanCopier.copyProperties(bo, $persistence_object_name);
         return $persistence_object_name;
     }
 
-    @Override public List<$persistence_class_nameVO> boListAssembleVOList(List<$persistence_class_nameBO> list) {
+     public List<$persistence_class_nameDTO> boListAssembleDTOList(List<$persistence_class_nameBO> list) {
         if (CollectionsUtility.isNullOrEmpty(list)) {
             return Collections.emptyList();
         }
-        List<$persistence_class_nameVO> $persistence_object_nameVOList = new ArrayList<>(list.size());
+        List<$persistence_class_nameDTO> $persistence_object_nameDTOList = new ArrayList<>(list.size());
         for ($persistence_class_nameBO $persistence_object_nameBo : list) {
-            $persistence_object_nameVOList.add(this.boAssembleVO($persistence_object_nameBo));
+            $persistence_object_nameDTOList.add(this.boAssembleDTO($persistence_object_nameBo));
         }
-        return $persistence_object_nameVOList;
+        return $persistence_object_nameDTOList;
     }
 
-    public PagerResult<$persistence_class_nameVO> assemblePager(ListRecordTotalBO<$persistence_class_nameBO> $persistence_object_nameListTotalRecord,
+    public PagerResult<$persistence_class_nameDTO> assemblePager(ListRecordTotalBO<$persistence_class_nameBO> $persistence_object_nameListTotalRecord,
         SimplePager $persistence_object_nameQuery) {
-        List<$persistence_class_nameVO> $persistence_object_nameVOList = this.boListAssembleVOList($persistence_object_nameListTotalRecord.getList());
-        PagerResult<$persistence_class_nameVO> pagerResult = new PagerResult<>($persistence_object_nameQuery);
-        pagerResult.setList($persistence_object_nameVOList);
+        List<$persistence_class_nameDTO> $persistence_object_nameDTOList = this.boListAssembleDTOList($persistence_object_nameListTotalRecord.getList());
+        PagerResult<$persistence_class_nameDTO> pagerResult = new PagerResult<>($persistence_object_nameQuery);
+        pagerResult.setList($persistence_object_nameDTOList);
         pagerResult.setRecordTotal($persistence_object_nameListTotalRecord.getTotal());
         return pagerResult;
     }

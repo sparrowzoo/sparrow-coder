@@ -1,5 +1,6 @@
 package com.sparrowzoo.coder.po;
 
+import com.sparrow.protocol.DisplayTextAccessor;
 import com.sparrow.protocol.dao.PO;
 import lombok.Data;
 
@@ -7,7 +8,7 @@ import javax.persistence.*;
 
 @Table(name = "t_project_config")
 @Data
-public class ProjectConfig extends PO {
+public class ProjectConfig extends PO implements DisplayTextAccessor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "int comment 'ID")
@@ -34,4 +35,9 @@ public class ProjectConfig extends PO {
     private Boolean wrapWithParent;
     @Column(name = "scaffold", columnDefinition = "varchar(50) default '' comment '脚手架'")
     private String scaffold;
+    @Override
+    @Transient
+    public String getDisplayText() {
+        return String.format("%s【%s】", this.chineseName,this.name);
+    }
 }

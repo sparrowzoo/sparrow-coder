@@ -19,11 +19,9 @@ package com.sparrowzoo.coder.adapter.assemble;
 import com.sparrow.protocol.ListRecordTotalBO;
 import com.sparrow.protocol.pager.PagerResult;
 import com.sparrow.protocol.pager.SimplePager;
-import com.sparrowzoo.coder.adapter.protocol.vo.TableConfigVO;
+import com.sparrowzoo.coder.protocol.dto.TableConfigDTO;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
 import com.sparrowzoo.coder.protocol.param.TableConfigParam;
-import com.sparrow.support.assemble.BO2VOAssemble;
-import com.sparrow.support.assemble.Param2VOAssemble;
 import com.sparrow.utility.CollectionsUtility;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,40 +32,33 @@ import com.sparrow.protocol.BeanCopier;
 
 
 @Named
-public class TableConfigAssemble implements BO2VOAssemble<TableConfigVO, TableConfigBO>,
-    Param2VOAssemble<TableConfigVO,TableConfigParam> {
+public class TableConfigAssemble{
 
     @Inject
     private BeanCopier beanCopier;
 
-    public TableConfigVO paramAssembleVO(TableConfigParam param){
-        TableConfigVO tableConfig = new TableConfigVO();
-        beanCopier.copyProperties(param, tableConfig);
-        return tableConfig;
-    }
-
-    @Override public TableConfigVO boAssembleVO(TableConfigBO bo) {
-        TableConfigVO tableConfig = new TableConfigVO();
+     public TableConfigDTO boAssembleDTO(TableConfigBO bo) {
+        TableConfigDTO tableConfig = new TableConfigDTO();
         beanCopier.copyProperties(bo, tableConfig);
         return tableConfig;
     }
 
-    @Override public List<TableConfigVO> boListAssembleVOList(List<TableConfigBO> list) {
+     public List<TableConfigDTO> boListAssembleDTOList(List<TableConfigBO> list) {
         if (CollectionsUtility.isNullOrEmpty(list)) {
             return Collections.emptyList();
         }
-        List<TableConfigVO> tableConfigVOList = new ArrayList<>(list.size());
+        List<TableConfigDTO> tableConfigDTOList = new ArrayList<>(list.size());
         for (TableConfigBO tableConfigBo : list) {
-            tableConfigVOList.add(this.boAssembleVO(tableConfigBo));
+            tableConfigDTOList.add(this.boAssembleDTO(tableConfigBo));
         }
-        return tableConfigVOList;
+        return tableConfigDTOList;
     }
 
-    public PagerResult<TableConfigVO> assemblePager(ListRecordTotalBO<TableConfigBO> tableConfigListTotalRecord,
+    public PagerResult<TableConfigDTO> assemblePager(ListRecordTotalBO<TableConfigBO> tableConfigListTotalRecord,
         SimplePager tableConfigQuery) {
-        List<TableConfigVO> tableConfigVOList = this.boListAssembleVOList(tableConfigListTotalRecord.getList());
-        PagerResult<TableConfigVO> pagerResult = new PagerResult<>(tableConfigQuery);
-        pagerResult.setList(tableConfigVOList);
+        List<TableConfigDTO> tableConfigDTOList = this.boListAssembleDTOList(tableConfigListTotalRecord.getList());
+        PagerResult<TableConfigDTO> pagerResult = new PagerResult<>(tableConfigQuery);
+        pagerResult.setList(tableConfigDTOList);
         pagerResult.setRecordTotal(tableConfigListTotalRecord.getTotal());
         return pagerResult;
     }

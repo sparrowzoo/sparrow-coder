@@ -14,26 +14,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sparrowzoo.coder.adapter.protocol.vo;
+package com.sparrowzoo.coder.protocol.dto;
 
-import com.sparrow.protocol.VO;
+import com.sparrow.protocol.DTO;
 import lombok.Data;
 import com.sparrow.protocol.enums.StatusRecord;
 
 @Data
-public class ProjectConfigVO implements VO {
+public class TableConfigDTO implements DTO {
     private Long id; 
-private String name; 
-private String frontendName; 
-private String chineseName; 
-private Boolean i18n; 
+private Long projectId; 
+private String primaryKey; 
+private String tableName; 
+private String className; 
 private String description; 
-private String modulePrefix; 
-private String scanPackage; 
-private String architectures; 
-private String config; 
-private Boolean wrapWithParent; 
-private String scaffold; 
+private Boolean locked; 
+private Integer checkable; 
+private Integer rowMenu; 
+private Integer columnFilter; 
+private Boolean statusCommand; 
+private String columnConfigs; 
+private String source; 
+private String sourceCode; 
 private String createUserName; 
 private Long createUserId; 
 private Long modifiedUserId; 

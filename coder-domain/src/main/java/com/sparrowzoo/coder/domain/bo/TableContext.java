@@ -23,6 +23,7 @@ import com.sparrowzoo.coder.enums.*;
 import lombok.Data;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 public class TableContext {
@@ -124,6 +125,10 @@ public class TableContext {
         return columnDefs;
     }
 
+    public List<ColumnDef> getOriginalColumns() {
+        return this.getColumns().stream().filter(c -> c.getColumnType().equals(ColumnType.NORMAL.getIdentity())).collect(Collectors.toList());
+    }
+
     public void parseValidator(ColumnDef columnDef, Object jsonValidator) {
         String validateType = columnDef.getValidateType();
         if (StringUtility.isNullOrEmpty(validateType) || validateType.startsWith("nullable")) {
@@ -180,16 +185,16 @@ public class TableContext {
             columnDef.setColumnType(ColumnType.NORMAL.getIdentity());
             columnDef.setHeaderType(HeaderType.NORMAL.getIdentity());
             columnDef.setCellType(CellType.NORMAL.getIdentity());
-            if (columnDef.getPropertyName().equals(entityManager.getPrimary().getPropertyName())) {
+            if (entityManager.getPrimary() != null && columnDef.getPropertyName().equals(entityManager.getPrimary().getPropertyName())) {
                 columnDef.setControlType(ControlType.INPUT_HIDDEN.getIdentity());
-                columnDef.setValidateType("digitalValidatorMessageGenerator");
+                columnDef.setValidateType("digital");
                 columnDef.setValidator(this.generateDefaultNumberValidator(columnDef.getPropertyName(), true));
             } else {
                 if (columnDef.isNumber()) {
-                    columnDef.setValidateType("digitalValidatorMessageGenerator");
+                    columnDef.setValidateType("digital");
                     columnDef.setValidator(this.generateDefaultNumberValidator(columnDef.getPropertyName(), false));
                 } else if (!columnDef.getAllowNull() && columnDef.getJavaType().equals(String.class.getName())) {
-                    columnDef.setValidateType("stringValidatorMessageGenerator");
+                    columnDef.setValidateType("string");
                     columnDef.setValidator(this.generateDefaultStringValidator(columnDef.getPropertyName()));
                 }
                 columnDef.setControlType(JavaTypeController.getByJavaType(columnDef.getJavaType()).getControlTypes()[0].getIdentity());

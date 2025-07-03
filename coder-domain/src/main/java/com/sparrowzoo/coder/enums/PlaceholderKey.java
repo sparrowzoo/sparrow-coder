@@ -220,11 +220,10 @@ public enum PlaceholderKey {
     $frontend_path_columns,
     $frontend_path_schema,
     $frontend_class,
-    $frontend_column_filter,
     $frontend_column_defs,
     $frontend_column_import,
     $frontend_schema,
     $frontend_add_form_items,
     $frontend_edit_form_items,
-
+    $frontend_i18n_message
 }
