@@ -37,7 +37,7 @@ public class BackendTest {
 //        System.out.println(JSON.toJSONString(columnDefs));
 
         Map<String, String> map = registry.getTableContext("t_column_config").getPlaceHolder();
-                System.out.println(map.get(PlaceholderKey.$frontend_i18n_message.name()));
+        System.out.println(map.get(PlaceholderKey.$frontend_i18n_message.name()));
 
 //        System.out.println(map.get(PlaceholderKey.$frontend_class.name()));
 //        System.out.println(map.get(PlaceholderKey.$frontend_column_defs.name()));
