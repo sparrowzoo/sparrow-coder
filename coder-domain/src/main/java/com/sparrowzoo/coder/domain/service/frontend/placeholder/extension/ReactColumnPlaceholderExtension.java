@@ -1,6 +1,5 @@
 package com.sparrowzoo.coder.domain.service.frontend.placeholder.extension;
 
-import com.oracle.javafx.jmx.json.JSONFactory;
 import com.sparrow.core.spi.JsonFactory;
 import com.sparrow.utility.CollectionsUtility;
 import com.sparrowzoo.coder.domain.bo.ColumnDef;
