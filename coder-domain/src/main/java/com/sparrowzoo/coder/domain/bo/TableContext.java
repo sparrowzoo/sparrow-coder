@@ -182,6 +182,10 @@ public class TableContext {
             columnDef.setValidator(new NoneValidator(columnDef.getJavaType()));
             columnDef.setDataSourceType(DataSourceType.NULL.getIdentity());
             columnDef.setDataSourceParams("");
+            if (field.getJoinTable() != null) {
+                columnDef.setDataSourceType(DataSourceType.API.getIdentity());
+                columnDef.setDataSourceParams(field.getJoinTable().name());
+            }
             columnDef.setColumnType(ColumnType.NORMAL.getIdentity());
             columnDef.setHeaderType(HeaderType.NORMAL.getIdentity());
             columnDef.setCellType(CellType.NORMAL.getIdentity());

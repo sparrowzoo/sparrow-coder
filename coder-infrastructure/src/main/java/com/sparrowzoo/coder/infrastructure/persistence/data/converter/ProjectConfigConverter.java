@@ -60,6 +60,7 @@ public class ProjectConfigConverter implements Param2POConverter<ProjectConfigPa
     @Override public ProjectConfigBO po2bo(ProjectConfig projectConfig) {
         ProjectConfigBO projectConfigBO = new ProjectConfigBO();
         beanCopier.copyProperties(projectConfig, projectConfigBO);
+        projectConfigBO.setDisplayText(projectConfig.getDisplayText());
         return projectConfigBO;
     }
 

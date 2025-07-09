@@ -35,9 +35,9 @@ public class ProjectConfig extends PO implements DisplayTextAccessor {
     private Boolean wrapWithParent;
     @Column(name = "scaffold", columnDefinition = "varchar(50) default '' comment '脚手架'")
     private String scaffold;
+
     @Override
-    @Transient
     public String getDisplayText() {
-        return String.format("%s【%s】", this.chineseName,this.name);
+        return String.format("%s【%s】", chineseName, name);
     }
 }

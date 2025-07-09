@@ -1,9 +1,12 @@
 package com.sparrowzoo.coder.enums;
 
 import com.sparrow.protocol.EnumIdentityAccessor;
+import com.sparrow.protocol.EnumUniqueName;
+import com.sparrowzoo.coder.constant.EnumNames;
 import lombok.Getter;
 
 @Getter
+@EnumUniqueName(name = EnumNames.COLUMN_TYPE)
 public enum ColumnType implements EnumIdentityAccessor {
     ACTION(1, "菜单"),
     CHECK(2, "选择"),

@@ -17,17 +17,14 @@
 package com.sparrowzoo.coder.adapter.assemble;
 
 import com.sparrow.protocol.ListRecordTotalBO;
+import com.sparrow.protocol.KeyValue;
 import com.sparrow.protocol.pager.PagerResult;
 import com.sparrow.protocol.pager.SimplePager;
 import com.sparrowzoo.coder.protocol.dto.TableConfigDTO;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
-import com.sparrowzoo.coder.protocol.param.TableConfigParam;
 import com.sparrow.utility.CollectionsUtility;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import javax.inject.Named;
-import javax.inject.Inject;
+import java.util.*;
+import javax.inject.*;
 import com.sparrow.protocol.BeanCopier;
 
 
@@ -62,4 +59,6 @@ public class TableConfigAssemble{
         pagerResult.setRecordTotal(tableConfigListTotalRecord.getTotal());
         return pagerResult;
     }
+
+    
 }

@@ -43,6 +43,7 @@ public class $persistence_class_nameConverter implements Param2POConverter<$pers
     @Override public $persistence_class_nameBO po2bo($persistence_class_name $persistence_object_name) {
         $persistence_class_nameBO $persistence_object_nameBO = new $persistence_class_nameBO();
         beanCopier.copyProperties($persistence_object_name, $persistence_object_nameBO);
+        $get_sets_display_text
         return $persistence_object_nameBO;
     }
 

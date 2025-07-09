@@ -1,9 +1,12 @@
 package com.sparrowzoo.coder.enums;
 
 import com.sparrow.protocol.EnumIdentityAccessor;
+import com.sparrow.protocol.EnumUniqueName;
+import com.sparrowzoo.coder.constant.EnumNames;
 import lombok.Getter;
 
 @Getter
+@EnumUniqueName(name = EnumNames.HEADER_TYPE)
 public enum HeaderType implements EnumIdentityAccessor {
     CHECK_BOX("CheckboxHeader", "check-box", false, false, "选择", 1),
     COLUMN_FILTER("ColumnFilter", "column-filter", false, false, "过滤", 2),

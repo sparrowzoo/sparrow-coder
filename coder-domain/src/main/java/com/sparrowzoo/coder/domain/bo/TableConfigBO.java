@@ -18,10 +18,11 @@ package com.sparrowzoo.coder.domain.bo;
 
 import com.sparrow.protocol.BO;
 import com.sparrow.protocol.enums.StatusRecord;
+import com.sparrow.protocol.DisplayTextAccessor;
 import lombok.Data;
 @Data
-public class TableConfigBO implements BO {
-    private Long id; 
+public class TableConfigBO implements BO
+    {private Long id; 
 private Long projectId; 
 private String primaryKey; 
 private String tableName; 
@@ -43,5 +44,4 @@ private Long gmtCreate;
 private Long gmtModified; 
 private Boolean deleted; 
 private StatusRecord status; 
-
 }

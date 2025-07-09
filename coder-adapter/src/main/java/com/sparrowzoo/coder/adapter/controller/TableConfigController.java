@@ -16,20 +16,21 @@
  */
 package com.sparrowzoo.coder.adapter.controller;
 
-import com.sparrow.protocol.BusinessException;
-import com.sparrow.protocol.ListRecordTotalBO;
+import com.sparrow.protocol.*;
+import java.util.*;
 import com.sparrow.protocol.pager.PagerResult;
+import com.sparrow.spring.starter.*;
 import com.sparrowzoo.coder.adapter.assemble.TableConfigAssemble;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
 import com.sparrowzoo.coder.protocol.param.TableConfigParam;
+import com.sparrow.protocol.enums.StatusRecord;
+import com.sparrowzoo.coder.constant.EnumNames;
 import com.sparrowzoo.coder.protocol.query.TableConfigQuery;
 import com.sparrowzoo.coder.protocol.dto.TableConfigDTO;
 import com.sparrowzoo.coder.domain.service.TableConfigService;
 import javax.inject.Inject;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import java.util.Set;
+import io.swagger.annotations.*;
 
 
 @RestController
@@ -43,11 +44,19 @@ public class TableConfigController {
     @Inject
     private TableConfigAssemble tableConfigAssemble;
 
+    @Inject
+    private EnumsContainer coderEnumsContainer;
+
     @PostMapping("search.json")
     @ApiOperation("搜索")
     public PagerResult<TableConfigDTO> search(@RequestBody TableConfigQuery tableConfigQuery) {
         ListRecordTotalBO<TableConfigBO> tableConfigListTotalRecord = this.tableConfigService.queryTableConfig(tableConfigQuery);
-        return this.tableConfigAssemble.assemblePager(tableConfigListTotalRecord, tableConfigQuery);
+        PagerResult<TableConfigDTO> pagerResult =this.tableConfigAssemble.assemblePager(tableConfigListTotalRecord, tableConfigQuery);
+        pagerResult.putDictionary(EnumNames.CELL_TYPE,coderEnumsContainer.getEnums(EnumNames.CELL_TYPE));
+pagerResult.putDictionary(EnumNames.HEADER_TYPE,coderEnumsContainer.getEnums(EnumNames.HEADER_TYPE));
+pagerResult.putDictionary(EnumNames.DATASOURCE_TYPE,coderEnumsContainer.getEnums(EnumNames.DATASOURCE_TYPE));
+pagerResult.putDictionary(EnumNames.COLUMN_TYPE,coderEnumsContainer.getEnums(EnumNames.COLUMN_TYPE));
+        return pagerResult;
     }
 
     @PostMapping("save.json")
@@ -83,4 +92,6 @@ public class TableConfigController {
     public Integer disableTableConfig(@RequestBody Set<Long> ids) throws BusinessException {
        return  this.tableConfigService.disableTableConfig(ids);
     }
+
+    
 }

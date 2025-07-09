@@ -60,6 +60,7 @@ public class TableConfigConverter implements Param2POConverter<TableConfigParam,
     @Override public TableConfigBO po2bo(TableConfig tableConfig) {
         TableConfigBO tableConfigBO = new TableConfigBO();
         beanCopier.copyProperties(tableConfig, tableConfigBO);
+        
         return tableConfigBO;
     }
 

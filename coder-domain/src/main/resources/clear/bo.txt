@@ -2,8 +2,8 @@ package $package_bo;
 
 import com.sparrow.protocol.BO;
 import com.sparrow.protocol.enums.StatusRecord;
+import com.sparrow.protocol.DisplayTextAccessor;
 import lombok.Data;
 @Data
-public class $persistence_class_nameBO implements BO {
+public class $persistence_class_nameBO implements BO
     $get_sets
-}

@@ -205,12 +205,17 @@ public enum PlaceholderKey {
     $sql_delete,
 
     $field_list,
-
     $get_sets,
-
+    $get_sets_display_text,
     $get_sets_params,
-
     $init_po,
+    $assemble_kvs,
+
+    $dictionaries,
+    $enum_container_inject,
+
+
+    $adapter_kvs,
     $frontend_path_page,
     $frontend_path_api,
     $frontend_path_add,

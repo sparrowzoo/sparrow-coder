@@ -1,13 +1,10 @@
 package com.sparrowzoo.coder.domain.service.backend.placeholder.extension;
 
-import com.sparrow.orm.EntityManager;
 import com.sparrow.utility.DateTimeUtility;
-import com.sparrowzoo.coder.domain.bo.ProjectBO;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableContext;
 import com.sparrowzoo.coder.domain.service.AbstractPlaceholderExtension;
 import com.sparrowzoo.coder.enums.PlaceholderKey;
-import org.springframework.core.annotation.Order;
 
 import javax.inject.Named;
 import java.util.Map;

@@ -21,6 +21,7 @@ public class TablePlaceholderExtension extends AbstractPlaceholderExtension {
         EntityManager entityManager = tableContext.getEntityManager();
         String tableName = entityManager.getTableName();
         String persistenceClassName = entityManager.getSimpleClassName();
+        String persistenceObjectName = StringUtility.setFirstByteLowerCase(persistenceClassName);
         placeHolder.put(PlaceholderKey.$package_bo.name(), classPlaceholderGenerator.getPackage(ClassKey.BO));
         placeHolder.put(PlaceholderKey.$package_param.name(), classPlaceholderGenerator.getPackage(ClassKey.PARAM));
         placeHolder.put(PlaceholderKey.$package_query.name(), classPlaceholderGenerator.getPackage(ClassKey.QUERY));
@@ -53,7 +54,7 @@ public class TablePlaceholderExtension extends AbstractPlaceholderExtension {
         }
         placeHolder.put(PlaceholderKey.$origin_table_name.name(), tableName);
         placeHolder.put(PlaceholderKey.$persistence_class_name.name(), persistenceClassName);
-        placeHolder.put(PlaceholderKey.$persistence_object_name.name(), StringUtility.setFirstByteLowerCase(persistenceClassName));
+        placeHolder.put(PlaceholderKey.$persistence_object_name.name(), persistenceObjectName);
         placeHolder.put(PlaceholderKey.$persistence_object_by_horizontal.name(), StringUtility.humpToLower(persistenceClassName, '-'));
         placeHolder.put(PlaceholderKey.$persistence_object_by_slash.name(), StringUtility.humpToLower(persistenceClassName, '/'));
         placeHolder.put(PlaceholderKey.$persistence_object_by_dot.name(), StringUtility.humpToLower(persistenceClassName, '.'));
@@ -69,18 +70,5 @@ public class TablePlaceholderExtension extends AbstractPlaceholderExtension {
         } else {
             placeHolder.put(PlaceholderKey.$init_po.name(), "");
         }
-        Map<String, Field> fields = entityManager.getPropertyFieldMap();
-        StringBuilder fieldBuild = new StringBuilder();
-        StringBuilder paramFieldBuild = new StringBuilder();
-        for (Field field : fields.values()) {
-            Class<?> fieldClazz = field.getType();
-            String property = String.format("private %s %s; \n", fieldClazz.getSimpleName(), field.getPropertyName());
-            fieldBuild.append(property);
-            if (entityManager.getPoPropertyNames() != null && !entityManager.getPoPropertyNames().contains(field.getPropertyName())) {
-                paramFieldBuild.append(property);
-            }
-        }
-        placeHolder.put(PlaceholderKey.$get_sets.name(), fieldBuild.toString());
-        placeHolder.put(PlaceholderKey.$get_sets_params.name(), paramFieldBuild.toString());
     }
 }

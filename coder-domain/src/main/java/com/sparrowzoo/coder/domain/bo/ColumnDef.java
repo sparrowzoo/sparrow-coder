@@ -22,19 +22,19 @@ public class ColumnDef implements POJO {
     private String subsidiaryColumns;
     @Column(name = "java_type", updatable = false, columnDefinition = "varchar(255) comment 'java类型'")
     private String javaType;
-    @Column(name = "enable_hidden", columnDefinition = "bit(1) comment '是否隐藏'")
+    @Column(name = "enable_hidden", columnDefinition = "bit(1) comment '允许隐藏'")
     private Boolean enableHidden;
     @Column(name = "default_hidden", columnDefinition = "bit(1) comment '默认隐藏'")
     private Boolean defaultHidden;
-    @Column(name = "show_in_edit", columnDefinition = "bit(1) comment '是否显示在编辑页面'")
+    @Column(name = "show_in_edit", columnDefinition = "bit(1) comment '编辑'")
     private Boolean showInEdit = true;
-    @Column(name = "show_in_list", columnDefinition = "bit(1) comment '是否显示在列表页面'")
+    @Column(name = "show_in_list", columnDefinition = "bit(1) comment '列表'")
     private Boolean showInList = true;
-    @Column(name = "show_in_search", columnDefinition = "bit(1) comment '是否显示在搜索页面'")
+    @Column(name = "show_in_search", columnDefinition = "bit(1) comment '搜索'")
     private Boolean showInSearch = true;
-    @Column(name = "allow_null", columnDefinition = "bit(1) comment '是否允许为空'")
+    @Column(name = "allow_null", columnDefinition = "bit(1) comment '允许为空'")
     private Boolean allowNull;
-    @Column(name = "placeholder", columnDefinition = "varchar(255) comment '提示信息'")
+    @Column(name = "placeholder", columnDefinition = "varchar(255) comment '提示'")
     private String placeholder;
     @Column(name = "default_value", columnDefinition = "varchar(255) comment '默认值'")
     private String defaultValue;

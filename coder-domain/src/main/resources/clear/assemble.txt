@@ -1,17 +1,14 @@
 package $package_assemble;
 
 import com.sparrow.protocol.ListRecordTotalBO;
+import com.sparrow.protocol.KeyValue;
 import com.sparrow.protocol.pager.PagerResult;
 import com.sparrow.protocol.pager.SimplePager;
 import $package_dto.$persistence_class_nameDTO;
 import $package_bo.$persistence_class_nameBO;
-import $package_param.$persistence_class_nameParam;
 import com.sparrow.utility.CollectionsUtility;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import javax.inject.Named;
-import javax.inject.Inject;
+import java.util.*;
+import javax.inject.*;
 import com.sparrow.protocol.BeanCopier;
 
 
@@ -46,4 +43,6 @@ public class $persistence_class_nameAssemble{
         pagerResult.setRecordTotal($persistence_object_nameListTotalRecord.getTotal());
         return pagerResult;
     }
+
+    $assemble_kvs
 }

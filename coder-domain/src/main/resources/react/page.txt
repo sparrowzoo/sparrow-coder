@@ -11,6 +11,8 @@ import ThreeDotLoading from "@/common/components/ThreeDotLoading";
 import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizontal";
 import {useTranslations} from "next-intl";
 import toast from "react-hot-toast";
+import Result, {PagerResult} from "@/common/lib/protocol/Result";
+
 
 
 
@@ -18,11 +20,11 @@ export default function Page() {
     const errorTranslate = useTranslations("$persistence_class_name.ErrorMessage");
     const globalTranslate = useTranslations("GlobalForm");
 
-    const [dataState, setDataState] = useState<$persistence_class_name[] | undefined>();
+    const [dataState, setDataState] = useState<Result<PagerResult<$persistence_class_name>> | undefined>();
     useEffect(() => {
         $persistence_class_nameApi.search({}, errorTranslate).then(
                                               (res) => {
-                                                  setDataState(res.data)
+                                                  setDataState(res)
                                               }
                                            ).catch(()=>{});
 
@@ -40,13 +42,13 @@ export default function Page() {
     }
     return (
         <div className="w-full">
-            <DataTable
+            <DataTable<$persistence_class_name>
                 SearchComponent={Search}
                 OperationComponent={Operation}
                 tableName={"$persistence_class_name"}
                 primary={"id"}
                 i18n={$project_i18n}
-                data={dataState.list}
+                result={dataState}
                 columns={columns}
                 setData={setDataState}
                 EditComponent={EditPage}

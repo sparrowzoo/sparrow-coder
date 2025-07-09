@@ -1,7 +1,10 @@
 package com.sparrowzoo.coder.enums;
 
 import com.sparrow.protocol.EnumIdentityAccessor;
+import com.sparrow.protocol.EnumUniqueName;
+import com.sparrowzoo.coder.constant.EnumNames;
 
+@EnumUniqueName(name = EnumNames.SEARCH_TYPE)
 public enum SearchType implements EnumIdentityAccessor {
     EQUAL(1),
     PREFIX_LIKE(2),

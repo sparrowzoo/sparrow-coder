@@ -3,8 +3,10 @@ package $package_dto;
 import com.sparrow.protocol.DTO;
 import lombok.Data;
 import com.sparrow.protocol.enums.StatusRecord;
+import com.sparrow.protocol.DisplayTextAccessor;
+
 
 @Data
-public class $persistence_class_nameDTO implements DTO {
+public class $persistence_class_nameDTO implements DTO
     $get_sets
-}
+

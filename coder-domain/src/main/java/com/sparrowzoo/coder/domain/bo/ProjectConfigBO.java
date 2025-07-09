@@ -18,10 +18,11 @@ package com.sparrowzoo.coder.domain.bo;
 
 import com.sparrow.protocol.BO;
 import com.sparrow.protocol.enums.StatusRecord;
+import com.sparrow.protocol.DisplayTextAccessor;
 import lombok.Data;
 @Data
-public class ProjectConfigBO implements BO {
-    private Long id; 
+public class ProjectConfigBO implements BO
+    ,DisplayTextAccessor{private Long id; 
 private String name; 
 private String frontendName; 
 private String chineseName; 
@@ -41,5 +42,5 @@ private Long gmtCreate;
 private Long gmtModified; 
 private Boolean deleted; 
 private StatusRecord status; 
-
+private String displayText; 
 }

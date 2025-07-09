@@ -13,6 +13,7 @@ public class TableConfig extends PO {
     @Column(name = "id", columnDefinition = "int COMMENT 'ID")
     private Long id;
     @Column(name = "project_id", updatable = false, nullable = false, columnDefinition = "int comment '项目ID'")
+    @JoinTable(name = "t_project_config")
     private Long projectId;
     @Column(name = "primary_key",updatable = false,nullable = false,columnDefinition = "varchar(32) default '' comment '主键'")
     private String primaryKey;

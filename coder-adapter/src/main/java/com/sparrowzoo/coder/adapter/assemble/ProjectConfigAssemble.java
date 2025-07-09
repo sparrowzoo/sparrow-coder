@@ -17,17 +17,14 @@
 package com.sparrowzoo.coder.adapter.assemble;
 
 import com.sparrow.protocol.ListRecordTotalBO;
+import com.sparrow.protocol.KeyValue;
 import com.sparrow.protocol.pager.PagerResult;
 import com.sparrow.protocol.pager.SimplePager;
 import com.sparrowzoo.coder.protocol.dto.ProjectConfigDTO;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
-import com.sparrowzoo.coder.protocol.param.ProjectConfigParam;
 import com.sparrow.utility.CollectionsUtility;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import javax.inject.Named;
-import javax.inject.Inject;
+import java.util.*;
+import javax.inject.*;
 import com.sparrow.protocol.BeanCopier;
 
 
@@ -62,4 +59,14 @@ public class ProjectConfigAssemble{
         pagerResult.setRecordTotal(projectConfigListTotalRecord.getTotal());
         return pagerResult;
     }
+
+    
+public List<KeyValue<Long, String>> getProjectConfigKvs(ListRecordTotalBO<ProjectConfigBO> projectConfigListTotalRecord){
+            List<ProjectConfigBO> projectConfigBOList = projectConfigListTotalRecord.getList();
+            List<KeyValue<Long, String>> projectConfigKvs = new ArrayList<>(projectConfigBOList.size());
+            for(ProjectConfigBO projectConfigBO : projectConfigBOList){
+                projectConfigKvs.add(new KeyValue<>(projectConfigBO.getId(), projectConfigBO.getDisplayText()));
+            }
+            return projectConfigKvs;
+        }
 }

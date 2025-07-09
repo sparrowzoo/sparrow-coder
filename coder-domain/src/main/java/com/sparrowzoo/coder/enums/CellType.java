@@ -1,22 +1,25 @@
 package com.sparrowzoo.coder.enums;
 
 import com.sparrow.protocol.EnumIdentityAccessor;
+import com.sparrow.protocol.EnumUniqueName;
+import com.sparrowzoo.coder.constant.EnumNames;
 import lombok.Getter;
 
 @Getter
+@EnumUniqueName(name = EnumNames.CELL_TYPE)
 public enum CellType implements EnumIdentityAccessor {
-    CHECK_BOX("CheckBoxCell", "check-box", "选择",1),
-    NORMAL("NormalCell", "normal", "标准",2),
-    CURRENCY("CurrencyCell", "currency", "货币",3),
-    TREE("TreeCell", "tree", "树形",4),
-    OPERATION("OperationCell", "operation", "命令操作",5);
+    CHECK_BOX("CheckBoxCell", "check-box", "选择", 1),
+    NORMAL("NormalCell", "normal", "标准", 2),
+    CURRENCY("CurrencyCell", "currency", "货币", 3),
+    TREE("TreeCell", "tree", "树形", 4),
+    OPERATION("OperationCell", "operation", "命令操作", 5);
     private String componentName;
     private String fileName;
     private String description;
     private Integer id;
 
 
-    CellType(String componentName, String fileName, String description,Integer id) {
+    CellType(String componentName, String fileName, String description, Integer id) {
         this.componentName = componentName;
         this.fileName = fileName;
         this.description = description;

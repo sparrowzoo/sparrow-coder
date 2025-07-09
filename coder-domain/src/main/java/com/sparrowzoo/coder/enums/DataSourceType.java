@@ -1,7 +1,10 @@
 package com.sparrowzoo.coder.enums;
 
 import com.sparrow.protocol.EnumIdentityAccessor;
+import com.sparrow.protocol.EnumUniqueName;
+import com.sparrowzoo.coder.constant.EnumNames;
 
+@EnumUniqueName(name = EnumNames.DATASOURCE_TYPE)
 public enum DataSourceType implements EnumIdentityAccessor {
     NULL(1),
     DICTIONARY(2),

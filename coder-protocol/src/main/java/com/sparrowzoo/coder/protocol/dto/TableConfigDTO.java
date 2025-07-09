@@ -19,10 +19,12 @@ package com.sparrowzoo.coder.protocol.dto;
 import com.sparrow.protocol.DTO;
 import lombok.Data;
 import com.sparrow.protocol.enums.StatusRecord;
+import com.sparrow.protocol.DisplayTextAccessor;
+
 
 @Data
-public class TableConfigDTO implements DTO {
-    private Long id; 
+public class TableConfigDTO implements DTO
+    {private Long id; 
 private Long projectId; 
 private String primaryKey; 
 private String tableName; 
@@ -44,5 +46,4 @@ private Long gmtCreate;
 private Long gmtModified; 
 private Boolean deleted; 
 private StatusRecord status; 
-
 }

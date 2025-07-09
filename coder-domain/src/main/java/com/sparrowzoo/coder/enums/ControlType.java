@@ -1,9 +1,12 @@
 package com.sparrowzoo.coder.enums;
 
 import com.sparrow.protocol.EnumIdentityAccessor;
+import com.sparrow.protocol.EnumUniqueName;
+import com.sparrowzoo.coder.constant.EnumNames;
 import lombok.Getter;
 
 @Getter
+@EnumUniqueName(name = EnumNames.CONTROL_TYPE)
 public enum ControlType implements EnumIdentityAccessor {
     LABEL("lbl", "label", 1),
     LINK("lnk", "link", 2),
