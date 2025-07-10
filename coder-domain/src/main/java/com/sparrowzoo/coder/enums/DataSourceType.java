@@ -8,7 +8,7 @@ import com.sparrowzoo.coder.constant.EnumNames;
 public enum DataSourceType implements EnumIdentityAccessor {
     NULL(1),
     DICTIONARY(2),
-    API(3),
+    TABLE(3),
     ENUM(4);
 
     private final int identity;
