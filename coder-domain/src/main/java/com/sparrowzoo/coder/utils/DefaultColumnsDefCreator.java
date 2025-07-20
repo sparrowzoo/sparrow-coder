@@ -61,6 +61,7 @@ public class DefaultColumnsDefCreator {
                 columnDef.setDataSourceType(DataSourceType.TABLE.getIdentity());
                 columnDef.setDataSourceParams(field.getJoinTable().name());
             }
+
             columnDef.setColumnType(ColumnType.NORMAL.getIdentity());
             columnDef.setHeaderType(HeaderType.NORMAL.getIdentity());
             columnDef.setCellType(CellType.NORMAL.getIdentity());

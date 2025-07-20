@@ -8,9 +8,9 @@ import lombok.Getter;
 @Getter
 @EnumUniqueName(name = EnumNames.CONTROL_TYPE)
 public enum ControlType implements EnumIdentityAccessor {
-    INPUT_TEXT("txt", "text", 3),
-    LABEL("lbl", "label", 1),
-    LINK("lnk", "link", 2),
+    INPUT_TEXT("txt", "text", 1),
+    LABEL("lbl", "label", 2),
+    LINK("lnk", "link", 3),
     INPUT_HIDDEN("hdn", "hidden", 4),
     INPUT_PASSWORD("txt", "password", 5),
     TEXT_AREA("txt", "textarea", 6),

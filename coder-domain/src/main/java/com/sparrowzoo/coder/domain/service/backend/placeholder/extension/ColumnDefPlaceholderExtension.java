@@ -25,14 +25,21 @@ public class ColumnDefPlaceholderExtension extends AbstractPlaceholderExtension 
         for (ColumnDef columnDef : columnDefs) {
             if (DataSourceType.ENUM.getIdentity().equals(columnDef.getDataSourceType())) {
                 hasBusinessEnum = true;
-                dictionaries.add(String.format("pagerResult.putDictionary(\"%1$s\",enumsContainer.getEnums(\"%2$s\"));",columnDef.getPropertyName(), columnDef.getDataSourceParams()));
-                placeHolder.put(PlaceholderKey.$enum_container_inject.name(), "@Inject\n" +
-                        "    private EnumsContainer coderEnumsContainer;");
             }
-            if(DataSourceType.TABLE.getIdentity().equals(columnDef.getDataSourceType())){
-               String joinTableName=tableContext.getEntityManager().joinTableName();
+            if (DataSourceType.TABLE.getIdentity().equals(columnDef.getDataSourceType())) {
+                //与@JoinTable(name = "t_project_config") 功能相
+            }
+        }
 
-            }
+        if (tableContext.getTableConfig().getTableName().equals("t_table_config")) {
+            dictionaries.add(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.CELL_TYPE));
+            dictionaries.add(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.DATASOURCE_TYPE));
+            dictionaries.add(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.COLUMN_TYPE));
+            dictionaries.add(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.CONTROL_TYPE));
+            dictionaries.add(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.HEADER_TYPE));
+            dictionaries.add(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.SEARCH_TYPE));
+            placeHolder.put(PlaceholderKey.$enum_container_inject.name(), "@Inject\n" +
+                    "    private EnumsContainer coderEnumsContainer;");
         }
 
         if (dictionaries.size() > 0) {

@@ -8,14 +8,14 @@ import lombok.Getter;
 @Getter
 @EnumUniqueName(name = EnumNames.HEADER_TYPE)
 public enum HeaderType implements EnumIdentityAccessor {
-    CHECK_BOX("CheckboxHeader", "check-box", false, false, "选择", 1),
-    COLUMN_FILTER("ColumnFilter", "column-filter", false, false, "过滤", 2),
-    NORMAL("PlainTextHeader", "plain-text", false, false, "标准", 3),
-    NORMAL_SORT("NormalHeader", "normal", true, false, "标准(可排序)", 4),
-    NORMAL_FILTER("NormalHeader", "normal", false, false, "标准(可过滤)", 5),
-    NORMAL_SORT_FILTER("NormalHeader", "normal", true, true, "标准(可过滤,可排序)", 6),
-    PLAIN_TEXT("PlainTextHeader", "plain-text", false, false, "操作", 7),
-    EMPTY("EmptyHeader", "empty", false, false, "空白", 8);
+    NORMAL("PlainTextHeader", "plain-text", false, false, "标准", 1),
+    NORMAL_SORT("NormalHeader", "normal", true, false, "标准(可排序)", 2),
+    NORMAL_FILTER("NormalHeader", "normal", false, false, "标准(可过滤)", 3),
+    NORMAL_SORT_FILTER("NormalHeader", "normal", true, true, "标准(可过滤,可排序)", 4),
+    CHECK_BOX("CheckboxHeader", "check-box", false, false, "选择", 5),
+    COLUMN_FILTER("ColumnFilter", "column-filter", false, false, "过滤", 6),
+    PLAIN_TEXT("PlainTextHeader", "plain-text", false, false, "操作", 9),
+    EMPTY("EmptyHeader", "empty", false, false, "空白", 10);
     private String componentName;
     private String fileName;
     private Boolean sortable;

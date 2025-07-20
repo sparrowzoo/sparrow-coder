@@ -8,11 +8,12 @@ import lombok.Getter;
 @Getter
 @EnumUniqueName(name = EnumNames.COLUMN_TYPE)
 public enum ColumnType implements EnumIdentityAccessor {
-    ACTION(1, "菜单"),
-    CHECK(2, "选择"),
-    FILTER(3, "过滤列"),
-    TREE(4, "树型"),
-    NORMAL(5, "标准");
+    NORMAL(1, "标准"),
+    ACTION(2, "菜单"),
+    CHECK(3, "选择"),
+    FILTER(4, "过滤列"),
+    TREE(5, "树型")
+    ;
 
     private String description;
 

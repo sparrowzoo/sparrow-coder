@@ -8,6 +8,10 @@ import com.sparrowzoo.coder.constant.EnumNames;
 public enum DataSourceType implements EnumIdentityAccessor {
     NULL(1),
     DICTIONARY(2),
+    /**
+     * @JoinTable(name = "t_project_config")
+     * 语义相同
+     */
     TABLE(3),
     ENUM(4);
 

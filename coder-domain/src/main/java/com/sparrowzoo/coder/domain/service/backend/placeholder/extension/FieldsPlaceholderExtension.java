@@ -39,6 +39,7 @@ public class FieldsPlaceholderExtension extends AbstractPlaceholderExtension {
                 joinTable = field;
             }
         }
+        //如果实现了DisplayText 接口，则生成KVS的接口，提供给外表关联使用
         if (isAssignableDisplayText) {
             fieldBuild.append("private String displayText; \n");
             placeHolder.put(PlaceholderKey.$get_sets_display_text.name(), String.format("%1$sBO.setDisplayText(%1$s.getDisplayText());", persistenceObjectName));
@@ -48,6 +49,7 @@ public class FieldsPlaceholderExtension extends AbstractPlaceholderExtension {
             placeHolder.put(PlaceholderKey.$service_kvs.name(), "");
         }
 
+        //
         if (joinTable != null) {
             String joinTableName = joinTable.getJoinTable().name();
             TableContext joinTableContext = registry.getTableContext(joinTableName);

@@ -46,7 +46,8 @@ public class TableConfigController {
     @Inject
     private TableConfigAssemble tableConfigAssemble;
 
-    
+    @Inject
+    private EnumsContainer coderEnumsContainer;
 
      @Inject
  private ProjectConfigService projectConfigService;
@@ -56,7 +57,12 @@ public class TableConfigController {
     public PagerResult<TableConfigDTO> search(@RequestBody TableConfigQuery tableConfigQuery) {
         ListRecordTotalBO<TableConfigBO> tableConfigListTotalRecord = this.tableConfigService.queryTableConfig(tableConfigQuery);
         PagerResult<TableConfigDTO> pagerResult =this.tableConfigAssemble.assemblePager(tableConfigListTotalRecord, tableConfigQuery);
-        
+        pagerResult.putDictionary("cellType",coderEnumsContainer.getEnums("cellType"));
+pagerResult.putDictionary("datasourceType",coderEnumsContainer.getEnums("datasourceType"));
+pagerResult.putDictionary("columnType",coderEnumsContainer.getEnums("columnType"));
+pagerResult.putDictionary("controlType",coderEnumsContainer.getEnums("controlType"));
+pagerResult.putDictionary("headerType",coderEnumsContainer.getEnums("headerType"));
+pagerResult.putDictionary("searchType",coderEnumsContainer.getEnums("searchType"));
         pagerResult.putDictionary("projectId",this.projectConfigService.getProjectConfigKvs());
 
         return pagerResult;
