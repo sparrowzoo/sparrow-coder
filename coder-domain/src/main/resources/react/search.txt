@@ -1,46 +1,51 @@
 import {Input} from "@/components/ui/input";
 import * as React from "react";
+import {useState} from "react";
 import {$persistence_class_name} from "@/components/$persistence_object_by_horizontal/columns";
-import {TableOperationProps} from "@/common/lib/table/DataTableProperty";
+import {MyTableMeta, TableOperationProps} from "@/common/lib/table/DataTableProperty";
 import {Button} from "@/components/ui/button";
+import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizontal";
+import {useTranslations} from "next-intl";
 
-export default function Search({table, setData}: TableOperationProps<$persistence_class_name>) {
-    const data: $persistence_class_name[] = [
-        {
-            id: "3",
-            amount: 837,
-            status: "processing",
-            email: "Monserrat44@example.com",
-            currency: "USD",
-        },
-        {
-            id: "4",
-            amount: 874,
-            status: "success",
-            email: "Silas22@example.com",
-            currency: "USD",
-        },
-        {
-            id: "5",
-            amount: 721,
-            status: "failed",
-            email: "carmella@example.com",
-            currency: "USD",
+type TableConfigQuery = {
+    tableName: string;
+    tableClass: string;
+}
 
-        },
-    ];
+export default function Search({table}: TableOperationProps<$persistence_class_name>) {
+    const meta = table.options.meta as MyTableMeta<$persistence_class_name>;
+    const errorTranslate = useTranslations("$persistence_class_name.ErrorMessage")
+    const setDataState = meta.setData;
+    const [$persistence_object_nameQuery, set$persistence_class_nameQuery] = useState<$persistence_class_nameQuery>()
+
+    if (setDataState == null) {
+        return <>setDataState is not defined</>
+    }
+
+    const searchHandler = () => {
+        meta.searchCondition = $persistence_object_nameQuery;
+        $persistence_class_nameApi.search($persistence_object_nameQuery, errorTranslate).then(
+            (res) => {
+                setDataState(res)
+            }
+        ).catch(() => {
+        });
+    };
 
 
     return (<>
-            <Input
-                placeholder="Filter emails..."
-                className="max-w-sm"
+            <Input value={$persistence_object_nameQuery?.tableName || ""} onChange={(e) => {
+                set$persistence_class_nameQuery((prevState) => {
+                    return {
+                        ...prevState,
+                        tableName: e.target.value
+                    } as TableConfigQuery
+                })
+            }}
+                   placeholder="tableName ..."
+                   className="max-w-sm"
             />
-            <Input
-                placeholder="Filter emails..."
-                className="max-w-sm"
-            />
-            <Button onClick={() => setData(data)} variant="ghost" className="ml-2">搜索</Button>
+            <Button onClick={() => searchHandler()} variant="ghost" className="ml-2">搜索</Button>
         </>
     );
 }

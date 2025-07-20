@@ -1,19 +1,17 @@
 package $package_service;
 
 import com.sparrow.exception.Asserts;
+import com.sparrow.protocol.*;
+import java.util.*;
+import javax.inject.*;
 import com.sparrow.protocol.constant.SparrowError;
-import com.sparrow.protocol.BusinessException;
-import com.sparrow.protocol.ListRecordTotalBO;
+import com.sparrow.protocol.enums.StatusRecord;
 import $package_bo.$persistence_class_nameBO;
 import $package_repository.$persistence_class_nameRepository;
 import $package_param.$persistence_class_nameParam;
 import $package_query.$persistence_class_nameQuery;
 import com.sparrow.utility.CollectionsUtility;
-import java.util.List;
-import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Named;
 
 @Named
 public class $persistence_class_nameService {
@@ -61,4 +59,6 @@ public class $persistence_class_nameService {
          Asserts.isTrue($persistence_object_nameId==null, SparrowError.GLOBAL_PARAMETER_NULL);
         return this.$persistence_object_nameRepository.get$persistence_class_name($persistence_object_nameId);
     }
+
+    $service_kvs
 }

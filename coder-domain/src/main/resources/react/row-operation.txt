@@ -1,0 +1,19 @@
+'use client'
+import {CellContextProps, MyTableMeta} from "@/common/lib/table/DataTableProperty";
+import {$persistence_class_name} from "@/components/$persistence_object_by_horizontal/columns";
+import {useRouter} from "@/common/i18n/navigation";
+import {Button} from "@/components/ui/button";
+import {useTranslations} from "next-intl";
+
+export default function RowOperations({cellContext}: CellContextProps<$persistence_class_name>) {
+    const globalTranslate = useTranslations("GlobalForm");
+    const meta = cellContext.table.options.meta as MyTableMeta<$persistence_class_name>;
+    const primary = meta.primary;
+    const row = cellContext.row.original;
+    const router = useRouter();
+    //return <Button onClick={() => {
+    //    router.push({pathname: "/table-config", query: {projectId: row[primary]}});
+    //}
+    //}>{globalTranslate("table")}</Button>
+    return null;
+}

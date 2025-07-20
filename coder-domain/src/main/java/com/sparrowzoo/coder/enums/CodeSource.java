@@ -4,7 +4,7 @@ import com.sparrow.protocol.EnumIdentityAccessor;
 
 public enum CodeSource implements EnumIdentityAccessor {
     INNER(1),
-    UPLOAD(2);
+    SOURCE_CODE(2);
 
     private final int identity;
 

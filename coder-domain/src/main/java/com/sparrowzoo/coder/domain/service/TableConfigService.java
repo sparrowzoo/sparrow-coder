@@ -17,19 +17,17 @@
 package com.sparrowzoo.coder.domain.service;
 
 import com.sparrow.exception.Asserts;
+import com.sparrow.protocol.*;
+import java.util.*;
+import javax.inject.*;
 import com.sparrow.protocol.constant.SparrowError;
-import com.sparrow.protocol.BusinessException;
-import com.sparrow.protocol.ListRecordTotalBO;
+import com.sparrow.protocol.enums.StatusRecord;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
 import com.sparrowzoo.coder.repository.TableConfigRepository;
 import com.sparrowzoo.coder.protocol.param.TableConfigParam;
 import com.sparrowzoo.coder.protocol.query.TableConfigQuery;
 import com.sparrow.utility.CollectionsUtility;
-import java.util.List;
-import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Named;
 
 @Named
 public class TableConfigService {
@@ -77,4 +75,6 @@ public class TableConfigService {
          Asserts.isTrue(tableConfigId==null, SparrowError.GLOBAL_PARAMETER_NULL);
         return this.tableConfigRepository.getTableConfig(tableConfigId);
     }
+
+    
 }

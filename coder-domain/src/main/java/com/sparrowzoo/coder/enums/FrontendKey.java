@@ -17,7 +17,9 @@ public enum FrontendKey implements EnumIdentityAccessor {
     COLUMNS("columns.txt", 7),
     MESSAGE("", 8),
     MESSAGE_FILE_LIST("", 9),
-    SCHEMA("schema.txt", 10);
+    SCHEMA("schema.txt", 10),
+    ROW_OPERATION("row-operation.txt", 11);
+
 
     private String template;
     private Integer id;

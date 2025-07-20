@@ -23,7 +23,6 @@ import com.sparrow.spring.starter.*;
 import com.sparrowzoo.coder.adapter.assemble.TableConfigAssemble;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
 import com.sparrowzoo.coder.protocol.param.TableConfigParam;
-import com.sparrow.protocol.enums.StatusRecord;
 import com.sparrowzoo.coder.constant.EnumNames;
 import com.sparrowzoo.coder.protocol.query.TableConfigQuery;
 import com.sparrowzoo.coder.protocol.dto.TableConfigDTO;
@@ -31,6 +30,9 @@ import com.sparrowzoo.coder.domain.service.TableConfigService;
 import javax.inject.Inject;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.*;
+import com.sparrowzoo.coder.domain.service.ProjectConfigService;
+
+
 
 
 @RestController
@@ -44,18 +46,19 @@ public class TableConfigController {
     @Inject
     private TableConfigAssemble tableConfigAssemble;
 
-    @Inject
-    private EnumsContainer coderEnumsContainer;
+    
+
+     @Inject
+ private ProjectConfigService projectConfigService;
 
     @PostMapping("search.json")
     @ApiOperation("搜索")
     public PagerResult<TableConfigDTO> search(@RequestBody TableConfigQuery tableConfigQuery) {
         ListRecordTotalBO<TableConfigBO> tableConfigListTotalRecord = this.tableConfigService.queryTableConfig(tableConfigQuery);
         PagerResult<TableConfigDTO> pagerResult =this.tableConfigAssemble.assemblePager(tableConfigListTotalRecord, tableConfigQuery);
-        pagerResult.putDictionary(EnumNames.CELL_TYPE,coderEnumsContainer.getEnums(EnumNames.CELL_TYPE));
-pagerResult.putDictionary(EnumNames.HEADER_TYPE,coderEnumsContainer.getEnums(EnumNames.HEADER_TYPE));
-pagerResult.putDictionary(EnumNames.DATASOURCE_TYPE,coderEnumsContainer.getEnums(EnumNames.DATASOURCE_TYPE));
-pagerResult.putDictionary(EnumNames.COLUMN_TYPE,coderEnumsContainer.getEnums(EnumNames.COLUMN_TYPE));
+        
+        pagerResult.putDictionary("projectId",this.projectConfigService.getProjectConfigKvs());
+
         return pagerResult;
     }
 
@@ -92,6 +95,4 @@ pagerResult.putDictionary(EnumNames.COLUMN_TYPE,coderEnumsContainer.getEnums(Enu
     public Integer disableTableConfig(@RequestBody Set<Long> ids) throws BusinessException {
        return  this.tableConfigService.disableTableConfig(ids);
     }
-
-    
-}
+    }

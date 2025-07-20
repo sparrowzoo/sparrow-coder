@@ -31,5 +31,9 @@
             <artifactId>spring-boot-starter-web</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>com.sparrowzoo</groupId>
+            <artifactId>sparrow-loader</artifactId>
+        </dependency>
     </dependencies>
 </project>

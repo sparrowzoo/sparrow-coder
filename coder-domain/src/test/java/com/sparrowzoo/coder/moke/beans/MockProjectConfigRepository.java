@@ -38,7 +38,6 @@ public class MockProjectConfigRepository implements ProjectConfigRepository {
         projectConfig.setFrontendName("react-next-admin");
         projectConfig.setChineseName("代码生成器模拟");
         projectConfig.setModulePrefix("coder");
-        projectConfig.setScanPackage("com.sparrow");
         projectConfig.setDescription("代码生成器模拟");
         projectConfig.setI18n(true);
         projectConfig.setId(1L);

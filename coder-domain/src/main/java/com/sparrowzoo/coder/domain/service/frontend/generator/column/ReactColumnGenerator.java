@@ -51,18 +51,19 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
      */
     @Override
     public String edit(ColumnDef columnDef,ProjectBO project, Boolean add) {
-        if (columnDef.getColumnType().equals(ColumnType.ACTION) ||
-                columnDef.getColumnType().equals(ColumnType.CHECK) ||
-                columnDef.getColumnType().equals(ColumnType.FILTER)
+        if (columnDef.getColumnType().equals(ColumnType.ACTION.getIdentity()) ||
+                columnDef.getColumnType().equals(ColumnType.CHECK.getIdentity()) ||
+                columnDef.getColumnType().equals(ColumnType.FILTER.getIdentity())
         ) {
             return "";
         }
-        if (columnDef.getControlType().equals(ControlType.INPUT_HIDDEN)) {
-            return String.format("<ValidatableInput {...register(\"%1$s\")}\n" +
+        if (columnDef.getControlType().equals(ControlType.INPUT_HIDDEN.getIdentity())) {
+            return String.format("<ValidatableInput %3$s {...register(\"%1$s\")}\n" +
                             "                                  type={\"%2$s\"}\n" +
                             "                                  fieldPropertyName={\"%1$s\"}/>",
                     columnDef.getPropertyName(),
-                    ControlType.getControlType(columnDef.getControlType()).getInputType()
+                    ControlType.getControlType(columnDef.getControlType()).getInputType(),
+                    this.defaultValue(columnDef, add)
             );
         }
 
@@ -71,7 +72,23 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
                 !columnDef.getValidateType().equals("nullableValidatorMessageGenerator")) {
             message = String.format("errorMessage={errors.%1$s?.message}", columnDef.getPropertyName());
         }
-        return String.format("<ValidatableInput %4$s {...register(\"%1$s\")}\n" +
+
+        if(columnDef.getControlType().equals(ControlType.TEXT_AREA.getIdentity())){
+            return String.format("<ValidatableTextArea className={\"w-80 h-60\"} readonly={%4$s} %3$s {...register(\"%1$s\")}\n" +
+                            "                                  isSubmitted={isSubmitted}\n" +
+                            "                                  pageTranslate={pageTranslate}\n" +
+                            "                                  validateTranslate={validateTranslate}\n" +
+                            "                                  %2$s" +
+                            "                                  fieldPropertyName={\"%1$s\"}/>",
+                    columnDef.getPropertyName(),
+                    message,
+                    this.defaultValue(columnDef, add),
+                    columnDef.getReadOnly() != null && columnDef.getReadOnly()
+            );
+        }
+
+
+        return String.format("<ValidatableInput readonly={%5$s} %4$s {...register(\"%1$s\")}\n" +
                         "                                  type={\"%2$s\"}\n" +
                         "                                  isSubmitted={isSubmitted}\n" +
                         "                                  pageTranslate={pageTranslate}\n" +
@@ -81,7 +98,8 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
                 columnDef.getPropertyName(),
                 ControlType.getControlType(columnDef.getControlType()).getInputType(),
                 message,
-                this.defaultValue(columnDef, add)
+                this.defaultValue(columnDef, add),
+                columnDef.getReadOnly() != null && columnDef.getReadOnly()
         );
     }
 
@@ -89,7 +107,7 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
         if (add) {
             return "";
         }
-        if (columnDef.getControlType().equals(ControlType.CHECK_BOX)) {
+        if (columnDef.getControlType().equals(ControlType.CHECK_BOX.getIdentity())) {
             return String.format("defaultChecked={original.%s}", columnDef.getPropertyName());
         }
         return String.format("defaultValue={original.%s}", columnDef.getPropertyName());
@@ -176,16 +194,16 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
     }
 
     public String renderCell(ColumnDef columnDef) {
-        if (columnDef.getColumnType().equals(ColumnType.FILTER)) {
+        if (columnDef.getColumnType().equals(ColumnType.FILTER.getIdentity())) {
             return "cell:\"\"";
         }
-        if (columnDef.getColumnType().equals(ColumnType.CHECK)) {
+        if (columnDef.getColumnType().equals(ColumnType.CHECK.getIdentity())) {
             return "cell: CheckBoxCell";
         }
-        if (columnDef.getColumnType().equals(ColumnType.TREE)) {
+        if (columnDef.getColumnType().equals(ColumnType.TREE.getIdentity())) {
             return String.format("cell: TreeCell(\"%s\")", columnDef.getPropertyName());
         }
-        if (columnDef.getColumnType().equals(ColumnType.ACTION)) {
+        if (columnDef.getColumnType().equals(ColumnType.ACTION.getIdentity())) {
             return "cell:\"Actions\"";
         }
         CellType cellType =CellType.getById(columnDef.getCellType());

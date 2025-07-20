@@ -6,6 +6,7 @@ import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.domain.bo.TableContext;
 import com.sparrowzoo.coder.domain.service.AbstractPlaceholderExtension;
 import com.sparrowzoo.coder.domain.service.backend.ClassPlaceholderGenerator;
+import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrowzoo.coder.enums.ClassKey;
 import com.sparrowzoo.coder.enums.PlaceholderKey;
 
@@ -15,7 +16,7 @@ import java.util.Map;
 @Named
 public class TablePlaceholderExtension extends AbstractPlaceholderExtension {
     @Override
-    public void extend(TableContext tableContext) {
+    public void extend(TableContext tableContext, TableConfigRegistry registry) {
         Map<String, String> placeHolder = tableContext.getPlaceHolder();
         ClassPlaceholderGenerator classPlaceholderGenerator = tableContext.getClassPlaceholderGenerator();
         EntityManager entityManager = tableContext.getEntityManager();

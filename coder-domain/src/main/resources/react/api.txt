@@ -1,9 +1,9 @@
 import Fetcher from "@/common/lib/Fetcher";
-import {IDENTITY} from "@/common/lib/table/DataTableProperty";
+import {IDENTITY} from "@/common/lib/protocol/Identity";
 
 export default class $persistence_class_nameApi {
     public static search(
-        query: {},
+        query: any,
         translator: (key: string) => string
     ): Promise<any> {
         const body = JSON.stringify(query);
@@ -11,7 +11,7 @@ export default class $persistence_class_nameApi {
     }
 
     public static  save(
-        params: {},
+        params: any,
         translator: (key: string) => string
     ): Promise<any> {
         const body = JSON.stringify(params);

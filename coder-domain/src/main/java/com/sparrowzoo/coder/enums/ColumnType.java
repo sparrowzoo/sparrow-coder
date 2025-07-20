@@ -12,7 +12,7 @@ public enum ColumnType implements EnumIdentityAccessor {
     CHECK(2, "选择"),
     FILTER(3, "过滤列"),
     TREE(4, "树型"),
-    NORMAL(5, "正常");
+    NORMAL(5, "标准");
 
     private String description;
 

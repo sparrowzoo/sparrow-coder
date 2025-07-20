@@ -60,13 +60,4 @@ public class ProjectConfigAssemble{
         return pagerResult;
     }
 
-    
-public List<KeyValue<Long, String>> getProjectConfigKvs(ListRecordTotalBO<ProjectConfigBO> projectConfigListTotalRecord){
-            List<ProjectConfigBO> projectConfigBOList = projectConfigListTotalRecord.getList();
-            List<KeyValue<Long, String>> projectConfigKvs = new ArrayList<>(projectConfigBOList.size());
-            for(ProjectConfigBO projectConfigBO : projectConfigBOList){
-                projectConfigKvs.add(new KeyValue<>(projectConfigBO.getId(), projectConfigBO.getDisplayText()));
-            }
-            return projectConfigKvs;
-        }
 }

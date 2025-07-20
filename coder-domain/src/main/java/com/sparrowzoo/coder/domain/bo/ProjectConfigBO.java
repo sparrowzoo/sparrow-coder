@@ -29,7 +29,6 @@ private String chineseName;
 private Boolean i18n; 
 private String description; 
 private String modulePrefix; 
-private String scanPackage; 
 private String architectures; 
 private String config; 
 private Boolean wrapWithParent; 

@@ -33,7 +33,7 @@ public class TableConfigRegistry {
 
     public void register(String tableName, TableContext tableContext) {
         registry.put(tableName, tableContext);
-        this.placeholderExtensionRegistry.extension(tableContext);
+        this.placeholderExtensionRegistry.extension(tableContext,this);
     }
 
     public TableContext getTableContext(String tableName) {

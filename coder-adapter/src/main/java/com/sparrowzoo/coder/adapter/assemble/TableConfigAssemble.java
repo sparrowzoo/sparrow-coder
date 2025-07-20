@@ -60,5 +60,4 @@ public class TableConfigAssemble{
         return pagerResult;
     }
 
-    
 }

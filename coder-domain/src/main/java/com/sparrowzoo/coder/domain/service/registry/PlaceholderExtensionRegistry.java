@@ -49,10 +49,10 @@ public class PlaceholderExtensionRegistry implements FactoryBean<PlaceholderExte
         return this.placeholderExtensionMap.keySet().iterator();
     }
 
-    public void extension(TableContext tableContext){
+    public void extension(TableContext tableContext,TableConfigRegistry registry){
         for(String name:this.placeholderExtensionMap.keySet()){
             PlaceholderExtension extension = this.placeholderExtensionMap.get(name);
-            extension.extend(tableContext);
+            extension.extend(tableContext,registry);
         }
     }
 }

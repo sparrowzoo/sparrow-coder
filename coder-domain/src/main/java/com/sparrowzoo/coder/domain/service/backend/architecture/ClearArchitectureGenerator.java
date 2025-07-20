@@ -5,7 +5,6 @@ import com.sparrowzoo.coder.domain.bo.TableConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableContext;
 import com.sparrowzoo.coder.domain.service.AbstractArchitectureGenerator;
 import com.sparrowzoo.coder.domain.service.backend.ClassGenerator;
-import com.sparrowzoo.coder.domain.service.backend.DefaultClassGenerator;
 import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrowzoo.coder.enums.ArchitectureCategory;
 import com.sparrowzoo.coder.enums.ClassKey;
@@ -21,7 +20,7 @@ public class ClearArchitectureGenerator extends AbstractArchitectureGenerator {
         TableContext context = registry.getTableContext(tableName);
         ClassGenerator classGenerator = context.getClassGenerator();
         TableConfigBO tableConfig = context.getTableConfig();
-        if (CodeSource.UPLOAD.name().equals(tableConfig.getSource())) {
+        if (CodeSource.SOURCE_CODE.name().equals(tableConfig.getSource())) {
             classGenerator.generate(ClassKey.PO);
         }
         classGenerator.generate(ClassKey.BO);

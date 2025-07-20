@@ -1,0 +1,75 @@
+package com.sparrowzoo.coder.adapter.controller;
+
+import com.alibaba.fastjson.JSON;
+import com.sparrow.cg.impl.DynamicCompiler;
+import com.sparrow.orm.SparrowEntityManager;
+import com.sparrow.protocol.BusinessException;
+import com.sparrowzoo.coder.constant.DefaultSpecialColumnIndex;
+import com.sparrowzoo.coder.domain.service.TableConfigService;
+import com.sparrowzoo.coder.enums.CodeSource;
+import com.sparrowzoo.coder.protocol.enums.CoderError;
+import com.sparrowzoo.coder.protocol.param.LocalClassParam;
+import com.sparrowzoo.coder.protocol.param.SourceCodeParam;
+import com.sparrowzoo.coder.protocol.param.TableConfigParam;
+import com.sparrowzoo.coder.utils.DefaultColumnsDefCreator;
+import io.swagger.annotations.Api;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.inject.Inject;
+
+@RestController
+@RequestMapping("coder")
+@Api(value = "CoderConfig", tags = "CoderConfig")
+public class CoderController {
+    @Inject
+    private TableConfigService tableConfigService;
+
+    @RequestMapping("init-by-local.json")
+    public void localInit(@RequestBody LocalClassParam className) throws BusinessException {
+        Class<?> clazz = null;
+        try {
+            clazz = Class.forName(className.getFullClassName());
+        } catch (ClassNotFoundException e) {
+            throw new BusinessException(CoderError.CLASS_NOT_FOUND);
+        }
+        SparrowEntityManager entityManager = new SparrowEntityManager(clazz);
+        TableConfigParam tableConfigParam = new TableConfigParam();
+        tableConfigParam.setProjectId(className.getProjectId());
+        tableConfigParam.setPrimaryKey(entityManager.getPrimary().getPropertyName());
+        tableConfigParam.setTableName(entityManager.getTableName());
+        tableConfigParam.setClassName(className.getFullClassName());
+        tableConfigParam.setDescription("");
+        tableConfigParam.setLocked(false);
+        tableConfigParam.setCheckable(DefaultSpecialColumnIndex.CHECK);
+        tableConfigParam.setRowMenu(DefaultSpecialColumnIndex.ROW_MENU);
+        tableConfigParam.setColumnFilter(DefaultSpecialColumnIndex.COLUMN_FILTER);
+        tableConfigParam.setStatusCommand(true);
+        tableConfigParam.setColumnConfigs(JSON.toJSONString(DefaultColumnsDefCreator.create(tableConfigParam.getClassName())));
+        tableConfigParam.setSource(CodeSource.INNER.getIdentity());
+        tableConfigParam.setSourceCode("");
+        this.tableConfigService.saveTableConfig(tableConfigParam);
+    }
+
+    @RequestMapping("init-by-jpa.json")
+    public void jpaInit(@RequestBody SourceCodeParam sourceCodeParam) throws BusinessException {
+        Class<?> clazz = DynamicCompiler.getInstance().source2Class(sourceCodeParam.getFullClassName(), sourceCodeParam.getSourceCode());
+        SparrowEntityManager entityManager = new SparrowEntityManager(clazz);
+        TableConfigParam tableConfigParam = new TableConfigParam();
+        tableConfigParam.setProjectId(sourceCodeParam.getProjectId());
+        tableConfigParam.setPrimaryKey(entityManager.getPrimary().getPropertyName());
+        tableConfigParam.setTableName(entityManager.getTableName());
+        tableConfigParam.setClassName(sourceCodeParam.getFullClassName());
+        tableConfigParam.setDescription("");
+        tableConfigParam.setLocked(false);
+        tableConfigParam.setCheckable(DefaultSpecialColumnIndex.CHECK);
+        tableConfigParam.setRowMenu(DefaultSpecialColumnIndex.ROW_MENU);
+        tableConfigParam.setColumnFilter(DefaultSpecialColumnIndex.COLUMN_FILTER);
+        tableConfigParam.setStatusCommand(true);
+        tableConfigParam.setColumnConfigs(JSON.toJSONString(DefaultColumnsDefCreator.create(tableConfigParam.getClassName())));
+        tableConfigParam.setSource(CodeSource.SOURCE_CODE.getIdentity());
+        tableConfigParam.setSourceCode(sourceCodeParam.getSourceCode());
+        this.tableConfigService.saveTableConfig(tableConfigParam);
+    }
+}

@@ -9,6 +9,7 @@ import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizo
 import toast from "react-hot-toast";
 import * as v from "valibot";
 import {useTranslations} from "next-intl";
+import {ValidatableTextArea} from "@/common/components/forms/ValidatableTextArea";
 import {ValidatableInput} from "@/common/components/forms/ValidatableInput";
 
 
@@ -54,17 +55,14 @@ export default function Page() {
     });
 
 
-    // formState.errors;
     return (
-        //正确
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <DialogHeader>
-                <DialogTitle>{globalTranslate("add")}</DialogTitle>
-                <DialogDescription>
-
-                </DialogDescription>
-            </DialogHeader>
-            <div className="flex flex-col">
+            <form className={"h-[calc(100vh-80px)] flex flex-col"} onSubmit={handleSubmit(onSubmit)}>
+                                   <DialogHeader>
+                                       <DialogTitle>{globalTranslate("add")}</DialogTitle>
+                                       <DialogDescription>
+                                       </DialogDescription>
+                                   </DialogHeader>
+            <div className="min-h-0 flex-1 flex-col overflow-y-scroll">
                 $frontend_add_form_items
             </div>
              <DialogFooter>

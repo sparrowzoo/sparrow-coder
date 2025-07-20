@@ -108,7 +108,7 @@ public class MockTableConfigRepository implements TableConfigRepository {
         tableConfig.setColumnFilter(100);
         tableConfig.setStatusCommand(false);
         tableConfig.setColumnConfigs("");
-        tableConfig.setSource(CodeSource.INNER.name());
+        tableConfig.setSource(CodeSource.INNER.getIdentity());
         tableConfig.setSourceCode("");
         tableConfig.setCreateUserId(0L);
         tableConfig.setModifiedUserId(0L);
@@ -137,8 +137,8 @@ public class MockTableConfigRepository implements TableConfigRepository {
         tableConfig.setRowMenu(99);
         tableConfig.setColumnFilter(100);
         tableConfig.setStatusCommand(false);
-        tableConfig.setColumnConfigs("");
-        tableConfig.setSource(CodeSource.INNER.name());
+
+        tableConfig.setSource(CodeSource.INNER.getIdentity());
         tableConfig.setSourceCode("");
         tableConfig.setCreateUserId(0L);
         tableConfig.setModifiedUserId(0L);
@@ -146,6 +146,8 @@ public class MockTableConfigRepository implements TableConfigRepository {
         tableConfig.setGmtModified(0L);
         tableConfig.setCreateUserName("harry");
         tableConfig.setModifiedUserName("");
+
+
 
         TableConfigBO projectTable = new TableConfigBO();
         projectTable.setId(2L);
@@ -161,7 +163,7 @@ public class MockTableConfigRepository implements TableConfigRepository {
         projectTable.setColumnFilter(100);
         projectTable.setStatusCommand(false);
         projectTable.setColumnConfigs("");
-        projectTable.setSource(CodeSource.INNER.name());
+        projectTable.setSource(CodeSource.INNER.getIdentity());
         projectTable.setSourceCode("");
         projectTable.setCreateUserId(0L);
         projectTable.setModifiedUserId(0L);
@@ -185,7 +187,7 @@ public class MockTableConfigRepository implements TableConfigRepository {
         columnConfig.setColumnFilter(-1);
         columnConfig.setStatusCommand(false);
         columnConfig.setColumnConfigs("");
-        columnConfig.setSource(CodeSource.INNER.name());
+        columnConfig.setSource(CodeSource.INNER.getIdentity());
         columnConfig.setSourceCode("");
         columnConfig.setCreateUserId(0L);
         columnConfig.setModifiedUserId(0L);
@@ -196,8 +198,8 @@ public class MockTableConfigRepository implements TableConfigRepository {
 
 
         List<TableConfigBO> list = new ArrayList<>();
-        list.add(tableConfig);
         list.add(projectTable);
+        list.add(tableConfig);
         list.add(columnConfig);
         return list;
     }

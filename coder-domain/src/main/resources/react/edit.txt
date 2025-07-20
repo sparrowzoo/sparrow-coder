@@ -8,12 +8,14 @@ import {DialogClose, DialogDescription, DialogFooter, DialogHeader, DialogTitle}
 import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizontal";
 import toast from "react-hot-toast";
 import {ValidatableInput} from "@/common/components/forms/ValidatableInput";
+import {ValidatableTextArea} from "@/common/components/forms/ValidatableTextArea";
+
 import {useTranslations} from "next-intl";
 import * as v from "valibot";
 import {CellContextProps} from "@/common/lib/table/DataTableProperty";
 
 
-export default function EditPage({cellContext}: CellContextProps<any,any>) {
+export default function EditPage({cellContext}: CellContextProps<any>) {
      const globalTranslate = useTranslations("GlobalForm");
         const errorTranslate = useTranslations("$persistence_class_name.ErrorMessage")
         const pageTranslate = useTranslations("$persistence_class_name")
@@ -53,17 +55,14 @@ export default function EditPage({cellContext}: CellContextProps<any,any>) {
     });
 
 
-    // formState.errors;
     return (
-        //正确
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <DialogHeader>
-                <DialogTitle>{globalTranslate("edit")}</DialogTitle>
-                <DialogDescription>
-
-                </DialogDescription>
-            </DialogHeader>
-            <div className="flex flex-col">
+             <form className={"h-[calc(100vh-80px)] flex flex-col"} onSubmit={handleSubmit(onSubmit)}>
+                        <DialogHeader>
+                            <DialogTitle>{globalTranslate("edit")}</DialogTitle>
+                            <DialogDescription>
+                            </DialogDescription>
+                        </DialogHeader>
+            <div className="min-h-0 flex-1 flex-col overflow-y-scroll">
                 $frontend_edit_form_items
             </div>
            <DialogFooter>

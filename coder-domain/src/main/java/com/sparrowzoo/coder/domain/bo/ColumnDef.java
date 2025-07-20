@@ -152,6 +152,9 @@ public class ColumnDef implements POJO {
     }
 
     public Boolean isNumber() {
+        if(this.javaType == null){
+            return false;
+        }
         return this.javaType.equals("java.lang.Integer") ||
                 this.javaType.equals("java.lang.Long") ||
                 this.javaType.equals("java.lang.Double") ||

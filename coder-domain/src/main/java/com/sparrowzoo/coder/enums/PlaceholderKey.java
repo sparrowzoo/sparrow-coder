@@ -209,13 +209,14 @@ public enum PlaceholderKey {
     $get_sets_display_text,
     $get_sets_params,
     $init_po,
-    $assemble_kvs,
-
     $dictionaries,
     $enum_container_inject,
 
 
-    $adapter_kvs,
+    $service_kvs,
+    $join_table_service_import,
+    $join_table_service_inject,
+    $join_table_service_dict,
     $frontend_path_page,
     $frontend_path_api,
     $frontend_path_add,

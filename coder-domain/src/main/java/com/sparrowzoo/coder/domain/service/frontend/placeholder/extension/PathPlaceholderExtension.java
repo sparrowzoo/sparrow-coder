@@ -3,6 +3,7 @@ package com.sparrowzoo.coder.domain.service.frontend.placeholder.extension;
 import com.sparrowzoo.coder.domain.bo.TableContext;
 import com.sparrowzoo.coder.domain.service.AbstractPlaceholderExtension;
 import com.sparrowzoo.coder.domain.service.frontend.FrontendPlaceholderGenerator;
+import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrowzoo.coder.enums.FrontendKey;
 import com.sparrowzoo.coder.enums.PlaceholderKey;
 
@@ -12,7 +13,7 @@ import java.util.Map;
 @Named
 public class PathPlaceholderExtension extends AbstractPlaceholderExtension {
     @Override
-    public void extend(TableContext tableContext) {
+    public void extend(TableContext tableContext, TableConfigRegistry registry) {
         FrontendPlaceholderGenerator frontendPlaceholderGenerator = tableContext.getFrontendPlaceholderGenerator();
         Map<String, String> placeholder = tableContext.getPlaceHolder();
         placeholder.put(PlaceholderKey.$frontend_path_page.name(), frontendPlaceholderGenerator.getPath(FrontendKey.PAGE));

@@ -44,5 +44,4 @@ public class $persistence_class_nameAssemble{
         return pagerResult;
     }
 
-    $assemble_kvs
 }

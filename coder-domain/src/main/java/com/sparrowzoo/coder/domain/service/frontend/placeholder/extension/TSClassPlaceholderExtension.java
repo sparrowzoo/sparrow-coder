@@ -3,6 +3,7 @@ package com.sparrowzoo.coder.domain.service.frontend.placeholder.extension;
 import com.sparrow.orm.Field;
 import com.sparrowzoo.coder.domain.bo.TableContext;
 import com.sparrowzoo.coder.domain.service.AbstractPlaceholderExtension;
+import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrowzoo.coder.enums.PlaceholderKey;
 
 import javax.inject.Named;
@@ -11,7 +12,7 @@ import java.util.Map;
 @Named
 public class TSClassPlaceholderExtension extends AbstractPlaceholderExtension {
     @Override
-    public void extend(TableContext tableContext) {
+    public void extend(TableContext tableContext, TableConfigRegistry registry) {
         Map<String, String> placeholder = tableContext.getPlaceHolder();
         placeholder.put(PlaceholderKey.$frontend_class.name(), this.generateClass(tableContext));
     }

@@ -36,7 +36,7 @@ private Integer rowMenu;
 private Integer columnFilter; 
 private Boolean statusCommand; 
 private String columnConfigs; 
-private String source; 
+private Integer source; 
 private String sourceCode; 
 private String createUserName; 
 private Long createUserId; 

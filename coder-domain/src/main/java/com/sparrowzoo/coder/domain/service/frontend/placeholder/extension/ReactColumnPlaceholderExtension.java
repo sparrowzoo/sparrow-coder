@@ -12,6 +12,7 @@ import com.sparrowzoo.coder.domain.service.ArchitectureGenerator;
 import com.sparrowzoo.coder.domain.service.ValidatorMessageGenerator;
 import com.sparrowzoo.coder.domain.service.frontend.generator.column.ColumnGenerator;
 import com.sparrowzoo.coder.domain.service.registry.ColumnGeneratorRegistry;
+import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrowzoo.coder.domain.service.registry.ValidatorRegistry;
 import com.sparrowzoo.coder.enums.*;
 
@@ -24,7 +25,7 @@ import java.util.Map;
 @Named
 public class ReactColumnPlaceholderExtension extends AbstractPlaceholderExtension {
     @Override
-    public void extend(TableContext tableContext) {
+    public void extend(TableContext tableContext, TableConfigRegistry registry) {
         ProjectBO project = tableContext.getProject();
         List<ColumnDef> columnDefs = tableContext.getColumns();
         if (CollectionsUtility.isNullOrEmpty(columnDefs)) {

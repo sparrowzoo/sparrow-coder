@@ -17,19 +17,17 @@
 package com.sparrowzoo.coder.domain.service;
 
 import com.sparrow.exception.Asserts;
+import com.sparrow.protocol.*;
+import java.util.*;
+import javax.inject.*;
 import com.sparrow.protocol.constant.SparrowError;
-import com.sparrow.protocol.BusinessException;
-import com.sparrow.protocol.ListRecordTotalBO;
+import com.sparrow.protocol.enums.StatusRecord;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.repository.ProjectConfigRepository;
 import com.sparrowzoo.coder.protocol.param.ProjectConfigParam;
 import com.sparrowzoo.coder.protocol.query.ProjectConfigQuery;
 import com.sparrow.utility.CollectionsUtility;
-import java.util.List;
-import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Named;
 
 @Named
 public class ProjectConfigService {
@@ -76,5 +74,17 @@ public class ProjectConfigService {
     public ProjectConfigBO getProjectConfig(Long projectConfigId) throws BusinessException {
          Asserts.isTrue(projectConfigId==null, SparrowError.GLOBAL_PARAMETER_NULL);
         return this.projectConfigRepository.getProjectConfig(projectConfigId);
+    }
+
+    public List<KeyValue<Integer, String>> getProjectConfigKvs() {
+        ProjectConfigQuery projectConfigQuery = new ProjectConfigQuery();
+        projectConfigQuery.setStatus(StatusRecord.ENABLE.ordinal());
+        projectConfigQuery.setPageSize(-1);
+        List<ProjectConfigBO> projectConfigBoList = this.projectConfigRepository.queryProjectConfigs(projectConfigQuery);
+        List<KeyValue<Integer, String>> projectConfigKvs = new ArrayList<>(projectConfigBoList.size());
+        for (ProjectConfigBO projectConfigBO : projectConfigBoList) {
+            projectConfigKvs.add(new KeyValue<>(projectConfigBO.getId().intValue(), projectConfigBO.getDisplayText()));
+        }
+        return projectConfigKvs;
     }
 }
