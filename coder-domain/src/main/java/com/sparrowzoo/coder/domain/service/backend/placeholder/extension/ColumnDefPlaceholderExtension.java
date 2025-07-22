@@ -38,7 +38,7 @@ public class ColumnDefPlaceholderExtension extends AbstractPlaceholderExtension 
             dictionaries.add(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.CONTROL_TYPE));
             dictionaries.add(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.HEADER_TYPE));
             dictionaries.add(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.SEARCH_TYPE));
-            //dictionaries.add(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.SEARCH_OPERATOR));
+            dictionaries.add("pagerResult.putDictionary(\"validateType\", ValidatorRegistry.getInstance().getValidatorNames(\"react\"));");
             placeHolder.put(PlaceholderKey.$enum_container_inject.name(), "@Inject\n" +
                     "    private EnumsContainer coderEnumsContainer;");
         }

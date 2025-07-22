@@ -2,9 +2,9 @@ package com.sparrowzoo.coder.domain.service.registry;
 
 import com.sparrow.protocol.KeyValue;
 import com.sparrow.utility.ClassUtility;
-import com.sparrowzoo.coder.domain.bo.validate.Validator;
 import com.sparrowzoo.coder.domain.service.ValidatorMessageGenerator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +26,7 @@ public class ValidatorRegistry {
     }
 
 
-    public void registry(ValidatorMessageGenerator validatorMessageGenerator) {
+    public void registry(ValidatorMessageGenerator<?> validatorMessageGenerator) {
         String packageName = validatorMessageGenerator.getClass().getPackage().getName();
         String namespace = packageName.substring(packageName.lastIndexOf(".") + 1);
         String validatorName = ClassUtility.getBeanNameByClass(validatorMessageGenerator.getClass(), ValidatorMessageGenerator.class);
@@ -51,7 +51,7 @@ public class ValidatorRegistry {
 
     public List<KeyValue<String, String>> getValidatorNames(String namespace) {
         Map<String, ValidatorMessageGenerator> validators = this.registry.get(namespace);
-        List<KeyValue<String, String>> list = new java.util.ArrayList<>();
+        List<KeyValue<String, String>> list = new ArrayList<>();
         for (String validatorName : validators.keySet()) {
             list.add(new KeyValue<>(validatorName, validatorName));
         }

@@ -16,26 +16,24 @@
  */
 package com.sparrowzoo.coder.adapter.controller;
 
-import com.sparrow.protocol.*;
-
-import java.util.*;
-
+import com.sparrow.protocol.BusinessException;
+import com.sparrow.protocol.ListRecordTotalBO;
 import com.sparrow.protocol.pager.PagerResult;
-import com.sparrow.spring.starter.*;
+import com.sparrow.spring.starter.EnumsContainer;
 import com.sparrowzoo.coder.adapter.assemble.TableConfigAssemble;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
-import com.sparrowzoo.coder.domain.service.registry.ValidatorRegistry;
-import com.sparrowzoo.coder.protocol.param.TableConfigParam;
-import com.sparrowzoo.coder.constant.EnumNames;
-import com.sparrowzoo.coder.protocol.query.TableConfigQuery;
-import com.sparrowzoo.coder.protocol.dto.TableConfigDTO;
+import com.sparrowzoo.coder.domain.service.ProjectConfigService;
 import com.sparrowzoo.coder.domain.service.TableConfigService;
+import com.sparrowzoo.coder.domain.service.registry.ValidatorRegistry;
+import com.sparrowzoo.coder.protocol.dto.TableConfigDTO;
+import com.sparrowzoo.coder.protocol.param.TableConfigParam;
+import com.sparrowzoo.coder.protocol.query.TableConfigQuery;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-
-import org.springframework.web.bind.annotation.*;
-import io.swagger.annotations.*;
-import com.sparrowzoo.coder.domain.service.ProjectConfigService;
+import java.util.Set;
 
 
 @RestController
@@ -52,15 +50,12 @@ public class TableConfigController {
     @Inject
     private EnumsContainer coderEnumsContainer;
 
-
     @Inject
     private ProjectConfigService projectConfigService;
 
     @PostMapping("search.json")
     @ApiOperation("搜索")
     public PagerResult<TableConfigDTO> search(@RequestBody TableConfigQuery tableConfigQuery) {
-        ValidatorRegistry validatorRegistry=ValidatorRegistry.getInstance();
-
         ListRecordTotalBO<TableConfigBO> tableConfigListTotalRecord = this.tableConfigService.queryTableConfig(tableConfigQuery);
         PagerResult<TableConfigDTO> pagerResult = this.tableConfigAssemble.assemblePager(tableConfigListTotalRecord, tableConfigQuery);
         pagerResult.putDictionary("cellType", coderEnumsContainer.getEnums("cellType"));
@@ -70,7 +65,7 @@ public class TableConfigController {
         pagerResult.putDictionary("headerType", coderEnumsContainer.getEnums("headerType"));
         pagerResult.putDictionary("searchType", coderEnumsContainer.getEnums("searchType"));
         pagerResult.putDictionary("projectId", this.projectConfigService.getProjectConfigKvs());
-        pagerResult.putDictionary("validateType",validatorRegistry.getValidatorNames("react"));
+        pagerResult.putDictionary("validateType", ValidatorRegistry.getInstance().getValidatorNames("react"));
         return pagerResult;
     }
 

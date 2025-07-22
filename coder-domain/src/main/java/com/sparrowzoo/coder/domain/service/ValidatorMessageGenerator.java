@@ -1,6 +1,8 @@
 package com.sparrowzoo.coder.domain.service;
 
-public interface ValidatorMessageGenerator<T> {
+import com.sparrowzoo.coder.domain.bo.validate.Validator;
+
+public interface ValidatorMessageGenerator<T extends Validator> {
     String generateConfig(String propertyName,
                           T validator);
 
