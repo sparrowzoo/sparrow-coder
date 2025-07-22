@@ -5,7 +5,7 @@ import com.sparrowzoo.coder.domain.bo.ColumnDef;
 import com.sparrowzoo.coder.domain.bo.TableContext;
 import com.sparrowzoo.coder.domain.service.AbstractPlaceholderExtension;
 import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
-import com.sparrowzoo.coder.enums.DataSourceType;
+import com.sparrowzoo.coder.enums.DatasourceType;
 import com.sparrowzoo.coder.enums.PlaceholderKey;
 
 import javax.inject.Named;
@@ -23,10 +23,10 @@ public class ColumnDefPlaceholderExtension extends AbstractPlaceholderExtension 
 
         boolean hasBusinessEnum = false;
         for (ColumnDef columnDef : columnDefs) {
-            if (DataSourceType.ENUM.getIdentity().equals(columnDef.getDataSourceType())) {
+            if (DatasourceType.ENUM.getIdentity().equals(columnDef.getDatasourceType())) {
                 hasBusinessEnum = true;
             }
-            if (DataSourceType.TABLE.getIdentity().equals(columnDef.getDataSourceType())) {
+            if (DatasourceType.TABLE.getIdentity().equals(columnDef.getDatasourceType())) {
                 //与@JoinTable(name = "t_project_config") 功能相
             }
         }
@@ -38,6 +38,7 @@ public class ColumnDefPlaceholderExtension extends AbstractPlaceholderExtension 
             dictionaries.add(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.CONTROL_TYPE));
             dictionaries.add(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.HEADER_TYPE));
             dictionaries.add(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.SEARCH_TYPE));
+            //dictionaries.add(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.SEARCH_OPERATOR));
             placeHolder.put(PlaceholderKey.$enum_container_inject.name(), "@Inject\n" +
                     "    private EnumsContainer coderEnumsContainer;");
         }

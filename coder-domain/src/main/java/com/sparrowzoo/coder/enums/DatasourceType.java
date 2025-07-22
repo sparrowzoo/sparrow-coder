@@ -5,7 +5,7 @@ import com.sparrow.protocol.EnumUniqueName;
 import com.sparrowzoo.coder.constant.EnumNames;
 
 @EnumUniqueName(name = EnumNames.DATASOURCE_TYPE)
-public enum DataSourceType implements EnumIdentityAccessor {
+public enum DatasourceType implements EnumIdentityAccessor {
     NULL(1),
     DICTIONARY(2),
     /**
@@ -17,12 +17,12 @@ public enum DataSourceType implements EnumIdentityAccessor {
 
     private final int identity;
 
-    DataSourceType(Integer identity) {
+    DatasourceType(Integer identity) {
         this.identity = identity;
     }
 
-    public static DataSourceType getById(int identity) {
-        for (DataSourceType type : DataSourceType.values()) {
+    public static DatasourceType getById(int identity) {
+        for (DatasourceType type : DatasourceType.values()) {
             if (type.identity == identity) {
                 return type;
             }

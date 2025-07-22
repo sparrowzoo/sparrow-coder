@@ -17,27 +17,30 @@
 package com.sparrowzoo.coder.adapter.controller;
 
 import com.sparrow.protocol.*;
+
 import java.util.*;
+
 import com.sparrow.protocol.pager.PagerResult;
 import com.sparrow.spring.starter.*;
 import com.sparrowzoo.coder.adapter.assemble.TableConfigAssemble;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
+import com.sparrowzoo.coder.domain.service.registry.ValidatorRegistry;
 import com.sparrowzoo.coder.protocol.param.TableConfigParam;
 import com.sparrowzoo.coder.constant.EnumNames;
 import com.sparrowzoo.coder.protocol.query.TableConfigQuery;
 import com.sparrowzoo.coder.protocol.dto.TableConfigDTO;
 import com.sparrowzoo.coder.domain.service.TableConfigService;
+
 import javax.inject.Inject;
+
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.*;
 import com.sparrowzoo.coder.domain.service.ProjectConfigService;
 
 
-
-
 @RestController
 @RequestMapping("table/config")
-@Api(value = "TableConfig",tags = "TableConfig")
+@Api(value = "TableConfig", tags = "TableConfig")
 public class TableConfigController {
 
     @Inject
@@ -49,56 +52,59 @@ public class TableConfigController {
     @Inject
     private EnumsContainer coderEnumsContainer;
 
-     @Inject
- private ProjectConfigService projectConfigService;
+
+    @Inject
+    private ProjectConfigService projectConfigService;
 
     @PostMapping("search.json")
     @ApiOperation("搜索")
     public PagerResult<TableConfigDTO> search(@RequestBody TableConfigQuery tableConfigQuery) {
-        ListRecordTotalBO<TableConfigBO> tableConfigListTotalRecord = this.tableConfigService.queryTableConfig(tableConfigQuery);
-        PagerResult<TableConfigDTO> pagerResult =this.tableConfigAssemble.assemblePager(tableConfigListTotalRecord, tableConfigQuery);
-        pagerResult.putDictionary("cellType",coderEnumsContainer.getEnums("cellType"));
-pagerResult.putDictionary("datasourceType",coderEnumsContainer.getEnums("datasourceType"));
-pagerResult.putDictionary("columnType",coderEnumsContainer.getEnums("columnType"));
-pagerResult.putDictionary("controlType",coderEnumsContainer.getEnums("controlType"));
-pagerResult.putDictionary("headerType",coderEnumsContainer.getEnums("headerType"));
-pagerResult.putDictionary("searchType",coderEnumsContainer.getEnums("searchType"));
-        pagerResult.putDictionary("projectId",this.projectConfigService.getProjectConfigKvs());
+        ValidatorRegistry validatorRegistry=ValidatorRegistry.getInstance();
 
+        ListRecordTotalBO<TableConfigBO> tableConfigListTotalRecord = this.tableConfigService.queryTableConfig(tableConfigQuery);
+        PagerResult<TableConfigDTO> pagerResult = this.tableConfigAssemble.assemblePager(tableConfigListTotalRecord, tableConfigQuery);
+        pagerResult.putDictionary("cellType", coderEnumsContainer.getEnums("cellType"));
+        pagerResult.putDictionary("datasourceType", coderEnumsContainer.getEnums("datasourceType"));
+        pagerResult.putDictionary("columnType", coderEnumsContainer.getEnums("columnType"));
+        pagerResult.putDictionary("controlType", coderEnumsContainer.getEnums("controlType"));
+        pagerResult.putDictionary("headerType", coderEnumsContainer.getEnums("headerType"));
+        pagerResult.putDictionary("searchType", coderEnumsContainer.getEnums("searchType"));
+        pagerResult.putDictionary("projectId", this.projectConfigService.getProjectConfigKvs());
+        pagerResult.putDictionary("validateType",validatorRegistry.getValidatorNames("react"));
         return pagerResult;
     }
 
     @PostMapping("save.json")
-            @ApiOperation("保存")
+    @ApiOperation("保存")
 
     public Long saveTableConfig(@RequestBody TableConfigParam tableConfigParam) throws BusinessException {
-       return  this.tableConfigService.saveTableConfig(tableConfigParam);
+        return this.tableConfigService.saveTableConfig(tableConfigParam);
     }
 
     @GetMapping("detail.json")
-            @ApiOperation("详情页")
+    @ApiOperation("详情页")
     public TableConfigDTO getTableConfig(Long tableConfigId) throws BusinessException {
         TableConfigBO tableConfigBo = tableConfigService.getTableConfig(tableConfigId);
         return this.tableConfigAssemble.boAssembleDTO(tableConfigBo);
     }
 
     @PostMapping("delete.json")
-            @ApiOperation("删除")
+    @ApiOperation("删除")
 
     public Integer deleteTableConfig(@RequestBody Set<Long> ids) throws BusinessException {
-       return this.tableConfigService.deleteTableConfig(ids);
+        return this.tableConfigService.deleteTableConfig(ids);
     }
 
     @PostMapping("enable.json")
-            @ApiOperation("启用")
+    @ApiOperation("启用")
 
     public Integer enableTableConfig(@RequestBody Set<Long> ids) throws BusinessException {
-        return  this.tableConfigService.enableTableConfig(ids);
+        return this.tableConfigService.enableTableConfig(ids);
     }
 
     @PostMapping("disable.json")
     @ApiOperation("禁用")
     public Integer disableTableConfig(@RequestBody Set<Long> ids) throws BusinessException {
-       return  this.tableConfigService.disableTableConfig(ids);
+        return this.tableConfigService.disableTableConfig(ids);
     }
-    }
+}

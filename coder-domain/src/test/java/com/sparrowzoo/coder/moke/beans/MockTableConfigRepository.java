@@ -1,6 +1,5 @@
 package com.sparrowzoo.coder.moke.beans;
 
-import com.alibaba.fastjson.JSON;
 import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.domain.bo.ColumnDef;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
@@ -67,7 +66,7 @@ public class MockTableConfigRepository implements TableConfigRepository {
                                    HeaderType headerType,
                                    CellType cellType,
                                    ControlType controlType,
-                                   DataSourceType dataSourceType,
+                                   DatasourceType dataSourceType,
                                    Boolean enableHiding,
                                    Boolean showInList,
                                    String validateType,
@@ -81,7 +80,7 @@ public class MockTableConfigRepository implements TableConfigRepository {
         columnDef.setColumnType(columnType.getIdentity());
         columnDef.setHeaderType(headerType.getIdentity());
         columnDef.setControlType(controlType.getIdentity());
-        columnDef.setDataSourceType(dataSourceType.getIdentity());
+        columnDef.setDatasourceType(dataSourceType.getIdentity());
         columnDef.setEnableHidden(enableHiding);
         columnDef.setSubsidiaryColumns("");
         columnDef.setShowInList(showInList);

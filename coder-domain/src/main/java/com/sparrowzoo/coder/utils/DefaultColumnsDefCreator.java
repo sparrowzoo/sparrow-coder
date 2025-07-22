@@ -6,7 +6,6 @@ import com.sparrow.orm.SparrowEntityManager;
 import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.constant.DefaultSpecialColumnIndex;
 import com.sparrowzoo.coder.domain.bo.ColumnDef;
-import com.sparrowzoo.coder.domain.bo.TableConfigBO;
 import com.sparrowzoo.coder.domain.bo.validate.DigitalValidator;
 import com.sparrowzoo.coder.domain.bo.validate.NoneValidator;
 import com.sparrowzoo.coder.domain.bo.validate.StringValidator;
@@ -55,11 +54,11 @@ public class DefaultColumnsDefCreator {
             columnDef.setSearchType(SearchType.EQUAL.getIdentity());
             columnDef.setValidateType(null);
             columnDef.setValidator(new NoneValidator(columnDef.getJavaType()));
-            columnDef.setDataSourceType(DataSourceType.NULL.getIdentity());
-            columnDef.setDataSourceParams("");
+            columnDef.setDatasourceType(DatasourceType.NULL.getIdentity());
+            columnDef.setDatasourceParams("");
             if (field.getJoinTable() != null) {
-                columnDef.setDataSourceType(DataSourceType.TABLE.getIdentity());
-                columnDef.setDataSourceParams(field.getJoinTable().name());
+                columnDef.setDatasourceType(DatasourceType.TABLE.getIdentity());
+                columnDef.setDatasourceParams(field.getJoinTable().name());
             }
 
             columnDef.setColumnType(ColumnType.NORMAL.getIdentity());

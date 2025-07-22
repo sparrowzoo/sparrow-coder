@@ -1,7 +1,6 @@
 package com.sparrowzoo.coder.domain.bo;
 
 import com.sparrow.protocol.POJO;
-import com.sparrow.protocol.dao.PO;
 import com.sparrowzoo.coder.domain.bo.validate.Validator;
 import com.sparrowzoo.coder.enums.*;
 import lombok.Data;
@@ -47,10 +46,10 @@ public class ColumnDef implements POJO {
     private String validateType;
     @Column(name = "validator", columnDefinition = "varchar(255) comment '验证器'")
     private Validator validator;
-    @Column(name = "data_source_type", columnDefinition = "int comment '数据源类型'")
-    private Integer dataSourceType;
-    @Column(name = "data_source_params", columnDefinition = "varchar(255) comment '数据源参数'")
-    private String dataSourceParams;
+    @Column(name = "datasource_type", columnDefinition = "int comment '数据源类型'")
+    private Integer datasourceType;
+    @Column(name = "datasource_params", columnDefinition = "varchar(255) comment '数据源参数'")
+    private String datasourceParams;
     @Column(name = "column_type", updatable = false, columnDefinition = "int comment '列类型'")
     private Integer columnType;
     @Column(name = "header_type", columnDefinition = "int comment '表头类型'")
@@ -85,8 +84,8 @@ public class ColumnDef implements POJO {
         columnDef.setSearchType(SearchType.EQUAL.getIdentity());
         columnDef.setValidateType("");
         columnDef.setValidator(null);
-        columnDef.setDataSourceType(DataSourceType.NULL.getIdentity());
-        columnDef.setDataSourceParams("");
+        columnDef.setDatasourceType(DatasourceType.NULL.getIdentity());
+        columnDef.setDatasourceParams("");
         columnDef.setControlType(null);
         columnDef.setSort(sort);
         columnDef.setReadOnly(true);
@@ -114,8 +113,8 @@ public class ColumnDef implements POJO {
         columnDef.setSearchType(SearchType.EQUAL.getIdentity());
         columnDef.setValidateType("");
         columnDef.setValidator(null);
-        columnDef.setDataSourceType(DataSourceType.NULL.getIdentity());
-        columnDef.setDataSourceParams("");
+        columnDef.setDatasourceType(DatasourceType.NULL.getIdentity());
+        columnDef.setDatasourceParams("");
         columnDef.setControlType(null);
         columnDef.setSort(sort);
         columnDef.setReadOnly(true);
@@ -143,8 +142,8 @@ public class ColumnDef implements POJO {
         columnDef.setSearchType(SearchType.EQUAL.getIdentity());
         columnDef.setValidateType("");
         columnDef.setValidator(null);
-        columnDef.setDataSourceType(DataSourceType.NULL.getIdentity());
-        columnDef.setDataSourceParams("");
+        columnDef.setDatasourceType(DatasourceType.NULL.getIdentity());
+        columnDef.setDatasourceParams("");
         columnDef.setControlType(null);
         columnDef.setSort(sort);
         columnDef.setReadOnly(true);
