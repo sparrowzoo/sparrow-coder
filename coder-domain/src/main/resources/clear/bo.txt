@@ -1,3 +1,4 @@
+overwrite
 package $package_bo;
 
 import com.sparrow.protocol.BO;

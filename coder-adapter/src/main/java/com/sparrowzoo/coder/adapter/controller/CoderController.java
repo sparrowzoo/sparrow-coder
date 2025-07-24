@@ -5,19 +5,28 @@ import com.sparrow.cg.impl.DynamicCompiler;
 import com.sparrow.orm.SparrowEntityManager;
 import com.sparrow.protocol.BusinessException;
 import com.sparrowzoo.coder.constant.DefaultSpecialColumnIndex;
+import com.sparrowzoo.coder.domain.DomainRegistry;
+import com.sparrowzoo.coder.domain.service.CodeGenerator;
+import com.sparrowzoo.coder.domain.service.DefaultCodeGenerator;
+import com.sparrowzoo.coder.domain.service.EnvConfig;
 import com.sparrowzoo.coder.domain.service.TableConfigService;
 import com.sparrowzoo.coder.enums.CodeSource;
 import com.sparrowzoo.coder.protocol.enums.CoderError;
 import com.sparrowzoo.coder.protocol.param.LocalClassParam;
 import com.sparrowzoo.coder.protocol.param.SourceCodeParam;
 import com.sparrowzoo.coder.protocol.param.TableConfigParam;
+import com.sparrowzoo.coder.protocol.query.ProjectTablesQuery;
+import com.sparrowzoo.coder.protocol.query.TableConfigQuery;
 import com.sparrowzoo.coder.utils.DefaultColumnsDefCreator;
 import io.swagger.annotations.Api;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import java.io.IOException;
+import java.util.Set;
 
 @RestController
 @RequestMapping("coder")
@@ -26,7 +35,13 @@ public class CoderController {
     @Inject
     private TableConfigService tableConfigService;
 
-    @RequestMapping("init-by-local.json")
+    @Inject
+    private EnvConfig envConfig;
+
+    @Inject
+    private DomainRegistry domainRegistry;
+
+    @PostMapping("init-by-local.json")
     public void localInit(@RequestBody LocalClassParam className) throws BusinessException {
         Class<?> clazz = null;
         try {
@@ -52,7 +67,7 @@ public class CoderController {
         this.tableConfigService.saveTableConfig(tableConfigParam);
     }
 
-    @RequestMapping("init-by-jpa.json")
+    @PostMapping("init-by-jpa.json")
     public void jpaInit(@RequestBody SourceCodeParam sourceCodeParam) throws BusinessException {
         Class<?> clazz = DynamicCompiler.getInstance().source2Class(sourceCodeParam.getFullClassName(), sourceCodeParam.getSourceCode());
         SparrowEntityManager entityManager = new SparrowEntityManager(clazz);
@@ -71,5 +86,26 @@ public class CoderController {
         tableConfigParam.setSource(CodeSource.SOURCE_CODE.getIdentity());
         tableConfigParam.setSourceCode(sourceCodeParam.getSourceCode());
         this.tableConfigService.saveTableConfig(tableConfigParam);
+    }
+
+
+    @PostMapping("clear.json")
+    public void clear(@RequestBody Long projectId) throws IOException, ClassNotFoundException {
+        CodeGenerator generator = new DefaultCodeGenerator(projectId, envConfig, domainRegistry);
+        generator.clear();
+    }
+
+    @PostMapping("init-scaffold.json")
+    public void initScaffold(@RequestBody Long projectId) throws IOException, ClassNotFoundException {
+        CodeGenerator generator = new DefaultCodeGenerator(projectId, envConfig, domainRegistry);
+        generator.initScaffold();
+    }
+
+    @PostMapping("generate.json")
+    public void generate(@RequestBody ProjectTablesQuery projectTablesQuery) throws IOException, ClassNotFoundException {
+        CodeGenerator generator = new DefaultCodeGenerator(projectTablesQuery.getProjectId(), envConfig, domainRegistry);
+        for (String tableName : projectTablesQuery.getTableNames()) {
+            generator.generate(tableName);
+        }
     }
 }

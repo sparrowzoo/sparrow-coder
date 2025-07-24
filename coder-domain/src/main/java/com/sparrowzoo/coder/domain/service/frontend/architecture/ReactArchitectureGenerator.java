@@ -28,7 +28,6 @@ public class ReactArchitectureGenerator extends AbstractArchitectureGenerator {
         frontendGenerator.generate(FrontendKey.COLUMNS);
         frontendGenerator.generate(FrontendKey.MESSAGE);
         frontendGenerator.generate(FrontendKey.MESSAGE_FILE_LIST);
-        frontendGenerator.generate(FrontendKey.ROW_OPERATION);
     }
 
     @Override

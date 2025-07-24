@@ -47,6 +47,9 @@ public class DefaultCodeGenerator implements CodeGenerator {
     @Override
     public void generate(String tableName) throws IOException {
         TableContext context = registry.getTableContext(tableName);
+        if(context == null){
+            throw new IllegalArgumentException("table " + tableName + " not found");
+        }
         if (context.getTableConfig().getLocked()) {
             log.info("table {} is locked, skip generate", context.getTableConfig().getTableName());
             //return;

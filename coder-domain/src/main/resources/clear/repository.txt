@@ -1,3 +1,4 @@
+overwrite
 package $package_repository;
 import $package_bo.$persistence_class_nameBO;
 import $package_param.$persistence_class_nameParam;

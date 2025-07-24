@@ -1,3 +1,4 @@
+overwrite
 package $package_repository_impl;
 
 import com.sparrow.protocol.dao.StatusCriteria;

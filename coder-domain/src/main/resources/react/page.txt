@@ -12,7 +12,6 @@ import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizo
 import {useTranslations} from "next-intl";
 import toast from "react-hot-toast";
 import Result, {PagerResult} from "@/common/lib/protocol/Result";
-import RowOperations from "@/components/$persistence_object_by_horizontal/row-operations";
 
 
 
@@ -58,7 +57,7 @@ export default function Page() {
                 EditComponent={EditPage}
                 deleteHandler={deleteHandler}
                 initHandler={init}
-                RowOperationComponents={[RowOperations]}
+                RowOperationComponents={[]}
             ></DataTable>
         </div>
     );

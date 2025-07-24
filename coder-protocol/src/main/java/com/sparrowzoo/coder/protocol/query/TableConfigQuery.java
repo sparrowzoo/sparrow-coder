@@ -18,6 +18,8 @@ package com.sparrowzoo.coder.protocol.query;
 
 import com.sparrow.protocol.pager.SimplePager;
 import java.util.Date;
+import java.util.Set;
+
 import lombok.Data;
 @Data
 public class TableConfigQuery extends SimplePager {

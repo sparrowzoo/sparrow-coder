@@ -110,6 +110,15 @@ public class DefaultClassGenerator implements ClassGenerator {
         content = StringUtility.replace(content.trim(), placeHolder);
         content = licensed + "\n" + content;
         String fullPhysicalPath = this.getClassPhysicalPath(classKey);
+        File file = new File(fullPhysicalPath);
+        if (file.exists()) {
+            if(!content.startsWith("overwrite")){
+                log.info("file [{}] already exists, skip generate", fullPhysicalPath);
+                return;
+            }
+            content = content.replaceFirst("overwrite", "");
+            log.info("file [{}] already exists, overwrite it", fullPhysicalPath);
+        }
         log.info("generate file name is [{}]", fullPhysicalPath);
         this.fileUtility.writeFile(fullPhysicalPath, content);
     }
