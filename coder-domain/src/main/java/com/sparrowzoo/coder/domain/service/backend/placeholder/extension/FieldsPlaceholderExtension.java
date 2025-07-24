@@ -67,6 +67,9 @@ public class FieldsPlaceholderExtension extends AbstractPlaceholderExtension {
             placeHolder.put(PlaceholderKey.$join_table_service_dict.name(), "");
         }
         fieldBuild.append("}");
+        if(entityManager.getStatus() != null) {
+            placeHolder.put(PlaceholderKey.$status_field.name(), entityManager.getStatus().getPropertyName());
+        }
         placeHolder.put(PlaceholderKey.$get_sets.name(), fieldBuild.toString());
         placeHolder.put(PlaceholderKey.$get_sets_params.name(), paramFieldBuild.toString());
     }

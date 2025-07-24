@@ -65,7 +65,7 @@ public class BackendTest {
         CodeGenerator generator = new DefaultCodeGenerator(1L, envConfig, domainRegistry);
         //generator.clear();
         //generator.initScaffold();
-        //generator.generate("t_project_config");
+        generator.generate("t_project_config");
         generator.generate("t_table_config");
 
     }

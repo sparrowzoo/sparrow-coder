@@ -201,18 +201,15 @@ public enum PlaceholderKey {
     $sql_query_one,
 
     $sql_update,
-
     $sql_delete,
-
     $field_list,
+    $status_field,
     $get_sets,
     $get_sets_display_text,
     $get_sets_params,
     $init_po,
     $dictionaries,
     $enum_container_inject,
-
-
     $service_kvs,
     $join_table_service_import,
     $join_table_service_inject,

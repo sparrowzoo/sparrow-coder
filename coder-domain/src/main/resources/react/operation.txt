@@ -1,7 +1,7 @@
 overwrite
 import * as React from "react";
 import {$persistence_class_name} from "@/components/$persistence_object_by_horizontal/columns";
-import {TableOperationProps} from "@/common/lib/table/DataTableProperty";
+import {TableOperationProps,MyTableMeta} from "@/common/lib/table/DataTableProperty";
 import {Button} from "@/components/ui/button";
 import {Dialog, DialogContent, DialogTrigger} from "@/components/ui/dialog";
 import AddPage from "@/components/$persistence_object_by_horizontal/add";
@@ -11,16 +11,29 @@ import TableUtils from "@/common/lib/table/TableUtils";
 import {useTranslations} from "next-intl";
 
 
+
 export default function Operation({table}: TableOperationProps<$persistence_class_name>) {
     const globalTranslate = useTranslations("GlobalForm");
     const errorTranslate = useTranslations("$persistence_class_name.ErrorMessage")
+    const [open, setOpen] = React.useState(false);
+    const meta=table.options.meta as MyTableMeta<$persistence_class_name>;
+
+    const initHandler=meta.initHandler;
+    const setData=meta.setData;
+    const result=meta.result;
+
+    const callbackHandler = () => {
+        setOpen(false);
+        initHandler();
+    }
+
     return (<div className="flex justify-between gap-4">
-            <Dialog>
+            <Dialog onOpenChange={setOpen} open={open}>
                 <DialogTrigger asChild>
-                    <Button variant="outline">{globalTranslate("add")}</Button>
+                    <Button onClick={() => setOpen(true)}  variant="outline">{globalTranslate("add")}</Button>
                 </DialogTrigger>
                 <DialogContent className="w-[800px] sm:max-w-[625px]">
-                    <AddPage/>
+                     <AddPage callbackHandler={callbackHandler}/>
                 </DialogContent>
             </Dialog>
             <Button onClick={() => {
@@ -31,6 +44,10 @@ export default function Operation({table}: TableOperationProps<$persistence_clas
                 }
                 $persistence_class_nameApi.batchDelete(selectedIds, errorTranslate).then(
                     (res) => {
+                                            const datas= TableUtils.removeRowByPrimary(selectedIds,table);
+                                            result.data.list=datas;
+                                            result.data.recordTotal-=selectedIds.length;
+                                            setData(TableUtils.cloneResult(result));
                         toast.success(globalTranslate("delete")+globalTranslate("operation-success"));
                     }
                 )
@@ -44,7 +61,11 @@ export default function Operation({table}: TableOperationProps<$persistence_clas
                             }
                             $persistence_class_nameApi.enable(selectedIds, errorTranslate).then(
                                 (res) => {
-                                    toast.success(globalTranslate("enable")+globalTranslate("operation-success"));
+                                   const datas= TableUtils.batchEnable(selectedIds,table,"$status_field");
+                                   result.data.list=datas;
+                                   result.data.recordTotal-=selectedIds.length;
+                                   setData(TableUtils.cloneResult(result));
+                                   toast.success(globalTranslate("enable")+globalTranslate("operation-success"));
                                 }
                             )
                         }} variant="outline">{globalTranslate("enable")}</Button>
@@ -58,6 +79,10 @@ export default function Operation({table}: TableOperationProps<$persistence_clas
                                         }
                                         $persistence_class_nameApi.disable(selectedIds, errorTranslate).then(
                                             (res) => {
+                                                 const datas= TableUtils.batchDisable(selectedIds,table,"$status_field");
+                                                 result.data.list=datas;
+                                                 result.data.recordTotal-=selectedIds.length;
+                                                 setData(TableUtils.cloneResult(result));
                                                 toast.success(globalTranslate("disable")+globalTranslate("operation-success"));
                                             }
                                         )
