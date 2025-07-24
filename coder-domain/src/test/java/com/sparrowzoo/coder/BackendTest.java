@@ -9,10 +9,9 @@ import com.sparrowzoo.coder.domain.DomainRegistry;
 import com.sparrowzoo.coder.domain.bo.ColumnDef;
 import com.sparrowzoo.coder.domain.bo.TableContext;
 import com.sparrowzoo.coder.domain.service.CodeGenerator;
-import com.sparrowzoo.coder.domain.service.EnvConfig;
 import com.sparrowzoo.coder.domain.service.DefaultCodeGenerator;
+import com.sparrowzoo.coder.domain.service.EnvConfig;
 import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
-import com.sparrowzoo.coder.enums.PlaceholderKey;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @SpringBootTest
 public class BackendTest {
