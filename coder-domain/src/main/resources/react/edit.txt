@@ -16,7 +16,7 @@ import * as v from "valibot";
 import {CellContextProps} from "@/common/lib/table/DataTableProperty";
 
 
-export default function EditPage({cellContext}: CellContextProps<any>) {
+export default function EditPage({cellContext,callbackHandler}: CellContextProps<any>) {
      const globalTranslate = useTranslations("GlobalForm");
         const errorTranslate = useTranslations("$persistence_class_name.ErrorMessage")
         const pageTranslate = useTranslations("$persistence_class_name")
@@ -32,6 +32,7 @@ export default function EditPage({cellContext}: CellContextProps<any>) {
     ) => {
         $persistence_class_nameApi.save(data, errorTranslate).then(
             (res) => {
+                if(callbackHandler){callbackHandler();}
                 toast.success(globalTranslate("save")+globalTranslate("operation-success"));
             }
         ).catch(()=>{});

@@ -108,7 +108,6 @@ public class DefaultClassGenerator implements ClassGenerator {
         }
         Map<String, String> placeHolder = tableContext.getPlaceHolder();
         content = StringUtility.replace(content.trim(), placeHolder);
-        content = licensed + "\n" + content;
         String fullPhysicalPath = this.getClassPhysicalPath(classKey);
         File file = new File(fullPhysicalPath);
         if (file.exists()) {
@@ -119,6 +118,7 @@ public class DefaultClassGenerator implements ClassGenerator {
             content = content.replaceFirst("overwrite", "");
             log.info("file [{}] already exists, overwrite it", fullPhysicalPath);
         }
+        content = licensed + "\n" + content;
         log.info("generate file name is [{}]", fullPhysicalPath);
         this.fileUtility.writeFile(fullPhysicalPath, content);
     }

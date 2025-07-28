@@ -80,7 +80,9 @@ public class TableContext {
     public List<ColumnDef> getColumns(){
         String columnConfigs = this.getTableConfig().getColumnConfigs();
         if (StringUtility.isNullOrEmpty(columnConfigs)) {
-            return DefaultColumnsDefCreator.create(tableConfig.getClassName());
+            List<ColumnDef> defaultColumns= DefaultColumnsDefCreator.create(tableConfig.getClassName());
+            DefaultColumnsDefCreator.fillTableLevelColumn(defaultColumns,this.tableConfig.getClassName());
+            return defaultColumns;
         }
 
         List<ColumnDef> columnDefs = new ArrayList<>();
@@ -91,10 +93,11 @@ public class TableContext {
             Object jsonValidator = json.getJSONObject(jsonObject, "validator");
             this.parseValidator(columnDef, jsonValidator);
         }
+        DefaultColumnsDefCreator.fillTableLevelColumn(columnDefs,this.tableConfig.getClassName());
         return columnDefs;
     }
 
-    public List<ColumnDef> getOriginalColumns() throws ClassNotFoundException {
+    public List<ColumnDef> getOriginalColumns(){
         return this.getColumns().stream().filter(c -> c.getColumnType().equals(ColumnType.NORMAL.getIdentity())).collect(Collectors.toList());
     }
 
@@ -119,6 +122,4 @@ public class TableContext {
         RegexValidator validatorString = json.toJavaObject(jsonValidator, RegexValidator.class);
         columnDef.setValidator(validatorString);
     }
-
-
 }

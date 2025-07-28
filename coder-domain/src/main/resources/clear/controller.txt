@@ -8,14 +8,14 @@ import com.sparrow.spring.starter.*;
 import $package_assemble.$persistence_class_nameAssemble;
 import $package_bo.$persistence_class_nameBO;
 import $package_param.$persistence_class_nameParam;
-import com.sparrowzoo.coder.constant.EnumNames;
+import com.sparrowzoo.coder.domain.service.registry.ValidatorRegistry;
 import $package_query.$persistence_class_nameQuery;
 import $package_dto.$persistence_class_nameDTO;
 import $package_service.$persistence_class_nameService;
 import javax.inject.Inject;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.*;
-$join_table_service_import
+$dictionary_import
 
 
 
@@ -30,9 +30,7 @@ public class $persistence_class_nameController {
     @Inject
     private $persistence_class_nameAssemble $persistence_object_nameAssemble;
 
-    $enum_container_inject
-
-    $join_table_service_inject
+    $dictionary_inject
 
     @PostMapping("search.json")
     @ApiOperation("搜索")
@@ -40,7 +38,6 @@ public class $persistence_class_nameController {
         ListRecordTotalBO<$persistence_class_nameBO> $persistence_object_nameListTotalRecord = this.$persistence_object_nameService.query$persistence_class_name($persistence_object_nameQuery);
         PagerResult<$persistence_class_nameDTO> pagerResult =this.$persistence_object_nameAssemble.assemblePager($persistence_object_nameListTotalRecord, $persistence_object_nameQuery);
         $dictionaries
-        $join_table_service_dict
         return pagerResult;
     }
 

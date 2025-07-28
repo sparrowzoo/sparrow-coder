@@ -1,6 +1,7 @@
 package com.sparrowzoo.coder.domain.service.registry;
 
 import com.sparrow.container.FactoryBean;
+import com.sparrowzoo.coder.domain.bo.CoderTriple;
 import com.sparrowzoo.coder.domain.bo.TableContext;
 import com.sparrowzoo.coder.domain.service.PlaceholderExtension;
 

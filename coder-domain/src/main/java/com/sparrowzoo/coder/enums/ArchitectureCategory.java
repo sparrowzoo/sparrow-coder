@@ -5,19 +5,21 @@ import lombok.Getter;
 
 @Getter
 public enum ArchitectureCategory implements EnumIdentityAccessor {
-    BACKEND(1, "后端"),
-    FRONTEND(2, "前端"),
-    MOBILE(3, "移动端"),
-    DESKTOP(4, "桌面"),
-    MINI_PROGRAM(5, "小程序"),
-    DATABASE(6, "数据库");
+    BACKEND(1, "后端","clear"),
+    FRONTEND(2, "前端","react"),
+    MOBILE(3, "移动端","mobile"),
+    DESKTOP(4, "桌面","pc"),
+    MINI_PROGRAM(5, "小程序","mini-program"),
+    DATABASE(6, "数据库","mysql");
 
-    private String name;
-    private Integer id;
+    private final String name;
+    private final Integer id;
+    private final String defaultArch;
 
-    ArchitectureCategory(Integer id, String name) {
+    ArchitectureCategory(Integer id, String name,String defaultArch) {
         this.id = id;
         this.name = name;
+        this.defaultArch = defaultArch;
     }
 
     @Override

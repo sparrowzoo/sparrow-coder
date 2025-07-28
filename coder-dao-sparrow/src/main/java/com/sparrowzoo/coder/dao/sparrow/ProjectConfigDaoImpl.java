@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.sparrowzoo.coder.dao.sparrow;
 
 import com.sparrow.orm.query.BooleanCriteria;
@@ -34,8 +35,10 @@ public class ProjectConfigDaoImpl extends ORMStrategy<ProjectConfig, Long> imple
         return this.getList(searchCriteria);
     }
 
-    private BooleanCriteria generateCriteria(ProjectConfigDBPagerQuery countProjectConfigQuery) {
-        return null;
+    private BooleanCriteria generateCriteria(ProjectConfigDBPagerQuery projectConfigQuery) {
+        return BooleanCriteria.criteria(Criteria.field(ProjectConfig::getName).contains(projectConfigQuery.getName()))
+                .and(Criteria.field(ProjectConfig::getChineseName).contains(projectConfigQuery.getChineseName()))
+                .and(Criteria.field(ProjectConfig::getFrontendName).contains(projectConfigQuery.getFrontendName()));
     }
 
     @Override public Long countProjectConfig(ProjectConfigDBPagerQuery projectConfigPagerQuery) {

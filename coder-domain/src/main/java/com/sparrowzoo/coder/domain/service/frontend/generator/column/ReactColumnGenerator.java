@@ -198,10 +198,10 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
             return "cell:\"\"";
         }
         if (columnDef.getColumnType().equals(ColumnType.CHECK.getIdentity())) {
-            return "cell: CheckBoxCell";
+            return "cell:"+CellType.CHECK_BOX.getComponentName();
         }
         if (columnDef.getColumnType().equals(ColumnType.TREE.getIdentity())) {
-            return String.format("cell: TreeCell(\"%s\")", columnDef.getPropertyName());
+            return String.format("cell: %1$s(\"%2$ss\")",CellType.TREE.getComponentName(), columnDef.getPropertyName());
         }
         if (columnDef.getColumnType().equals(ColumnType.ACTION.getIdentity())) {
             return "cell:\"Actions\"";
@@ -213,13 +213,13 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
         String columnName = columnDef.getPropertyName();
         switch (cellType) {
             case TREE:
-                return String.format("cell: TreeCell(\"%s\")", columnName);
-            case CHECK_BOX:
-                return "cell: CheckBoxCell";
             case NORMAL:
-                return String.format("cell: NormalCell(\"%s\")", columnName);
+            case UNIX_TIMESTAMP:
+                return String.format("cell: %1$s(\"%2$s\")",cellType.getComponentName(), columnDef.getPropertyName());
+            case CHECK_BOX:
+                return "cell: "+CellType.CHECK_BOX.getComponentName();
             case CURRENCY:
-                return String.format("cell: CurrencyCell(\"%1$s\", \"%2$s\")", columnName, columnDef.getSubsidiaryColumns());
+                return String.format("cell: %3$s(\"%1$s\", \"%2$s\")", columnName, columnDef.getSubsidiaryColumns(), CellType.CURRENCY.getComponentName());
             case OPERATION:
                 return "cell:\"Actions\"";
             default:

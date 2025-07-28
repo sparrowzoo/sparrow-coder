@@ -16,12 +16,18 @@
  */
 package com.sparrowzoo.coder.dao.query;
 
-import com.sparrow.protocol.enums.StatusRecord;
 import com.sparrow.protocol.dao.DatabasePagerQuery;
-import java.util.Date;
 import lombok.Data;
 @Data
 
 public class ProjectConfigDBPagerQuery extends DatabasePagerQuery {
-   public ProjectConfigDBPagerQuery() {}
+   public ProjectConfigDBPagerQuery() {
+
+   }
+
+   private Boolean deleted;
+   private Integer status;
+   private String name;
+   private String frontendName;
+   private String chineseName;
 }

@@ -74,7 +74,6 @@ public class MockTableConfigRepository implements TableConfigRepository {
     ) {
         ColumnDef columnDef = new ColumnDef();
         columnDef.setPropertyName(propertyName);
-        columnDef.setTableClassName(tableClassName);
         columnDef.setChineseName(chineseName);
         columnDef.setCellType(cellType.getIdentity());
         columnDef.setColumnType(columnType.getIdentity());

@@ -1,6 +1,8 @@
 package com.sparrowzoo.coder.po;
 
+import com.sparrow.protocol.dao.ListDatasource;
 import com.sparrow.protocol.dao.PO;
+import com.sparrow.protocol.dao.enums.ListDatasourceType;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -12,8 +14,8 @@ public class TableConfig extends PO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "int COMMENT 'ID'")
     private Long id;
-    @Column(name = "project_id", updatable = false, nullable = false, columnDefinition = "int comment '项目ID'")
-    @JoinTable(name = "t_project_config")
+    @Column(name = "project_id", nullable = false, columnDefinition = "int comment '项目ID'")
+    @ListDatasource(type = ListDatasourceType.TABLE,params = "t_project_config")
     private Long projectId;
     @Column(name = "primary_key", updatable = false, nullable = false, columnDefinition = "varchar(32) default '' comment '主键'")
     private String primaryKey;
@@ -35,8 +37,8 @@ public class TableConfig extends PO {
     private Boolean statusCommand;
     @Column(name = "column_configs", columnDefinition = "text null comment '列配置'")
     private String columnConfigs;
-    @Column(name = "source", nullable = false, columnDefinition = "int default 0 not  null comment '类来源'")
+    @Column(name = "source",updatable = false, nullable = false, columnDefinition = "int default 0 not  null comment '类来源'")
     private Integer source;
-    @Column(name = "source_code", updatable = false, columnDefinition = "text null comment '上传源代码'")
+    @Column(name = "source_code", updatable = false, columnDefinition = "text null comment '源代码'")
     private String sourceCode;
 }

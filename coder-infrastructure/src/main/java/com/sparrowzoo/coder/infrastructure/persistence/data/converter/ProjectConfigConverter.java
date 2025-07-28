@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.sparrowzoo.coder.infrastructure.persistence.data.converter;
 
 import com.sparrow.protocol.LoginUser;

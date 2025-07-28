@@ -9,6 +9,7 @@ import lombok.Getter;
 @EnumUniqueName(name = EnumNames.CELL_TYPE)
 public enum CellType implements EnumIdentityAccessor {
     NORMAL("NormalCell", "normal", "标准", 1),
+    UNIX_TIMESTAMP("UnixTimestampCell", "unix-timestamp", "时间戮", 6),
     TREE("TreeCell", "tree", "树形", 2),
     OPERATION("OperationCell", "operation", "命令操作", 3),
     CHECK_BOX("CheckBoxCell", "check-box", "选择", 4),

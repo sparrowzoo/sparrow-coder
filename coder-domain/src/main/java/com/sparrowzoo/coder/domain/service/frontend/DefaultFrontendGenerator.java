@@ -76,7 +76,7 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
         String fullPhysicalPath = this.getTargetPhysicalPath(key);
         File file = new File(fullPhysicalPath);
         if (file.exists()) {
-            if(!content.startsWith("overwrite")){
+            if (!content.startsWith("overwrite")) {
                 log.info("file [{}] already exists, skip generate", fullPhysicalPath);
                 return;
             }
@@ -92,11 +92,17 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
     }
 
     private String toi18nMessageFileList() {
-        String messageFileList = FileUtility.getInstance().readFileContent(this.getTargetPhysicalPath(FrontendKey.MESSAGE_FILE_LIST));
+        String messageFileListPath = this.getTargetPhysicalPath(FrontendKey.MESSAGE_FILE_LIST);
+        String messageFileList = "";
+        if (new File(messageFileListPath).exists()) {
+            messageFileList = FileUtility.getInstance().readFileContent(messageFileListPath);
+        }
         Set<String> newFileList = new LinkedHashSet<>();
         newFileList.add("default");//default 必须排第一,否则国际化会有问题
         Set<String> oldFileList = json.parse(messageFileList, Set.class);
-        newFileList.addAll(oldFileList);
+        if(oldFileList != null) {
+            newFileList.addAll(oldFileList);
+        }
         newFileList.addAll(this.project.getI18nList());
         return json.toString(newFileList);
     }

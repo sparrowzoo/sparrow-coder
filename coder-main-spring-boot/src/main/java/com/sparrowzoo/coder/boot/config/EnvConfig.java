@@ -28,17 +28,17 @@ public class EnvConfig implements com.sparrowzoo.coder.domain.service.EnvConfig 
 
     @Override
     public String getWorkspace() {
-        return this.workspace;
+        return this.workspace.replace("/", File.separator);
     }
 
     @Override
     public String getProjectRoot() {
-        return this.projectRoot.replace(".", File.separator);
+        return this.projectRoot.replace("/", File.separator);
     }
 
     @Override
     public String getFrontendProjectRoot() {
-        return frontendProjectRoot.replace(".", File.separator);
+        return frontendProjectRoot.replace("/", File.separator);
     }
 
     @Override

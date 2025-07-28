@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.sparrowzoo.coder.adapter.controller;
 
 import com.sparrow.protocol.*;
@@ -23,7 +24,7 @@ import com.sparrow.spring.starter.*;
 import com.sparrowzoo.coder.adapter.assemble.ProjectConfigAssemble;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.protocol.param.ProjectConfigParam;
-import com.sparrowzoo.coder.constant.EnumNames;
+import com.sparrowzoo.coder.domain.service.registry.ValidatorRegistry;
 import com.sparrowzoo.coder.protocol.query.ProjectConfigQuery;
 import com.sparrowzoo.coder.protocol.dto.ProjectConfigDTO;
 import com.sparrowzoo.coder.domain.service.ProjectConfigService;
@@ -45,18 +46,13 @@ public class ProjectConfigController {
     @Inject
     private ProjectConfigAssemble projectConfigAssemble;
 
-    
 
-    
 
     @PostMapping("search.json")
     @ApiOperation("搜索")
     public PagerResult<ProjectConfigDTO> search(@RequestBody ProjectConfigQuery projectConfigQuery) {
         ListRecordTotalBO<ProjectConfigBO> projectConfigListTotalRecord = this.projectConfigService.queryProjectConfig(projectConfigQuery);
-        PagerResult<ProjectConfigDTO> pagerResult =this.projectConfigAssemble.assemblePager(projectConfigListTotalRecord, projectConfigQuery);
-        
-        
-        return pagerResult;
+        return this.projectConfigAssemble.assemblePager(projectConfigListTotalRecord, projectConfigQuery);
     }
 
     @PostMapping("save.json")

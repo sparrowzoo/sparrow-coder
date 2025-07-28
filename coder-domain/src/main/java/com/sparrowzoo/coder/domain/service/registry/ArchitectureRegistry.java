@@ -20,6 +20,9 @@ public class ArchitectureRegistry {
 
     public ArchitectureGenerator getGenerator(ArchitectureCategory category, String name) {
         Map<String, ArchitectureGenerator> architectureMap = registry.get(category);
+        if (architectureMap == null) {
+            return null;
+        }
         if (architectureMap.containsKey(name)) {
             return architectureMap.get(name);
         }

@@ -1,6 +1,7 @@
 package com.sparrowzoo.coder.domain.bo;
 
 import com.sparrow.protocol.POJO;
+import com.sparrow.protocol.dao.enums.ListDatasourceType;
 import com.sparrowzoo.coder.domain.bo.validate.Validator;
 import com.sparrowzoo.coder.enums.*;
 import lombok.Data;
@@ -11,8 +12,6 @@ import javax.persistence.Table;
 @Data
 @Table(name = "column_def")
 public class ColumnDef implements POJO {
-    @Column(name = "table_class_name", updatable = false, columnDefinition = "varchar(255) comment '类名'")
-    private String tableClassName;
     @Column(name = "property_name", updatable = false, columnDefinition = "varchar(255) comment '属性名'")
     private String propertyName;
     @Column(name = "chinese_name", columnDefinition = "varchar(255) comment '中文名'")
@@ -60,6 +59,12 @@ public class ColumnDef implements POJO {
     private Integer controlType;
     @Column(name = "sort", columnDefinition = "int comment '排序'")
     private Integer sort;
+    /**
+     * updatable = false 一定只读
+     * updatable = true 可以更新，也可能只读，需要前端界面支持只读
+     * 如果这里不允许用户自定义只读，则需要后台生成更新列的方法，较麻烦
+     * 控件只读可以使用update 方法直接保存
+     */
     @Column(name = "read_only", columnDefinition = "bit(1) comment '是否只读'")
     private Boolean readOnly;
 
@@ -68,7 +73,6 @@ public class ColumnDef implements POJO {
         columnDef.setColumnType(ColumnType.ACTION.getIdentity());
         columnDef.setHeaderType(HeaderType.NORMAL.getIdentity());
         columnDef.setCellType(CellType.OPERATION.getIdentity());
-        columnDef.setTableClassName(tableClassName);
         columnDef.setPropertyName("actions");
         columnDef.setChineseName("操作");
         columnDef.setSubsidiaryColumns("");
@@ -84,7 +88,7 @@ public class ColumnDef implements POJO {
         columnDef.setSearchType(SearchType.EQUAL.getIdentity());
         columnDef.setValidateType("");
         columnDef.setValidator(null);
-        columnDef.setDatasourceType(DatasourceType.NULL.getIdentity());
+        columnDef.setDatasourceType(ListDatasourceType.NULL.getIdentity());
         columnDef.setDatasourceParams("");
         columnDef.setControlType(null);
         columnDef.setSort(sort);
@@ -97,7 +101,6 @@ public class ColumnDef implements POJO {
         columnDef.setColumnType(ColumnType.FILTER.getIdentity());
         columnDef.setHeaderType(HeaderType.COLUMN_FILTER.getIdentity());
         columnDef.setCellType(null);
-        columnDef.setTableClassName(tableClassName);
         columnDef.setPropertyName("filter");
         columnDef.setChineseName("过滤列");
         columnDef.setSubsidiaryColumns("");
@@ -113,7 +116,7 @@ public class ColumnDef implements POJO {
         columnDef.setSearchType(SearchType.EQUAL.getIdentity());
         columnDef.setValidateType("");
         columnDef.setValidator(null);
-        columnDef.setDatasourceType(DatasourceType.NULL.getIdentity());
+        columnDef.setDatasourceType(ListDatasourceType.NULL.getIdentity());
         columnDef.setDatasourceParams("");
         columnDef.setControlType(null);
         columnDef.setSort(sort);
@@ -126,7 +129,6 @@ public class ColumnDef implements POJO {
         columnDef.setColumnType(ColumnType.CHECK.getIdentity());
         columnDef.setHeaderType(HeaderType.CHECK_BOX.getIdentity());
         columnDef.setCellType(CellType.CHECK_BOX.getIdentity());
-        columnDef.setTableClassName(tableClassName);
         columnDef.setPropertyName("check-box");
         columnDef.setChineseName("");
         columnDef.setSubsidiaryColumns("");
@@ -142,7 +144,7 @@ public class ColumnDef implements POJO {
         columnDef.setSearchType(SearchType.EQUAL.getIdentity());
         columnDef.setValidateType("");
         columnDef.setValidator(null);
-        columnDef.setDatasourceType(DatasourceType.NULL.getIdentity());
+        columnDef.setDatasourceType(ListDatasourceType.NULL.getIdentity());
         columnDef.setDatasourceParams("");
         columnDef.setControlType(null);
         columnDef.setSort(sort);

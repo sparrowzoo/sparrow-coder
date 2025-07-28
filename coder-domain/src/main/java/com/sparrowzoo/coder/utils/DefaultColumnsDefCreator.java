@@ -3,6 +3,8 @@ package com.sparrowzoo.coder.utils;
 import com.sparrow.orm.EntityManager;
 import com.sparrow.orm.Field;
 import com.sparrow.orm.SparrowEntityManager;
+import com.sparrow.protocol.dao.ListDatasource;
+import com.sparrow.protocol.dao.enums.ListDatasourceType;
 import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.constant.DefaultSpecialColumnIndex;
 import com.sparrowzoo.coder.domain.bo.ColumnDef;
@@ -11,27 +13,32 @@ import com.sparrowzoo.coder.domain.bo.validate.NoneValidator;
 import com.sparrowzoo.coder.domain.bo.validate.StringValidator;
 import com.sparrowzoo.coder.enums.*;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DefaultColumnsDefCreator {
     public static List<ColumnDef> create(String className) {
+        return create(className, false);
+    }
+
+    public static List<ColumnDef> create(String className, Boolean basicPersistence) {
         EntityManager entityManager = null;
         try {
             entityManager = new SparrowEntityManager(Class.forName(className));
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        String tableClassName = entityManager.getSimpleClassName();
         List<ColumnDef> columnDefs = new ArrayList<>();
         Map<String, Field> fieldMap = entityManager.getPropertyFieldMap();
-        int i = 0;
+        Set<String> poPropertyNames = entityManager.getPoPropertyNames();
         for (String propertyName : fieldMap.keySet()) {
+            if (basicPersistence && !poPropertyNames.contains(propertyName)) {
+                continue;
+            }
+            if (!basicPersistence && poPropertyNames.contains(propertyName)) {
+                continue;
+            }
             Field field = fieldMap.get(propertyName);
             ColumnDef columnDef = new ColumnDef();
-            columnDef.setTableClassName(tableClassName);
             columnDef.setPropertyName(propertyName);
             columnDef.setChineseName(parseChineseName(field.getColumnDefinition()));
             columnDef.setSubsidiaryColumns("");
@@ -43,9 +50,6 @@ public class DefaultColumnsDefCreator {
             } else {
                 columnDef.setShowInEdit(true);
             }
-            if (!field.isUpdatable()) {
-                columnDef.setReadOnly(true);
-            }
             columnDef.setShowInList(true);
             columnDef.setShowInSearch(false);
             columnDef.setAllowNull(field.getColumn().nullable());
@@ -54,16 +58,21 @@ public class DefaultColumnsDefCreator {
             columnDef.setSearchType(SearchType.EQUAL.getIdentity());
             columnDef.setValidateType(null);
             columnDef.setValidator(new NoneValidator(columnDef.getJavaType()));
-            columnDef.setDatasourceType(DatasourceType.NULL.getIdentity());
+            columnDef.setDatasourceType(ListDatasourceType.NULL.getIdentity());
             columnDef.setDatasourceParams("");
-            if (field.getJoinTable() != null) {
-                columnDef.setDatasourceType(DatasourceType.TABLE.getIdentity());
-                columnDef.setDatasourceParams(field.getJoinTable().name());
+            if (field.getListDatasource() != null) {
+                ListDatasource listDatasource= field.getListDatasource();
+                columnDef.setDatasourceType(listDatasource.type().getIdentity());
+                columnDef.setDatasourceParams(listDatasource.params());
             }
 
             columnDef.setColumnType(ColumnType.NORMAL.getIdentity());
             columnDef.setHeaderType(HeaderType.NORMAL.getIdentity());
             columnDef.setCellType(CellType.NORMAL.getIdentity());
+            if(columnDef.getPropertyName().equals("gmtCreate")||
+                    columnDef.getPropertyName().equals("gmtModified")){
+                columnDef.setCellType(CellType.UNIX_TIMESTAMP.getIdentity());
+            }
             if (entityManager.getPrimary() != null && columnDef.getPropertyName().equals(entityManager.getPrimary().getPropertyName())) {
                 columnDef.setControlType(ControlType.INPUT_HIDDEN.getIdentity());
                 columnDef.setValidateType("digital");
@@ -85,14 +94,21 @@ public class DefaultColumnsDefCreator {
                     columnDef.setControlType(JavaTypeController.getByJavaType(columnDef.getJavaType()).getControlTypes()[0].getIdentity());
                 }
             }
-            columnDef.setSort(i++);
             columnDefs.add(columnDef);
+        }
+        return columnDefs;
+    }
+
+    public static void fillTableLevelColumn(List<ColumnDef> columnDefs, String tableClassName) {
+        columnDefs.addAll(create(tableClassName, true));
+        for (int i = 0; i < columnDefs.size(); i++) {
+            columnDefs.get(i).setSort(i);
         }
         columnDefs.add(ColumnDef.createFilter(tableClassName, DefaultSpecialColumnIndex.COLUMN_FILTER));
         columnDefs.add(ColumnDef.createCheckBox(tableClassName, DefaultSpecialColumnIndex.CHECK));
         columnDefs.add(ColumnDef.createRowMenu(tableClassName, DefaultSpecialColumnIndex.ROW_MENU));
+
         columnDefs.sort(Comparator.comparingInt(ColumnDef::getSort));
-        return columnDefs;
     }
 
     private static boolean isTextArea(Field field) {

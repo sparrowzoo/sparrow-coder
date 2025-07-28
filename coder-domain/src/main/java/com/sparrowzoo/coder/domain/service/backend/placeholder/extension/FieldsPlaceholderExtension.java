@@ -27,16 +27,12 @@ public class FieldsPlaceholderExtension extends AbstractPlaceholderExtension {
         StringBuilder fieldBuild = new StringBuilder(getSetPrefix);
         StringBuilder paramFieldBuild = new StringBuilder();
 
-        Field joinTable = null;
         for (Field field : fields.values()) {
             Class<?> fieldClazz = field.getType();
             String property = String.format("private %s %s; \n", fieldClazz.getSimpleName(), field.getPropertyName());
             fieldBuild.append(property);
             if (entityManager.getPoPropertyNames() != null && !entityManager.getPoPropertyNames().contains(field.getPropertyName())) {
                 paramFieldBuild.append(property);
-            }
-            if (field.getJoinTable() != null) {
-                joinTable = field;
             }
         }
         //如果实现了DisplayText 接口，则生成KVS的接口，提供给外表关联使用
@@ -47,24 +43,6 @@ public class FieldsPlaceholderExtension extends AbstractPlaceholderExtension {
         } else {
             placeHolder.put(PlaceholderKey.$get_sets_display_text.name(), "");
             placeHolder.put(PlaceholderKey.$service_kvs.name(), "");
-        }
-
-        //
-        if (joinTable != null) {
-            String joinTableName = joinTable.getJoinTable().name();
-            TableContext joinTableContext = registry.getTableContext(joinTableName);
-            String joinServicePackage = joinTableContext.getPlaceHolder().get(PlaceholderKey.$package_service.name());
-            String serviceClass = joinTableContext.getPlaceHolder().get(PlaceholderKey.$class_service.name());
-            String joinClassName = joinTableContext.getPlaceHolder().get(PlaceholderKey.$persistence_class_name.name());
-            String objectName = joinTableContext.getPlaceHolder().get(PlaceholderKey.$persistence_object_name.name());
-            String joinFieldName = joinTable.getPropertyName();
-            placeHolder.put(PlaceholderKey.$join_table_service_import.name(), String.format("import %1$s.%2$s;\n", joinServicePackage, serviceClass));
-            placeHolder.put(PlaceholderKey.$join_table_service_inject.name(), String.format(" @Inject\n private %1$s %2$sService;", serviceClass, objectName));
-            placeHolder.put(PlaceholderKey.$join_table_service_dict.name(), String.format("pagerResult.putDictionary(\"%1$s\",this.%2$sService.get%3$sKvs());\n", joinFieldName, objectName, joinClassName));
-        } else {
-            placeHolder.put(PlaceholderKey.$join_table_service_inject.name(), "");
-            placeHolder.put(PlaceholderKey.$join_table_service_import.name(), "");
-            placeHolder.put(PlaceholderKey.$join_table_service_dict.name(), "");
         }
         fieldBuild.append("}");
         if(entityManager.getStatus() != null) {

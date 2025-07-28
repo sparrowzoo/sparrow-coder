@@ -13,7 +13,7 @@ CREATE TABLE `t_table_config` (
  `status_command` tinyint(1)  default 0 comment '是否显示状态命令'  NOT NULL,
  `column_configs` text null comment '列配置'  ,
  `source` int default 0 not  null comment '类来源'  NOT NULL,
- `source_code` text null comment '上传源代码'  ,
+ `source_code` text null comment '源代码'  ,
  `create_user_name` varchar(64)  DEFAULT '' COMMENT '创建人'  NOT NULL,
  `create_user_id` int(11) UNSIGNED  DEFAULT 0 COMMENT '创建人ID'  NOT NULL,
  `modified_user_id` int(11) unsigned  DEFAULT 0 COMMENT '更新人ID'  NOT NULL,

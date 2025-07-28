@@ -23,5 +23,7 @@ import lombok.Data;
 public class ProjectConfigQuery extends SimplePager {
     private Boolean deleted;
     private Integer status;
-    private Long projectId;
+    private String name;
+    private String frontendName;
+    private String chineseName;
 }

@@ -47,7 +47,7 @@ public class DefaultCodeGenerator implements CodeGenerator {
     @Override
     public void generate(String tableName) throws IOException {
         TableContext context = registry.getTableContext(tableName);
-        if(context == null){
+        if (context == null) {
             throw new IllegalArgumentException("table " + tableName + " not found");
         }
         if (context.getTableConfig().getLocked()) {
@@ -56,7 +56,10 @@ public class DefaultCodeGenerator implements CodeGenerator {
         }
         ProjectArchsBO architectures = registry.getProject().getArchitectures();
         for (String architectureCategory : architectures.getArchs().keySet()) {
-            architectures.getArch(architectureCategory).generate(registry, tableName);
+            ArchitectureGenerator architectureGenerator = architectures.getArch(architectureCategory);
+            if (architectureGenerator != null) {
+                architectureGenerator.generate(registry, tableName);
+            }
         }
     }
 
