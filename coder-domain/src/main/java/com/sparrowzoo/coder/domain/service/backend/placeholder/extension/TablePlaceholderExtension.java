@@ -65,6 +65,10 @@ public class TablePlaceholderExtension extends AbstractPlaceholderExtension {
         placeHolder.put(PlaceholderKey.$sql_delete.name(), entityManager.getDelete());
         placeHolder.put(PlaceholderKey.$sql_update.name(), entityManager.getUpdate());
         placeHolder.put(PlaceholderKey.$field_list.name(), entityManager.getFields());
+        if(tableContext.getTableConfig().getPageSize() != null) {
+            placeHolder.put(PlaceholderKey.$page_size.name(), tableContext.getTableConfig().getPageSize().toString());
+        }
+
         if (entityManager.getPoPropertyNames() != null) {
             String initPO = String.format("POInitUtils.init(%s);\n", placeHolder.get(PlaceholderKey.$persistence_object_name.name()));
             placeHolder.put(PlaceholderKey.$init_po.name(), initPO);

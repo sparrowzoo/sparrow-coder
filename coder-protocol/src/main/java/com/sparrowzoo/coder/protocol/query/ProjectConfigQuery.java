@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.sparrowzoo.coder.protocol.query;
 
 import com.sparrow.protocol.pager.SimplePager;
@@ -21,9 +22,7 @@ import java.util.Date;
 import lombok.Data;
 @Data
 public class ProjectConfigQuery extends SimplePager {
-    private Boolean deleted;
-    private Integer status;
-    private String name;
-    private String frontendName;
-    private String chineseName;
+   private String name;
+private String frontendName;
+private String chineseName;
 }

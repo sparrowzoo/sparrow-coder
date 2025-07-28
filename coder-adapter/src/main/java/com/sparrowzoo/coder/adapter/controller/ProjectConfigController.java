@@ -17,21 +17,20 @@
 
 package com.sparrowzoo.coder.adapter.controller;
 
-import com.sparrow.protocol.BusinessException;
-import com.sparrow.protocol.ListRecordTotalBO;
+import com.sparrow.protocol.*;
+import java.util.*;
 import com.sparrow.protocol.pager.PagerResult;
+import com.sparrow.spring.starter.*;
 import com.sparrowzoo.coder.adapter.assemble.ProjectConfigAssemble;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
-import com.sparrowzoo.coder.domain.service.ProjectConfigService;
-import com.sparrowzoo.coder.protocol.dto.ProjectConfigDTO;
 import com.sparrowzoo.coder.protocol.param.ProjectConfigParam;
+import com.sparrowzoo.coder.domain.service.registry.ValidatorRegistry;
 import com.sparrowzoo.coder.protocol.query.ProjectConfigQuery;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.*;
-
+import com.sparrowzoo.coder.protocol.dto.ProjectConfigDTO;
+import com.sparrowzoo.coder.domain.service.ProjectConfigService;
 import javax.inject.Inject;
-import java.util.Set;
+import org.springframework.web.bind.annotation.*;
+import io.swagger.annotations.*;
 
 
 
@@ -47,13 +46,15 @@ public class ProjectConfigController {
     @Inject
     private ProjectConfigAssemble projectConfigAssemble;
 
-
+    
 
     @PostMapping("search.json")
     @ApiOperation("搜索")
     public PagerResult<ProjectConfigDTO> search(@RequestBody ProjectConfigQuery projectConfigQuery) {
         ListRecordTotalBO<ProjectConfigBO> projectConfigListTotalRecord = this.projectConfigService.queryProjectConfig(projectConfigQuery);
-        return this.projectConfigAssemble.assemblePager(projectConfigListTotalRecord, projectConfigQuery);
+        PagerResult<ProjectConfigDTO> pagerResult =this.projectConfigAssemble.assemblePager(projectConfigListTotalRecord, projectConfigQuery);
+        
+        return pagerResult;
     }
 
     @PostMapping("save.json")

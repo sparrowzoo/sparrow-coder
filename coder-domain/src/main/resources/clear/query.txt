@@ -1,3 +1,4 @@
+overwrite
 package $package_query;
 
 import com.sparrow.protocol.pager.SimplePager;
@@ -5,6 +6,5 @@ import java.util.Date;
 import lombok.Data;
 @Data
 public class $persistence_class_nameQuery extends SimplePager {
-    private Boolean deleted;
-    private Integer status;
+   $search_fields
 }

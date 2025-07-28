@@ -1,7 +1,10 @@
 package com.sparrowzoo.coder.domain.service.frontend.placeholder.extension;
 
 import com.sparrow.core.spi.JsonFactory;
+import com.sparrow.orm.EntityManager;
+import com.sparrow.orm.Field;
 import com.sparrow.utility.CollectionsUtility;
+import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.domain.bo.ColumnDef;
 import com.sparrowzoo.coder.domain.bo.ProjectBO;
 import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
@@ -15,6 +18,7 @@ import com.sparrowzoo.coder.domain.service.registry.ColumnGeneratorRegistry;
 import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrowzoo.coder.domain.service.registry.ValidatorRegistry;
 import com.sparrowzoo.coder.enums.*;
+import com.sparrowzoo.coder.utils.JavaTsTypeConverter;
 
 import javax.inject.Named;
 import java.util.ArrayList;
@@ -69,11 +73,22 @@ public class ReactColumnPlaceholderExtension extends AbstractPlaceholderExtensio
         List<String> columns = new ArrayList<>();
         List<String> addFormItems = new ArrayList<>();
         List<String> editFormItems = new ArrayList<>();
+        List<String> frontSearchItems = new ArrayList<>();
+        List<String> frontQueryFields = new ArrayList<>();
+        EntityManager entityManager = tableContext.getEntityManager();
+        String persistenceClassName = entityManager.getSimpleClassName();
+        String persistenceObjectName = StringUtility.setFirstByteLowerCase(persistenceClassName);
+        Map<String, Field> fields = entityManager.getPropertyFieldMap();
 
         Map<String, Object> columnI18nMap = tableContext.getI18nMap();
         for (ColumnDef columnDef : columnDefs) {
             if (columnDef.getShowInList()) {
                 columns.add(columnGenerator.column(columnDef, project));
+            }
+            if(columnDef.getShowInSearch()){
+                Field field = fields.get(columnDef.getPropertyName());
+                frontQueryFields.add(String.format("%2$s: %1$s;", JavaTsTypeConverter.toTsType(field.getType()), field.getPropertyName()));
+                frontSearchItems.add(String.format("<SearchInput value={%1$sQuery?.%2$s||\"\"} \n" + "propertyName={\"%2$s\"} pageTranslate={pageTranslate} \n" + "setSearchCondition={set%3$sQuery}/>", persistenceObjectName, field.getPropertyName(),persistenceClassName));
             }
             if (columnDef.getShowInEdit()) {
                 addFormItems.add(columnGenerator.edit(columnDef, project, true));
@@ -90,6 +105,9 @@ public class ReactColumnPlaceholderExtension extends AbstractPlaceholderExtensio
         placeholder.put(PlaceholderKey.$frontend_add_form_items.name(), addFormItemStr);
         placeholder.put(PlaceholderKey.$frontend_edit_form_items.name(), editFormItemStr);
         placeholder.put(PlaceholderKey.$frontend_i18n_message.name(), JsonFactory.getProvider().toString(tableContext.getI18nMap()));
+        placeholder.put(PlaceholderKey.$frontend_search_items.name(), String.join("\n", frontSearchItems));
+        placeholder.put(PlaceholderKey.$frontend_query_fields.name(), String.join("\n", frontQueryFields));
+
     }
 
     private String generateSchema(TableContext tableContext, ProjectBO project, Map<String, ValidatorMessageGenerator> validateContainer) {

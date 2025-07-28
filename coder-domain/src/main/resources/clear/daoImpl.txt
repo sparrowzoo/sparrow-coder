@@ -19,8 +19,8 @@ public class $persistence_class_nameDaoImpl extends ORMStrategy<$persistence_cla
         return this.getList(searchCriteria);
     }
 
-    private BooleanCriteria generateCriteria($persistence_class_nameDBPagerQuery count$persistence_class_nameQuery) {
-        return null;
+    private BooleanCriteria generateCriteria($persistence_class_nameDBPagerQuery $persistence_object_nameQuery) {
+        return $search_dao_condition;
     }
 
     @Override public Long count$persistence_class_name($persistence_class_nameDBPagerQuery $persistence_object_namePagerQuery) {

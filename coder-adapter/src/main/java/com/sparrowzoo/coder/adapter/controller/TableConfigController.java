@@ -73,6 +73,7 @@ pagerResult.putDictionary("validateType", ValidatorRegistry.getInstance().getVal
             @ApiOperation("保存")
 
     public Long saveTableConfig(@RequestBody TableConfigParam tableConfigParam) throws BusinessException {
+      tableConfigParam.setPageSize(10);
        return  this.tableConfigService.saveTableConfig(tableConfigParam);
     }
 

@@ -1,4 +1,4 @@
-import {Input} from "@/components/ui/input";
+overwrite
 import * as React from "react";
 import {useState} from "react";
 import {$persistence_class_name} from "@/components/$persistence_object_by_horizontal/columns";
@@ -6,15 +6,18 @@ import {MyTableMeta, TableOperationProps} from "@/common/lib/table/DataTableProp
 import {Button} from "@/components/ui/button";
 import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizontal";
 import {useTranslations} from "next-intl";
+import SearchInput from "@/common/components/forms/SearchInput";
 
-type TableConfigQuery = {
-    tableName: string;
-    tableClass: string;
+
+type $persistence_class_nameQuery = {
+    $frontend_query_fields
 }
 
 export default function Search({table}: TableOperationProps<$persistence_class_name>) {
     const meta = table.options.meta as MyTableMeta<$persistence_class_name>;
     const errorTranslate = useTranslations("$persistence_class_name.ErrorMessage")
+    const pageTranslate = useTranslations("$persistence_class_name")
+    const globalTranslate = useTranslations("GlobalForm");
     const setDataState = meta.setData;
     const [$persistence_object_nameQuery, set$persistence_class_nameQuery] = useState<$persistence_class_nameQuery>()
 
@@ -23,7 +26,6 @@ export default function Search({table}: TableOperationProps<$persistence_class_n
     }
 
     const searchHandler = () => {
-        meta.searchCondition = $persistence_object_nameQuery;
         $persistence_class_nameApi.search($persistence_object_nameQuery, errorTranslate).then(
             (res) => {
                 setDataState(res)
@@ -34,18 +36,8 @@ export default function Search({table}: TableOperationProps<$persistence_class_n
 
 
     return (<>
-            <Input value={$persistence_object_nameQuery?.tableName || ""} onChange={(e) => {
-                set$persistence_class_nameQuery((prevState) => {
-                    return {
-                        ...prevState,
-                        tableName: e.target.value
-                    } as TableConfigQuery
-                })
-            }}
-                   placeholder="tableName ..."
-                   className="max-w-sm"
-            />
-            <Button onClick={() => searchHandler()} variant="ghost" className="ml-2">搜索</Button>
+            $frontend_search_items
+            <Button onClick={() => searchHandler()} variant="ghost" className="ml-2">{globalTranslate('search')}</Button>
         </>
     );
 }

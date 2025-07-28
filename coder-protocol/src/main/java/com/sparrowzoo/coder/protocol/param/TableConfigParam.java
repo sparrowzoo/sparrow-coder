@@ -36,6 +36,7 @@ private Integer columnFilter;
 private Boolean statusCommand; 
 private String columnConfigs; 
 private Integer source; 
-private String sourceCode; 
+private String sourceCode;
+private Integer pageSize;
 
 }

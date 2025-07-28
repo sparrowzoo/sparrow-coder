@@ -16,7 +16,6 @@ public class FieldsPlaceholderExtension extends AbstractPlaceholderExtension {
     @Override
     public void extend(TableContext tableContext, TableConfigRegistry registry) {
         Map<String, String> placeHolder = tableContext.getPlaceHolder();
-        tableContext.getColumns();
         EntityManager entityManager = tableContext.getEntityManager();
         String persistenceClassName = entityManager.getSimpleClassName();
         String persistenceObjectName = StringUtility.setFirstByteLowerCase(persistenceClassName);

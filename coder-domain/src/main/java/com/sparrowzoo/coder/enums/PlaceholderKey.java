@@ -199,6 +199,7 @@ public enum PlaceholderKey {
     $sql_insert,
 
     $sql_query_one,
+    $page_size,
 
     $sql_update,
     $sql_delete,
@@ -212,6 +213,11 @@ public enum PlaceholderKey {
     $dictionary_import,
     $dictionary_inject,
     $dictionaries,
+
+    $search_fields,
+    $search_dao_condition,
+
+
     $frontend_path_page,
     $frontend_path_api,
     $frontend_path_add,
@@ -226,5 +232,8 @@ public enum PlaceholderKey {
     $frontend_schema,
     $frontend_add_form_items,
     $frontend_edit_form_items,
-    $frontend_i18n_message
+    $frontend_i18n_message,
+
+    $frontend_query_fields,
+    $frontend_search_items
 }
