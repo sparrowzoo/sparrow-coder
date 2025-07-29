@@ -38,6 +38,8 @@ public class ProjectConfigDaoImpl extends ORMStrategy<ProjectConfig, Long> imple
 
     private BooleanCriteria generateCriteria(ProjectConfigDBPagerQuery projectConfigQuery) {
 
+        //lambdaQuery().eq(Table::getId, 1)
+        //Criteria.field(ProjectConfig::getFrontendName).equal(projectConfigQuery.getFrontendName()
         BooleanCriteria booleanCriteria= BooleanCriteria.criteria(Criteria.field(ProjectConfig::getName).equal(projectConfigQuery.getName()))
                 .and(Criteria.field(ProjectConfig::getFrontendName).equal(projectConfigQuery.getFrontendName()))
                 .and(Criteria.field(ProjectConfig::getChineseName).equal(projectConfigQuery.getChineseName()));

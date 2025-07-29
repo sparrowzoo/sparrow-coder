@@ -1,5 +1,6 @@
 package com.sparrowzoo.coder.moke.beans;
 
+import com.sparrow.protocol.dao.enums.ListDatasourceType;
 import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.domain.bo.ColumnDef;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
@@ -66,7 +67,7 @@ public class MockTableConfigRepository implements TableConfigRepository {
                                    HeaderType headerType,
                                    CellType cellType,
                                    ControlType controlType,
-                                   DatasourceType dataSourceType,
+                                   ListDatasourceType dataSourceType,
                                    Boolean enableHiding,
                                    Boolean showInList,
                                    String validateType,
