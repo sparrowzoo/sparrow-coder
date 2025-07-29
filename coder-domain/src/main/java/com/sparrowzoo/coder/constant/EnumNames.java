@@ -12,4 +12,7 @@ public class EnumNames {
     public static final String DATASOURCE_TYPE = "datasourceType";
 
     public static final String SEARCH_TYPE = "searchType";
+
+    public static final String STATUS_RECORD = "statusRecord";
+
 }

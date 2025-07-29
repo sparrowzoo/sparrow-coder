@@ -46,4 +46,5 @@ public class TableConfigBO implements BO {
     private Boolean deleted;
     private StatusRecord status;
     private Integer pageSize = 10;
+    private Boolean onlyAccessSelf;
 }

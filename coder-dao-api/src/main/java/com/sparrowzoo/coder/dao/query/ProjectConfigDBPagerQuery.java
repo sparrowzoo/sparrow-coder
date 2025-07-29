@@ -26,7 +26,7 @@ public class ProjectConfigDBPagerQuery extends DatabasePagerQuery {
    }
 
    private Boolean deleted;
-   private Integer status;
+   private Integer status=-1;
    private String name;
    private String frontendName;
    private String chineseName;

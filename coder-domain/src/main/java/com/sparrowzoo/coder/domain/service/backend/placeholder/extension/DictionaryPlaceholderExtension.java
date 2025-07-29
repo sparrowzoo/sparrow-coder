@@ -46,6 +46,8 @@ public class DictionaryPlaceholderExtension extends AbstractPlaceholderExtension
             dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.CONTROL_TYPE));
             dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.HEADER_TYPE));
             dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.SEARCH_TYPE));
+            dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.STATUS_RECORD));
+
             dictionaryTriple.code("pagerResult.putDictionary(\"validateType\", ValidatorRegistry.getInstance().getValidatorNames(\"react\"));");
             dictionaryTriple.inject("@Inject\nprivate EnumsContainer coderEnumsContainer;");
         }

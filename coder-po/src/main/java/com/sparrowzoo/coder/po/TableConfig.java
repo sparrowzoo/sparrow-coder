@@ -39,8 +39,10 @@ public class TableConfig extends PO {
     private String columnConfigs;
     @Column(name = "source", updatable = false, nullable = false, columnDefinition = "int default 0 not  null comment '类来源'")
     private Integer source;
-    @Column(name = "page_size", nullable = false, columnDefinition = "int default 0 not  null comment '分页大小'")
-    private Integer pageSize;
     @Column(name = "source_code", updatable = false, columnDefinition = "text null comment '源代码'")
     private String sourceCode;
+    @Column(name = "page_size", nullable = false, columnDefinition = "int default 0 not  null comment '分页大小'")
+    private Integer pageSize;
+    @Column(name = "only_access_self", nullable = false, columnDefinition = "tinyint(2) default 0 not  null comment '只看自己'")
+    private Integer onlyAccessSelf;
 }

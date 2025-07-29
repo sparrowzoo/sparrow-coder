@@ -3,6 +3,7 @@ package com.sparrowzoo.coder.domain.service.frontend.placeholder.extension;
 import com.sparrow.core.spi.JsonFactory;
 import com.sparrow.orm.EntityManager;
 import com.sparrow.orm.Field;
+import com.sparrow.protocol.enums.StatusRecord;
 import com.sparrow.utility.CollectionsUtility;
 import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.domain.bo.ColumnDef;
@@ -82,13 +83,18 @@ public class ReactColumnPlaceholderExtension extends AbstractPlaceholderExtensio
 
         Map<String, Object> columnI18nMap = tableContext.getI18nMap();
         for (ColumnDef columnDef : columnDefs) {
+            Field field = fields.get(columnDef.getPropertyName());
+
             if (columnDef.getShowInList()) {
                 columns.add(columnGenerator.column(columnDef, project));
             }
             if(columnDef.getShowInSearch()){
-                Field field = fields.get(columnDef.getPropertyName());
                 frontQueryFields.add(String.format("%2$s: %1$s;", JavaTsTypeConverter.toTsType(field.getType()), field.getPropertyName()));
                 frontSearchItems.add(String.format("<SearchInput value={%1$sQuery?.%2$s||\"\"} \n" + "propertyName={\"%2$s\"} pageTranslate={pageTranslate} \n" + "setSearchCondition={set%3$sQuery}/>", persistenceObjectName, field.getPropertyName(),persistenceClassName));
+            }
+            if(field.getType().equals(StatusRecord.class)){
+                frontQueryFields.add(String.format("%2$s: %1$s;","number", field.getPropertyName()));
+                frontSearchItems.add(String.format("<SearchSelect propertyName={\"%1$s\"} pageTranslate={pageTranslate} setSearchCondition={set%2$sQuery} dictionary={meta.result.data.dictionary['%1$s']}/>",field.getPropertyName(),persistenceClassName));
             }
             if (columnDef.getShowInEdit()) {
                 addFormItems.add(columnGenerator.edit(columnDef, project, true));
