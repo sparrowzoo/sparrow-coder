@@ -18,21 +18,20 @@
 package com.sparrowzoo.coder.protocol.param;
 
 import com.sparrow.protocol.Param;
-import com.sparrow.protocol.enums.StatusRecord;
 import lombok.Data;
 
 @Data
 public class ProjectConfigParam implements Param {
-    private Long id; 
-private String name; 
-private String frontendName; 
-private String chineseName; 
-private Boolean i18n; 
-private String description; 
-private String modulePrefix; 
-private String architectures; 
-private String config; 
-private Boolean wrapWithParent; 
-private String scaffold; 
+    private Long id;
+    private String name;
+    private String frontendName;
+    private String chineseName;
+    private Boolean i18n;
+    private String description;
+    private String modulePrefix;
+    private String architectures;
+    private String config;
+    private Boolean wrapWithParent;
+    private String scaffold;
 
 }

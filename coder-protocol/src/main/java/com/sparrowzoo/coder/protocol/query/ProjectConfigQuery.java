@@ -18,11 +18,11 @@
 package com.sparrowzoo.coder.protocol.query;
 
 import com.sparrow.protocol.pager.SimplePager;
-import java.util.Date;
 import lombok.Data;
+
 @Data
 public class ProjectConfigQuery extends SimplePager {
-   private String name;
-private String frontendName;
-private Integer status;
+    private String name;
+    private String frontendName;
+    private Integer status;
 }
