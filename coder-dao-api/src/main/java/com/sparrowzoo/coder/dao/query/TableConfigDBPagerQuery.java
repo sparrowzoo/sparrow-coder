@@ -24,10 +24,10 @@ import lombok.Data;
 @Data
 
 public class TableConfigDBPagerQuery extends DatabasePagerQuery {
-   private Long projectId;
-private String primaryKey;
+   private String primaryKey;
 private String tableName;
 private String className;
 private Integer status;
+private Long projectId;
    public TableConfigDBPagerQuery() {}
 }

@@ -34,8 +34,7 @@ public class DefaultCodeGenerator implements CodeGenerator {
     public void initRegistry() {
         TableConfigQuery tableConfigQuery = new TableConfigQuery();
         tableConfigQuery.setProjectId(registry.getProject().getProjectConfig().getId());
-        tableConfigQuery.setDeleted(false);
-        tableConfigQuery.setStatus(StatusRecord.ENABLE.ordinal());
+        tableConfigQuery.setStatus(StatusRecord.ENABLE.getIdentity());
         List<TableConfigBO> tableConfigs = domainRegistry.getTableConfigRepository().queryTableConfigs(tableConfigQuery);
         for (TableConfigBO tableConfigBO : tableConfigs) {
             TableContext context = new TableContext(tableConfigBO, this.registry.getProject());

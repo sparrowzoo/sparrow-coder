@@ -15,9 +15,7 @@ import com.sparrowzoo.coder.enums.SearchType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -31,7 +29,7 @@ public class SearchConditionPlaceholderExtension extends AbstractPlaceholderExte
         Map<String, Field> fields = entityManager.getPropertyFieldMap();
         String persistenceObjectName = StringUtility.setFirstByteLowerCase(persistenceClassName);
         List<ColumnDef> columnDefs = tableContext.getColumns();
-        List<String> queryFields = new ArrayList<>();
+        Set<String> queryFields = new LinkedHashSet<>();
         List<String> daoCriteriaList = new ArrayList<>();
         TableConfigBO tableConfig = tableContext.getTableConfig();
         String statusCondition = "";
@@ -56,6 +54,9 @@ public class SearchConditionPlaceholderExtension extends AbstractPlaceholderExte
                 queryFields.add(String.format("private Integer %1$s;", field.getPropertyName()));
                 statusCondition = String.format("if(%1$sQuery.getStatus()!=null&&%1$sQuery.getStatus()>=0) {booleanCriteria.and(Criteria.field(%2$s::get%3$s).%4$s(StatusRecord.valueOf(%1$sQuery.get%3$s())));}", persistenceObjectName, persistenceClassName, upperPropertyName, SearchType.EQUAL.getCondition());
             }
+        }
+        if(tableConfig.getTableName().equals("t_table_config")){
+            queryFields.add("private Long projectId;");
         }
         if (tableConfig.getOnlyAccessSelf()) {
             daoCriteriaList.add(String.format("Criteria.field(%1$s::getCreateUserId).equal(ThreadContext.getLoginToken().getUserId()));", persistenceClassName));
