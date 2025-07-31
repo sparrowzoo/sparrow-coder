@@ -39,6 +39,8 @@ private Boolean statusCommand;
 private String columnConfigs; 
 private Integer source; 
 private String sourceCode; 
+private Integer pageSize; 
+private Boolean onlyAccessSelf; 
 private String createUserName; 
 private Long createUserId; 
 private Long modifiedUserId; 

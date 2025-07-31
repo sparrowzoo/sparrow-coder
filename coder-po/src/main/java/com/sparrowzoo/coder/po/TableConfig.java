@@ -44,5 +44,5 @@ public class TableConfig extends PO {
     @Column(name = "page_size", nullable = false, columnDefinition = "int default 0 not  null comment '分页大小'")
     private Integer pageSize;
     @Column(name = "only_access_self", nullable = false, columnDefinition = "tinyint(2) default 0 not  null comment '只看自己'")
-    private Integer onlyAccessSelf;
+    private Boolean onlyAccessSelf;
 }

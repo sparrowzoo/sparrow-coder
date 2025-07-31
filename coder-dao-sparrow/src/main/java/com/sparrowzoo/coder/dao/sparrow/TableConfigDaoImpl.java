@@ -26,6 +26,9 @@ import com.sparrowzoo.coder.dao.query.TableConfigDBPagerQuery;
 import com.sparrowzoo.coder.po.TableConfig;
 import java.util.List;
 import javax.inject.Named;
+import com.sparrow.protocol.*;
+import com.sparrow.protocol.enums.StatusRecord;
+
 
 @Named
 public class TableConfigDaoImpl extends ORMStrategy<TableConfig, Long> implements TableConfigDAO {
@@ -35,8 +38,8 @@ public class TableConfigDaoImpl extends ORMStrategy<TableConfig, Long> implement
         return this.getList(searchCriteria);
     }
 
-    private BooleanCriteria generateCriteria(TableConfigDBPagerQuery countTableConfigQuery) {
-        return null;
+    private BooleanCriteria generateCriteria(TableConfigDBPagerQuery tableConfigQuery) {
+        BooleanCriteria booleanCriteria= BooleanCriteria.criteria(Criteria.field(TableConfig::getProjectId).equal(tableConfigQuery.getProjectId())).and(Criteria.field(TableConfig::getPrimaryKey).equal(tableConfigQuery.getPrimaryKey())).and(Criteria.field(TableConfig::getTableName).equal(tableConfigQuery.getTableName())).and(Criteria.field(TableConfig::getClassName).equal(tableConfigQuery.getClassName())).and(Criteria.field(TableConfig::getCreateUserId).equal(ThreadContext.getLoginToken().getUserId()));;if(tableConfigQuery.getStatus()!=null&&tableConfigQuery.getStatus()>=0) {booleanCriteria.and(Criteria.field(TableConfig::getStatus).equal(StatusRecord.valueOf(tableConfigQuery.getStatus())));}return booleanCriteria;
     }
 
     @Override public Long countTableConfig(TableConfigDBPagerQuery tableConfigPagerQuery) {

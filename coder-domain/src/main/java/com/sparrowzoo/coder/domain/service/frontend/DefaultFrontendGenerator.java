@@ -64,11 +64,13 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
     @Override
     public void generate(FrontendKey key) throws IOException {
         String content = null;
+        boolean allSkip = false;
         if (key.equals(FrontendKey.MESSAGE)) {
             content = toi18nMessage();
         } else if (key.equals(FrontendKey.MESSAGE_FILE_LIST)) {
             content = toi18nMessageFileList();
         } else {
+            allSkip = true;
             content = readTemplateContent(key);
             Map<String, String> placeHolder = tableContext.getPlaceHolder();
             content = StringUtility.replace(content.trim(), placeHolder);
@@ -76,7 +78,7 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
         String fullPhysicalPath = this.getTargetPhysicalPath(key);
         File file = new File(fullPhysicalPath);
         if (file.exists()) {
-            if (!content.startsWith("overwrite")) {
+            if (allSkip&&!content.startsWith("overwrite")) {
                 log.info("file [{}] already exists, skip generate", fullPhysicalPath);
                 return;
             }

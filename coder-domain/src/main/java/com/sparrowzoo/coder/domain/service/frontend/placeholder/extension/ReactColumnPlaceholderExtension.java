@@ -88,19 +88,25 @@ public class ReactColumnPlaceholderExtension extends AbstractPlaceholderExtensio
             if (columnDef.getShowInList()) {
                 columns.add(columnGenerator.column(columnDef, project));
             }
-            if(columnDef.getShowInSearch()){
-                frontQueryFields.add(String.format("%2$s: %1$s;", JavaTsTypeConverter.toTsType(field.getType()), field.getPropertyName()));
-                frontSearchItems.add(String.format("<SearchInput value={%1$sQuery?.%2$s||\"\"} \n" + "propertyName={\"%2$s\"} pageTranslate={pageTranslate} \n" + "setSearchCondition={set%3$sQuery}/>", persistenceObjectName, field.getPropertyName(),persistenceClassName));
-            }
-            if(field.getType().equals(StatusRecord.class)){
-                frontQueryFields.add(String.format("%2$s: %1$s;","number", field.getPropertyName()));
-                frontSearchItems.add(String.format("<SearchSelect propertyName={\"%1$s\"} pageTranslate={pageTranslate} setSearchCondition={set%2$sQuery} dictionary={meta.result.data.dictionary['%1$s']}/>",field.getPropertyName(),persistenceClassName));
-            }
+
+
             if (columnDef.getShowInEdit()) {
                 addFormItems.add(columnGenerator.edit(columnDef, project, true));
                 editFormItems.add(columnGenerator.edit(columnDef, project, false));
             }
             columnI18nMap.put(columnDef.getPropertyName(), columnDef.getChineseName());
+
+            if (field == null) {
+                continue;
+            }
+            if (columnDef.getShowInSearch()) {
+                frontQueryFields.add(String.format("%2$s: %1$s;", JavaTsTypeConverter.toTsType(field.getType()), field.getPropertyName()));
+                frontSearchItems.add(String.format("<SearchInput value={%1$sQuery?.%2$s||\"\"} \n" + "propertyName={\"%2$s\"} pageTranslate={pageTranslate} \n" + "setSearchCondition={set%3$sQuery}/>", persistenceObjectName, field.getPropertyName(), persistenceClassName));
+            }
+            if (field.getType().equals(StatusRecord.class)) {
+                frontQueryFields.add(String.format("%2$s: %1$s;", "number", field.getPropertyName()));
+                frontSearchItems.add(String.format("<SearchSelect propertyName={\"%1$s\"} pageTranslate={pageTranslate} setSearchCondition={set%2$sQuery} dictionary={meta.result.data.dictionary['%1$s']}/>", field.getPropertyName(), persistenceClassName));
+            }
         }
         String columnStr = String.join(",", columns);
         String addFormItemStr = String.join("\n", addFormItems);

@@ -1,18 +1,20 @@
 package com.sparrowzoo.coder.domain.service.registry;
 
 import com.sparrow.container.FactoryBean;
-import com.sparrowzoo.coder.domain.bo.CoderTriple;
 import com.sparrowzoo.coder.domain.bo.TableContext;
 import com.sparrowzoo.coder.domain.service.PlaceholderExtension;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+@Slf4j
 public class PlaceholderExtensionRegistry implements FactoryBean<PlaceholderExtension> {
 
 
-    private PlaceholderExtensionRegistry() {}
+    private PlaceholderExtensionRegistry() {
+    }
 
     static class Inner {
         private static final PlaceholderExtensionRegistry placeholderExtensionRegistry = new PlaceholderExtensionRegistry();
@@ -50,10 +52,14 @@ public class PlaceholderExtensionRegistry implements FactoryBean<PlaceholderExte
         return this.placeholderExtensionMap.keySet().iterator();
     }
 
-    public void extension(TableContext tableContext,TableConfigRegistry registry){
-        for(String name:this.placeholderExtensionMap.keySet()){
+    public void extension(TableContext tableContext, TableConfigRegistry registry) {
+        for (String name : this.placeholderExtensionMap.keySet()) {
             PlaceholderExtension extension = this.placeholderExtensionMap.get(name);
-            extension.extend(tableContext,registry);
+            if (extension == null) {
+                log.error("placeholder extension not found: " + name);
+                continue;
+            }
+            extension.extend(tableContext, registry);
         }
     }
 }

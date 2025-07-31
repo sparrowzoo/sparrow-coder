@@ -14,6 +14,8 @@ CREATE TABLE `t_table_config` (
  `column_configs` text null comment '列配置'  ,
  `source` int default 0 not  null comment '类来源'  NOT NULL,
  `source_code` text null comment '源代码'  ,
+ `page_size` int default 0 not  null comment '分页大小'  NOT NULL,
+ `only_access_self` tinyint(2) default 0 not  null comment '只看自己'  NOT NULL,
  `create_user_name` varchar(64)  DEFAULT '' COMMENT '创建人'  NOT NULL,
  `create_user_id` int(11) UNSIGNED  DEFAULT 0 COMMENT '创建人ID'  NOT NULL,
  `modified_user_id` int(11) unsigned  DEFAULT 0 COMMENT '更新人ID'  NOT NULL,

@@ -64,6 +64,7 @@ public class CoderController {
         tableConfigParam.setColumnConfigs(JSON.toJSONString(DefaultColumnsDefCreator.create(tableConfigParam.getClassName())));
         tableConfigParam.setSource(CodeSource.INNER.getIdentity());
         tableConfigParam.setSourceCode("");
+        tableConfigParam.setOnlyAccessSelf(true);
         tableConfigParam.setPageSize(10);
         this.tableConfigService.saveTableConfig(tableConfigParam);
     }
@@ -87,6 +88,8 @@ public class CoderController {
         tableConfigParam.setSource(CodeSource.SOURCE_CODE.getIdentity());
         tableConfigParam.setSourceCode(sourceCodeParam.getSourceCode());
         tableConfigParam.setPageSize(10);
+        tableConfigParam.setOnlyAccessSelf(true);
+
 
         this.tableConfigService.saveTableConfig(tableConfigParam);
     }
