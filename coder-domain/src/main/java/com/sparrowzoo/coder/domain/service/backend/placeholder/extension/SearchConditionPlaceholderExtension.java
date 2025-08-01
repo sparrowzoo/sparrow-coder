@@ -46,7 +46,7 @@ public class SearchConditionPlaceholderExtension extends AbstractPlaceholderExte
             }
             if (field.getType().equals(StatusRecord.class)) {
                 queryFields.add(String.format("private Integer %1$s;", field.getPropertyName()));
-                statusCondition = String.format("if(%1$sQuery.getStatus()!=null&&%1$sQuery.getStatus()>=0) {booleanCriteria.and(Criteria.field(%2$s::get%3$s).%4$s(%3$sQuery.get%3$s()));}", persistenceObjectName, persistenceClassName, upperPropertyName, SearchType.EQUAL.getCondition());
+                statusCondition = String.format("if(%1$sQuery.getStatus()!=null&&%1$sQuery.getStatus()>=0) {booleanCriteria.and(Criteria.field(%2$s::get%3$s).%4$s(StatusRecord.valueOf(%3$sQuery.get%3$s())));}", persistenceObjectName, persistenceClassName, upperPropertyName, SearchType.EQUAL.getCondition());
             }
         }
         if (tableContext.getTableConfig().getOnlyAccessSelf()) {

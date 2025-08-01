@@ -79,7 +79,7 @@ public class ProjectConfigService {
 
     public List<KeyValue<Integer, String>> getProjectConfigKvs() {
         ProjectConfigQuery projectConfigQuery = new ProjectConfigQuery();
-        projectConfigQuery.setStatus(StatusRecord.ENABLE.ordinal());
+        projectConfigQuery.setStatus(StatusRecord.ENABLE.getIdentity());
         projectConfigQuery.setPageSize(-1);
         List<ProjectConfigBO> projectConfigBoList = this.projectConfigRepository.queryProjectConfigs(projectConfigQuery);
         List<KeyValue<Integer, String>> projectConfigKvs = new ArrayList<>(projectConfigBoList.size());
