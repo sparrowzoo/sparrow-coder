@@ -14,16 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.sparrowzoo.coder.protocol.query;
 
 import com.sparrow.protocol.pager.SimplePager;
-import java.util.Date;
-import java.util.Set;
-
 import lombok.Data;
+
 @Data
 public class TableConfigQuery extends SimplePager {
-    private Boolean deleted;
+    private String primaryKey;
+    private String tableName;
+    private String className;
     private Integer status;
     private Long projectId;
 }

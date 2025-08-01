@@ -11,6 +11,7 @@ import $package_po.$persistence_class_name;
 import java.util.List;
 import javax.inject.Named;
 import com.sparrow.protocol.*;
+import com.sparrow.protocol.enums.StatusRecord;
 
 
 @Named
@@ -22,7 +23,7 @@ public class $persistence_class_nameDaoImpl extends ORMStrategy<$persistence_cla
     }
 
     private BooleanCriteria generateCriteria($persistence_class_nameDBPagerQuery $persistence_object_nameQuery) {
-        $search_dao_condition;
+        $search_dao_condition
     }
 
     @Override public Long count$persistence_class_name($persistence_class_nameDBPagerQuery $persistence_object_namePagerQuery) {

@@ -14,20 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.sparrowzoo.coder.dao.query;
 
+import com.sparrow.protocol.enums.StatusRecord;
 import com.sparrow.protocol.dao.DatabasePagerQuery;
+import java.util.Date;
 import lombok.Data;
 @Data
 
 public class ProjectConfigDBPagerQuery extends DatabasePagerQuery {
-   public ProjectConfigDBPagerQuery() {
-
-   }
-
-   private Boolean deleted;
-   private Integer status=-1;
    private String name;
-   private String frontendName;
-   private String chineseName;
+private String frontendName;
+private Integer status;
+   public ProjectConfigDBPagerQuery() {}
 }

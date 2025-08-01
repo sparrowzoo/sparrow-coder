@@ -14,11 +14,12 @@ public class Test {
 //        LambdaQueryWrapper<ProjectConfig> wrapper = new LambdaQueryWrapper<>();
 //        wrapper.eq(ProjectConfig::getStatus, 1);
 //        wrapper.eq(ProjectConfig::getChineseName, "中文名称");
+        //project_config.status = 1 and project_config.chinese_name = '中文名称'
         System.out.println(getPropertyNameAndClassName(ProjectConfig::getStatus).entityDotProperty());
         //System.out.println(getPropertyNameAndClassName(ProjectConfig::getChineseName).entityDotProperty());
     }
 
-    public static <T> ClassUtility.PropertyWithEntityName getPropertyNameAndClassName(SFunction<T, ?> function) {
+    public static <T> ClassUtility.PropertyWithBeanName getPropertyNameAndClassName(SFunction<T, ?> function) {
         try {
             // 反射获取 writeReplace 方法
             Method method = function.getClass().getDeclaredMethod("writeReplace");
@@ -28,9 +29,10 @@ public class Test {
             // 解析方法名
             String methodName = serializedLambda.getImplMethodName();
             String clazz = serializedLambda.getImplClass();//PO
+            return new ClassUtility.PropertyWithBeanName(PropertyNamer.methodToProperty(methodName), clazz);
 
-            ShadowLambdaMeta lambdaMeta = new ShadowLambdaMeta(serializedLambda);
-            return new ClassUtility.PropertyWithEntityName(PropertyNamer.methodToProperty(methodName), lambdaMeta.getInstantiatedClass());
+            //ShadowLambdaMeta lambdaMeta = new ShadowLambdaMeta(serializedLambda);
+            //return new ClassUtility.PropertyWithEntityName(PropertyNamer.methodToProperty(methodName), lambdaMeta.getInstantiatedClass());
         } catch (Exception e) {
             throw new RuntimeException("无法解析方法名", e);
         }

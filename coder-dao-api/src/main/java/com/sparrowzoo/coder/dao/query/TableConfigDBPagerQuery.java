@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.sparrowzoo.coder.dao.query;
 
 import com.sparrow.protocol.enums.StatusRecord;
@@ -23,5 +24,10 @@ import lombok.Data;
 @Data
 
 public class TableConfigDBPagerQuery extends DatabasePagerQuery {
+   private String primaryKey;
+private String tableName;
+private String className;
+private Integer status;
+private Long projectId;
    public TableConfigDBPagerQuery() {}
 }

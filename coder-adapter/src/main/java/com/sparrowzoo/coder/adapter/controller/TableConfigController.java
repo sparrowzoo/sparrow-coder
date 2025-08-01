@@ -65,6 +65,7 @@ pagerResult.putDictionary("columnType",coderEnumsContainer.getEnums("columnType"
 pagerResult.putDictionary("controlType",coderEnumsContainer.getEnums("controlType"));
 pagerResult.putDictionary("headerType",coderEnumsContainer.getEnums("headerType"));
 pagerResult.putDictionary("searchType",coderEnumsContainer.getEnums("searchType"));
+pagerResult.putDictionary("status",coderEnumsContainer.getEnums("status"));
 pagerResult.putDictionary("validateType", ValidatorRegistry.getInstance().getValidatorNames("react"));
         return pagerResult;
     }
@@ -73,7 +74,6 @@ pagerResult.putDictionary("validateType", ValidatorRegistry.getInstance().getVal
             @ApiOperation("保存")
 
     public Long saveTableConfig(@RequestBody TableConfigParam tableConfigParam) throws BusinessException {
-      tableConfigParam.setPageSize(10);
        return  this.tableConfigService.saveTableConfig(tableConfigParam);
     }
 
