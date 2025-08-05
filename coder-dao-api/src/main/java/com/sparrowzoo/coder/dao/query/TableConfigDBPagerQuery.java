@@ -24,7 +24,9 @@ import lombok.Data;
 @Data
 
 public class TableConfigDBPagerQuery extends DatabasePagerQuery {
-   private Integer status;
+   private String tableName;
+private String className;
+private Integer status;
 private Long projectId;
    public TableConfigDBPagerQuery() {}
 }

@@ -86,9 +86,9 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
                 log.info("file [{}] already exists, skip generate", fullPhysicalPath);
                 return;
             }
-            content = content.replaceFirst("overwrite", "");
             log.info("file [{}] already exists, overwrite it", fullPhysicalPath);
         }
+        content = content.replaceFirst("overwrite", "");
         log.info("generate file name is [{}]", fullPhysicalPath);
         FileUtility.getInstance().writeFile(fullPhysicalPath, content);
     }

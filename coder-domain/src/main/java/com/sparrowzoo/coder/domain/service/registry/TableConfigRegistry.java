@@ -1,5 +1,7 @@
 package com.sparrowzoo.coder.domain.service.registry;
 
+import com.sparrow.utility.ClassUtility;
+import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.domain.bo.ProjectBO;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableContext;
@@ -33,6 +35,7 @@ public class TableConfigRegistry {
 
     public void register(TableContext tableContext) {
         registry.put(tableContext.getTableConfig().getTableName(), tableContext);
+        tableContext.getProject().addI18n(tableContext.getEntityManager().getSimpleClassName());
         this.placeholderExtensionRegistry.extension(tableContext,this);
     }
 

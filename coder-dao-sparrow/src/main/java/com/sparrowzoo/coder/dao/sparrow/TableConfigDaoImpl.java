@@ -17,9 +17,7 @@
 
 package com.sparrowzoo.coder.dao.sparrow;
 
-import com.sparrow.orm.query.BooleanCriteria;
-import com.sparrow.orm.query.Criteria;
-import com.sparrow.orm.query.SearchCriteria;
+import com.sparrow.orm.query.*;
 import com.sparrow.orm.template.impl.ORMStrategy;
 import com.sparrowzoo.coder.dao.TableConfigDAO;
 import com.sparrowzoo.coder.dao.query.TableConfigDBPagerQuery;
@@ -35,11 +33,12 @@ public class TableConfigDaoImpl extends ORMStrategy<TableConfig, Long> implement
     @Override public List<TableConfig> queryTableConfigs(TableConfigDBPagerQuery pagerTableConfigQuery) {
         SearchCriteria searchCriteria = new SearchCriteria(pagerTableConfigQuery);
         searchCriteria.setWhere(this.generateCriteria(pagerTableConfigQuery));
+        searchCriteria.setOrderCriteria(OrderCriteria.desc(TableConfig::getId));
         return this.getList(searchCriteria);
     }
 
     private BooleanCriteria generateCriteria(TableConfigDBPagerQuery tableConfigQuery) {
-        BooleanCriteria booleanCriteria= BooleanCriteria.criteria(Criteria.field(TableConfig::getCreateUserId).equal(ThreadContext.getLoginToken().getUserId()));if(tableConfigQuery.getStatus()!=null&&tableConfigQuery.getStatus()>=0) {booleanCriteria.and(Criteria.field(TableConfig::getStatus).equal(StatusRecord.valueOf(tableConfigQuery.getStatus())));} return booleanCriteria;
+        BooleanCriteria booleanCriteria= BooleanCriteria.criteria(Criteria.field(TableConfig::getTableName).equal(tableConfigQuery.getTableName())).and(Criteria.field(TableConfig::getClassName).equal(tableConfigQuery.getClassName())).and(Criteria.field(TableConfig::getCreateUserId).equal(ThreadContext.getLoginToken().getUserId()));if(tableConfigQuery.getStatus()!=null&&tableConfigQuery.getStatus()>=0) {booleanCriteria.and(Criteria.field(TableConfig::getStatus).equal(StatusRecord.valueOf(tableConfigQuery.getStatus())));} return booleanCriteria;
     }
 
     @Override public Long countTableConfig(TableConfigDBPagerQuery tableConfigPagerQuery) {

@@ -1,6 +1,5 @@
 package com.sparrowzoo.coder.po;
 
-import com.sparrow.protocol.EnumUniqueName;
 import com.sparrow.protocol.dao.ListDatasource;
 import com.sparrow.protocol.dao.PO;
 import com.sparrow.protocol.dao.enums.ListDatasourceType;

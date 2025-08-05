@@ -13,7 +13,7 @@ public class TelValidatorMessageGenerator extends RegexValidatorMessageGenerator
         if(StringUtility.isNullOrEmpty(validator.getFormatMessage())){
             validator.setFormatMessage(this.defaultValidator.getFormatMessage());
         }
-        validator.setRegex("^(\\d{4}-|\\d{3}-)?(\\d{8}|\\d{7})$");
+        validator.setRegex("/^(\\d{4}-|\\d{3}-)?(\\d{8}|\\d{7})$/");
         return super.outerGenerateMessage(propertyName, validator);
     }
 

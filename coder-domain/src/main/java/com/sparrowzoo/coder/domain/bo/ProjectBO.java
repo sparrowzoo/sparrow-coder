@@ -28,4 +28,8 @@ public class ProjectBO {
     public ArchitectureGenerator getArchitecture(ArchitectureCategory architectureCategory){
         return this.architectures.getArch(architectureCategory);
     }
+
+    public void addI18n(String i18n){
+        this.i18nList.add(i18n);
+    }
 }

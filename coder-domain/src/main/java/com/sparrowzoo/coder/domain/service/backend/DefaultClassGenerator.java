@@ -108,9 +108,9 @@ public class DefaultClassGenerator implements ClassGenerator {
                 log.info("file [{}] already exists, skip generate", fullPhysicalPath);
                 return;
             }
-            content = content.replaceFirst("overwrite", "");
             log.info("file [{}] already exists, overwrite it", fullPhysicalPath);
         }
+        content = content.replaceFirst("overwrite", "");
         if (!classKey.equals(ClassKey.DAO_MYBATIS)) {
             content = licensed + "\n" + content;
         }

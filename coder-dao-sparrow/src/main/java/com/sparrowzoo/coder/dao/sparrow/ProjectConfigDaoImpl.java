@@ -17,9 +17,7 @@
 
 package com.sparrowzoo.coder.dao.sparrow;
 
-import com.sparrow.orm.query.BooleanCriteria;
-import com.sparrow.orm.query.Criteria;
-import com.sparrow.orm.query.SearchCriteria;
+import com.sparrow.orm.query.*;
 import com.sparrow.orm.template.impl.ORMStrategy;
 import com.sparrowzoo.coder.dao.ProjectConfigDAO;
 import com.sparrowzoo.coder.dao.query.ProjectConfigDBPagerQuery;
@@ -35,6 +33,7 @@ public class ProjectConfigDaoImpl extends ORMStrategy<ProjectConfig, Long> imple
     @Override public List<ProjectConfig> queryProjectConfigs(ProjectConfigDBPagerQuery pagerProjectConfigQuery) {
         SearchCriteria searchCriteria = new SearchCriteria(pagerProjectConfigQuery);
         searchCriteria.setWhere(this.generateCriteria(pagerProjectConfigQuery));
+        searchCriteria.setOrderCriteria(OrderCriteria.desc(ProjectConfig::getId));
         return this.getList(searchCriteria);
     }
 

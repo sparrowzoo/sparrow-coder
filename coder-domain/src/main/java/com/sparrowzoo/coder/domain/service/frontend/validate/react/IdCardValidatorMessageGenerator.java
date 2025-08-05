@@ -11,7 +11,7 @@ public class IdCardValidatorMessageGenerator extends RegexValidatorMessageGenera
     //https://www.66zan.cn/regexdso/
     @Override
     public String outerGenerateMessage(String propertyName, RegexValidator validator) {
-        validator.setRegex("^(\\d{15}|\\d{17}[\\dXx])$");
+        validator.setRegex("/^(\\d{15}|\\d{17}[\\dXx])$/");
         if(StringUtility.isNullOrEmpty(validator.getFormatMessage())){
             validator.setFormatMessage("请输入正确的身份证号码");
         }

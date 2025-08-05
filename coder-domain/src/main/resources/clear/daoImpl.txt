@@ -1,9 +1,7 @@
 overwrite
 package $package_dao_impl;
 
-import com.sparrow.orm.query.BooleanCriteria;
-import com.sparrow.orm.query.Criteria;
-import com.sparrow.orm.query.SearchCriteria;
+import com.sparrow.orm.query.*;
 import com.sparrow.orm.template.impl.ORMStrategy;
 import $package_dao.$persistence_class_nameDAO;
 import $package_pager_query.$persistence_class_nameDBPagerQuery;
@@ -19,6 +17,7 @@ public class $persistence_class_nameDaoImpl extends ORMStrategy<$persistence_cla
     @Override public List<$persistence_class_name> query$persistence_class_names($persistence_class_nameDBPagerQuery pager$persistence_class_nameQuery) {
         SearchCriteria searchCriteria = new SearchCriteria(pager$persistence_class_nameQuery);
         searchCriteria.setWhere(this.generateCriteria(pager$persistence_class_nameQuery));
+        searchCriteria.setOrderCriteria(OrderCriteria.desc($persistence_class_name::getId));
         return this.getList(searchCriteria);
     }
 
