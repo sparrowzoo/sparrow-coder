@@ -6,6 +6,7 @@
         <artifactId>coder-bom</artifactId>
         <version>1.0.0-SNAPSHOT</version>
         <groupId>com.sparrowzoo.coder</groupId>
+        <relativePath/>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.sparrowzoo.coder</groupId>

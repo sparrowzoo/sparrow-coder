@@ -3,7 +3,6 @@ package com.sparrowzoo.coder.domain.bo;
 import com.sparrow.core.spi.JsonFactory;
 import com.sparrow.json.Json;
 import com.sparrow.orm.EntityManager;
-import com.sparrow.orm.Field;
 import com.sparrow.orm.SparrowEntityManager;
 import com.sparrow.protocol.constant.SparrowError;
 import com.sparrow.utility.StringUtility;
@@ -19,17 +18,21 @@ import com.sparrowzoo.coder.domain.service.frontend.DefaultFrontendGenerator;
 import com.sparrowzoo.coder.domain.service.frontend.DefaultFrontendPlaceholder;
 import com.sparrowzoo.coder.domain.service.frontend.FrontendGenerator;
 import com.sparrowzoo.coder.domain.service.frontend.FrontendPlaceholderGenerator;
-import com.sparrowzoo.coder.enums.*;
+import com.sparrowzoo.coder.enums.ColumnType;
 import com.sparrowzoo.coder.utils.DefaultColumnsDefCreator;
 import lombok.Data;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Data
 public class TableContext {
     private ProjectBO project;
     private Map<String, String> placeHolder;
+    private Map<String,Object> variables;
     private TableConfigBO tableConfig;
     private EntityManager entityManager;
     private FrontendPlaceholderGenerator frontendPlaceholderGenerator;
@@ -42,6 +45,7 @@ public class TableContext {
 
     public TableContext(TableConfigBO tableConfig, ProjectBO project) {
         this.placeHolder = new HashMap<>();
+        this.variables = new HashMap<>();
         this.project = project;
         this.tableConfig = tableConfig;
         try {

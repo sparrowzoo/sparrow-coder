@@ -61,7 +61,7 @@ public class DefaultColumnsDefCreator {
             columnDef.setDatasourceType(ListDatasourceType.NULL.getIdentity());
             columnDef.setDatasourceParams("");
             if (field.getListDatasource() != null) {
-                ListDatasource listDatasource= field.getListDatasource();
+                ListDatasource listDatasource = field.getListDatasource();
                 columnDef.setDatasourceType(listDatasource.type().getIdentity());
                 columnDef.setDatasourceParams(listDatasource.params());
             }
@@ -69,8 +69,8 @@ public class DefaultColumnsDefCreator {
             columnDef.setColumnType(ColumnType.NORMAL.getIdentity());
             columnDef.setHeaderType(HeaderType.NORMAL.getIdentity());
             columnDef.setCellType(CellType.NORMAL.getIdentity());
-            if(columnDef.getPropertyName().equals("gmtCreate")||
-                    columnDef.getPropertyName().equals("gmtModified")){
+            if (columnDef.getPropertyName().equals("gmtCreate") ||
+                    columnDef.getPropertyName().equals("gmtModified")) {
                 columnDef.setCellType(CellType.UNIX_TIMESTAMP.getIdentity());
             }
             if (entityManager.getPrimary() != null && columnDef.getPropertyName().equals(entityManager.getPrimary().getPropertyName())) {
@@ -96,18 +96,22 @@ public class DefaultColumnsDefCreator {
             }
             columnDefs.add(columnDef);
         }
+        for (int i = 0; i < columnDefs.size(); i++) {
+            columnDefs.get(i).setSort(i);
+        }
         return columnDefs;
     }
 
     public static void fillTableLevelColumn(List<ColumnDef> columnDefs, String tableClassName) {
-        columnDefs.addAll(create(tableClassName, true));
-        for (int i = 0; i < columnDefs.size(); i++) {
-            columnDefs.get(i).setSort(i);
+        List<ColumnDef> persistentColumns = create(tableClassName, true);
+        int sort = 100;
+        for (ColumnDef columnDef : persistentColumns) {
+            columnDef.setSort(sort++);
         }
+        columnDefs.addAll(persistentColumns);
         columnDefs.add(ColumnDef.createFilter(tableClassName, DefaultSpecialColumnIndex.COLUMN_FILTER));
         columnDefs.add(ColumnDef.createCheckBox(tableClassName, DefaultSpecialColumnIndex.CHECK));
         columnDefs.add(ColumnDef.createRowMenu(tableClassName, DefaultSpecialColumnIndex.ROW_MENU));
-
         columnDefs.sort(Comparator.comparingInt(ColumnDef::getSort));
     }
 

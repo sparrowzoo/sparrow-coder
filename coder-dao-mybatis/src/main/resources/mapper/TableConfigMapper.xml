@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sparrowzoo.coder.dao.TableConfigDAO">
+    <resultMap id="TableConfigMap" type="com.sparrowzoo.coder.po.TableConfig">
+        <id column="id" property="id"/>
+        <result column="project_id" property="projectId"/>
+        <result column="primary_key" property="primaryKey"/>
+        <result column="table_name" property="tableName"/>
+        <result column="class_name" property="className"/>
+        <result column="description" property="description"/>
+        <result column="locked" property="locked"/>
+        <result column="checkable" property="checkable"/>
+        <result column="row_menu" property="rowMenu"/>
+        <result column="column_filter" property="columnFilter"/>
+        <result column="status_command" property="statusCommand"/>
+        <result column="column_configs" property="columnConfigs"/>
+        <result column="source" property="source"/>
+        <result column="source_code" property="sourceCode"/>
+        <result column="page_size" property="pageSize"/>
+        <result column="only_access_self" property="onlyAccessSelf"/>
+        <result column="create_user_name" property="createUserName"/>
+        <result column="create_user_id" property="createUserId"/>
+        <result column="modified_user_id" property="modifiedUserId"/>
+        <result column="modified_user_name" property="modifiedUserName"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+        <result column="deleted" property="deleted"/>
+        <result column="status" property="status"/>
+    </resultMap>
+    <sql id="fields">
+        `id`
+        ,`project_id`,`primary_key`,`table_name`,`class_name`,`description`,`locked`,`checkable`,`row_menu`,`column_filter`,`status_command`,`column_configs`,`source`,`source_code`,`page_size`,`only_access_self`,`create_user_name`,`create_user_id`,`modified_user_id`,`modified_user_name`,`gmt_create`,`gmt_modified`,`deleted`,`status`
+    </sql>
+    <insert id="insert" parameterType="com.sparrowzoo.coder.po.TableConfig" useGeneratedKeys="true" keyColumn="id"
+            keyProperty="id">
+        insert into `t_table_config`(`project_id`,
+                                     `primary_key`,
+                                     `table_name`,
+                                     `class_name`,
+                                     `description`,
+                                     `locked`,
+                                     `checkable`,
+                                     `row_menu`,
+                                     `column_filter`,
+                                     `status_command`,
+                                     `column_configs`,
+                                     `source`,
+                                     `source_code`,
+                                     `page_size`,
+                                     `only_access_self`,
+                                     `create_user_name`,
+                                     `create_user_id`,
+                                     `modified_user_id`,
+                                     `modified_user_name`,
+                                     `gmt_create`,
+                                     `gmt_modified`,
+                                     `deleted`,
+                                     `status`)
+        values (#{projectId},
+                #{primaryKey},
+                #{tableName},
+                #{className},
+                #{description},
+                #{locked},
+                #{checkable},
+                #{rowMenu},
+                #{columnFilter},
+                #{statusCommand},
+                #{columnConfigs},
+                #{source},
+                #{sourceCode},
+                #{pageSize},
+                #{onlyAccessSelf},
+                #{createUserName},
+                #{createUserId},
+                #{modifiedUserId},
+                #{modifiedUserName},
+                #{gmtCreate},
+                #{gmtModified},
+                #{deleted},
+                #{status})</insert>
+    <update id="update" parameterType="com.sparrowzoo.coder.po.TableConfig">
+        update `t_table_config`
+        set `project_id`=#{projectId},
+            `description`=#{description},
+            `locked`=#{locked},
+            `checkable`=#{checkable},
+            `row_menu`=#{rowMenu},
+            `column_filter`=#{columnFilter},
+            `status_command`=#{statusCommand},
+            `column_configs`=#{columnConfigs},
+            `page_size`=#{pageSize},
+            `only_access_self`=#{onlyAccessSelf},
+            `modified_user_id`=#{modifiedUserId},
+            `modified_user_name`=#{modifiedUserName},
+            `gmt_modified`=#{gmtModified},
+            `deleted`=#{deleted}
+        where id = #{id}
+    </update>
+    <delete id="delete" parameterType="java.lang.Long">
+        delete
+        from `t_table_config`
+        where id = #{id}
+    </delete>
+    <select id="getEntity" resultMap="TableConfigMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="fields"/>
+        FROM
+        t_table_config
+        WHERE id= #{id}
+    </select>
+    <update id="changeStatus" parameterType="com.sparrow.protocol.dao.StatusCriteria">
+        update `t_table_config` set `status`=#{status},
+        `modified_user_name`=#{modifiedUserName},
+        `modified_user_id`=#{modifiedUserId},
+        `gmt_modified`=#{gmtModified} WHERE id IN
+        <foreach collection="idArray" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+</mapper>

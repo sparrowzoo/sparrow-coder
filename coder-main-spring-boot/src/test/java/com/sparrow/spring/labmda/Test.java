@@ -1,6 +1,5 @@
 package com.sparrow.spring.labmda;
 
-import com.github.yulichang.toolkit.ClassUtils;
 import com.sparrow.cg.PropertyNamer;
 import com.sparrow.protocol.SFunction;
 import com.sparrow.utility.ClassUtility;

@@ -1,5 +1,6 @@
-package com.sparrowzoo.coder.domain.service.backend.placeholder.extension;
+package com.sparrowzoo.coder.domain.service.backend.placeholder.extension.dependency;
 
+import com.sparrow.orm.Field;
 import com.sparrow.protocol.dao.enums.ListDatasourceType;
 import com.sparrowzoo.coder.constant.EnumNames;
 import com.sparrowzoo.coder.domain.bo.CoderTriple;
@@ -37,6 +38,10 @@ public class DictionaryPlaceholderExtension extends AbstractPlaceholderExtension
                 dictionaryTriple.inject(String.format(" @Inject\n private %1$s %2$sService;", serviceClass, objectName));
                 dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",this.%2$sService.get%3$sKvs());\n", joinFieldName, objectName, joinClassName));
             }
+            if(tableContext.getEntityManager().getStatus()!=null){
+                dictionaryTriple.inject("@Inject\nprivate EnumsContainer coderEnumsContainer;");
+                dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.STATUS_RECORD));
+            }
         }
 
         if (tableContext.getTableConfig().getTableName().equals("t_table_config")) {
@@ -46,8 +51,6 @@ public class DictionaryPlaceholderExtension extends AbstractPlaceholderExtension
             dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.CONTROL_TYPE));
             dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.HEADER_TYPE));
             dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.SEARCH_TYPE));
-            dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.STATUS_RECORD));
-
             dictionaryTriple.code("pagerResult.putDictionary(\"validateType\", ValidatorRegistry.getInstance().getValidatorNames(\"react\"));");
             dictionaryTriple.inject("@Inject\nprivate EnumsContainer coderEnumsContainer;");
         }

@@ -18,6 +18,6 @@ CREATE TABLE `t_project_config` (
  `gmt_create` bigint(11)  DEFAULT 0 COMMENT '创建时间'  NOT NULL,
  `gmt_modified` bigint(11)  DEFAULT 0 COMMENT '更新时间'  NOT NULL,
  `deleted` tinyint(1)  DEFAULT 0 COMMENT '是否删除'  NOT NULL,
- `status` tinyint(3) UNSIGNED DEFAULT 0 COMMENT 'STATUS'  NOT NULL,
+ `status` tinyint(3) UNSIGNED DEFAULT 0 COMMENT '状态'  NOT NULL,
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='t_project_config';

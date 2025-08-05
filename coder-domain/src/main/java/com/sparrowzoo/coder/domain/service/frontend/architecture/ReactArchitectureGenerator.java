@@ -3,7 +3,6 @@ package com.sparrowzoo.coder.domain.service.frontend.architecture;
 import com.sparrowzoo.coder.constant.ArchitectureNames;
 import com.sparrowzoo.coder.domain.bo.TableContext;
 import com.sparrowzoo.coder.domain.service.AbstractArchitectureGenerator;
-import com.sparrowzoo.coder.domain.service.frontend.DefaultFrontendGenerator;
 import com.sparrowzoo.coder.domain.service.frontend.FrontendGenerator;
 import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrowzoo.coder.enums.ArchitectureCategory;
@@ -18,16 +17,16 @@ public class ReactArchitectureGenerator extends AbstractArchitectureGenerator {
     public void generate(TableConfigRegistry registry, String tableName) throws IOException {
         TableContext tableContext = registry.getTableContext(tableName);
         FrontendGenerator frontendGenerator = tableContext.getFrontendGenerator();
-        frontendGenerator.generate(FrontendKey.PAGE);
-        frontendGenerator.generate(FrontendKey.API);
-        frontendGenerator.generate(FrontendKey.ADD);
-        frontendGenerator.generate(FrontendKey.EDIT);
-        frontendGenerator.generate(FrontendKey.SEARCH);
-        frontendGenerator.generate(FrontendKey.OPERATION);
-        frontendGenerator.generate(FrontendKey.SCHEMA);
-        frontendGenerator.generate(FrontendKey.COLUMNS);
-        frontendGenerator.generate(FrontendKey.MESSAGE);
-        frontendGenerator.generate(FrontendKey.MESSAGE_FILE_LIST);
+        frontendGenerator.generate(FrontendKey.PAGE,registry);
+        frontendGenerator.generate(FrontendKey.API,registry);
+        frontendGenerator.generate(FrontendKey.ADD,registry);
+        frontendGenerator.generate(FrontendKey.EDIT,registry);
+        frontendGenerator.generate(FrontendKey.SEARCH,registry);
+        frontendGenerator.generate(FrontendKey.OPERATION,registry);
+        frontendGenerator.generate(FrontendKey.SCHEMA,registry);
+        frontendGenerator.generate(FrontendKey.COLUMNS,registry);
+        frontendGenerator.generate(FrontendKey.MESSAGE,registry);
+        frontendGenerator.generate(FrontendKey.MESSAGE_FILE_LIST,registry);
     }
 
     @Override

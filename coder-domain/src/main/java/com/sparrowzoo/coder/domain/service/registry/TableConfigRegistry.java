@@ -31,11 +31,14 @@ public class TableConfigRegistry {
 
     private PlaceholderExtensionRegistry placeholderExtensionRegistry=PlaceholderExtensionRegistry.getInstance();
 
-    public void register(String tableName, TableContext tableContext) {
-        registry.put(tableName, tableContext);
+    public void register(TableContext tableContext) {
+        registry.put(tableContext.getTableConfig().getTableName(), tableContext);
         this.placeholderExtensionRegistry.extension(tableContext,this);
     }
 
+    public void dependency(TableContext tableContext){
+        this.placeholderExtensionRegistry.dependencyExtension(tableContext,this);
+    }
     public TableContext getTableContext(String tableName) {
         return registry.get(tableName);
     }

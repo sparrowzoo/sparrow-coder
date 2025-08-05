@@ -36,6 +36,10 @@
             <artifactId>sparrow-starter</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.sparrowzoo.coder</groupId>
             <artifactId>coder-po</artifactId>
             <scope>test</scope>

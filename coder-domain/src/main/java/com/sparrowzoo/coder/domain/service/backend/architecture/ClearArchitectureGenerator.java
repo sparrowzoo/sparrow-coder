@@ -15,28 +15,29 @@ import java.io.IOException;
 
 @Named
 public class ClearArchitectureGenerator extends AbstractArchitectureGenerator {
+
     @Override
     public void generate(TableConfigRegistry registry, String tableName) throws IOException {
         TableContext context = registry.getTableContext(tableName);
-        ClassGenerator classGenerator = context.getClassGenerator();
+        ClassGenerator classGenerator =context.getClassGenerator();
         TableConfigBO tableConfig = context.getTableConfig();
-        if (CodeSource.SOURCE_CODE.name().equals(tableConfig.getSource())) {
-            classGenerator.generate(ClassKey.PO);
+        if (CodeSource.SOURCE_CODE.getIdentity().equals(tableConfig.getSource())) {
+            classGenerator.generate(ClassKey.PO,registry);
         }
-        classGenerator.generate(ClassKey.BO);
-        classGenerator.generate(ClassKey.QUERY);
-        classGenerator.generate(ClassKey.PARAM);
-        classGenerator.generate(ClassKey.DTO);
-        classGenerator.generate(ClassKey.DAO);
-        classGenerator.generate(ClassKey.DAO_IMPL);
-        classGenerator.generate(ClassKey.DAO_MYBATIS);
-        classGenerator.generate(ClassKey.DATA_CONVERTER);
-        classGenerator.generate(ClassKey.SERVICE);
-        classGenerator.generate(ClassKey.REPOSITORY);
-        classGenerator.generate(ClassKey.REPOSITORY_IMPL);
-        classGenerator.generate(ClassKey.ASSEMBLE);
-        classGenerator.generate(ClassKey.CONTROLLER);
-        classGenerator.generate(ClassKey.PAGER_QUERY);
+        classGenerator.generate(ClassKey.BO,registry);
+        classGenerator.generate(ClassKey.QUERY,registry);
+        classGenerator.generate(ClassKey.PARAM,registry);
+        classGenerator.generate(ClassKey.DTO,registry);
+        classGenerator.generate(ClassKey.DAO,registry);
+        classGenerator.generate(ClassKey.DAO_IMPL,registry);
+        classGenerator.generate(ClassKey.DAO_MYBATIS,registry);
+        classGenerator.generate(ClassKey.DATA_CONVERTER,registry);
+        classGenerator.generate(ClassKey.SERVICE,registry);
+        classGenerator.generate(ClassKey.REPOSITORY,registry);
+        classGenerator.generate(ClassKey.REPOSITORY_IMPL,registry);
+        classGenerator.generate(ClassKey.ASSEMBLE,registry);
+        classGenerator.generate(ClassKey.CONTROLLER,registry);
+        classGenerator.generate(ClassKey.PAGER_QUERY,registry);
     }
 
     @Override

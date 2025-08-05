@@ -10,6 +10,9 @@ import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
 import com.sparrowzoo.coder.domain.bo.TableContext;
 import com.sparrowzoo.coder.domain.service.ArchitectureGenerator;
 import com.sparrowzoo.coder.domain.service.EnvConfig;
+import com.sparrowzoo.coder.domain.service.TemplateEngineer;
+import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
+import com.sparrowzoo.coder.domain.service.template.TemplateEngineerProvider;
 import com.sparrowzoo.coder.enums.ArchitectureCategory;
 import com.sparrowzoo.coder.enums.FrontendKey;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +30,8 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
     private ProjectBO project;
     private String architectureName;
     private Json json = JsonFactory.getProvider();
+
+    private TemplateEngineer templateEngineer = TemplateEngineerProvider.getEngineer();
 
     public DefaultFrontendGenerator(ProjectBO project, TableContext tableContext) {
         this.project = project;
@@ -62,7 +67,7 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
     }
 
     @Override
-    public void generate(FrontendKey key) throws IOException {
+    public void generate(FrontendKey key, TableConfigRegistry registry) throws IOException {
         String content = null;
         boolean allSkip = false;
         if (key.equals(FrontendKey.MESSAGE)) {
@@ -72,8 +77,7 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
         } else {
             allSkip = true;
             content = readTemplateContent(key);
-            Map<String, String> placeHolder = tableContext.getPlaceHolder();
-            content = StringUtility.replace(content.trim(), placeHolder);
+            content =this.templateEngineer.generate(content.trim(), tableContext,registry);
         }
         String fullPhysicalPath = this.getTargetPhysicalPath(key);
         File file = new File(fullPhysicalPath);

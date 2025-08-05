@@ -46,14 +46,15 @@ public class ProjectConfigController {
     @Inject
     private ProjectConfigAssemble projectConfigAssemble;
 
-    
+    @Inject
+private EnumsContainer coderEnumsContainer;
 
     @PostMapping("search.json")
     @ApiOperation("搜索")
     public PagerResult<ProjectConfigDTO> search(@RequestBody ProjectConfigQuery projectConfigQuery) {
         ListRecordTotalBO<ProjectConfigBO> projectConfigListTotalRecord = this.projectConfigService.queryProjectConfig(projectConfigQuery);
         PagerResult<ProjectConfigDTO> pagerResult =this.projectConfigAssemble.assemblePager(projectConfigListTotalRecord, projectConfigQuery);
-        
+        pagerResult.putDictionary("status",coderEnumsContainer.getEnums("status"));
         return pagerResult;
     }
 

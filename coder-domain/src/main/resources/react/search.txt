@@ -2,16 +2,16 @@ overwrite
 import * as React from "react";
 import {useState} from "react";
 import {$persistence_class_name} from "@/components/$persistence_object_by_horizontal/columns";
-import {MyTableMeta, TableOperationProps} from "@/common/lib/table/DataTableProperty";
+import {MyTableMeta,SimplePager, TableOperationProps} from "@/common/lib/table/DataTableProperty";
 import {Button} from "@/components/ui/button";
 import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizontal";
 import {useTranslations} from "next-intl";
 import SearchInput from "@/common/components/forms/SearchInput";
 import SearchSelect from "@/common/components/forms/search-select";
+import {PaginationState} from "@tanstack/table-core/src/features/RowPagination";
 
 
-
-type $persistence_class_nameQuery = {
+interface $persistence_class_nameQuery extends SimplePager{
     $frontend_query_fields
 }
 
@@ -21,25 +21,32 @@ export default function Search({table}: TableOperationProps<$persistence_class_n
     const pageTranslate = useTranslations("$persistence_class_name")
     const globalTranslate = useTranslations("GlobalForm");
     const setDataState = meta.setData;
-    const [$persistence_object_nameQuery, set$persistence_class_nameQuery] = useState<$persistence_class_nameQuery>()
+    const [$persistence_object_nameQuery, set$persistence_class_nameQuery] = useState<$persistence_class_nameQuery>({} as $persistence_class_nameQuery)
 
     if (setDataState == null) {
         return <>setDataState is not defined</>
     }
 
-    const searchHandler = () => {
-        $persistence_class_nameApi.search($persistence_object_nameQuery, errorTranslate).then(
-            (res) => {
-                setDataState(res)
+    const searchHandler = (page?: PaginationState) => {
+            if (!page) {
+                page = {pageIndex: 0, pageSize: table.getState().pagination.pageSize}
+                table.setPagination(page);
             }
-        ).catch(() => {
-        });
-    };
+            $persistence_object_nameQuery.pageNo = page?.pageIndex;
+            $persistence_object_nameQuery.pageSize = page?.pageSize;
+            $persistence_class_nameApi.search($persistence_object_nameQuery, errorTranslate).then(
+                (res) => {
+                    setDataState(res)
+                }
+            ).catch(() => {
+            });
+        };
+    meta.searchHandler=searchHandler;
 
 
-    return (<>
+    return (<div className="flex flex-row flex-wrap gap-4">
             $frontend_search_items
             <Button onClick={() => searchHandler()} variant="ghost" className="ml-2">{globalTranslate('search')}</Button>
-        </>
+        </div>
     );
 }

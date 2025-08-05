@@ -24,11 +24,17 @@ public class PlaceholderExtensionRegistry implements FactoryBean<PlaceholderExte
         return Inner.placeholderExtensionRegistry;
     }
 
+    private Map<String, PlaceholderExtension> dependencyPlaceholderExtensionMap = new HashMap<>();
+
 
     private Map<String, PlaceholderExtension> placeholderExtensionMap = new HashMap<>();
 
     @Override
     public void pubObject(String s, PlaceholderExtension placeholderExtension) {
+        if(placeholderExtension.getClass().getName().contains("dependency")){
+            this.dependencyPlaceholderExtensionMap.put(s, placeholderExtension);
+            return;
+        }
         this.placeholderExtensionMap.put(s, placeholderExtension);
     }
 
@@ -55,6 +61,17 @@ public class PlaceholderExtensionRegistry implements FactoryBean<PlaceholderExte
     public void extension(TableContext tableContext, TableConfigRegistry registry) {
         for (String name : this.placeholderExtensionMap.keySet()) {
             PlaceholderExtension extension = this.placeholderExtensionMap.get(name);
+            if (extension == null) {
+                log.error("placeholder extension not found: " + name);
+                continue;
+            }
+            extension.extend(tableContext, registry);
+        }
+    }
+
+    public void dependencyExtension(TableContext tableContext, TableConfigRegistry registry) {
+        for(String name : this.dependencyPlaceholderExtensionMap.keySet()){
+            PlaceholderExtension extension = this.dependencyPlaceholderExtensionMap.get(name);
             if (extension == null) {
                 log.error("placeholder extension not found: " + name);
                 continue;

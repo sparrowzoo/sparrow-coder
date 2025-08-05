@@ -47,25 +47,28 @@ public class TableConfigController {
     @Inject
     private TableConfigAssemble tableConfigAssemble;
 
-     @Inject
+    @Inject
+private EnumsContainer coderEnumsContainer;
+ @Inject
  private ProjectConfigService projectConfigService;
 @Inject
-private EnumsContainer coderEnumsContainer;
+private EnumsContainer businessEnumsContainer;
 
     @PostMapping("search.json")
     @ApiOperation("搜索")
     public PagerResult<TableConfigDTO> search(@RequestBody TableConfigQuery tableConfigQuery) {
         ListRecordTotalBO<TableConfigBO> tableConfigListTotalRecord = this.tableConfigService.queryTableConfig(tableConfigQuery);
         PagerResult<TableConfigDTO> pagerResult =this.tableConfigAssemble.assemblePager(tableConfigListTotalRecord, tableConfigQuery);
-        pagerResult.putDictionary("projectId",this.projectConfigService.getProjectConfigKvs());
+        pagerResult.putDictionary("status",coderEnumsContainer.getEnums("status"));
+pagerResult.putDictionary("projectId",this.projectConfigService.getProjectConfigKvs());
 
+pagerResult.putDictionary("source",businessEnumsContainer.getEnums("datasourceType"));
 pagerResult.putDictionary("cellType",coderEnumsContainer.getEnums("cellType"));
 pagerResult.putDictionary("datasourceType",coderEnumsContainer.getEnums("datasourceType"));
 pagerResult.putDictionary("columnType",coderEnumsContainer.getEnums("columnType"));
 pagerResult.putDictionary("controlType",coderEnumsContainer.getEnums("controlType"));
 pagerResult.putDictionary("headerType",coderEnumsContainer.getEnums("headerType"));
 pagerResult.putDictionary("searchType",coderEnumsContainer.getEnums("searchType"));
-pagerResult.putDictionary("status",coderEnumsContainer.getEnums("status"));
 pagerResult.putDictionary("validateType", ValidatorRegistry.getInstance().getValidatorNames("react"));
         return pagerResult;
     }

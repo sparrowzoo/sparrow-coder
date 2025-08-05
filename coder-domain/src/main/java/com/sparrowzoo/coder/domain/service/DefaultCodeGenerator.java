@@ -20,7 +20,6 @@ import java.util.Properties;
 public class DefaultCodeGenerator implements CodeGenerator {
     private TableConfigRegistry registry;
     private DomainRegistry domainRegistry;
-
     public DefaultCodeGenerator(Long projectId, EnvConfig envConfig, DomainRegistry domainRegistry) throws IOException, ClassNotFoundException {
         this.domainRegistry = domainRegistry;
         ProjectConfigBO projectConfig = domainRegistry.getProjectConfigRepository().getProjectConfig(projectId);
@@ -30,15 +29,20 @@ public class DefaultCodeGenerator implements CodeGenerator {
         this.initRegistry();
     }
 
-
     public void initRegistry() {
         TableConfigQuery tableConfigQuery = new TableConfigQuery();
         tableConfigQuery.setProjectId(registry.getProject().getProjectConfig().getId());
         tableConfigQuery.setStatus(StatusRecord.ENABLE.getIdentity());
         List<TableConfigBO> tableConfigs = domainRegistry.getTableConfigRepository().queryTableConfigs(tableConfigQuery);
+
         for (TableConfigBO tableConfigBO : tableConfigs) {
             TableContext context = new TableContext(tableConfigBO, this.registry.getProject());
-            this.registry.register(tableConfigBO.getTableName(), context);
+            this.registry.register(context);
+        }
+
+        for (TableConfigBO tableConfig : tableConfigs) {
+            TableContext tableContext = this.registry.getTableContext(tableConfig.getTableName());
+            this.registry.dependency(tableContext);
         }
     }
 
@@ -70,9 +74,11 @@ public class DefaultCodeGenerator implements CodeGenerator {
     @Override
     public void clear() {
         ProjectBO project = registry.getProject();
+        EnvConfig envConfig = registry.getProject().getEnvConfig();
+        String home = envConfig.getHome(project.getProjectConfig().getCreateUserId());
         String targetDirectoryPath =
                 new FileNameBuilder(project.getEnvConfig().getWorkspace())
-                        .joint(String.valueOf(project.getProjectConfig().getCreateUserId()))
+                        .joint(home)
                         .joint(project.getProjectConfig().getName())
                         .build();
         FileUtility.getInstance().delete(targetDirectoryPath, System.currentTimeMillis());

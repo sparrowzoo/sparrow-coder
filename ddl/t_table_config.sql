@@ -7,9 +7,9 @@ CREATE TABLE `t_table_config` (
  `class_name` varchar(128)  default '' comment '类名'  NOT NULL,
  `description` varchar(255)  default '' comment '描述'  NOT NULL,
  `locked` tinyint(1)  default 0 comment '是否锁定'  NOT NULL,
- `checkable` tinyint(4)  default 0 comment '选择'  NOT NULL,
- `row_menu` tinyint(1)  default 0 comment '行菜单'  NOT NULL,
- `column_filter` tinyint(1)  default 0 comment '列过滤器'  NOT NULL,
+ `checkable` int  default 0 comment '选择'  NOT NULL,
+ `row_menu` int  default 0 comment '行菜单'  NOT NULL,
+ `column_filter` int  default 0 comment '列过滤器'  NOT NULL,
  `status_command` tinyint(1)  default 0 comment '是否显示状态命令'  NOT NULL,
  `column_configs` text null comment '列配置'  ,
  `source` int default 0 not  null comment '类来源'  NOT NULL,
@@ -23,6 +23,6 @@ CREATE TABLE `t_table_config` (
  `gmt_create` bigint(11)  DEFAULT 0 COMMENT '创建时间'  NOT NULL,
  `gmt_modified` bigint(11)  DEFAULT 0 COMMENT '更新时间'  NOT NULL,
  `deleted` tinyint(1)  DEFAULT 0 COMMENT '是否删除'  NOT NULL,
- `status` tinyint(3) UNSIGNED DEFAULT 0 COMMENT 'STATUS'  NOT NULL,
+ `status` tinyint(3) UNSIGNED DEFAULT 0 COMMENT '状态'  NOT NULL,
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='t_table_config';

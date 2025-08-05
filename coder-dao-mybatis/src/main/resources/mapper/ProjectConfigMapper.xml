@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sparrowzoo.coder.dao.ProjectConfigDAO">
+    <resultMap id="ProjectConfigMap" type="com.sparrowzoo.coder.po.ProjectConfig">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="frontend_name" property="frontendName"/>
+        <result column="chinese_name" property="chineseName"/>
+        <result column="i18n" property="i18n"/>
+        <result column="description" property="description"/>
+        <result column="module_prefix" property="modulePrefix"/>
+        <result column="architectures" property="architectures"/>
+        <result column="config" property="config"/>
+        <result column="wrap_with_parent" property="wrapWithParent"/>
+        <result column="scaffold" property="scaffold"/>
+        <result column="create_user_name" property="createUserName"/>
+        <result column="create_user_id" property="createUserId"/>
+        <result column="modified_user_id" property="modifiedUserId"/>
+        <result column="modified_user_name" property="modifiedUserName"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+        <result column="deleted" property="deleted"/>
+        <result column="status" property="status"/>
+    </resultMap>
+    <sql id="fields">
+        `id`,`name`,`frontend_name`,`chinese_name`,`i18n`,`description`,`module_prefix`,`architectures`,`config`,`wrap_with_parent`,`scaffold`,`create_user_name`,`create_user_id`,`modified_user_id`,`modified_user_name`,`gmt_create`,`gmt_modified`,`deleted`,`status`
+    </sql>
+    <insert id="insert" parameterType="com.sparrowzoo.coder.po.ProjectConfig" useGeneratedKeys="true" keyColumn="id"
+            keyProperty="id">
+        insert into `t_project_config`(`name`,
+                                       `frontend_name`,
+                                       `chinese_name`,
+                                       `i18n`,
+                                       `description`,
+                                       `module_prefix`,
+                                       `architectures`,
+                                       `config`,
+                                       `wrap_with_parent`,
+                                       `scaffold`,
+                                       `create_user_name`,
+                                       `create_user_id`,
+                                       `modified_user_id`,
+                                       `modified_user_name`,
+                                       `gmt_create`,
+                                       `gmt_modified`,
+                                       `deleted`,
+                                       `status`)
+        values (#{name},
+                #{frontendName},
+                #{chineseName},
+                #{i18n},
+                #{description},
+                #{modulePrefix},
+                #{architectures},
+                #{config},
+                #{wrapWithParent},
+                #{scaffold},
+                #{createUserName},
+                #{createUserId},
+                #{modifiedUserId},
+                #{modifiedUserName},
+                #{gmtCreate},
+                #{gmtModified},
+                #{deleted},
+                #{status})</insert>
+    <update id="update" parameterType="com.sparrowzoo.coder.po.ProjectConfig">
+        update `t_project_config`
+        set `name`=#{name},
+            `frontend_name`=#{frontendName},
+            `chinese_name`=#{chineseName},
+            `i18n`=#{i18n},
+            `description`=#{description},
+            `module_prefix`=#{modulePrefix},
+            `architectures`=#{architectures},
+            `config`=#{config},
+            `wrap_with_parent`=#{wrapWithParent},
+            `scaffold`=#{scaffold},
+            `modified_user_id`=#{modifiedUserId},
+            `modified_user_name`=#{modifiedUserName},
+            `gmt_modified`=#{gmtModified},
+            `deleted`=#{deleted}
+        where id = #{id}
+    </update>
+    <delete id="delete" parameterType="java.lang.Long">
+        delete
+        from `t_project_config`
+        where id = #{id}
+    </delete>
+    <select id="getEntity" resultMap="ProjectConfigMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="fields"/>
+        FROM
+        t_project_config
+        WHERE id= #{id}
+    </select>
+    <update id="changeStatus" parameterType="com.sparrow.protocol.dao.StatusCriteria">
+        update `t_project_config` set `status`=#{status},
+        `modified_user_name`=#{modifiedUserName},
+        `modified_user_id`=#{modifiedUserId},
+        `gmt_modified`=#{gmtModified} WHERE id IN
+        <foreach collection="idArray" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+</mapper>

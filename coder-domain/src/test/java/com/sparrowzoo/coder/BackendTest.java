@@ -64,7 +64,7 @@ public class BackendTest {
         //generator.clear();
         //generator.initScaffold();
         generator.generate("t_project_config");
-        generator.generate("t_table_config");
+        //generator.generate("t_table_config");
 
     }
 }
