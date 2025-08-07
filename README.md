@@ -11,3 +11,5 @@ cd ../sparrow-shell
 mvn clean install -Dmaven.test.skip
 cd ../sparrow-starter
 mvn clean install -Dmaven.test.skip
+
+remove
