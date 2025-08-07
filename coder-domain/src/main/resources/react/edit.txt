@@ -10,10 +10,12 @@ import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizo
 import toast from "react-hot-toast";
 import {ValidatableInput} from "@/common/components/forms/ValidatableInput";
 import {ValidatableTextArea} from "@/common/components/forms/ValidatableTextArea";
-
+import {ValidatableSelect} from "@/common/components/forms/validatable-select";
 import {useTranslations} from "next-intl";
 import * as v from "valibot";
-import {CellContextProps} from "@/common/lib/table/DataTableProperty";
+import {CellContextProps,MyTableMeta} from "@/common/lib/table/DataTableProperty";
+import {$persistence_class_name} from "@/components/$persistence_object_by_horizontal/columns";
+
 
 
 export default function EditPage({cellContext,callbackHandler}: CellContextProps<any>) {
@@ -24,6 +26,8 @@ export default function EditPage({cellContext,callbackHandler}: CellContextProps
         const FormSchema = crateScheme(validateTranslate);
         type FormData = v.InferOutput<typeof FormSchema>;
         const original = cellContext.row.original;
+         const meta = cellContext.table.options.meta as MyTableMeta<$persistence_class_name>;
+
 
 
     const onSubmit: SubmitHandler<FormData> = (
@@ -42,6 +46,8 @@ export default function EditPage({cellContext,callbackHandler}: CellContextProps
         register,
         handleSubmit,
         control,
+        setValue,
+        getValues,
         formState: {
             errors,
             isSubmitted,

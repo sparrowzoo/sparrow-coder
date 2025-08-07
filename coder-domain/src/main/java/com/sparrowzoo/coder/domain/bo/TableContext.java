@@ -22,10 +22,7 @@ import com.sparrowzoo.coder.enums.ColumnType;
 import com.sparrowzoo.coder.utils.DefaultColumnsDefCreator;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
@@ -44,7 +41,7 @@ public class TableContext {
 
 
     public TableContext(TableConfigBO tableConfig, ProjectBO project) {
-        this.placeHolder = new HashMap<>();
+        this.placeHolder = new TreeMap<>(Comparator.reverseOrder());
         this.variables = new HashMap<>();
         this.project = project;
         this.tableConfig = tableConfig;

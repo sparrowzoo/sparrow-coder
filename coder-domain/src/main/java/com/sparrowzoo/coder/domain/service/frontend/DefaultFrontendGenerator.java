@@ -69,20 +69,20 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
     @Override
     public void generate(FrontendKey key, TableConfigRegistry registry) throws IOException {
         String content = null;
-        boolean allSkip = false;
+        boolean allowSkip = false;
         if (key.equals(FrontendKey.MESSAGE)) {
             content = toi18nMessage();
         } else if (key.equals(FrontendKey.MESSAGE_FILE_LIST)) {
             content = toi18nMessageFileList();
         } else {
-            allSkip = true;
+            allowSkip = true;
             content = readTemplateContent(key);
             content =this.templateEngineer.generate(content.trim(), tableContext,registry);
         }
         String fullPhysicalPath = this.getTargetPhysicalPath(key);
         File file = new File(fullPhysicalPath);
         if (file.exists()) {
-            if (allSkip&&!content.startsWith("overwrite")) {
+            if (allowSkip&&!content.startsWith("overwrite")) {
                 log.info("file [{}] already exists, skip generate", fullPhysicalPath);
                 return;
             }

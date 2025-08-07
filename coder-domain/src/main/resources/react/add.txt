@@ -10,14 +10,16 @@ import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizo
 import toast from "react-hot-toast";
 import * as v from "valibot";
 import {useTranslations} from "next-intl";
+import {ValidatableSelect} from "@/common/components/forms/validatable-select";
 import {ValidatableTextArea} from "@/common/components/forms/ValidatableTextArea";
 import {ValidatableInput} from "@/common/components/forms/ValidatableInput";
-import {DialogCloseProps} from "@/common/lib/table/DataTableProperty";
+import {TableOperationProps,MyTableMeta} from "@/common/lib/table/DataTableProperty";
+import {$persistence_class_name} from "@/components/$persistence_object_by_horizontal/columns";
 
 
 
 
-export default function Page({callbackHandler}: DialogCloseProps) {
+export default function Page({callbackHandler, table}: TableOperationProps<$persistence_class_name>) {
     const globalTranslate = useTranslations("GlobalForm");
     const errorTranslate = useTranslations("$persistence_class_name.ErrorMessage")
     const pageTranslate = useTranslations("$persistence_class_name")
@@ -25,6 +27,8 @@ export default function Page({callbackHandler}: DialogCloseProps) {
 
     const FormSchema = crateScheme(validateTranslate);
     type FormData = v.InferOutput<typeof FormSchema>;
+    const meta = table.options.meta as MyTableMeta<$persistence_class_name>;
+
 
 
     const onSubmit: SubmitHandler<FormData> = (
@@ -43,6 +47,8 @@ export default function Page({callbackHandler}: DialogCloseProps) {
         register,
         handleSubmit,
         control,
+        setValue,
+        getValues,
         formState: {
             errors,
             isSubmitted,

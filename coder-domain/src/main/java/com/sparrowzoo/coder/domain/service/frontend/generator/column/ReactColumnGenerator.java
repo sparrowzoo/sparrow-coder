@@ -30,7 +30,7 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
     public String column(ColumnDef columnDef, ProjectBO project) {
         List<String> columnDefList = new ArrayList<>();
         columnDefList.add(this.renderColumnType(columnDef));
-        columnDefList.add(this.renderHeader(columnDef,project));
+        columnDefList.add(this.renderHeader(columnDef, project));
         columnDefList.add(this.renderCell(columnDef));
         columnDefList.add(String.format("enableHiding: %s", columnDef.getEnableHidden()));
         return String.format("{\n%s\n}", StringUtility.join(columnDefList, ",\n"));
@@ -50,7 +50,7 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
      * @return
      */
     @Override
-    public String edit(ColumnDef columnDef,ProjectBO project, Boolean add) {
+    public String edit(ColumnDef columnDef, ProjectBO project, Boolean add) {
         if (columnDef.getColumnType().equals(ColumnType.ACTION.getIdentity()) ||
                 columnDef.getColumnType().equals(ColumnType.CHECK.getIdentity()) ||
                 columnDef.getColumnType().equals(ColumnType.FILTER.getIdentity())
@@ -67,13 +67,24 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
             );
         }
 
+        if (columnDef.getControlType().equals(ControlType.SELECT.getIdentity())) {
+            return String.format("<ValidatableSelect " +
+                            "dictionary={meta.result.data.dictionary[\"%1$s\"]} " +
+                            "pageTranslate={pageTranslate} " +
+                            "%2$s" +
+                            "setValue={setValue}\n" +
+                            "fieldPropertyName={\"%1$s\"}/>",
+                    columnDef.getPropertyName(),
+                    this.defaultValue(columnDef, add));
+        }
+
         String message = "";
         if (!StringUtility.isNullOrEmpty(columnDef.getValidateType()) &&
                 !columnDef.getValidateType().equals("nullableValidatorMessageGenerator")) {
             message = String.format("errorMessage={errors.%1$s?.message}", columnDef.getPropertyName());
         }
 
-        if(columnDef.getControlType().equals(ControlType.TEXT_AREA.getIdentity())){
+        if (columnDef.getControlType().equals(ControlType.TEXT_AREA.getIdentity())) {
             return String.format("<ValidatableTextArea className={\"w-80 h-60\"} readonly={%4$s} %3$s {...register(\"%1$s\")}\n" +
                             "                                  isSubmitted={isSubmitted}\n" +
                             "                                  pageTranslate={pageTranslate}\n" +
@@ -114,12 +125,12 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
     }
 
     @Override
-    public String importHeader(HeaderType headerType,ProjectBO project) {
+    public String importHeader(HeaderType headerType, ProjectBO project) {
         return String.format("import %1$s from \"@/common/components/table/header/%2$s\";", headerType.getComponentName(), headerType.getFileName());
     }
 
     @Override
-    public String importCell(CellType cellType,ProjectBO project) {
+    public String importCell(CellType cellType, ProjectBO project) {
         return String.format("import %1$s from \"@/common/components/table/cell/%2$s\";", cellType.getComponentName(), cellType.getFileName());
     }
 
@@ -128,9 +139,15 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
         return ArchitectureNames.REACT;
     }
 
+    @Override
+    public String columnDefs(String className, List<String> columns) {
+        String columnStr = String.join(",", columns);
+        return String.format("export const columns: ColumnDef<%1$s>[] = [\n%2$s\n];", className, columnStr);
+    }
+
 
     public String renderColumnType(ColumnDef columnDef) {
-        ColumnType columnType =ColumnType.getById(columnDef.getColumnType());
+        ColumnType columnType = ColumnType.getById(columnDef.getColumnType());
         switch (columnType) {
             case ACTION:
                 return " id: \"actions\"";
@@ -147,8 +164,8 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
         }
     }
 
-    public String renderHeader(ColumnDef columnDef,ProjectBO project) {
-        HeaderType headerType =HeaderType.getById(columnDef.getHeaderType());
+    public String renderHeader(ColumnDef columnDef, ProjectBO project) {
+        HeaderType headerType = HeaderType.getById(columnDef.getHeaderType());
         if (headerType == null) {
             return "header:''";
         }
@@ -182,7 +199,7 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
                 return String.format("header: NormalHeader({\n" +
                                 "            showSort: %1$s,\n" +
                                 "            showFilter: %2$s,\n" +
-                                "            columnTitle: \"%3$s\",\n"+
+                                "            columnTitle: \"%3$s\",\n" +
                                 "        } as ColumnOperationProps)%4$s",
                         headerType.getSortable(),
                         headerType.getFilterable(),
@@ -198,15 +215,15 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
             return "cell:\"\"";
         }
         if (columnDef.getColumnType().equals(ColumnType.CHECK.getIdentity())) {
-            return "cell:"+CellType.CHECK_BOX.getComponentName();
+            return "cell:" + CellType.CHECK_BOX.getComponentName();
         }
         if (columnDef.getColumnType().equals(ColumnType.TREE.getIdentity())) {
-            return String.format("cell: %1$s(\"%2$ss\")",CellType.TREE.getComponentName(), columnDef.getPropertyName());
+            return String.format("cell: %1$s(\"%2$ss\")", CellType.TREE.getComponentName(), columnDef.getPropertyName());
         }
         if (columnDef.getColumnType().equals(ColumnType.ACTION.getIdentity())) {
             return "cell:\"Actions\"";
         }
-        CellType cellType =CellType.getById(columnDef.getCellType());
+        CellType cellType = CellType.getById(columnDef.getCellType());
         if (cellType == null) {
             return "cell:''";
         }
@@ -215,9 +232,9 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
             case TREE:
             case NORMAL:
             case UNIX_TIMESTAMP:
-                return String.format("cell: %1$s(\"%2$s\")",cellType.getComponentName(), columnDef.getPropertyName());
+                return String.format("cell: %1$s(\"%2$s\")", cellType.getComponentName(), columnDef.getPropertyName());
             case CHECK_BOX:
-                return "cell: "+CellType.CHECK_BOX.getComponentName();
+                return "cell: " + CellType.CHECK_BOX.getComponentName();
             case CURRENCY:
                 return String.format("cell: %3$s(\"%1$s\", \"%2$s\")", columnName, columnDef.getSubsidiaryColumns(), CellType.CURRENCY.getComponentName());
             case OPERATION:

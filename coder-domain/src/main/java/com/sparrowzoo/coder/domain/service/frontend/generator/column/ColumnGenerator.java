@@ -5,6 +5,8 @@ import com.sparrowzoo.coder.domain.bo.ProjectBO;
 import com.sparrowzoo.coder.enums.CellType;
 import com.sparrowzoo.coder.enums.HeaderType;
 
+import java.util.List;
+
 public interface ColumnGenerator {
     String column(ColumnDef columnDef,ProjectBO project);
 
@@ -15,4 +17,6 @@ public interface ColumnGenerator {
     String importCell(CellType cellType,ProjectBO project);
 
     String getName();
+
+    String columnDefs(String className, List<String> columns);
 }

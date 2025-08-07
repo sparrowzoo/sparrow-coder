@@ -15,8 +15,6 @@ public enum ControlType implements EnumIdentityAccessor {
     INPUT_PASSWORD("txt", "password", 5),
     TEXT_AREA("txt", "textarea", 6),
     SELECT("ddl", "select", 7),
-    RADIO_LIST("rdl", "radio-list", 8),
-    CHECK_BOX_LIST("cbl", "checkbox-list", 9),
     CODE("txt", "text", 10),
     EDITOR("divEditor", "editor", 11),
     DATE("txt", "date", 12),

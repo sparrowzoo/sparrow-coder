@@ -6,9 +6,10 @@ import com.sparrow.protocol.dao.enums.ListDatasourceType;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Data
-@Table(name = "user_example")
+@Table(name = "t_user_example")
 public class UserExample extends PO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +21,7 @@ public class UserExample extends PO {
     @Column(name = "chinese_name", nullable = false, columnDefinition = "varchar(32)  default '' comment '中文名'")
     private String chineseName;
     @Column(name = "birthday", nullable = false, columnDefinition = "date null comment '出生日期'")
-    private String birthday;
+    private LocalDate birthday;
     @Column(name = "email", nullable = false, unique = true, columnDefinition = "varchar(128)  default '' comment 'Email'")
     private String email;
 
@@ -35,7 +36,7 @@ public class UserExample extends PO {
 
     @Column(name = "gender", nullable = false, unique = true, columnDefinition = "int not null default 999 comment '性别'")
     @ListDatasource(type = ListDatasourceType.ENUM, params = "gender")
-    private String gender;
+    private Integer gender;
 
     @Column(name = "age", nullable = false, unique = true, columnDefinition = "int not null default 0 comment '年龄'")
     private Integer age;

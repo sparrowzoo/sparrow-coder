@@ -13,8 +13,6 @@ public enum JavaTypeController {
             ControlType.EDITOR,
             ControlType.TEXT_AREA,
             ControlType.SELECT,
-            ControlType.CHECK_BOX_LIST,
-            ControlType.RADIO_LIST,
             ControlType.CODE,
             ControlType.FILE,
             ControlType.IMAGE,

@@ -22,6 +22,7 @@ public class $persistence_class_nameAssemble{
      public $persistence_class_nameDTO boAssembleDTO($persistence_class_nameBO bo) {
         $persistence_class_nameDTO $persistence_object_name = new $persistence_class_nameDTO();
         beanCopier.copyProperties(bo, $persistence_object_name);
+        $persistence_object_name.setStatus(bo.getStatus().getIdentity());
         return $persistence_object_name;
     }
 
