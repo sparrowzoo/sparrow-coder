@@ -21,8 +21,8 @@ import com.sparrow.protocol.ListRecordTotalBO;
 import com.sparrow.protocol.KeyValue;
 import com.sparrow.protocol.pager.PagerResult;
 import com.sparrow.protocol.pager.SimplePager;
-import com.sparrowzoo.coder.protocol.dto.ProjectConfigDTO;
-import com.sparrowzoo.coder.domain.bo.ProjectConfigBO;
+import com.sparrowzoo.coder.protocol.dto.UserExampleDTO;
+import com.sparrowzoo.coder.domain.bo.UserExampleBO;
 import com.sparrow.utility.CollectionsUtility;
 import java.util.*;
 import javax.inject.*;
@@ -30,35 +30,35 @@ import com.sparrow.protocol.BeanCopier;
 
 
 @Named
-public class ProjectConfigAssemble{
+public class UserExampleAssemble{
 
     @Inject
     private BeanCopier beanCopier;
 
-     public ProjectConfigDTO boAssembleDTO(ProjectConfigBO bo) {
-        ProjectConfigDTO projectConfig = new ProjectConfigDTO();
-        beanCopier.copyProperties(bo, projectConfig);
-        projectConfig.setStatus(bo.getStatus().getIdentity());
-        return projectConfig;
+     public UserExampleDTO boAssembleDTO(UserExampleBO bo) {
+        UserExampleDTO userExample = new UserExampleDTO();
+        beanCopier.copyProperties(bo, userExample);
+        userExample.setStatus(bo.getStatus().getIdentity());
+        return userExample;
     }
 
-     public List<ProjectConfigDTO> boListAssembleDTOList(List<ProjectConfigBO> list) {
+     public List<UserExampleDTO> boListAssembleDTOList(List<UserExampleBO> list) {
         if (CollectionsUtility.isNullOrEmpty(list)) {
             return Collections.emptyList();
         }
-        List<ProjectConfigDTO> projectConfigDTOList = new ArrayList<>(list.size());
-        for (ProjectConfigBO projectConfigBo : list) {
-            projectConfigDTOList.add(this.boAssembleDTO(projectConfigBo));
+        List<UserExampleDTO> userExampleDTOList = new ArrayList<>(list.size());
+        for (UserExampleBO userExampleBo : list) {
+            userExampleDTOList.add(this.boAssembleDTO(userExampleBo));
         }
-        return projectConfigDTOList;
+        return userExampleDTOList;
     }
 
-    public PagerResult<ProjectConfigDTO> assemblePager(ListRecordTotalBO<ProjectConfigBO> projectConfigListTotalRecord,
-        SimplePager projectConfigQuery) {
-        List<ProjectConfigDTO> projectConfigDTOList = this.boListAssembleDTOList(projectConfigListTotalRecord.getList());
-        PagerResult<ProjectConfigDTO> pagerResult = new PagerResult<>(projectConfigQuery);
-        pagerResult.setList(projectConfigDTOList);
-        pagerResult.setRecordTotal(projectConfigListTotalRecord.getTotal());
+    public PagerResult<UserExampleDTO> assemblePager(ListRecordTotalBO<UserExampleBO> userExampleListTotalRecord,
+        SimplePager userExampleQuery) {
+        List<UserExampleDTO> userExampleDTOList = this.boListAssembleDTOList(userExampleListTotalRecord.getList());
+        PagerResult<UserExampleDTO> pagerResult = new PagerResult<>(userExampleQuery);
+        pagerResult.setList(userExampleDTOList);
+        pagerResult.setRecordTotal(userExampleListTotalRecord.getTotal());
         return pagerResult;
     }
 

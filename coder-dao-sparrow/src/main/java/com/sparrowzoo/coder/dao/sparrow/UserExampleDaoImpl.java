@@ -38,7 +38,7 @@ public class UserExampleDaoImpl extends ORMStrategy<UserExample, Long> implement
     }
 
     private BooleanCriteria generateCriteria(UserExampleDBPagerQuery userExampleQuery) {
-        BooleanCriteria booleanCriteria= BooleanCriteria.criteria(Criteria.field(UserExample::getUserName).equal(userExampleQuery.getUserName())).and(Criteria.field(UserExample::getChineseName).equal(userExampleQuery.getChineseName())).and(Criteria.field(UserExample::getGender).equal(userExampleQuery.getGender())).and(Criteria.field(UserExample::getCreateUserId).equal(ThreadContext.getLoginToken().getUserId()));if(userExampleQuery.getStatus()!=null&&userExampleQuery.getStatus()>=0) {booleanCriteria.and(Criteria.field(UserExample::getStatus).equal(StatusRecord.valueOf(userExampleQuery.getStatus())));} return booleanCriteria;
+        BooleanCriteria booleanCriteria= BooleanCriteria.criteria(Criteria.field(UserExample::getCreateUserId).equal(ThreadContext.getLoginToken().getUserId()));if(userExampleQuery.getStatus()!=null&&userExampleQuery.getStatus()>=0) {booleanCriteria.and(Criteria.field(UserExample::getStatus).equal(StatusRecord.valueOf(userExampleQuery.getStatus())));} return booleanCriteria;
     }
 
     @Override public Long countUserExample(UserExampleDBPagerQuery userExamplePagerQuery) {

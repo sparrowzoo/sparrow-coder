@@ -40,6 +40,8 @@ public class FieldsPlaceholderExtension extends AbstractPlaceholderExtension {
         //如果实现了DisplayText 接口，则生成KVS的接口，提供给外表关联使用
         if (isAssignableDisplayText) {
             fieldBuild.append("private String displayText; \n");
+            fieldDtoBuild.append("private String displayText; \n");
+
         }
         fieldBuild.append("}");
         fieldDtoBuild.append("}");

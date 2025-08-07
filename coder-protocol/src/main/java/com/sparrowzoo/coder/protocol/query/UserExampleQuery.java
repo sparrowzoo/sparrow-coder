@@ -22,8 +22,5 @@ import java.util.Date;
 import lombok.Data;
 @Data
 public class UserExampleQuery extends SimplePager {
-   private String userName;
-private String chineseName;
-private Integer gender;
-private Integer status;
+   private Integer status;
 }

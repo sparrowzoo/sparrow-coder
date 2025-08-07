@@ -22,8 +22,6 @@ import java.util.Date;
 import lombok.Data;
 @Data
 public class TableConfigQuery extends SimplePager {
-   private String tableName;
-private String className;
-private Integer status;
+   private Integer status;
 private Long projectId;
 }

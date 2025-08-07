@@ -17,9 +17,9 @@
 
 package com.sparrowzoo.coder.domain.bo;
 
-import com.sparrow.protocol.BO;
 import com.sparrow.protocol.enums.StatusRecord;
-import com.sparrow.protocol.DisplayTextAccessor;
+import com.sparrow.protocol.*;
+import java.time.*;
 import lombok.Data;
 @Data
 public class ProjectConfigBO implements BO

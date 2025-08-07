@@ -16,12 +16,10 @@
  */
 
 package com.sparrowzoo.coder.protocol.dto;
-
-import com.sparrow.protocol.DTO;
 import lombok.Data;
 import com.sparrow.protocol.enums.StatusRecord;
-import com.sparrow.protocol.DisplayTextAccessor;
-
+import com.sparrow.protocol.*;
+import java.time.*;
 
 @Data
 public class ProjectConfigDTO implements DTO
@@ -43,6 +41,6 @@ private String modifiedUserName;
 private Long gmtCreate; 
 private Long gmtModified; 
 private Boolean deleted; 
-private StatusRecord status; 
+private Integer status; 
 private String displayText; 
 }

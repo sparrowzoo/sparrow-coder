@@ -38,6 +38,7 @@ public class TableConfigAssemble{
      public TableConfigDTO boAssembleDTO(TableConfigBO bo) {
         TableConfigDTO tableConfig = new TableConfigDTO();
         beanCopier.copyProperties(bo, tableConfig);
+        tableConfig.setStatus(bo.getStatus().getIdentity());
         return tableConfig;
     }
 

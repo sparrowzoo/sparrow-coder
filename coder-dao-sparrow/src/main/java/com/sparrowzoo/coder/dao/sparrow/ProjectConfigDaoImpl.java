@@ -38,7 +38,7 @@ public class ProjectConfigDaoImpl extends ORMStrategy<ProjectConfig, Long> imple
     }
 
     private BooleanCriteria generateCriteria(ProjectConfigDBPagerQuery projectConfigQuery) {
-        BooleanCriteria booleanCriteria= BooleanCriteria.criteria(Criteria.field(ProjectConfig::getName).equal(projectConfigQuery.getName())).and(Criteria.field(ProjectConfig::getFrontendName).equal(projectConfigQuery.getFrontendName())).and(Criteria.field(ProjectConfig::getChineseName).equal(projectConfigQuery.getChineseName())).and(Criteria.field(ProjectConfig::getCreateUserId).equal(ThreadContext.getLoginToken().getUserId()));if(projectConfigQuery.getStatus()!=null&&projectConfigQuery.getStatus()>=0) {booleanCriteria.and(Criteria.field(ProjectConfig::getStatus).equal(StatusRecord.valueOf(projectConfigQuery.getStatus())));} return booleanCriteria;
+        BooleanCriteria booleanCriteria= BooleanCriteria.criteria(Criteria.field(ProjectConfig::getCreateUserId).equal(ThreadContext.getLoginToken().getUserId()));if(projectConfigQuery.getStatus()!=null&&projectConfigQuery.getStatus()>=0) {booleanCriteria.and(Criteria.field(ProjectConfig::getStatus).equal(StatusRecord.valueOf(projectConfigQuery.getStatus())));} return booleanCriteria;
     }
 
     @Override public Long countProjectConfig(ProjectConfigDBPagerQuery projectConfigPagerQuery) {
