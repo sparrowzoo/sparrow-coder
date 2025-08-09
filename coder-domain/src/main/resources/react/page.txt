@@ -59,8 +59,7 @@ export default function Page() {
                 deleteHandler={deleteHandler}
                 initHandler={init}
                 defaultPager={pagination}
-
-                defaultRowOperationComponents={[]}
+                RowOperationComponents={[]}
             ></DataTable>
         </div>
     );

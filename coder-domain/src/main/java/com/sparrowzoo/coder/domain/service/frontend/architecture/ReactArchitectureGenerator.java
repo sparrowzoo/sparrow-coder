@@ -17,16 +17,16 @@ public class ReactArchitectureGenerator extends AbstractArchitectureGenerator {
     public void generate(TableConfigRegistry registry, String tableName) throws IOException {
         TableContext tableContext = registry.getTableContext(tableName);
         FrontendGenerator frontendGenerator = tableContext.getFrontendGenerator();
-        frontendGenerator.generate(FrontendKey.PAGE,registry);
-        frontendGenerator.generate(FrontendKey.API,registry);
-        frontendGenerator.generate(FrontendKey.ADD,registry);
-        frontendGenerator.generate(FrontendKey.EDIT,registry);
-        frontendGenerator.generate(FrontendKey.SEARCH,registry);
-        frontendGenerator.generate(FrontendKey.OPERATION,registry);
-        frontendGenerator.generate(FrontendKey.SCHEMA,registry);
-        frontendGenerator.generate(FrontendKey.COLUMNS,registry);
-        frontendGenerator.generate(FrontendKey.MESSAGE,registry);
-        frontendGenerator.generate(FrontendKey.MESSAGE_FILE_LIST,registry);
+        frontendGenerator.generate(FrontendKey.PAGE, registry);
+        frontendGenerator.generate(FrontendKey.API, registry);
+        frontendGenerator.generate(FrontendKey.ADD, registry);
+        frontendGenerator.generate(FrontendKey.EDIT, registry);
+        frontendGenerator.generate(FrontendKey.SEARCH, registry);
+        frontendGenerator.generate(FrontendKey.OPERATION, registry);
+        frontendGenerator.generate(FrontendKey.SCHEMA, registry);
+        frontendGenerator.generate(FrontendKey.COLUMNS, registry);
+        frontendGenerator.generate(FrontendKey.MESSAGE, registry);
+        frontendGenerator.generate(FrontendKey.MESSAGE_FILE_LIST, registry);
     }
 
     @Override
