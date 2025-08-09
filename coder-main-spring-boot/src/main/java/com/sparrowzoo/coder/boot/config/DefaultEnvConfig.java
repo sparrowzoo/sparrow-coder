@@ -1,5 +1,6 @@
 package com.sparrowzoo.coder.boot.config;
 
+import com.sparrowzoo.coder.domain.service.EnvConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -8,8 +9,8 @@ import java.io.File;
 
 @Named
 @Slf4j
-public class EnvConfig implements com.sparrowzoo.coder.domain.service.EnvConfig {
-    EnvConfig() {
+public class DefaultEnvConfig implements EnvConfig {
+    DefaultEnvConfig() {
         log.info("env config impl");
     }
 
@@ -24,6 +25,9 @@ public class EnvConfig implements com.sparrowzoo.coder.domain.service.EnvConfig 
 
     @Value("${multi_user}")
     private Boolean multiUser;
+
+    @Value("${overwrite}")
+    private Boolean overwrite;
 
 
     @Override
@@ -48,11 +52,14 @@ public class EnvConfig implements com.sparrowzoo.coder.domain.service.EnvConfig 
 
     @Override
     public String getHome(Long userId) {
-        if(this.multiUser){
-            return userId+"";
+        if (this.multiUser) {
+            return userId + "";
         }
         return "";
     }
 
-
+    @Override
+    public Boolean overwrite() {
+        return this.overwrite;
+    }
 }

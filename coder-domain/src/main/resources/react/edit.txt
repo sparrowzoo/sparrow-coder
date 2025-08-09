@@ -8,9 +8,7 @@ import {Button} from "@/components/ui/button";
 import {DialogClose, DialogDescription, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizontal";
 import toast from "react-hot-toast";
-import {ValidatableInput} from "@/common/components/forms/ValidatableInput";
-import {ValidatableTextArea} from "@/common/components/forms/ValidatableTextArea";
-import {ValidatableSelect} from "@/common/components/forms/validatable-select";
+$frontend_edit_import
 import {useTranslations} from "next-intl";
 import * as v from "valibot";
 import {CellContextProps,MyTableMeta} from "@/common/lib/table/DataTableProperty";

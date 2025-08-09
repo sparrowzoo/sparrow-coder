@@ -2,14 +2,13 @@ package com.sparrowzoo.coder.domain.service.frontend.validate.react;
 
 import com.sparrow.container.Container;
 import com.sparrow.container.ContainerAware;
-import com.sparrow.core.Pair;
 import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.domain.bo.validate.DigitalValidator;
 import com.sparrowzoo.coder.domain.bo.validate.StringValidator;
 import com.sparrowzoo.coder.domain.bo.validate.Validator;
-import com.sparrowzoo.coder.enums.DigitalCategory;
 import com.sparrowzoo.coder.domain.service.ValidatorMessageGenerator;
 import com.sparrowzoo.coder.domain.service.registry.ValidatorRegistry;
+import com.sparrowzoo.coder.enums.DigitalCategory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -19,7 +18,7 @@ import java.util.Map;
 public abstract class AbstractValidatorMessageGenerator<T extends Validator> implements ValidatorMessageGenerator<T>, InitializingBean, ContainerAware {
     private ValidatorRegistry registry = ValidatorRegistry.getInstance();
 
-    protected T defaultValidator=this.defaultValidator();
+    protected T defaultValidator = this.defaultValidator();
 
     public AbstractValidatorMessageGenerator() {
     }
@@ -51,22 +50,19 @@ public abstract class AbstractValidatorMessageGenerator<T extends Validator> imp
         return "v.pipe(\n v.string()";
     }
 
-    protected String getMessage(Validator validator, String i18nKey, String message) {
-        if (validator.getI18n()) {
+    protected String getMessage(String propertyName,Validator validator, String i18nKey, String message) {
+        if (validator.getI18n()==null||validator.getI18n()) {
             Map<String, String> configList = validator.getI18nConfig();
             configList.put(i18nKey, message);
-            return String.format("translate(\"%1$s.%2$s\")", validator.getPropertyName(), i18nKey);
+            return String.format("translate(\"%1$s.%2$s\")", propertyName, i18nKey);
         }
         return String.format("\"%s\"", message);
     }
 
-    protected String nonEmpty(T validator) {
+    protected String nonEmpty(String propertyName, T validator) {
         String message = validator.getEmptyMessage();
-        if(StringUtility.isNullOrEmpty(message)){
-            message=StringValidator.defaultValidator.getEmptyMessage();
-        }
-        if (!validator.getAllowEmpty()) {
-            return String.format(",\nv.nonEmpty(%s)", this.getMessage(validator, "empty-message", message));
+        if (validator.getAllowEmpty()==null||!validator.getAllowEmpty()) {
+            return String.format(",\nv.nonEmpty(%s)", this.getMessage(propertyName,validator, "empty-message", message));
         }
         return "";
     }
@@ -95,26 +91,26 @@ public abstract class AbstractValidatorMessageGenerator<T extends Validator> imp
         this.registry.registry(this);
     }
 
-    protected String minLength(StringValidator validator) {
-        if(validator.getMinLength()==null){
+    protected String minLength(String propertyName,StringValidator validator) {
+        if (validator.getMinLength() == null) {
             return "";
         }
         String message = validator.getMinLengthMessage();
-        if(StringUtility.isNullOrEmpty(message)){
-            message=String.format(StringValidator.defaultValidator.getMinLengthMessage(), validator.getMinLength());
+        if (StringUtility.isNullOrEmpty(message)) {
+            message = String.format(StringValidator.STRING_VALIDATOR.getMinLengthMessage(), validator.getMinLength());
         }
-        return String.format(",\n v.minLength(%1$s, %2$s)", validator.getMinLength(), this.getMessage(validator, "min-length-message", message));
+        return String.format(",\n v.minLength(%1$s, %2$s)", validator.getMinLength(), this.getMessage(propertyName,validator, "min-length-message", message));
     }
 
-    protected String maxLength(StringValidator validator) {
-        if(validator.getMaxLength()==null){
+    protected String maxLength(String propertyName,StringValidator validator) {
+        if (validator.getMaxLength() == null) {
             return "";
         }
-        String message = validator.getMinLengthMessage();
-        if(StringUtility.isNullOrEmpty(message)){
-            message=String.format(StringValidator.defaultValidator.getMaxLengthMessage(), validator.getMaxLength());
+        String message = validator.getMaxLengthMessage();
+        if (StringUtility.isNullOrEmpty(message)) {
+            message = String.format(StringValidator.STRING_VALIDATOR.getMaxLengthMessage(), validator.getMaxLength());
         }
-        return String.format(",\nv.maxLength(%1$s, %2$s)", validator.getMaxLength(), this.getMessage(validator, "max-length-message", message));
+        return String.format(",\nv.maxLength(%1$s, %2$s)", validator.getMaxLength(), this.getMessage(propertyName,validator, "max-length-message", message));
     }
 
 
@@ -122,42 +118,47 @@ public abstract class AbstractValidatorMessageGenerator<T extends Validator> imp
      * v.check((val) => {return /^\d+$/.test(val);}, "请输入数字"),
      * * @return
      */
-    protected String check(T validator, String regex, String message) {
+    protected String check(String propertyName, Validator validator, String regex, String message) {
         return String.format(",\nv.check((val) => {return %1$s.test(val);},%2$s)",
                 regex,
-                this.getMessage(validator, "check-message", message));
+                this.getMessage(propertyName,validator, "check-message", message));
     }
 
     protected String transform(DigitalCategory category) {
         return String.format(",\nv.transform((input): number | string => {return %s;})", category.getConverter());
     }
 
-    protected String minValue(DigitalValidator validator) {
-        if (validator.getMinValue()==null) {
+    protected String minValue(String propertyName,DigitalValidator validator) {
+        if (validator.getMinValue() == null) {
             return "";
         }
         String message = validator.getMinValueMessage();
-        if(StringUtility.isNullOrEmpty(message)){
-            message=String.format(DigitalValidator.defaultValidator().getMinValueMessage(), validator.getMinValue());
+        if (StringUtility.isNullOrEmpty(message)) {
+            message = String.format(DigitalValidator.DIGITAL_VALIDATOR.getMinValueMessage(), validator.getMinValue());
         }
-        return String.format(",\nv.minValue(%1$s, %2$s)", validator.getMinValue(), this.getMessage(validator, "min-value-message", message));
+        return String.format(",\nv.minValue(%1$s, %2$s)", validator.getMinValue(), this.getMessage(propertyName,validator, "min-value-message", message));
     }
 
-    protected String maxValue(DigitalValidator validator) {
-        if (validator.getMaxValue()==null) {
+    protected String maxValue(String propertyName,DigitalValidator validator) {
+        if (validator.getMaxValue() == null) {
             return "";
         }
         String message = validator.getMaxValueMessage();
-        if(StringUtility.isNullOrEmpty(message)){
-            message=String.format(DigitalValidator.defaultValidator().getMaxValueMessage(), validator.getMaxValue());
+        if (StringUtility.isNullOrEmpty(message)) {
+            message = String.format(DigitalValidator.DIGITAL_VALIDATOR.getMaxValueMessage(), validator.getMaxValue());
         }
-        return String.format(",\n v.maxValue(%1$s, %2$s)", validator.getMaxValue(), this.getMessage(validator, "max-value-message", message));
+        return String.format(",\n v.maxValue(%1$s, %2$s)", validator.getMaxValue(), this.getMessage(propertyName,validator, "max-value-message", message));
     }
 
     protected abstract String outerGenerateMessage(String propertyName, T validator);
 
     public String generateConfig(String propertyName, T validator) {
-        String message = this.outerGenerateMessage(propertyName, validator);
-        return String.format("%1$s:\n%2$s\n", propertyName, message);
+        try {
+            String message = this.outerGenerateMessage(propertyName, validator);
+            return String.format("%1$s:\n%2$s\n", propertyName, message);
+        } catch (Exception e) {
+            log.error("{} validate message generate error", propertyName);
+            return "";
+        }
     }
 }

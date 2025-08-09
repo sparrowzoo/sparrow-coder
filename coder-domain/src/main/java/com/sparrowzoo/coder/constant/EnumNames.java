@@ -15,4 +15,6 @@ public class EnumNames {
 
     public static final String STATUS_RECORD = "status";
 
+    public static final String CODE_SOURCE="source";
+
 }

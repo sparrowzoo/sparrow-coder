@@ -82,7 +82,6 @@ public class MockTableConfigRepository implements TableConfigRepository {
         columnDef.setControlType(controlType.getIdentity());
         columnDef.setDatasourceType(dataSourceType.getIdentity());
         columnDef.setEnableHidden(enableHiding);
-        columnDef.setSubsidiaryColumns("");
         columnDef.setShowInList(showInList);
         columnDef.setShowInEdit(true);
         columnDef.setValidateType(validateType);
@@ -208,13 +207,12 @@ public class MockTableConfigRepository implements TableConfigRepository {
         return null;
     }
 
-    public RegexValidator generateRegex(String propertyName) {
+    public RegexValidator generateRegex() {
         RegexValidator validator = new RegexValidator();
         validator.setAllowEmpty(true);
         validator.setI18n(false);
         validator.setMinLength(5);
         validator.setMaxLength(30);
-        validator.setPropertyName(propertyName);
         return validator;
     }
 
@@ -225,7 +223,6 @@ public class MockTableConfigRepository implements TableConfigRepository {
         validator.setI18n(true);
         validator.setMinLength(5);
         validator.setMaxLength(30);
-        validator.setPropertyName(propertyName);
         return validator;
     }
 

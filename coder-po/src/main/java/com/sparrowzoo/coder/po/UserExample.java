@@ -40,4 +40,8 @@ public class UserExample extends PO {
 
     @Column(name = "age", nullable = false, unique = true, columnDefinition = "int not null default 0 comment '年龄'")
     private Integer age;
+
+    @Column(name = "project_id", nullable = false, columnDefinition = "int comment '项目'")
+    @ListDatasource(type = ListDatasourceType.TABLE, params = "t_project_config")
+    private Long projectId;
 }

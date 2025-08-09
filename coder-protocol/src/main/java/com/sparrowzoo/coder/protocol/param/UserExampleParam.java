@@ -36,5 +36,6 @@ private String tel;
 private String idCard; 
 private Integer gender; 
 private Integer age; 
+private Long projectId; 
 
 }

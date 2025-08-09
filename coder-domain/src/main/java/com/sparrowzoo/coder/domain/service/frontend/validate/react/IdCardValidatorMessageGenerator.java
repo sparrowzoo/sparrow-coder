@@ -20,7 +20,7 @@ public class IdCardValidatorMessageGenerator extends RegexValidatorMessageGenera
 
     @Override
     public RegexValidator defaultValidator() {
-        RegexValidator validator=super.defaultValidator();
+        RegexValidator validator=RegexValidator.REGEX_VALIDATOR.create();
         validator.setFormatMessage("请输入正确的身份证号码");
         return validator;
     }

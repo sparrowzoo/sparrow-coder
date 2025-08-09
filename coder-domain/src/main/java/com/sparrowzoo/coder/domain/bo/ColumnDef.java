@@ -16,8 +16,6 @@ public class ColumnDef implements POJO {
     private String propertyName;
     @Column(name = "chinese_name", columnDefinition = "varchar(255) comment '中文名'")
     private String chineseName;
-    @Column(name = "subsidiary_columns", columnDefinition = "varchar(255) comment '附加列'")
-    private String subsidiaryColumns;
     @Column(name = "java_type", updatable = false, columnDefinition = "varchar(255) comment 'java类型'")
     private String javaType;
     @Column(name = "enable_hidden", columnDefinition = "bit(1) comment '允许隐藏'")
@@ -68,87 +66,57 @@ public class ColumnDef implements POJO {
     @Column(name = "read_only", columnDefinition = "bit(1) comment '是否只读'")
     private Boolean readOnly;
 
-    public static ColumnDef createRowMenu(String tableClassName, int sort) {
+    public void setSpecialColumnDefaultValue(){
+        this.setJavaType(null);
+        this.setEnableHidden(false);
+        this.setDefaultHidden(false);
+        this.setShowInEdit(false);
+        this.setShowInList(true);
+        this.setShowInSearch(false);
+        this.setAllowNull(false);
+        this.setPlaceholder("");
+        this.setDefaultValue("");
+        this.setSearchType(SearchType.EQUAL.getIdentity());
+        this.setValidateType(null);
+        this.setValidator(null);
+        this.setDatasourceType(ListDatasourceType.NULL.getIdentity());
+        this.setDatasourceParams("");
+        this.setControlType(null);
+        this.setReadOnly(true);
+    }
+
+    public static ColumnDef createRowMenu(int sort) {
         ColumnDef columnDef = new ColumnDef();
         columnDef.setColumnType(ColumnType.ACTION.getIdentity());
         columnDef.setHeaderType(HeaderType.NORMAL.getIdentity());
         columnDef.setCellType(CellType.OPERATION.getIdentity());
         columnDef.setPropertyName("actions");
         columnDef.setChineseName("操作");
-        columnDef.setSubsidiaryColumns("");
-        columnDef.setJavaType(null);
-        columnDef.setEnableHidden(false);
-        columnDef.setDefaultHidden(false);
-        columnDef.setShowInEdit(false);
-        columnDef.setShowInList(true);
-        columnDef.setShowInSearch(false);
-        columnDef.setAllowNull(false);
-        columnDef.setPlaceholder("");
-        columnDef.setDefaultValue("");
-        columnDef.setSearchType(SearchType.EQUAL.getIdentity());
-        columnDef.setValidateType("");
-        columnDef.setValidator(null);
-        columnDef.setDatasourceType(ListDatasourceType.NULL.getIdentity());
-        columnDef.setDatasourceParams("");
-        columnDef.setControlType(null);
         columnDef.setSort(sort);
-        columnDef.setReadOnly(true);
+        columnDef.setSpecialColumnDefaultValue();
         return columnDef;
     }
 
-    public static ColumnDef createFilter(String tableClassName, int sort) {
+    public static ColumnDef createFilter(int sort) {
         ColumnDef columnDef = new ColumnDef();
         columnDef.setColumnType(ColumnType.FILTER.getIdentity());
         columnDef.setHeaderType(HeaderType.COLUMN_FILTER.getIdentity());
         columnDef.setCellType(null);
         columnDef.setPropertyName("filter");
         columnDef.setChineseName("过滤列");
-        columnDef.setSubsidiaryColumns("");
-        columnDef.setJavaType(null);
-        columnDef.setEnableHidden(false);
-        columnDef.setDefaultHidden(false);
-        columnDef.setShowInEdit(false);
-        columnDef.setShowInList(true);
-        columnDef.setShowInSearch(false);
-        columnDef.setAllowNull(false);
-        columnDef.setPlaceholder("");
-        columnDef.setDefaultValue("");
-        columnDef.setSearchType(SearchType.EQUAL.getIdentity());
-        columnDef.setValidateType("");
-        columnDef.setValidator(null);
-        columnDef.setDatasourceType(ListDatasourceType.NULL.getIdentity());
-        columnDef.setDatasourceParams("");
-        columnDef.setControlType(null);
         columnDef.setSort(sort);
-        columnDef.setReadOnly(true);
+        columnDef.setSpecialColumnDefaultValue();
         return columnDef;
     }
 
-    public static ColumnDef createCheckBox(String tableClassName, int sort) {
+    public static ColumnDef createCheckBox(int sort) {
         ColumnDef columnDef = new ColumnDef();
         columnDef.setColumnType(ColumnType.CHECK.getIdentity());
         columnDef.setHeaderType(HeaderType.CHECK_BOX.getIdentity());
         columnDef.setCellType(CellType.CHECK_BOX.getIdentity());
         columnDef.setPropertyName("check-box");
-        columnDef.setChineseName("");
-        columnDef.setSubsidiaryColumns("");
-        columnDef.setJavaType(null);
-        columnDef.setEnableHidden(false);
-        columnDef.setDefaultHidden(false);
-        columnDef.setShowInEdit(false);
-        columnDef.setShowInList(true);
-        columnDef.setShowInSearch(false);
-        columnDef.setAllowNull(false);
-        columnDef.setPlaceholder("");
-        columnDef.setDefaultValue("");
-        columnDef.setSearchType(SearchType.EQUAL.getIdentity());
-        columnDef.setValidateType("");
-        columnDef.setValidator(null);
-        columnDef.setDatasourceType(ListDatasourceType.NULL.getIdentity());
-        columnDef.setDatasourceParams("");
-        columnDef.setControlType(null);
+        columnDef.setSpecialColumnDefaultValue();
         columnDef.setSort(sort);
-        columnDef.setReadOnly(true);
         return columnDef;
     }
 

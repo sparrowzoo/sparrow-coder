@@ -13,11 +13,11 @@ public class RegexValidatorMessageGenerator extends AbstractValidatorMessageGene
     public String outerGenerateMessage(String propertyName, RegexValidator validator) {
         StringBuilder pipeline = new StringBuilder();
         pipeline.append(this.pipeline());
-        pipeline.append(this.nonEmpty(validator));
+        pipeline.append(this.nonEmpty(propertyName,validator));
         if (StringUtility.isNullOrEmpty(validator.getFormatMessage())) {
             validator.setFormatMessage(this.defaultValidator.getFormatMessage() + validator.getRegex());
         }
-        pipeline.append(this.check(validator, validator.getRegex(), validator.getFormatMessage()));
+        pipeline.append(this.check(propertyName,validator, validator.getRegex(), validator.getFormatMessage()));
         this.finish(pipeline);
         if (validator.getAllowEmpty()) {
             return this.allowEmpty(pipeline.toString());
@@ -27,6 +27,6 @@ public class RegexValidatorMessageGenerator extends AbstractValidatorMessageGene
 
     @Override
     public RegexValidator defaultValidator() {
-        return RegexValidator.defaultValidator();
+        return RegexValidator.REGEX_VALIDATOR;
     }
 }

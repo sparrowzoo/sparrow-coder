@@ -13,10 +13,10 @@ public class EmailValidatorMessageGenerator extends AbstractValidatorMessageGene
     public String outerGenerateMessage(String propertyName, RegexValidator validator) {
         StringBuilder pipeline = new StringBuilder();
         pipeline.append(this.pipeline());
-        pipeline.append(this.nonEmpty(validator));
-        pipeline.append(this.minLength(validator));
-        pipeline.append(this.maxLength(validator));
-        pipeline.append(this.email(validator));
+        pipeline.append(this.nonEmpty(propertyName,validator));
+        pipeline.append(this.minLength(propertyName,validator));
+        pipeline.append(this.maxLength(propertyName,validator));
+        pipeline.append(this.email(propertyName,validator));
         this.finish(pipeline);
         if (validator.getAllowEmpty()) {
             return this.allowEmpty(pipeline.toString());
@@ -24,17 +24,17 @@ public class EmailValidatorMessageGenerator extends AbstractValidatorMessageGene
         return pipeline.toString();
     }
 
-    private String email(RegexValidator validator) {
+    private String email(String propertyName, RegexValidator validator) {
         String message = validator.getFormatMessage();
         if (StringUtility.isNullOrEmpty(message)) {
             message = this.defaultValidator.getFormatMessage();
         }
-        return String.format(",\nv.email(%s)", this.getMessage(validator, "email-message", message));
+        return String.format(",\nv.email(%s)", this.getMessage(propertyName,validator, "email-message", message));
     }
 
     @Override
     public RegexValidator defaultValidator() {
-        RegexValidator validator=RegexValidator.defaultValidator();
+        RegexValidator validator=RegexValidator.REGEX_VALIDATOR.create();
         validator.setFormatMessage("请输入有效的邮箱地址");
         return validator;
     }

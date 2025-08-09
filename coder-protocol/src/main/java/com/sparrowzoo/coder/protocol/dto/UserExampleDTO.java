@@ -33,6 +33,7 @@ private String tel;
 private String idCard; 
 private Integer gender; 
 private Integer age; 
+private Long projectId; 
 private String createUserName; 
 private Long createUserId; 
 private Long modifiedUserId; 

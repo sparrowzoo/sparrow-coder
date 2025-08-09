@@ -21,8 +21,10 @@ public class DictionaryPlaceholderExtension extends AbstractPlaceholderExtension
         Map<String, String> placeHolder = tableContext.getPlaceHolder();
         List<ColumnDef> columnDefs = tableContext.getColumns();
         CoderTriple dictionaryTriple = new CoderTriple();
+        boolean isTableConfig=tableContext.getTableConfig().getTableName().equals("t_table_config");
+
         for (ColumnDef columnDef : columnDefs) {
-            if (ListDatasourceType.ENUM.getIdentity().equals(columnDef.getDatasourceType())) {
+            if (!isTableConfig&&ListDatasourceType.ENUM.getIdentity().equals(columnDef.getDatasourceType())) {
                 dictionaryTriple.inject("@Inject\nprivate EnumsContainer businessEnumsContainer;");
                 dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",businessEnumsContainer.getEnums(\"%2$s\"));", columnDef.getPropertyName(), columnDef.getDatasourceParams()));
             }
@@ -44,14 +46,17 @@ public class DictionaryPlaceholderExtension extends AbstractPlaceholderExtension
             }
         }
 
-        if (tableContext.getTableConfig().getTableName().equals("t_table_config")) {
+        if (isTableConfig) {
+            dictionaryTriple.code("DefaultColumnsDefCreator.resetColumns(pagerResult.getList());\n");
             dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.CELL_TYPE));
             dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.DATASOURCE_TYPE));
             dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.COLUMN_TYPE));
             dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.CONTROL_TYPE));
             dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.HEADER_TYPE));
             dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.SEARCH_TYPE));
+            dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.CODE_SOURCE));
             dictionaryTriple.code("pagerResult.putDictionary(\"validateType\", ValidatorRegistry.getInstance().getValidatorNames(\"react\"));");
+            dictionaryTriple.addImport("import com.sparrowzoo.coder.utils.DefaultColumnsDefCreator;\n");
             dictionaryTriple.inject("@Inject\nprivate EnumsContainer coderEnumsContainer;");
         }
         placeHolder.put(PlaceholderKey.$dictionary_import.name(), dictionaryTriple.joinImports());

@@ -36,6 +36,15 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
         return String.format("{\n%s\n}", StringUtility.join(columnDefList, ",\n"));
     }
 
+    @Override
+    public String importEdit(ColumnDef columnDef, ProjectBO project) {
+        ControlType controlType = ControlType.getControlType(columnDef.getControlType());
+        if (controlType == null) {
+            return "";
+        }
+        return String.format("import {%1$s} from \"@/common/components/forms/%2$s\";", controlType.getComponent(), controlType.getFileName());
+    }
+
 
     /**
      * <ValidatableInput {...register("name")}
@@ -78,6 +87,14 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
                     this.defaultValue(columnDef, add));
         }
 
+        if (columnDef.getControlType().equals(ControlType.DATE.getIdentity())) {
+            return String.format("<ValidatableDate readonly={false} fieldPropertyName={\"%1$s\"}\n" +
+                            "                                 setValue={setValue}\n" +
+                            "                                 pageTranslate={pageTranslate} %2$s/>",
+                    columnDef.getPropertyName(),
+                    this.defaultValue(columnDef, add));
+        }
+
         String message = "";
         if (!StringUtility.isNullOrEmpty(columnDef.getValidateType()) &&
                 !columnDef.getValidateType().equals("nullableValidatorMessageGenerator")) {
@@ -85,7 +102,7 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
         }
 
         if (columnDef.getControlType().equals(ControlType.TEXT_AREA.getIdentity())) {
-            return String.format("<ValidatableTextArea className={\"w-80 h-60\"} readonly={%4$s} %3$s {...register(\"%1$s\")}\n" +
+            return String.format("<ValidatableTextarea className={\"w-80 h-60\"} readonly={%4$s} %3$s {...register(\"%1$s\")}\n" +
                             "                                  isSubmitted={isSubmitted}\n" +
                             "                                  pageTranslate={pageTranslate}\n" +
                             "                                  validateTranslate={validateTranslate}\n" +
@@ -236,7 +253,7 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
             case CHECK_BOX:
                 return "cell: " + CellType.CHECK_BOX.getComponentName();
             case CURRENCY:
-                return String.format("cell: %3$s(\"%1$s\", \"%2$s\")", columnName, columnDef.getSubsidiaryColumns(), CellType.CURRENCY.getComponentName());
+                return String.format("cell: %3$s(\"%1$s\", \"%2$s\")", columnName, "USD", CellType.CURRENCY.getComponentName());
             case OPERATION:
                 return "cell:\"Actions\"";
             default:

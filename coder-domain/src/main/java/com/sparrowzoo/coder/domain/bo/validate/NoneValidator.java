@@ -1,16 +1,14 @@
 package com.sparrowzoo.coder.domain.bo.validate;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Collections;
 import java.util.Map;
 
 @Data
+@AllArgsConstructor
 public class NoneValidator implements Validator {
-
-    public NoneValidator(String clazz) {
-        this.clazz = clazz;
-    }
 
     private String clazz;
 
@@ -22,16 +20,6 @@ public class NoneValidator implements Validator {
     @Override
     public Boolean getI18n() {
         return null;
-    }
-
-    @Override
-    public void setPropertyName(String i18nFieldName) {
-
-    }
-
-    @Override
-    public String getPropertyName() {
-        return "";
     }
 
     @Override

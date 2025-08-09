@@ -16,7 +16,6 @@ import com.sparrowzoo.coder.protocol.param.LocalClassParam;
 import com.sparrowzoo.coder.protocol.param.SourceCodeParam;
 import com.sparrowzoo.coder.protocol.param.TableConfigParam;
 import com.sparrowzoo.coder.protocol.query.ProjectTablesQuery;
-import com.sparrowzoo.coder.protocol.query.TableConfigQuery;
 import com.sparrowzoo.coder.utils.DefaultColumnsDefCreator;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.Set;
 
 @RestController
 @RequestMapping("coder")

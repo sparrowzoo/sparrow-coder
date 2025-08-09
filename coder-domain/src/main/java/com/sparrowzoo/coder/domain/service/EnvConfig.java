@@ -11,4 +11,6 @@ public interface EnvConfig {
 
     public String getHome(Long userId);
 
+    public Boolean overwrite();
+
 }

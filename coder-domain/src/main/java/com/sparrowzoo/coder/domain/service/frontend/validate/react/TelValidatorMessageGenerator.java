@@ -19,7 +19,7 @@ public class TelValidatorMessageGenerator extends RegexValidatorMessageGenerator
 
     @Override
     public RegexValidator defaultValidator() {
-        RegexValidator validator=super.defaultValidator();
+        RegexValidator validator=RegexValidator.REGEX_VALIDATOR.create();
         validator.setFormatMessage("请输入正确的电话号码");
         return validator;
     }

@@ -1,21 +1,33 @@
 package com.sparrowzoo.coder.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.sparrow.core.spi.JsonFactory;
+import com.sparrow.json.Json;
 import com.sparrow.orm.EntityManager;
 import com.sparrow.orm.Field;
 import com.sparrow.orm.SparrowEntityManager;
+import com.sparrow.protocol.BusinessException;
 import com.sparrow.protocol.dao.ListDatasource;
 import com.sparrow.protocol.dao.enums.ListDatasourceType;
 import com.sparrow.utility.StringUtility;
 import com.sparrowzoo.coder.constant.DefaultSpecialColumnIndex;
 import com.sparrowzoo.coder.domain.bo.ColumnDef;
+import com.sparrowzoo.coder.domain.bo.TableConfigBO;
 import com.sparrowzoo.coder.domain.bo.validate.DigitalValidator;
 import com.sparrowzoo.coder.domain.bo.validate.NoneValidator;
+import com.sparrowzoo.coder.domain.bo.validate.RegexValidator;
 import com.sparrowzoo.coder.domain.bo.validate.StringValidator;
+import com.sparrowzoo.coder.domain.service.registry.ValidatorRegistry;
 import com.sparrowzoo.coder.enums.*;
+import com.sparrowzoo.coder.protocol.dto.TableConfigDTO;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DefaultColumnsDefCreator {
+
+    private static Json json = JsonFactory.getProvider();
+
     public static List<ColumnDef> create(String className) {
         return create(className, false);
     }
@@ -41,7 +53,7 @@ public class DefaultColumnsDefCreator {
             ColumnDef columnDef = new ColumnDef();
             columnDef.setPropertyName(propertyName);
             columnDef.setChineseName(parseChineseName(field.getColumnDefinition()));
-            columnDef.setSubsidiaryColumns("");
+
             columnDef.setJavaType(field.getType().getName());
             columnDef.setEnableHidden(true);
             columnDef.setDefaultHidden(false);
@@ -57,7 +69,6 @@ public class DefaultColumnsDefCreator {
             columnDef.setDefaultValue("");
             columnDef.setSearchType(SearchType.EQUAL.getIdentity());
             columnDef.setValidateType(null);
-            columnDef.setValidator(new NoneValidator(columnDef.getJavaType()));
             columnDef.setDatasourceType(ListDatasourceType.NULL.getIdentity());
             columnDef.setDatasourceParams("");
             if (field.getListDatasource() != null) {
@@ -75,15 +86,12 @@ public class DefaultColumnsDefCreator {
             }
             if (entityManager.getPrimary() != null && columnDef.getPropertyName().equals(entityManager.getPrimary().getPropertyName())) {
                 columnDef.setControlType(ControlType.INPUT_HIDDEN.getIdentity());
-                columnDef.setValidateType("digital");
-                columnDef.setValidator(generateDefaultNumberValidator(columnDef.getPropertyName(), true));
+
             } else {
                 if (columnDef.isNumber()) {
-                    columnDef.setValidateType("digital");
-                    columnDef.setValidator(generateDefaultNumberValidator(columnDef.getPropertyName(), false));
+                    columnDef.setValidateType(DigitalValidator.NAME);
                 } else if (!columnDef.getAllowNull() && columnDef.getJavaType().equals(String.class.getName())) {
-                    columnDef.setValidateType("string");
-                    columnDef.setValidator(generateDefaultStringValidator(columnDef.getPropertyName()));
+                    columnDef.setValidateType(StringValidator.NAME);
                 }
                 if (isTextArea(field)) {
                     columnDef.setShowInList(false);
@@ -109,9 +117,9 @@ public class DefaultColumnsDefCreator {
             columnDef.setSort(sort++);
         }
         columnDefs.addAll(persistentColumns);
-        columnDefs.add(ColumnDef.createFilter(tableClassName, DefaultSpecialColumnIndex.COLUMN_FILTER));
-        columnDefs.add(ColumnDef.createCheckBox(tableClassName, DefaultSpecialColumnIndex.CHECK));
-        columnDefs.add(ColumnDef.createRowMenu(tableClassName, DefaultSpecialColumnIndex.ROW_MENU));
+        columnDefs.add(ColumnDef.createFilter(DefaultSpecialColumnIndex.COLUMN_FILTER));
+        columnDefs.add(ColumnDef.createCheckBox(DefaultSpecialColumnIndex.CHECK));
+        columnDefs.add(ColumnDef.createRowMenu(DefaultSpecialColumnIndex.ROW_MENU));
         columnDefs.sort(Comparator.comparingInt(ColumnDef::getSort));
     }
 
@@ -136,24 +144,82 @@ public class DefaultColumnsDefCreator {
     }
 
 
-    public static DigitalValidator generateDefaultNumberValidator(String propertyName, Boolean allowEmpty) {
-        DigitalValidator validator = new DigitalValidator();
-        validator.setAllowEmpty(allowEmpty);
-        validator.setI18n(false);
-        validator.setMinValue(null);
-        validator.setMaxValue(null);
-        validator.setCategory(DigitalCategory.INTEGER);
-        validator.setPropertyName(propertyName);
-        return validator;
+    public static void resetColumns(List<TableConfigDTO> tableConfigs) {
+        for (TableConfigDTO tableConfig : tableConfigs) {
+            String className = tableConfig.getClassName();
+            List<ColumnDef> columnDefs = parseColumnDefs(tableConfig.getColumnConfigs(), tableConfig.getClassName());
+            columnDefs = resetColumns(className, columnDefs);
+            tableConfig.setColumnConfigs(JSON.toJSONString(columnDefs));
+        }
     }
 
-    public static StringValidator generateDefaultStringValidator(String propertyName) {
-        StringValidator validator = new StringValidator();
-        validator.setAllowEmpty(false);
-        validator.setI18n(false);
-        validator.setMinLength(null);
-        validator.setMaxLength(null);
-        validator.setPropertyName(propertyName);
-        return validator;
+    public static void parseValidator(ColumnDef columnDef, Object jsonValidator) {
+        if(jsonValidator==null){
+            return;
+        }
+        String validateType = columnDef.getValidateType();
+        if (StringUtility.isNullOrEmpty(validateType) || validateType.startsWith("nullable")) {
+            NoneValidator noneValidator = new NoneValidator(columnDef.getJavaType());
+            noneValidator.setClazz(columnDef.getJavaType());
+            columnDef.setValidator(noneValidator);
+            return;
+        }
+        if (validateType.startsWith("digital")) {
+            DigitalValidator validatorString = json.toJavaObject(jsonValidator, DigitalValidator.class);
+            columnDef.setValidator(validatorString);
+            return;
+        }
+        if (validateType.startsWith("string")) {
+            StringValidator validatorString = json.toJavaObject(jsonValidator, StringValidator.class);
+            columnDef.setValidator(validatorString);
+            return;
+        }
+        RegexValidator validatorString = json.toJavaObject(jsonValidator, RegexValidator.class);
+        columnDef.setValidator(validatorString);
+    }
+
+
+    public static List<ColumnDef> parseColumnDefs(String columnConfigs, String className) {
+
+        List<ColumnDef> columnDefs = new ArrayList<>();
+        List<Object> jsonObjects = json.parseArray(columnConfigs);
+        for (Object jsonObject : jsonObjects) {
+            ColumnDef columnDef = json.toJavaObject(jsonObject, ColumnDef.class);
+            columnDefs.add(columnDef);
+            Object jsonValidator = json.getJSONObject(jsonObject, "validator");
+            parseValidator(columnDef, jsonValidator);
+        }
+        return columnDefs;
+    }
+
+    private static List<ColumnDef> resetColumns(String className, List<ColumnDef> columnDefs) {
+        Map<String, ColumnDef> allColumnMap = columnDefs.stream().collect(Collectors.toMap(ColumnDef::getPropertyName, c -> c));
+        List<ColumnDef> defaultColumnsOfClass = DefaultColumnsDefCreator.create(className, false);
+        Map<String, ColumnDef> defaultColumnMap = new HashMap<>();
+        //如果数据库不存在则新增配置
+        for (ColumnDef defaultColumn : defaultColumnsOfClass) {
+            defaultColumnMap.put(defaultColumn.getPropertyName(), defaultColumn);
+            if (!allColumnMap.containsKey(defaultColumn.getPropertyName())) {
+                allColumnMap.put(defaultColumn.getPropertyName(), defaultColumn);
+            }
+        }
+        Iterator<Map.Entry<String, ColumnDef>> columnDefIterator = allColumnMap.entrySet().iterator();
+        while (columnDefIterator.hasNext()) {
+            Map.Entry<String, ColumnDef> currentColumnEntry = columnDefIterator.next();
+            //如果列被移除，则直接删除
+            if (!defaultColumnMap.containsKey(currentColumnEntry.getKey())) {
+                columnDefIterator.remove();
+                continue;
+            }
+            ColumnDef currentColumn = currentColumnEntry.getValue();
+            ColumnDef defaultColumn = defaultColumnMap.get(currentColumn.getPropertyName());
+            //如果存在，则需要更新
+            currentColumn.setDatasourceType(defaultColumn.getDatasourceType());
+            currentColumn.setDatasourceParams(defaultColumn.getDatasourceParams());
+            currentColumn.setJavaType(defaultColumn.getJavaType());
+        }
+        List<ColumnDef> newColumnDefs = new ArrayList<>(allColumnMap.values());
+        newColumnDefs.sort(Comparator.comparingInt(ColumnDef::getSort));
+        return newColumnDefs;
     }
 }

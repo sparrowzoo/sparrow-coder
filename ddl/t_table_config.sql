@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS `t_table_config`;
 CREATE TABLE `t_table_config` (
  `id` int COMMENT 'ID' NOT NULL AUTO_INCREMENT,
- `project_id` int comment '项目ID'  NOT NULL,
+ `project_id` int comment '项目'  NOT NULL,
  `primary_key` varchar(32) default '' comment '主键'  NOT NULL,
  `table_name` varchar(128)  default '' comment '表名'  NOT NULL,
  `class_name` varchar(128)  default '' comment '类名'  NOT NULL,

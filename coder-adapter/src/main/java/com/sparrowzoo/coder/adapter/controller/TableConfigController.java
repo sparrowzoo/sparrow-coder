@@ -33,6 +33,8 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.*;
 import com.sparrowzoo.coder.domain.service.ProjectConfigService;
 
+import com.sparrowzoo.coder.utils.DefaultColumnsDefCreator;
+
 
 
 
@@ -51,8 +53,6 @@ public class TableConfigController {
 private EnumsContainer coderEnumsContainer;
  @Inject
  private ProjectConfigService projectConfigService;
-@Inject
-private EnumsContainer businessEnumsContainer;
 
     @PostMapping("search.json")
     @ApiOperation("搜索")
@@ -62,13 +62,15 @@ private EnumsContainer businessEnumsContainer;
         pagerResult.putDictionary("status",coderEnumsContainer.getEnums("status"));
 pagerResult.putDictionary("projectId",this.projectConfigService.getProjectConfigKvs());
 
-pagerResult.putDictionary("source",businessEnumsContainer.getEnums("datasourceType"));
+DefaultColumnsDefCreator.resetColumns(pagerResult.getList());
+
 pagerResult.putDictionary("cellType",coderEnumsContainer.getEnums("cellType"));
 pagerResult.putDictionary("datasourceType",coderEnumsContainer.getEnums("datasourceType"));
 pagerResult.putDictionary("columnType",coderEnumsContainer.getEnums("columnType"));
 pagerResult.putDictionary("controlType",coderEnumsContainer.getEnums("controlType"));
 pagerResult.putDictionary("headerType",coderEnumsContainer.getEnums("headerType"));
 pagerResult.putDictionary("searchType",coderEnumsContainer.getEnums("searchType"));
+pagerResult.putDictionary("source",coderEnumsContainer.getEnums("source"));
 pagerResult.putDictionary("validateType", ValidatorRegistry.getInstance().getValidatorNames("react"));
         return pagerResult;
     }

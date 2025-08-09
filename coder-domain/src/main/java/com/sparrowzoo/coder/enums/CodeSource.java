@@ -1,7 +1,10 @@
 package com.sparrowzoo.coder.enums;
 
 import com.sparrow.protocol.EnumIdentityAccessor;
+import com.sparrow.protocol.EnumUniqueName;
+import com.sparrowzoo.coder.constant.EnumNames;
 
+@EnumUniqueName(name = EnumNames.CODE_SOURCE)
 public enum CodeSource implements EnumIdentityAccessor {
     INNER(1),
     SOURCE_CODE(2);

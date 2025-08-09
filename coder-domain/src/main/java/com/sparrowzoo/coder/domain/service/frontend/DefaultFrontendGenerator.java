@@ -77,12 +77,12 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
         } else {
             allowSkip = true;
             content = readTemplateContent(key);
-            content =this.templateEngineer.generate(content.trim(), tableContext,registry);
+            content = this.templateEngineer.generate(content.trim(), tableContext, registry);
         }
         String fullPhysicalPath = this.getTargetPhysicalPath(key);
         File file = new File(fullPhysicalPath);
         if (file.exists()) {
-            if (allowSkip&&!content.startsWith("overwrite")) {
+            if (allowSkip && !content.startsWith("overwrite")) {
                 log.info("file [{}] already exists, skip generate", fullPhysicalPath);
                 return;
             }
@@ -90,7 +90,11 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
         }
         content = content.replaceFirst("overwrite", "");
         log.info("generate file name is [{}]", fullPhysicalPath);
-        FileUtility.getInstance().writeFile(fullPhysicalPath, content);
+        if (project.getEnvConfig().overwrite()) {
+            FileUtility.getInstance().writeFile(fullPhysicalPath, content);
+        } else {
+            log.info("global skip .... {}", fullPhysicalPath);
+        }
     }
 
     private String toi18nMessage() {
@@ -106,7 +110,7 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
         Set<String> newFileList = new LinkedHashSet<>();
         newFileList.add("default");//default 必须排第一,否则国际化会有问题
         Set<String> oldFileList = json.parse(messageFileList, Set.class);
-        if(oldFileList != null) {
+        if (oldFileList != null) {
             newFileList.addAll(oldFileList);
         }
         newFileList.addAll(this.project.getI18nList());

@@ -10,7 +10,7 @@ public class ChineseCharactersValidatorMessageGenerator extends RegexValidatorMe
 
     @Override
     public String outerGenerateMessage(String propertyName, RegexValidator validator) {
-        validator.setRegex("/^[\\u4e00-\\u9fa5]+/");
+        validator.setRegex("/^[\\u4e00-\\u9fa5]+$/");
         if(StringUtility.isNullOrEmpty(validator.getFormatMessage())){
             validator.setFormatMessage(this.defaultValidator.getFormatMessage());
         }
@@ -19,7 +19,7 @@ public class ChineseCharactersValidatorMessageGenerator extends RegexValidatorMe
 
     @Override
     public RegexValidator defaultValidator() {
-        RegexValidator validator= super.defaultValidator();
+        RegexValidator validator=RegexValidator.REGEX_VALIDATOR.create();
         validator.setFormatMessage("请输入中文字符");
         return validator;
     }

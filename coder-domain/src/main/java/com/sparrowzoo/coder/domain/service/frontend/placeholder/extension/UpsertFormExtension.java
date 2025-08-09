@@ -13,9 +13,7 @@ import com.sparrowzoo.coder.enums.ArchitectureCategory;
 import com.sparrowzoo.coder.enums.PlaceholderKey;
 
 import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Named
 public class UpsertFormExtension extends AbstractPlaceholderExtension {
@@ -38,9 +36,11 @@ public class UpsertFormExtension extends AbstractPlaceholderExtension {
         Map<String, String> placeholder = tableContext.getPlaceHolder();
         List<String> addFormItems = new ArrayList<>();
         List<String> editFormItems = new ArrayList<>();
+        Set<String> imports=new HashSet<>();
         Map<String, Object> columnI18nMap = tableContext.getI18nMap();
         for (ColumnDef columnDef : columnDefs) {
             if (columnDef.getShowInEdit()) {
+                imports.add(columnGenerator.importEdit(columnDef, project));
                 addFormItems.add(columnGenerator.edit(columnDef, project, true));
                 editFormItems.add(columnGenerator.edit(columnDef, project, false));
             }
@@ -48,6 +48,7 @@ public class UpsertFormExtension extends AbstractPlaceholderExtension {
         }
         String addFormItemStr = String.join("\n", addFormItems);
         String editFormItemStr = String.join("\n", editFormItems);
+        placeholder.put(PlaceholderKey.$frontend_edit_import.name(), String.join("\n", imports));
         placeholder.put(PlaceholderKey.$frontend_add_form_items.name(), addFormItemStr);
         placeholder.put(PlaceholderKey.$frontend_edit_form_items.name(), editFormItemStr);
     }

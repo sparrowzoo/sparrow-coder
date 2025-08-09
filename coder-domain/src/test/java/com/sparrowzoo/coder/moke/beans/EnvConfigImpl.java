@@ -26,6 +26,9 @@ public class EnvConfigImpl implements EnvConfig {
     @Value("${multi_user}")
     private Boolean multiUser;
 
+    @Value("${overwrite}")
+    private Boolean overwrite;
+
 
     @Override
     public String getWorkspace() {
@@ -53,6 +56,11 @@ public class EnvConfigImpl implements EnvConfig {
             return userId + "";
         }
         return "";
+    }
+
+    @Override
+    public Boolean overwrite() {
+        return this.overwrite;
     }
 
 

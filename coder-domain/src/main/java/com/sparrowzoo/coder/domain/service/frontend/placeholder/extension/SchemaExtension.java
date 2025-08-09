@@ -35,6 +35,7 @@ public class SchemaExtension extends AbstractPlaceholderExtension {
         Map<String, String> placeholder = tableContext.getPlaceHolder();
         placeholder.put(PlaceholderKey.$frontend_schema.name(), this.generateSchema(tableContext, project, validateContainer));
     }
+
     private String generateSchema(TableContext tableContext, ProjectBO project, Map<String, ValidatorMessageGenerator> validateContainer) {
         List<ColumnDef> columnDefs = tableContext.getColumns();
         List<String> schemas = new ArrayList<>();
@@ -53,12 +54,12 @@ public class SchemaExtension extends AbstractPlaceholderExtension {
             String validateType = columnDef.getValidateType() == null ? "nullable" : columnDef.getValidateType();
             ValidatorMessageGenerator messageGenerator = validateContainer.get(validateType);
             Validator validator = columnDef.getValidator();
-            if (validator != null) {
-                Map<String, String> columnI18nMap = tableContext.getValidateI18nMap(columnDef.getPropertyName());
-                validator.setI18nConfig(columnI18nMap);
-                validator.setPropertyName(columnDef.getPropertyName());
-                validator.setI18n(projectConfig.getI18n());
+            if (validator == null) {
+                validator = messageGenerator.defaultValidator();
             }
+            Map<String, String> columnI18nMap = tableContext.getValidateI18nMap(columnDef.getPropertyName());
+            validator.setI18nConfig(columnI18nMap);
+            validator.setI18n(projectConfig.getI18n());
             schemas.add(messageGenerator.generateConfig(columnDef.getPropertyName(), validator));
         }
         return String.join(",", schemas);

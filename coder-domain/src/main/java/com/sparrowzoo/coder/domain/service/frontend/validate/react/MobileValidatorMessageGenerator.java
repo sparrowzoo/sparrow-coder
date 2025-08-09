@@ -18,7 +18,7 @@ public class MobileValidatorMessageGenerator extends RegexValidatorMessageGenera
 
     @Override
     public RegexValidator defaultValidator() {
-        RegexValidator validator=super.defaultValidator();
+        RegexValidator validator=RegexValidator.REGEX_VALIDATOR.create();
         validator.setFormatMessage("请输入正确的手机号码");
         return validator;
     }

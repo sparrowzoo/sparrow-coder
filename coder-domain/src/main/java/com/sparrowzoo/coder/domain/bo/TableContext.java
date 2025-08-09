@@ -6,10 +6,6 @@ import com.sparrow.orm.EntityManager;
 import com.sparrow.orm.SparrowEntityManager;
 import com.sparrow.protocol.constant.SparrowError;
 import com.sparrow.utility.StringUtility;
-import com.sparrowzoo.coder.domain.bo.validate.DigitalValidator;
-import com.sparrowzoo.coder.domain.bo.validate.NoneValidator;
-import com.sparrowzoo.coder.domain.bo.validate.RegexValidator;
-import com.sparrowzoo.coder.domain.bo.validate.StringValidator;
 import com.sparrowzoo.coder.domain.service.backend.ClassGenerator;
 import com.sparrowzoo.coder.domain.service.backend.ClassPlaceholderGenerator;
 import com.sparrowzoo.coder.domain.service.backend.DefaultClassGenerator;
@@ -18,18 +14,17 @@ import com.sparrowzoo.coder.domain.service.frontend.DefaultFrontendGenerator;
 import com.sparrowzoo.coder.domain.service.frontend.DefaultFrontendPlaceholder;
 import com.sparrowzoo.coder.domain.service.frontend.FrontendGenerator;
 import com.sparrowzoo.coder.domain.service.frontend.FrontendPlaceholderGenerator;
-import com.sparrowzoo.coder.enums.ColumnType;
 import com.sparrowzoo.coder.utils.DefaultColumnsDefCreator;
 import lombok.Data;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Data
 public class TableContext {
     private ProjectBO project;
+    private List<ColumnDef> columns;
     private Map<String, String> placeHolder;
-    private Map<String,Object> variables;
+    private Map<String, Object> variables;
     private TableConfigBO tableConfig;
     private EntityManager entityManager;
     private FrontendPlaceholderGenerator frontendPlaceholderGenerator;
@@ -77,50 +72,20 @@ public class TableContext {
     }
 
 
-
-    public List<ColumnDef> getColumns(){
+    public synchronized List<ColumnDef> getColumns() {
+        if (columns != null) {
+            return this.columns;
+        }
         String columnConfigs = this.getTableConfig().getColumnConfigs();
         if (StringUtility.isNullOrEmpty(columnConfigs)) {
-            List<ColumnDef> defaultColumns= DefaultColumnsDefCreator.create(tableConfig.getClassName());
-            DefaultColumnsDefCreator.fillTableLevelColumn(defaultColumns,this.tableConfig.getClassName());
+            List<ColumnDef> defaultColumns = DefaultColumnsDefCreator.create(tableConfig.getClassName());
+            DefaultColumnsDefCreator.fillTableLevelColumn(defaultColumns, this.tableConfig.getClassName());
+            this.columns = defaultColumns;
             return defaultColumns;
         }
-
-        List<ColumnDef> columnDefs = new ArrayList<>();
-        List<Object> jsonObjects = json.parseArray(columnConfigs);
-        for (Object jsonObject : jsonObjects) {
-            ColumnDef columnDef = json.toJavaObject(jsonObject, ColumnDef.class);
-            columnDefs.add(columnDef);
-            Object jsonValidator = json.getJSONObject(jsonObject, "validator");
-            this.parseValidator(columnDef, jsonValidator);
-        }
-        DefaultColumnsDefCreator.fillTableLevelColumn(columnDefs,this.tableConfig.getClassName());
+        List<ColumnDef> columnDefs =DefaultColumnsDefCreator.parseColumnDefs(columnConfigs,this.tableConfig.getClassName());
+        DefaultColumnsDefCreator.fillTableLevelColumn(columnDefs, this.tableConfig.getClassName());
+        this.columns = columnDefs;
         return columnDefs;
-    }
-
-    public List<ColumnDef> getOriginalColumns(){
-        return this.getColumns().stream().filter(c -> c.getColumnType().equals(ColumnType.NORMAL.getIdentity())).collect(Collectors.toList());
-    }
-
-    public void parseValidator(ColumnDef columnDef, Object jsonValidator) {
-        String validateType = columnDef.getValidateType();
-        if (StringUtility.isNullOrEmpty(validateType) || validateType.startsWith("nullable")) {
-            NoneValidator noneValidator = new NoneValidator(columnDef.getJavaType());
-            noneValidator.setClazz(columnDef.getJavaType());
-            columnDef.setValidator(noneValidator);
-            return;
-        }
-        if (validateType.startsWith("digital")) {
-            DigitalValidator validatorString = json.toJavaObject(jsonValidator, DigitalValidator.class);
-            columnDef.setValidator(validatorString);
-            return;
-        }
-        if (validateType.startsWith("string")) {
-            StringValidator validatorString = json.toJavaObject(jsonValidator, StringValidator.class);
-            columnDef.setValidator(validatorString);
-            return;
-        }
-        RegexValidator validatorString = json.toJavaObject(jsonValidator, RegexValidator.class);
-        columnDef.setValidator(validatorString);
     }
 }

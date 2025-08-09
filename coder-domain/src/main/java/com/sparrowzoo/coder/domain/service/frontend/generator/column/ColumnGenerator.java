@@ -10,6 +10,8 @@ import java.util.List;
 public interface ColumnGenerator {
     String column(ColumnDef columnDef,ProjectBO project);
 
+    String importEdit(ColumnDef columnDef,ProjectBO project);
+
     String edit(ColumnDef columnDef,ProjectBO project,Boolean add);
 
     String importHeader(HeaderType headerType,ProjectBO project);

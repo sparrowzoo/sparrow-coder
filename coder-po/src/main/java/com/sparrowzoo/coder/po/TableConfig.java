@@ -14,7 +14,7 @@ public class TableConfig extends PO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "int COMMENT 'ID'")
     private Long id;
-    @Column(name = "project_id", nullable = false, columnDefinition = "int comment '项目ID'")
+    @Column(name = "project_id", nullable = false, columnDefinition = "int comment '项目'")
     @ListDatasource(type = ListDatasourceType.TABLE, params = "t_project_config")
     private Long projectId;
     @Column(name = "primary_key", updatable = false, nullable = false, columnDefinition = "varchar(32) default '' comment '主键'")

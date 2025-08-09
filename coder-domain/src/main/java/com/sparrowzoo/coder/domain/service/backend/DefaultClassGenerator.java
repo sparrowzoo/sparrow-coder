@@ -115,6 +115,10 @@ public class DefaultClassGenerator implements ClassGenerator {
             content = licensed + "\n" + content;
         }
         log.info("generate file name is [{}]", fullPhysicalPath);
-        this.fileUtility.writeFile(fullPhysicalPath, content);
+        if (project.getEnvConfig().overwrite()) {
+            this.fileUtility.writeFile(fullPhysicalPath, content);
+        } else {
+            log.info("global skip .... {}", fullPhysicalPath);
+        }
     }
 }

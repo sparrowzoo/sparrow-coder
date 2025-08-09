@@ -25,6 +25,6 @@ public class NullableValidatorMessageGenerator extends AbstractValidatorMessageG
 
     @Override
     public NoneValidator defaultValidator() {
-        return new NoneValidator("");
+        return new NoneValidator(String.class.getName());
     }
 }

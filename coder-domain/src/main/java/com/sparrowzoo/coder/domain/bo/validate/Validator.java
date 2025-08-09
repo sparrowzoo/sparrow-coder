@@ -2,13 +2,9 @@ package com.sparrowzoo.coder.domain.bo.validate;
 
 import java.util.Map;
 
-public interface Validator {
+public interface Validator{
     void setI18n(Boolean i18n);
     Boolean getI18n();
-
-    void setPropertyName(String propertyName);
-
-    String getPropertyName();
 
     Boolean getAllowEmpty();
 
