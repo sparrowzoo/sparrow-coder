@@ -61,6 +61,9 @@ public abstract class AbstractValidatorMessageGenerator<T extends Validator> imp
 
     protected String nonEmpty(String propertyName, T validator) {
         String message = validator.getEmptyMessage();
+        if(StringUtility.isNullOrEmpty(message)){
+            message=this.defaultValidator.getEmptyMessage();
+        }
         if (validator.getAllowEmpty()==null||!validator.getAllowEmpty()) {
             return String.format(",\nv.nonEmpty(%s)", this.getMessage(propertyName,validator, "empty-message", message));
         }
