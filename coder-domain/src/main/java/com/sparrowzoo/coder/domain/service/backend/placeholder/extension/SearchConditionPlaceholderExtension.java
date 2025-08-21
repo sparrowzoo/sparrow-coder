@@ -59,7 +59,7 @@ public class SearchConditionPlaceholderExtension extends AbstractPlaceholderExte
             queryFields.add("private Long projectId;");
         }
         if (tableConfig.getOnlyAccessSelf()) {
-            daoCriteriaList.add(String.format("Criteria.field(%1$s::getCreateUserId).equal(ThreadContext.getLoginToken().getUserId()))", persistenceClassName));
+            daoCriteriaList.add(String.format("Criteria.field(%1$s::getCreateUserId).equal(SessionContext.getLoginUser().getUserId()))", persistenceClassName));
         }
 
         placeHolder.put(PlaceholderKey.$search_fields.name(), String.join("\n", queryFields));

@@ -17,8 +17,8 @@
 
 package com.sparrowzoo.coder.infrastructure.persistence.data.converter;
 
+import com.sparrow.context.SessionContext;
 import com.sparrow.protocol.LoginUser;
-import com.sparrow.protocol.ThreadContext;
 import com.sparrow.protocol.dao.StatusCriteria;
 import com.sparrow.support.converter.POInitUtils;
 import com.sparrowzoo.coder.domain.bo.TableConfigBO;
@@ -61,7 +61,7 @@ public class TableConfigConverter implements Param2POConverter<TableConfigParam,
     @Override public TableConfigBO po2bo(TableConfig tableConfig) {
         TableConfigBO tableConfigBO = new TableConfigBO();
         beanCopier.copyProperties(tableConfig, tableConfigBO);
-        
+
         return tableConfigBO;
     }
 
@@ -74,7 +74,7 @@ public class TableConfigConverter implements Param2POConverter<TableConfigParam,
     }
 
     public void convertStatus(StatusCriteria statusCriteria){
-            LoginUser loginUser = ThreadContext.getLoginToken();
+            LoginUser loginUser = SessionContext.getLoginUser();
             statusCriteria.setModifiedUserName(loginUser.getUserName());
             statusCriteria.setGmtModified(System.currentTimeMillis());
             statusCriteria.setModifiedUserId(loginUser.getUserId());
