@@ -31,7 +31,6 @@ import com.sparrowzoo.coder.domain.service.UserExampleService;
 import javax.inject.Inject;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.*;
-import com.sparrowzoo.coder.domain.service.ProjectConfigService;
 
 
 
@@ -51,8 +50,6 @@ public class UserExampleController {
 private EnumsContainer coderEnumsContainer;
 @Inject
 private EnumsContainer businessEnumsContainer;
- @Inject
- private ProjectConfigService projectConfigService;
 
     @PostMapping("search.json")
     @ApiOperation("搜索")
@@ -61,8 +58,6 @@ private EnumsContainer businessEnumsContainer;
         PagerResult<UserExampleDTO> pagerResult =this.userExampleAssemble.assemblePager(userExampleListTotalRecord, userExampleQuery);
         pagerResult.putDictionary("status",coderEnumsContainer.getEnums("status"));
 pagerResult.putDictionary("gender",businessEnumsContainer.getEnums("gender"));
-pagerResult.putDictionary("projectId",this.projectConfigService.getProjectConfigKvs());
-
         return pagerResult;
     }
 
