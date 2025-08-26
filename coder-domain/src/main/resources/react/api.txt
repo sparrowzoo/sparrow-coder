@@ -7,7 +7,12 @@ export default class $persistence_class_nameApi {
         translator: (key: string) => string
     ): Promise<any> {
         const body = JSON.stringify(query);
-        return Fetcher.post("/$persistence_object_by_slash/search.json", body, translator);
+        return Fetcher.post({
+            url: "/$persistence_object_by_slash/search.json",
+            body,
+            translator,
+            redirectToLogin: redirectToLogin
+        });
     }
 
     public static  save(
@@ -15,7 +20,12 @@ export default class $persistence_class_nameApi {
         translator: (key: string) => string
     ): Promise<any> {
         const body = JSON.stringify(params);
-        return Fetcher.post("/$persistence_object_by_slash/save.json", body, translator);
+        return Fetcher.post({
+                    url: "/$persistence_object_by_slash/save.json",
+                    body,
+                    translator,
+                    redirectToLogin: redirectToLogin
+        });
     }
 
     public static  batchDelete(
@@ -23,7 +33,12 @@ export default class $persistence_class_nameApi {
         translator: (key: string) => string
     ): Promise<any> {
         const body = JSON.stringify(params);
-        return Fetcher.post("/$persistence_object_by_slash/delete.json", body, translator);
+        return Fetcher.post({
+                            url: "/$persistence_object_by_slash/delete.json",
+                            body,
+                            translator,
+                            redirectToLogin: redirectToLogin
+        });
     }
 
        public static  delete(
@@ -31,7 +46,12 @@ export default class $persistence_class_nameApi {
             translator: (key: string) => string
         ): Promise<any> {
             const body = JSON.stringify([id]);
-            return Fetcher.post("/$persistence_object_by_slash/delete.json", body, translator);
+            return Fetcher.post({
+                                        url: "/$persistence_object_by_slash/delete.json",
+                                        body,
+                                        translator,
+                                        redirectToLogin: redirectToLogin
+                    });
         }
 
 
@@ -40,7 +60,12 @@ export default class $persistence_class_nameApi {
         translator: (key: string) => string
     ): Promise<any> {
         const body = JSON.stringify(params);
-        return Fetcher.post("/$persistence_object_by_slash/disable.json", body, translator);
+        return Fetcher.post({
+                                    url: "/$persistence_object_by_slash/disable.json",
+                                    body,
+                                    translator,
+                                    redirectToLogin: redirectToLogin
+                });
     }
 
     public static  enable(
@@ -48,6 +73,11 @@ export default class $persistence_class_nameApi {
         translator: (key: string) => string
     ): Promise<any> {
         const body = JSON.stringify(params);
-        return Fetcher.post("/$persistence_object_by_slash/enable.json", body, translator);
+        return Fetcher.post({
+                                            url: "/$persistence_object_by_slash/enable.json",
+                                            body,
+                                            translator,
+                                            redirectToLogin: redirectToLogin
+                        });
     }
 }
