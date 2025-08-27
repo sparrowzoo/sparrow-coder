@@ -9,6 +9,7 @@ import $package_po.$persistence_class_name;
 import java.util.List;
 import javax.inject.Named;
 import com.sparrow.protocol.*;
+import com.sparrow.context.SessionContext;
 import com.sparrow.protocol.enums.StatusRecord;
 
 

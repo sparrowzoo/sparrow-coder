@@ -38,7 +38,7 @@ export default function Page() {
 
 
       const deleteHandler= (id: number) => {
-            $persistence_class_nameApi.delete(id, errorTranslate).then(()=>{
+            $persistence_class_nameApi.delete(id, errorTranslate,Navigations.redirectToLogin).then(()=>{
                 toast.success(globalTranslate("delete")+globalTranslate("operation-success"));
             }).catch(()=>{});
         }

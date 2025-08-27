@@ -4,7 +4,8 @@ import {IDENTITY} from "@/common/lib/protocol/Identity";
 export default class $persistence_class_nameApi {
     public static search(
         query: any,
-        translator: (key: string) => string
+        translator: (key: string) => string,
+        redirectToLogin:()=>void
     ): Promise<any> {
         const body = JSON.stringify(query);
         return Fetcher.post({
@@ -17,7 +18,8 @@ export default class $persistence_class_nameApi {
 
     public static  save(
         params: any,
-        translator: (key: string) => string
+        translator: (key: string) => string,
+        redirectToLogin:()=>void
     ): Promise<any> {
         const body = JSON.stringify(params);
         return Fetcher.post({
@@ -30,7 +32,8 @@ export default class $persistence_class_nameApi {
 
     public static  batchDelete(
         params: IDENTITY[],
-        translator: (key: string) => string
+        translator: (key: string) => string,
+        redirectToLogin:()=>void
     ): Promise<any> {
         const body = JSON.stringify(params);
         return Fetcher.post({
@@ -43,7 +46,8 @@ export default class $persistence_class_nameApi {
 
        public static  delete(
             id: IDENTITY,
-            translator: (key: string) => string
+            translator: (key: string) => string,
+            redirectToLogin:()=>void
         ): Promise<any> {
             const body = JSON.stringify([id]);
             return Fetcher.post({
@@ -57,7 +61,8 @@ export default class $persistence_class_nameApi {
 
     public static  disable(
         params: IDENTITY[],
-        translator: (key: string) => string
+        translator: (key: string) => string,
+        redirectToLogin:()=>void
     ): Promise<any> {
         const body = JSON.stringify(params);
         return Fetcher.post({
@@ -70,7 +75,8 @@ export default class $persistence_class_nameApi {
 
     public static  enable(
         params: IDENTITY[],
-        translator: (key: string) => string
+        translator: (key: string) => string,
+        redirectToLogin:()=>void
     ): Promise<any> {
         const body = JSON.stringify(params);
         return Fetcher.post({

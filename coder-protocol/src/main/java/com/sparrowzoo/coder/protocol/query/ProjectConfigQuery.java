@@ -22,5 +22,8 @@ import java.util.Date;
 import lombok.Data;
 @Data
 public class ProjectConfigQuery extends SimplePager {
-   private Integer status;
+   private String name;
+private String frontendName;
+private String chineseName;
+private Integer status;
 }

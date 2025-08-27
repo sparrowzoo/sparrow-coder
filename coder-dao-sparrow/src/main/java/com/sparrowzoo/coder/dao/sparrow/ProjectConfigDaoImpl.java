@@ -17,7 +17,6 @@
 
 package com.sparrowzoo.coder.dao.sparrow;
 
-import com.sparrow.context.SessionContext;
 import com.sparrow.orm.query.*;
 import com.sparrow.orm.template.impl.ORMStrategy;
 import com.sparrowzoo.coder.dao.ProjectConfigDAO;
@@ -25,6 +24,8 @@ import com.sparrowzoo.coder.dao.query.ProjectConfigDBPagerQuery;
 import com.sparrowzoo.coder.po.ProjectConfig;
 import java.util.List;
 import javax.inject.Named;
+import com.sparrow.protocol.*;
+import com.sparrow.context.SessionContext;
 import com.sparrow.protocol.enums.StatusRecord;
 
 
@@ -38,7 +39,7 @@ public class ProjectConfigDaoImpl extends ORMStrategy<ProjectConfig, Long> imple
     }
 
     private BooleanCriteria generateCriteria(ProjectConfigDBPagerQuery projectConfigQuery) {
-        BooleanCriteria booleanCriteria= BooleanCriteria.criteria(Criteria.field(ProjectConfig::getCreateUserId).equal(SessionContext.getLoginUser().getUserId()));if(projectConfigQuery.getStatus()!=null&&projectConfigQuery.getStatus()>=0) {booleanCriteria.and(Criteria.field(ProjectConfig::getStatus).equal(StatusRecord.valueOf(projectConfigQuery.getStatus())));} return booleanCriteria;
+        BooleanCriteria booleanCriteria= BooleanCriteria.criteria(Criteria.field(ProjectConfig::getName).equal(projectConfigQuery.getName())).and(Criteria.field(ProjectConfig::getFrontendName).equal(projectConfigQuery.getFrontendName())).and(Criteria.field(ProjectConfig::getChineseName).equal(projectConfigQuery.getChineseName())).and(Criteria.field(ProjectConfig::getCreateUserId).equal(SessionContext.getLoginUser().getUserId()));if(projectConfigQuery.getStatus()!=null&&projectConfigQuery.getStatus()>=0) {booleanCriteria.and(Criteria.field(ProjectConfig::getStatus).equal(StatusRecord.valueOf(projectConfigQuery.getStatus())));} return booleanCriteria;
     }
 
     @Override public Long countProjectConfig(ProjectConfigDBPagerQuery projectConfigPagerQuery) {

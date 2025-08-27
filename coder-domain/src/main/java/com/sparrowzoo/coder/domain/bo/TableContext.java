@@ -1,5 +1,6 @@
 package com.sparrowzoo.coder.domain.bo;
 
+import com.sparrow.authenticator.enums.AuthenticatorError;
 import com.sparrow.core.spi.JsonFactory;
 import com.sparrow.json.Json;
 import com.sparrow.orm.EntityManager;
@@ -57,6 +58,7 @@ public class TableContext {
         Map<String, String> errorMessages = (Map<String, String>) i18nMap.get("ErrorMessage");
         errorMessages.put(SparrowError.SYSTEM_SERVER_ERROR.name().toLowerCase(), "系统错误，请稍侯再试...");
         errorMessages.put(SparrowError.GLOBAL_PARAMETER_NULL.name().toLowerCase(), "参数不能为空...");
+        errorMessages.put(AuthenticatorError.USER_NOT_LOGIN.name().toLowerCase(), "用户未登录 请先登录...");
     }
 
     public Map<String, String> getValidateI18nMap(String propertyName) {
@@ -83,7 +85,7 @@ public class TableContext {
             this.columns = defaultColumns;
             return defaultColumns;
         }
-        List<ColumnDef> columnDefs =DefaultColumnsDefCreator.parseColumnDefs(columnConfigs,this.tableConfig.getClassName());
+        List<ColumnDef> columnDefs = DefaultColumnsDefCreator.parseColumnDefs(columnConfigs, this.tableConfig.getClassName());
         DefaultColumnsDefCreator.fillTableLevelColumn(columnDefs, this.tableConfig.getClassName());
         this.columns = columnDefs;
         return columnDefs;
