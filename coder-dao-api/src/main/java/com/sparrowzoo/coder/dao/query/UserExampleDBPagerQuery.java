@@ -24,6 +24,8 @@ import lombok.Data;
 @Data
 
 public class UserExampleDBPagerQuery extends DatabasePagerQuery {
-   private Integer status;
+   private String userName;
+private String chineseName;
+private Integer status;
    public UserExampleDBPagerQuery() {}
 }

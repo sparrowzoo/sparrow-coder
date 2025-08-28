@@ -8,6 +8,7 @@ import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizo
 import toast from "react-hot-toast";
 import TableUtils from "@/common/lib/table/TableUtils";
 import {useTranslations} from "next-intl";
+import useNavigating from "@/common/hook/NavigatingHook";
 
 
 
@@ -16,6 +17,7 @@ export default function Operation({table}: TableOperationProps<$persistence_clas
     const errorTranslate = useTranslations("$persistence_class_name.ErrorMessage")
     const [open, setOpen] = React.useState(false);
     const meta=table.options.meta as MyTableMeta<$persistence_class_name>;
+    const  Navigations=useNavigating();
 
     const initHandler=meta.initHandler;
     const setData=meta.setData;
@@ -41,7 +43,7 @@ export default function Operation({table}: TableOperationProps<$persistence_clas
                                     toast(globalTranslate("no-record-checked"));
                                     return;
                 }
-                $persistence_class_nameApi.batchDelete(selectedIds, errorTranslate).then(
+                $persistence_class_nameApi.batchDelete(selectedIds, errorTranslate,Navigations.redirectToLogin).then(
                     (res) => {
                                             const datas= TableUtils.removeRowByPrimary(selectedIds,table);
                                             result.data.list=datas;
@@ -58,7 +60,7 @@ export default function Operation({table}: TableOperationProps<$persistence_clas
                                                 toast(globalTranslate("no-record-checked"));
                                                 return;
                             }
-                            $persistence_class_nameApi.enable(selectedIds, errorTranslate).then(
+                            $persistence_class_nameApi.enable(selectedIds, errorTranslate,Navigations.redirectToLogin).then(
                                 (res) => {
                                    const datas= TableUtils.batchEnable(selectedIds,table,"$status_field");
                                    result.data.list=datas;
@@ -76,7 +78,7 @@ export default function Operation({table}: TableOperationProps<$persistence_clas
                                                             toast(globalTranslate("no-record-checked"));
                                                             return;
                                         }
-                                        $persistence_class_nameApi.disable(selectedIds, errorTranslate).then(
+                                        $persistence_class_nameApi.disable(selectedIds, errorTranslate,Navigations.redirectToLogin).then(
                                             (res) => {
                                                  const datas= TableUtils.batchDisable(selectedIds,table,"$status_field");
                                                  result.data.list=datas;

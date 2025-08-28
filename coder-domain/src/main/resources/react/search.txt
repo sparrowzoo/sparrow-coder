@@ -9,6 +9,7 @@ import {useTranslations} from "next-intl";
 import SearchInput from "@/common/components/forms/search-input";
 import SearchSelect from "@/common/components/forms/search-select";
 import {PaginationState} from "@tanstack/table-core/src/features/RowPagination";
+import useNavigating from "@/common/hook/NavigatingHook";
 
 
 interface $persistence_class_nameQuery extends SimplePager{
@@ -22,6 +23,7 @@ export default function Search({table}: TableOperationProps<$persistence_class_n
     const globalTranslate = useTranslations("GlobalForm");
     const setDataState = meta.setData;
     const [$persistence_object_nameQuery, set$persistence_class_nameQuery] = useState<$persistence_class_nameQuery>({} as $persistence_class_nameQuery)
+    const  Navigations=useNavigating();
 
     if (setDataState == null) {
         return <>setDataState is not defined</>
@@ -34,7 +36,7 @@ export default function Search({table}: TableOperationProps<$persistence_class_n
             }
             $persistence_object_nameQuery.pageNo = page?.pageIndex;
             $persistence_object_nameQuery.pageSize = page?.pageSize;
-            $persistence_class_nameApi.search($persistence_object_nameQuery, errorTranslate).then(
+            $persistence_class_nameApi.search($persistence_object_nameQuery, errorTranslate,Navigations.redirectToLogin).then(
                 (res) => {
                     setDataState(res)
                 }

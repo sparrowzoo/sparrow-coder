@@ -12,6 +12,8 @@ import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizo
 import {useTranslations} from "next-intl";
 import toast from "react-hot-toast";
 import Result, {PagerResult} from "@/common/lib/protocol/Result";
+import useNavigating from "@/common/hook/NavigatingHook";
+
 
 
 
@@ -21,9 +23,9 @@ export default function Page() {
     const globalTranslate = useTranslations("GlobalForm");
     const [dataState, setDataState] = useState<Result<PagerResult<$persistence_class_name>> | undefined>();
     const pagination = {pageIndex: 0, pageSize: $page_size};
-
+    const  Navigations=useNavigating();
     const init = () => {
-                $persistence_class_nameApi.search({...pagination}, errorTranslate).then(
+                $persistence_class_nameApi.search({...pagination}, errorTranslate,Navigations.redirectToLogin).then(
                     (res) => {
                         setDataState(res)
                     }
@@ -36,7 +38,7 @@ export default function Page() {
 
 
       const deleteHandler= (id: number) => {
-            $persistence_class_nameApi.delete(id, errorTranslate).then(()=>{
+            $persistence_class_nameApi.delete(id, errorTranslate,Navigations.redirectToLogin).then(()=>{
                 toast.success(globalTranslate("delete")+globalTranslate("operation-success"));
             }).catch(()=>{});
         }

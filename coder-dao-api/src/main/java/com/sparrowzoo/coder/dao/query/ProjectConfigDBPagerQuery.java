@@ -24,6 +24,9 @@ import lombok.Data;
 @Data
 
 public class ProjectConfigDBPagerQuery extends DatabasePagerQuery {
-   private Integer status;
+   private String name;
+private String frontendName;
+private String chineseName;
+private Integer status;
    public ProjectConfigDBPagerQuery() {}
 }
