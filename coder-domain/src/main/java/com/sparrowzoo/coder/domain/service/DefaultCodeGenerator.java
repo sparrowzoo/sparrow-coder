@@ -3,7 +3,7 @@ package com.sparrowzoo.coder.domain.service;
 import com.sparrow.io.file.FileNameBuilder;
 import com.sparrow.protocol.enums.StatusRecord;
 import com.sparrow.utility.FileUtility;
-import com.sparrowzoo.coder.domain.DomainRegistry;
+import com.sparrowzoo.coder.domain.CoderDomainRegistry;
 import com.sparrowzoo.coder.domain.bo.*;
 import com.sparrowzoo.coder.domain.service.backend.ScaffoldCopier;
 import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
@@ -19,8 +19,8 @@ import java.util.Properties;
 @Slf4j
 public class DefaultCodeGenerator implements CodeGenerator {
     private TableConfigRegistry registry;
-    private DomainRegistry domainRegistry;
-    public DefaultCodeGenerator(Long projectId, EnvConfig envConfig, DomainRegistry domainRegistry) throws IOException, ClassNotFoundException {
+    private CoderDomainRegistry domainRegistry;
+    public DefaultCodeGenerator(Long projectId, EnvConfig envConfig, CoderDomainRegistry domainRegistry) throws IOException, ClassNotFoundException {
         this.domainRegistry = domainRegistry;
         ProjectConfigBO projectConfig = domainRegistry.getProjectConfigRepository().getProjectConfig(projectId);
         Properties config = ConfigUtils.initPropertyConfig(projectConfig.getConfig());

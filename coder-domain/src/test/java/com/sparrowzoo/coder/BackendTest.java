@@ -5,7 +5,7 @@ import com.sparrow.protocol.Result;
 import com.sparrow.protocol.pager.PagerResult;
 import com.sparrow.spring.starter.EnumsContainer;
 import com.sparrowzoo.coder.constant.EnumNames;
-import com.sparrowzoo.coder.domain.DomainRegistry;
+import com.sparrowzoo.coder.domain.CoderDomainRegistry;
 import com.sparrowzoo.coder.domain.bo.ColumnDef;
 import com.sparrowzoo.coder.domain.bo.TableContext;
 import com.sparrowzoo.coder.domain.service.CodeGenerator;
@@ -29,7 +29,7 @@ public class BackendTest {
     private EnumsContainer coderEnumsContainer;
 
     @Inject
-    private DomainRegistry domainRegistry;
+    private CoderDomainRegistry domainRegistry;
 
     @Test
     public void classTest() throws IOException, ClassNotFoundException {

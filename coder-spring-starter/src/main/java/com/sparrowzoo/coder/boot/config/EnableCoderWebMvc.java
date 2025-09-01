@@ -11,6 +11,5 @@ import java.lang.annotation.*;
 @ComponentScan(
         basePackages = {"com.sparrow.coder"}
 )
-@ConditionalOnWebApplication
 public @interface EnableCoderWebMvc {
 }

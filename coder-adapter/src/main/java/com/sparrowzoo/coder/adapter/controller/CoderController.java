@@ -5,7 +5,7 @@ import com.sparrow.cg.impl.DynamicCompiler;
 import com.sparrow.orm.SparrowEntityManager;
 import com.sparrow.protocol.BusinessException;
 import com.sparrowzoo.coder.constant.DefaultSpecialColumnIndex;
-import com.sparrowzoo.coder.domain.DomainRegistry;
+import com.sparrowzoo.coder.domain.CoderDomainRegistry;
 import com.sparrowzoo.coder.domain.service.CodeGenerator;
 import com.sparrowzoo.coder.domain.service.DefaultCodeGenerator;
 import com.sparrowzoo.coder.domain.service.EnvConfig;
@@ -37,7 +37,7 @@ public class CoderController {
     private EnvConfig envConfig;
 
     @Inject
-    private DomainRegistry domainRegistry;
+    private CoderDomainRegistry domainRegistry;
 
     @PostMapping("init-by-local.json")
     public void localInit(@RequestBody LocalClassParam className) throws BusinessException {
