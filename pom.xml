@@ -17,5 +17,6 @@
         <module>coder-dao-sparrow</module>
         <module>coder-dao-mybatis</module>
         <module>coder-po</module>
+        <module>coder-spring-starter</module>
     </modules>
 </project>

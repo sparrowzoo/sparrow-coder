@@ -13,8 +13,8 @@ public class CoderConfig {
         log.info("CoderConfig init");
     }
 
-//    @Bean
-//    public EmptySessionDao sessionDao() {
-//        return new EmptySessionDao();
-//    }
+    @Bean
+    public EmptySessionDao sessionDao() {
+        return new EmptySessionDao();
+    }
 }

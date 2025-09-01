@@ -3,6 +3,8 @@ package com.sparrowzoo.coder.boot;
 import com.sparrow.container.Container;
 import com.sparrow.container.ContainerBuilder;
 import com.sparrow.core.spi.ApplicationContext;
+import com.sparrow.passport.config.EnablePassportWebMvc;
+import com.sparrowzoo.coder.boot.config.EnableCoderWebMvc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -13,6 +15,8 @@ import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 
 @SpringBootApplication(scanBasePackages = {"com.sparrowzoo.coder"})
+@EnablePassportWebMvc
+@EnableCoderWebMvc
 //@MapperScan(basePackages = "com.sparrow.coder.dao")
 public class Application {
     private static Logger log = LoggerFactory.getLogger(Application.class);
