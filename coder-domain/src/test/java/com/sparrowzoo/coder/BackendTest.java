@@ -36,7 +36,7 @@ public class BackendTest {
         CodeGenerator generator = new DefaultCodeGenerator(1L, envConfig, domainRegistry);
         TableConfigRegistry registry = generator.getRegistry();
         TableContext tableContext = registry.getTableContext("t_column_config");
-        List<ColumnDef> columnDefs = tableContext.getOriginalColumns();
+        List<ColumnDef> columnDefs = null;//tableContext.getOriginalColumns();
         PagerResult<ColumnDef> pagerResult = new PagerResult<>();
         pagerResult.setList(columnDefs);
         pagerResult.setRecordTotal((long)columnDefs.size());

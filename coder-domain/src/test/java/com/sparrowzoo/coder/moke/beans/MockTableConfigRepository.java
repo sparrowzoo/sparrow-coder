@@ -233,7 +233,6 @@ public class MockTableConfigRepository implements TableConfigRepository {
         validator.setMinValue(5);
         validator.setMaxValue(30);
         validator.setCategory(DigitalCategory.INTEGER);
-        validator.setPropertyName(propertyName);
         return validator;
     }
 }

@@ -13,6 +13,7 @@
     <groupId>com.sparrowzoo.coder</groupId>
     <properties>
         <coder_version>1.0.0-SNAPSHOT</coder_version>
+        <passport_version>1.0.0-SNAPSHOT</passport_version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -64,6 +65,17 @@
                 <groupId>com.sparrowzoo.coder</groupId>
                 <artifactId>coder-po</artifactId>
                 <version>${coder_version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.sparrowzoo.coder</groupId>
+                <artifactId>coder-spring-starter</artifactId>
+                <version>${coder_version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sparrowzoo.passport</groupId>
+                <version>${passport_version}</version>
+                <artifactId>passport-starter</artifactId>
             </dependency>
         </dependencies>
     </dependencyManagement>

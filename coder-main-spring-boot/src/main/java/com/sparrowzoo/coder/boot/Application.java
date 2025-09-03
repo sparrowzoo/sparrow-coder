@@ -3,10 +3,9 @@ package com.sparrowzoo.coder.boot;
 import com.sparrow.container.Container;
 import com.sparrow.container.ContainerBuilder;
 import com.sparrow.core.spi.ApplicationContext;
-import com.sparrow.passport.config.EnablePassportWebMvc;
-import com.sparrowzoo.coder.boot.config.EnableCoderWebMvc;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.sparrow.passport.config.EnablePassport;
+import com.sparrowzoo.coder.boot.config.EnableCoderApp;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartingEvent;
@@ -15,12 +14,11 @@ import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 
 @SpringBootApplication(scanBasePackages = {"com.sparrowzoo.coder"})
-@EnablePassportWebMvc
-@EnableCoderWebMvc
+@EnablePassport
+@EnableCoderApp
+@Slf4j
 //@MapperScan(basePackages = "com.sparrow.coder.dao")
 public class Application {
-    private static Logger log = LoggerFactory.getLogger(Application.class);
-
     public static void main(String[] args) {
         SpringApplication springApplication = new SpringApplication(Application.class);
         /**

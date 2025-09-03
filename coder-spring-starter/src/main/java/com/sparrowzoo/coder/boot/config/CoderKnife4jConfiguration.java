@@ -17,6 +17,7 @@
 
 package com.sparrowzoo.coder.boot.config;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -31,15 +32,16 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 @Configuration
 //@ConditionalOnProperty(prefix = "sparrow", name = "profile", havingValue = "dev")
 @EnableSwagger2WebMvc
-public class Knife4jConfiguration {
+public class CoderKnife4jConfiguration {
     @Bean
+    @ConditionalOnMissingBean(ApiInfo.class)
     public ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("Sparrow Developer Community coder").description("Sparrow Developer Community coder").termsOfServiceUrl("www.sparrowzoo.com").contact(new Contact("harry", "http://www.sparrowzoo.com", "zh_harry@163.com")).version("1.0").build();
+        return new ApiInfoBuilder().title("Sparrow Community").description("Sparrow Community").termsOfServiceUrl("www.sparrowzoo.com").contact(new Contact("harry", "http://www.sparrowzoo.com", "zh_harry@163.com")).version("1.0").build();
     }
 
     @Bean
-    public Docket createRestApi(ApiInfo apiInfo) {
-        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo).groupName("coder").select().apis(
+    public Docket coderDocket(ApiInfo apiInfo) {
+        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo).groupName("代码生成器").select().apis(
                 RequestHandlerSelectors.basePackage("com.sparrowzoo.coder.adapter.controller")
         ).paths(PathSelectors.any()).build();
     }

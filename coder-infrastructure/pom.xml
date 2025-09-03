@@ -9,7 +9,6 @@
         <relativePath/>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.sparrowzoo.coder</groupId>
     <version>1.0.0-SNAPSHOT</version>
     <artifactId>coder-infrastructure</artifactId>
     <dependencies>
