@@ -6,7 +6,8 @@ import lombok.Getter;
 
 @Getter
 public enum CoderError implements ErrorSupport {
-
+    NOT_SELF_PROJECT(false, CoderModule.Coder, "03", "can't generate other's project"),
+    SYSTEM_TABLE(false, CoderModule.Coder, "02", "system table can't be modified"),
     CLASS_NOT_FOUND(false, CoderModule.Coder, "01", "class not found");
 
     private boolean system;

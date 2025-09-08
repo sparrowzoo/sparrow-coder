@@ -2,8 +2,11 @@ package com.sparrowzoo.coder.adapter.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.sparrow.cg.impl.DynamicCompiler;
+import com.sparrow.context.SessionContext;
+import com.sparrow.exception.Asserts;
 import com.sparrow.orm.SparrowEntityManager;
 import com.sparrow.protocol.BusinessException;
+import com.sparrow.protocol.LoginUser;
 import com.sparrowzoo.coder.constant.DefaultSpecialColumnIndex;
 import com.sparrowzoo.coder.domain.CoderDomainRegistry;
 import com.sparrowzoo.coder.domain.service.CodeGenerator;
@@ -47,6 +50,7 @@ public class CoderController {
         } catch (ClassNotFoundException e) {
             throw new BusinessException(CoderError.CLASS_NOT_FOUND);
         }
+        Asserts.isTrue(canGenerate(className), CoderError.SYSTEM_TABLE);
         SparrowEntityManager entityManager = new SparrowEntityManager(clazz);
         TableConfigParam tableConfigParam = new TableConfigParam();
         tableConfigParam.setProjectId(className.getProjectId());
@@ -87,8 +91,6 @@ public class CoderController {
         tableConfigParam.setSourceCode(sourceCodeParam.getSourceCode());
         tableConfigParam.setPageSize(10);
         tableConfigParam.setOnlyAccessSelf(true);
-
-
         this.tableConfigService.saveTableConfig(tableConfigParam);
     }
 
@@ -105,8 +107,19 @@ public class CoderController {
         generator.initScaffold();
     }
 
+    private boolean canGenerate(LocalClassParam localClassParam) {
+        LoginUser loginUser = SessionContext.getLoginUser();
+        if (!localClassParam.getFullClassName().equals("com.sparrowzoo.coder.po.ProjectConfig") && !localClassParam.getFullClassName().equals("com.sparrowzoo.coder.po.TableConfig")) {
+            return true;
+        }
+        if (loginUser.getUserName().equals("sparrowzoo")) {
+            return true;
+        }
+        return false;
+    }
+
     @PostMapping("generate.json")
-    public void generate(@RequestBody ProjectTablesQuery projectTablesQuery) throws IOException, ClassNotFoundException {
+    public void generate(@RequestBody ProjectTablesQuery projectTablesQuery) throws IOException, BusinessException {
         CodeGenerator generator = new DefaultCodeGenerator(projectTablesQuery.getProjectId(), envConfig, domainRegistry);
         for (String tableName : projectTablesQuery.getTableNames()) {
             generator.generate(tableName);

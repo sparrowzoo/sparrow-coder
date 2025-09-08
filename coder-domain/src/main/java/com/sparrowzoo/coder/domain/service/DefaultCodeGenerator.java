@@ -1,12 +1,16 @@
 package com.sparrowzoo.coder.domain.service;
 
+import com.sparrow.context.SessionContext;
+import com.sparrow.exception.Asserts;
 import com.sparrow.io.file.FileNameBuilder;
+import com.sparrow.protocol.BusinessException;
 import com.sparrow.protocol.enums.StatusRecord;
 import com.sparrow.utility.FileUtility;
 import com.sparrowzoo.coder.domain.CoderDomainRegistry;
 import com.sparrowzoo.coder.domain.bo.*;
 import com.sparrowzoo.coder.domain.service.backend.ScaffoldCopier;
 import com.sparrowzoo.coder.domain.service.registry.TableConfigRegistry;
+import com.sparrowzoo.coder.protocol.enums.CoderError;
 import com.sparrowzoo.coder.protocol.query.TableConfigQuery;
 import com.sparrowzoo.coder.utils.ConfigUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +24,8 @@ import java.util.Properties;
 public class DefaultCodeGenerator implements CodeGenerator {
     private TableConfigRegistry registry;
     private CoderDomainRegistry domainRegistry;
-    public DefaultCodeGenerator(Long projectId, EnvConfig envConfig, CoderDomainRegistry domainRegistry) throws IOException, ClassNotFoundException {
+
+    public DefaultCodeGenerator(Long projectId, EnvConfig envConfig, CoderDomainRegistry domainRegistry) throws IOException {
         this.domainRegistry = domainRegistry;
         ProjectConfigBO projectConfig = domainRegistry.getProjectConfigRepository().getProjectConfig(projectId);
         Properties config = ConfigUtils.initPropertyConfig(projectConfig.getConfig());
@@ -48,11 +53,12 @@ public class DefaultCodeGenerator implements CodeGenerator {
 
 
     @Override
-    public void generate(String tableName) throws IOException {
+    public void generate(String tableName) throws IOException, BusinessException {
         TableContext context = registry.getTableContext(tableName);
         if (context == null) {
             throw new IllegalArgumentException("table " + tableName + " not found");
         }
+        Asserts.isTrue(context.getProject().getProjectConfig().getCreateUserId().equals(SessionContext.getLoginUser().getUserId()), CoderError.NOT_SELF_PROJECT);
         if (context.getTableConfig().getLocked()) {
             log.info("table {} is locked, skip generate", context.getTableConfig().getTableName());
             //return;
