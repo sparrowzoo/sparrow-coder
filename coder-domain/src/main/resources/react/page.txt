@@ -1,7 +1,8 @@
+overwrite
 "use client";
 
 import * as React from "react";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {columns, $persistence_class_name} from "@/components/$persistence_object_by_horizontal/columns";
 import {DataTable} from "@/common/components/table/data-table";
 import Search from "@/components/$persistence_object_by_horizontal/search";
@@ -11,30 +12,31 @@ import ThreeDotLoading from "@/common/components/ThreeDotLoading";
 import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizontal";
 import {useTranslations} from "next-intl";
 import toast from "react-hot-toast";
-import Result, {PagerResult} from "@/common/lib/protocol/Result";
+import Result from "@/common/lib/protocol/Result";
 import useNavigating from "@/common/hook/NavigatingHook";
 
 
 
 
+const pagination = {pageIndex: 0, pageSize: 10};
 
 export default function Page() {
     const errorTranslate = useTranslations("$persistence_class_name.ErrorMessage");
     const globalTranslate = useTranslations("GlobalForm");
-    const [dataState, setDataState] = useState<Result<PagerResult<$persistence_class_name>> | undefined>();
-    const pagination = {pageIndex: 0, pageSize: $page_size};
+    const [dataState, setDataState] = useState<Result | undefined>();
     const  Navigations=useNavigating();
-    const init = () => {
-                $persistence_class_nameApi.search({...pagination}, errorTranslate,Navigations.redirectToLogin).then(
-                    (res) => {
-                        setDataState(res)
-                    }
-                ).catch(() => {
-                });
-            };
-            useEffect(() => {
-                init();
-            }, []);
+    const redirectToLoginRef = useRef(Navigations.redirectToLogin);
+    const init = useCallback(() => {
+        $persistence_class_nameApi.search({...pagination}, errorTranslate, redirectToLoginRef.current).then(
+            (res) => {
+                setDataState(res)
+            }
+        ).catch(() => {
+        });
+    }, [errorTranslate]);
+    useEffect(() => {
+        init();
+    }, [init]);
 
 
       const deleteHandler= (id: number) => {
@@ -53,14 +55,14 @@ export default function Page() {
                 OperationComponent={Operation}
                 tableName={"$persistence_class_name"}
                 primary={"id"}
-                i18n={$project_i18n}
+                i18n={true}
                 result={dataState}
                 columns={columns}
                 setData={setDataState}
                 EditComponent={EditPage}
                 deleteHandler={deleteHandler}
                 initHandler={init}
-                defaultPager={pagination}
+                defaultPager={{pageIndex: 0, pageSize: -1}}
                 RowOperationComponents={[]}
             ></DataTable>
         </div>

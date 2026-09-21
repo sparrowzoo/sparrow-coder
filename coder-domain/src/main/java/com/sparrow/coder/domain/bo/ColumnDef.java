@@ -1,0 +1,134 @@
+package com.sparrow.coder.domain.bo;
+
+import com.sparrow.coder.enums.CellType;
+import com.sparrow.coder.enums.ColumnType;
+import com.sparrow.coder.enums.HeaderType;
+import com.sparrow.coder.enums.SearchType;
+import com.sparrow.protocol.POJO;
+import com.sparrow.protocol.dao.enums.ListDatasourceType;
+import com.sparrow.coder.domain.bo.validate.Validator;
+import com.sparrow.coder.enums.*;
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Data
+@Table(name = "column_def")
+public class ColumnDef implements POJO {
+    @Column(name = "property_name", updatable = false, columnDefinition = "varchar(255) comment '属性名'")
+    private String propertyName;
+    @Column(name = "chinese_name", columnDefinition = "varchar(255) comment '中文名'")
+    private String chineseName;
+    @Column(name = "java_type", updatable = false, columnDefinition = "varchar(255) comment 'java类型'")
+    private String javaType;
+    @Column(name = "enable_hidden", columnDefinition = "bit(1) comment '允许隐藏'")
+    private Boolean enableHidden;
+    @Column(name = "default_hidden", columnDefinition = "bit(1) comment '默认隐藏'")
+    private Boolean defaultHidden;
+    @Column(name = "show_in_edit", columnDefinition = "bit(1) comment '编辑'")
+    private Boolean showInEdit = true;
+    @Column(name = "show_in_list", columnDefinition = "bit(1) comment '列表'")
+    private Boolean showInList = true;
+    @Column(name = "show_in_search", columnDefinition = "bit(1) comment '搜索'")
+    private Boolean showInSearch = true;
+    @Column(name = "allow_null", columnDefinition = "bit(1) comment '允许为空'")
+    private Boolean allowNull;
+    @Column(name = "placeholder", columnDefinition = "varchar(255) comment '提示'")
+    private String placeholder;
+    @Column(name = "default_value", columnDefinition = "varchar(255) comment '默认值'")
+    private String defaultValue;
+    /**
+     * 查询方式
+     */
+    @Column(name = "search_type", columnDefinition = "int comment '查询方式'")
+    private Integer searchType;
+    @Column(name = "validate_type", columnDefinition = "varchar(255) comment '验证类型'")
+    private String validateType;
+    @Column(name = "validator", columnDefinition = "varchar(255) comment '验证器'")
+    private Validator validator;
+    @Column(name = "datasource_type", columnDefinition = "int comment '数据源类型'")
+    private Integer datasourceType;
+    @Column(name = "datasource_params", columnDefinition = "varchar(255) comment '数据源参数'")
+    private String datasourceParams;
+    @Column(name = "column_type", updatable = false, columnDefinition = "int comment '列类型'")
+    private Integer columnType;
+    @Column(name = "header_type", columnDefinition = "int comment '表头类型'")
+    private Integer headerType;
+    @Column(name = "cell_type", columnDefinition = "int comment '单元格类型'")
+    private Integer cellType;
+    @Column(name = "control_type", columnDefinition = "int comment '控件类型'")
+    private Integer controlType;
+    @Column(name = "sort", columnDefinition = "int comment '排序'")
+    private Integer sort;
+    /**
+     * updatable = false 一定只读
+     * updatable = true 可以更新，也可能只读，需要前端界面支持只读
+     * 如果这里不允许用户自定义只读，则需要后台生成更新列的方法，较麻烦
+     * 控件只读可以使用update 方法直接保存
+     */
+    @Column(name = "read_only", columnDefinition = "bit(1) comment '是否只读'")
+    private Boolean readOnly;
+
+    public void setSpecialColumnDefaultValue() {
+        this.setJavaType(null);
+        this.setEnableHidden(false);
+        this.setDefaultHidden(false);
+        this.setShowInEdit(false);
+        this.setShowInList(true);
+        this.setShowInSearch(false);
+        this.setAllowNull(false);
+        this.setPlaceholder("");
+        this.setDefaultValue("");
+        this.setSearchType(SearchType.EQUAL.getIdentity());
+        this.setValidateType(null);
+        this.setValidator(null);
+        this.setDatasourceType(ListDatasourceType.NULL.getIdentity());
+        this.setDatasourceParams("");
+        this.setControlType(null);
+        this.setReadOnly(true);
+    }
+
+    public static ColumnDef createRowMenu(int sort) {
+        ColumnDef columnDef = new ColumnDef();
+        columnDef.setColumnType(ColumnType.ACTION.getIdentity());
+        columnDef.setHeaderType(HeaderType.NORMAL.getIdentity());
+        columnDef.setCellType(CellType.OPERATION.getIdentity());
+        columnDef.setPropertyName("actions");
+        columnDef.setChineseName("操作");
+        columnDef.setSort(sort);
+        columnDef.setSpecialColumnDefaultValue();
+        return columnDef;
+    }
+
+    public static ColumnDef createFilter(int sort) {
+        ColumnDef columnDef = new ColumnDef();
+        columnDef.setColumnType(ColumnType.FILTER.getIdentity());
+        columnDef.setHeaderType(HeaderType.COLUMN_FILTER.getIdentity());
+        columnDef.setCellType(null);
+        columnDef.setPropertyName("filter");
+        columnDef.setChineseName("过滤列");
+        columnDef.setSort(sort);
+        columnDef.setSpecialColumnDefaultValue();
+        return columnDef;
+    }
+
+    public static ColumnDef createCheckBox(int sort) {
+        ColumnDef columnDef = new ColumnDef();
+        columnDef.setColumnType(ColumnType.CHECK.getIdentity());
+        columnDef.setHeaderType(HeaderType.CHECK_BOX.getIdentity());
+        columnDef.setCellType(CellType.CHECK_BOX.getIdentity());
+        columnDef.setPropertyName("check-box");
+        columnDef.setSpecialColumnDefaultValue();
+        columnDef.setSort(sort);
+        return columnDef;
+    }
+
+    public Boolean isNumber() {
+        if (this.javaType == null) {
+            return false;
+        }
+        return this.javaType.equals("java.lang.Integer") ||
+                this.javaType.equals("java.lang.Long") ||
+                this.javaType.equals("java.lang.Double") ||
+                this.javaType.equals("java.lang.Float");
+    }
+}

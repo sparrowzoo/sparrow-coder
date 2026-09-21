@@ -12,9 +12,8 @@
     <artifactId>coder-adapter</artifactId>
     <dependencies>
         <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
-            <optional>true</optional>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
         <dependency>
             <groupId>com.sparrowzoo.coder</groupId>

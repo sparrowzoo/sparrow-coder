@@ -1,6 +1,6 @@
 package com.sparrow.spring;
 
-import com.sparrowzoo.coder.boot.Application;
+import com.sparrow.coder.boot.Application;
 import com.sparrow.spring.starter.config.SparrowConfig;
 import com.sparrow.spring.starter.test.SparrowTestExecutionListener;
 import org.junit.Test;

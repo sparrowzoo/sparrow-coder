@@ -14,8 +14,7 @@ import com.sparrow.support.converter.Param2POConverter;
 import $package_pager_query.$persistence_class_nameDBPagerQuery;
 import java.util.ArrayList;
 import java.util.List;
-import javax.inject.Named;
-import javax.inject.Inject;
+import jakarta.inject.*;
 import com.sparrow.protocol.BeanCopier;
 
 

@@ -4,7 +4,7 @@ package $package_service;
 import com.sparrow.exception.Asserts;
 import com.sparrow.protocol.*;
 import java.util.*;
-import javax.inject.*;
+import jakarta.inject.*;
 import com.sparrow.protocol.constant.SparrowError;
 import com.sparrow.protocol.enums.StatusRecord;
 import $package_bo.$persistence_class_nameBO;

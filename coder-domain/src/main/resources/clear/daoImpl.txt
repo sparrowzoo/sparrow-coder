@@ -7,7 +7,7 @@ import $package_dao.$persistence_class_nameDAO;
 import $package_pager_query.$persistence_class_nameDBPagerQuery;
 import $package_po.$persistence_class_name;
 import java.util.List;
-import javax.inject.Named;
+import jakarta.inject.Named;
 import com.sparrow.protocol.*;
 import com.sparrow.context.SessionContext;
 import com.sparrow.protocol.enums.StatusRecord;

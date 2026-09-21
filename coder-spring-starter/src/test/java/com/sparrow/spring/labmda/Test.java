@@ -3,7 +3,7 @@ package com.sparrow.spring.labmda;
 import com.sparrow.cg.PropertyNamer;
 import com.sparrow.protocol.SFunction;
 import com.sparrow.utility.ClassUtility;
-import com.sparrowzoo.coder.po.ProjectConfig;
+import com.sparrow.coder.po.ProjectConfig;
 
 import java.lang.invoke.SerializedLambda;
 import java.lang.reflect.Method;

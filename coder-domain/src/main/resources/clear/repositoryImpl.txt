@@ -13,8 +13,7 @@ import $package_query.$persistence_class_nameQuery;
 
 import java.util.List;
 import java.util.Set;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.*;
 
 @Named
 public class $persistence_class_nameRepositoryImpl implements $persistence_class_nameRepository {

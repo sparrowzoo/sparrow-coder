@@ -20,6 +20,10 @@
             <groupId>com.sparrowzoo.passport</groupId>
             <artifactId>passport-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.sparrowzoo.file</groupId>
+            <artifactId>file-starter</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <filters>
@@ -43,7 +47,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.sparrowzoo.coder.boot.Application</mainClass>
+                    <mainClass>com.sparrow.coder.boot.Application</mainClass>
                 </configuration>
             </plugin>
         </plugins>

@@ -14,6 +14,7 @@
     <properties>
         <coder_version>1.0.0-SNAPSHOT</coder_version>
         <passport_version>1.0.0-SNAPSHOT</passport_version>
+        <file_version>1.0.0-SNAPSHOT</file_version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -76,6 +77,11 @@
                 <groupId>com.sparrowzoo.passport</groupId>
                 <version>${passport_version}</version>
                 <artifactId>passport-starter</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>com.sparrowzoo.file</groupId>
+                <version>${file_version}</version>
+                <artifactId>file-starter</artifactId>
             </dependency>
         </dependencies>
     </dependencyManagement>

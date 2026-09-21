@@ -1,6 +1,8 @@
+overwrite
 import * as React from "react";
 import {$persistence_class_name} from "@/components/$persistence_object_by_horizontal/columns";
 import {TableOperationProps,MyTableMeta} from "@/common/lib/table/DataTableProperty";
+import Result, {PagerResult} from "@/common/lib/protocol/Result";
 import {Button} from "@/components/ui/button";
 import {Dialog, DialogContent, DialogTrigger} from "@/components/ui/dialog";
 import AddPage from "@/components/$persistence_object_by_horizontal/add";
@@ -21,7 +23,7 @@ export default function Operation({table}: TableOperationProps<$persistence_clas
 
     const initHandler=meta.initHandler;
     const setData=meta.setData;
-    const result=meta.result;
+    const result = meta.result as Result<PagerResult>;
 
     const callbackHandler = () => {
         setOpen(false);
@@ -44,6 +46,7 @@ export default function Operation({table}: TableOperationProps<$persistence_clas
                                     return;
                 }
                 $persistence_class_nameApi.batchDelete(selectedIds, errorTranslate,Navigations.redirectToLogin).then(
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     (res) => {
                                             const datas= TableUtils.removeRowByPrimary(selectedIds,table);
                                             result.data.list=datas;
@@ -61,8 +64,9 @@ export default function Operation({table}: TableOperationProps<$persistence_clas
                                                 return;
                             }
                             $persistence_class_nameApi.enable(selectedIds, errorTranslate,Navigations.redirectToLogin).then(
+                                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                                 (res) => {
-                                   const datas= TableUtils.batchEnable(selectedIds,table,"$status_field");
+                                   const datas= TableUtils.batchEnable(selectedIds,table,"status");
                                    result.data.list=datas;
                                    result.data.recordTotal-=selectedIds.length;
                                    setData(TableUtils.cloneResult(result));
@@ -79,8 +83,9 @@ export default function Operation({table}: TableOperationProps<$persistence_clas
                                                             return;
                                         }
                                         $persistence_class_nameApi.disable(selectedIds, errorTranslate,Navigations.redirectToLogin).then(
+                                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
                                             (res) => {
-                                                 const datas= TableUtils.batchDisable(selectedIds,table,"$status_field");
+                                                 const datas= TableUtils.batchDisable(selectedIds,table,"status");
                                                  result.data.list=datas;
                                                  result.data.recordTotal-=selectedIds.length;
                                                  setData(TableUtils.cloneResult(result));

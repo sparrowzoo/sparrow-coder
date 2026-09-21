@@ -15,7 +15,7 @@
  */
 package com.sparrow.spring.labmda;
 
-import org.apache.ibatis.reflection.property.PropertyNamer;
+import com.sparrow.cg.PropertyNamer;
 
 /**
  * Lambda 信息

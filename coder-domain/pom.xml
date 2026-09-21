@@ -34,10 +34,7 @@
             <groupId>com.sparrowzoo</groupId>
             <artifactId>sparrow-starter</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>com.sparrowzoo.coder</groupId>
             <artifactId>coder-po</artifactId>
@@ -51,10 +48,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.sparrowzoo</groupId>
             <artifactId>authenticator-monolithic-starter</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -62,8 +61,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
     </dependencies>
 </project>
