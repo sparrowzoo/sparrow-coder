@@ -16,31 +16,31 @@
  */
 
 package com.sparrow.coder.protocol.dto;
+
+import com.sparrow.protocol.DTO;
+import com.sparrow.protocol.DisplayTextAccessor;
 import lombok.Data;
-import com.sparrow.protocol.enums.StatusRecord;
-import com.sparrow.protocol.*;
-import java.time.*;
 
 @Data
-public class ProjectConfigDTO implements DTO
-    ,DisplayTextAccessor{private Long id;
-private String name;
-private String frontendName;
-private String chineseName;
-private Boolean i18n;
-private String description;
-private String modulePrefix;
-private String architectures;
-private String config;
-private Boolean wrapWithParent;
-private String scaffold;
-private String createUserName;
-private Long createUserId;
-private Long modifiedUserId;
-private String modifiedUserName;
-private Long gmtCreate;
-private Long gmtModified;
-private Boolean deleted;
-private Integer status;
-private String displayText;
+public class ProjectConfigDTO implements DTO, DisplayTextAccessor {
+    private Long id;
+    private String name;
+    private String frontendName;
+    private String chineseName;
+    private Boolean i18n;
+    private String description;
+    private String modulePrefix;
+    private String architectures;
+    private String config;
+    private Boolean wrapWithParent;
+    private String scaffold;
+    private String createUserName;
+    private Long createUserId;
+    private Long modifiedUserId;
+    private String modifiedUserName;
+    private Long gmtCreate;
+    private Long gmtModified;
+    private Boolean deleted;
+    private Integer status;
+    private String displayText;
 }

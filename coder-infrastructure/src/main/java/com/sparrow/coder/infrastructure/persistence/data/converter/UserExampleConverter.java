@@ -42,13 +42,13 @@ public class UserExampleConverter implements Param2POConverter<UserExampleParam,
     private BeanCopier beanCopier;
 
     public UserExampleDBPagerQuery toDbPagerQuery(UserExampleQuery userExampleQuery) {
-           if (userExampleQuery == null) {
-               return new UserExampleDBPagerQuery();
-           }
-           UserExampleDBPagerQuery userExample = new UserExampleDBPagerQuery();
-           beanCopier.copyProperties(userExampleQuery, userExample);
-           return userExample;
-       }
+        if (userExampleQuery == null) {
+            return new UserExampleDBPagerQuery();
+        }
+        UserExampleDBPagerQuery userExample = new UserExampleDBPagerQuery();
+        beanCopier.copyProperties(userExampleQuery, userExample);
+        return userExample;
+    }
 
     @Override public UserExample param2po(UserExampleParam param) {
         UserExample userExample = new UserExample();
@@ -73,10 +73,10 @@ public class UserExampleConverter implements Param2POConverter<UserExampleParam,
         return userExampleBos;
     }
 
-    public void convertStatus(StatusCriteria statusCriteria){
-            LoginUser loginUser = SessionContext.getLoginUser();
-            statusCriteria.setModifiedUserName(loginUser.getUserName());
-            statusCriteria.setGmtModified(System.currentTimeMillis());
-            statusCriteria.setModifiedUserId(loginUser.getUserId());
+    public void convertStatus(StatusCriteria statusCriteria) {
+        LoginUser loginUser = SessionContext.getLoginUser();
+        statusCriteria.setModifiedUserName(loginUser.getUserName());
+        statusCriteria.setGmtModified(System.currentTimeMillis());
+        statusCriteria.setModifiedUserId(loginUser.getUserId());
     }
 }

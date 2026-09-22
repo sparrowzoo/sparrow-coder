@@ -17,15 +17,13 @@
 
 package com.sparrow.coder.dao.query;
 
-import com.sparrow.protocol.enums.StatusRecord;
 import com.sparrow.protocol.dao.DatabasePagerQuery;
-import java.util.Date;
 import lombok.Data;
 @Data
 
 public class UserExampleDBPagerQuery extends DatabasePagerQuery {
-   private String userName;
-private String chineseName;
-private Integer status;
-   public UserExampleDBPagerQuery() {}
+    private String userName;
+    private String chineseName;
+    private Integer status;
+    public UserExampleDBPagerQuery() {}
 }

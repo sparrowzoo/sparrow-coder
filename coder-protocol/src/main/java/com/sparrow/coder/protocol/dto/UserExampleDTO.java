@@ -16,30 +16,30 @@
  */
 
 package com.sparrow.coder.protocol.dto;
+
+import com.sparrow.protocol.DTO;
+import java.time.LocalDate;
 import lombok.Data;
-import com.sparrow.protocol.enums.StatusRecord;
-import com.sparrow.protocol.*;
-import java.time.*;
 
 @Data
-public class UserExampleDTO implements DTO
-    {private Long id;
-private String userName;
-private String chineseName;
-private LocalDate birthday;
-private String email;
-private String mobile;
-private String tel;
-private String idCard;
-private Integer gender;
-private Integer age;
-private Long projectId;
-private String createUserName;
-private Long createUserId;
-private Long modifiedUserId;
-private String modifiedUserName;
-private Long gmtCreate;
-private Long gmtModified;
-private Boolean deleted;
-private Integer status;
+public class UserExampleDTO implements DTO {
+    private Long id;
+    private String userName;
+    private String chineseName;
+    private LocalDate birthday;
+    private String email;
+    private String mobile;
+    private String tel;
+    private String idCard;
+    private Integer gender;
+    private Integer age;
+    private Long projectId;
+    private String createUserName;
+    private Long createUserId;
+    private Long modifiedUserId;
+    private String modifiedUserName;
+    private Long gmtCreate;
+    private Long gmtModified;
+    private Boolean deleted;
+    private Integer status;
 }

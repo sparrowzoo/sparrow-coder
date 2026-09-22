@@ -16,35 +16,34 @@
  */
 
 package com.sparrow.coder.protocol.dto;
+
+import com.sparrow.protocol.DTO;
 import lombok.Data;
-import com.sparrow.protocol.enums.StatusRecord;
-import com.sparrow.protocol.*;
-import java.time.*;
 
 @Data
-public class TableConfigDTO implements DTO
-    {private Long id;
-private Long projectId;
-private String primaryKey;
-private String tableName;
-private String className;
-private String description;
-private Boolean locked;
-private Integer checkable;
-private Integer rowMenu;
-private Integer columnFilter;
-private Boolean statusCommand;
-private String columnConfigs;
-private Integer source;
-private String sourceCode;
-private Integer pageSize;
-private Boolean onlyAccessSelf;
-private String createUserName;
-private Long createUserId;
-private Long modifiedUserId;
-private String modifiedUserName;
-private Long gmtCreate;
-private Long gmtModified;
-private Boolean deleted;
-private Integer status;
+public class TableConfigDTO implements DTO {
+    private Long id;
+    private Long projectId;
+    private String primaryKey;
+    private String tableName;
+    private String className;
+    private String description;
+    private Boolean locked;
+    private Integer checkable;
+    private Integer rowMenu;
+    private Integer columnFilter;
+    private Boolean statusCommand;
+    private String columnConfigs;
+    private Integer source;
+    private String sourceCode;
+    private Integer pageSize;
+    private Boolean onlyAccessSelf;
+    private String createUserName;
+    private Long createUserId;
+    private Long modifiedUserId;
+    private String modifiedUserName;
+    private Long gmtCreate;
+    private Long gmtModified;
+    private Boolean deleted;
+    private Integer status;
 }

@@ -32,19 +32,19 @@ import java.util.List;
 
 
 @Named
-public class ProjectConfigAssemble{
+public class ProjectConfigAssemble {
 
     @Inject
     private BeanCopier beanCopier;
 
-     public ProjectConfigDTO boAssembleDTO(ProjectConfigBO bo) {
+    public ProjectConfigDTO boAssembleDTO(ProjectConfigBO bo) {
         ProjectConfigDTO projectConfig = new ProjectConfigDTO();
         beanCopier.copyProperties(bo, projectConfig);
         projectConfig.setStatus(bo.getStatus().getIdentity());
         return projectConfig;
     }
 
-     public List<ProjectConfigDTO> boListAssembleDTOList(List<ProjectConfigBO> list) {
+    public List<ProjectConfigDTO> boListAssembleDTOList(List<ProjectConfigBO> list) {
         if (CollectionsUtility.isNullOrEmpty(list)) {
             return Collections.emptyList();
         }

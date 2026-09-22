@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.sparrow.coder.domain.service.frontend.validate.react;
 
 import com.sparrow.container.Container;
@@ -51,7 +68,7 @@ public abstract class AbstractValidatorMessageGenerator<T extends Validator> imp
     }
 
     protected String getMessage(String propertyName,Validator validator, String i18nKey, String message) {
-        if (validator.getI18n()==null||validator.getI18n()) {
+        if (validator.getI18n() == null || validator.getI18n()) {
             Map<String, String> configList = validator.getI18nConfig();
             configList.put(i18nKey, message);
             return String.format("translate(\"%1$s.%2$s\")", propertyName, i18nKey);
@@ -61,10 +78,10 @@ public abstract class AbstractValidatorMessageGenerator<T extends Validator> imp
 
     protected String nonEmpty(String propertyName, T validator) {
         String message = validator.getEmptyMessage();
-        if(StringUtility.isNullOrEmpty(message)){
-            message=this.defaultValidator.getEmptyMessage();
+        if (StringUtility.isNullOrEmpty(message)) {
+            message = this.defaultValidator.getEmptyMessage();
         }
-        if (validator.getAllowEmpty()==null||!validator.getAllowEmpty()) {
+        if (validator.getAllowEmpty() == null || !validator.getAllowEmpty()) {
             return String.format(",\nv.nonEmpty(%s)", this.getMessage(propertyName,validator, "empty-message", message));
         }
         return "";

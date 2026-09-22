@@ -74,7 +74,7 @@ public class ProjectConfigService {
     }
 
     public ProjectConfigBO getProjectConfig(Long projectConfigId) throws BusinessException {
-         Asserts.isTrue(projectConfigId==null, SparrowError.GLOBAL_PARAMETER_NULL);
+        Asserts.isTrue(projectConfigId == null, SparrowError.GLOBAL_PARAMETER_NULL);
         return this.projectConfigRepository.getProjectConfig(projectConfigId);
     }
 

@@ -18,12 +18,12 @@
 package com.sparrow.coder.protocol.query;
 
 import com.sparrow.protocol.pager.SimplePager;
-import java.util.Date;
 import lombok.Data;
+
 @Data
 public class TableConfigQuery extends SimplePager {
-   private String tableName;
-private String className;
-private Integer status;
-private Long projectId;
+    private String tableName;
+    private String className;
+    private Integer status;
+    private Long projectId;
 }

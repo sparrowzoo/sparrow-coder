@@ -42,13 +42,13 @@ public class ProjectConfigConverter implements Param2POConverter<ProjectConfigPa
     private BeanCopier beanCopier;
 
     public ProjectConfigDBPagerQuery toDbPagerQuery(ProjectConfigQuery projectConfigQuery) {
-           if (projectConfigQuery == null) {
-               return new ProjectConfigDBPagerQuery();
-           }
-           ProjectConfigDBPagerQuery projectConfig = new ProjectConfigDBPagerQuery();
-           beanCopier.copyProperties(projectConfigQuery, projectConfig);
-           return projectConfig;
-       }
+        if (projectConfigQuery == null) {
+            return new ProjectConfigDBPagerQuery();
+        }
+        ProjectConfigDBPagerQuery projectConfig = new ProjectConfigDBPagerQuery();
+        beanCopier.copyProperties(projectConfigQuery, projectConfig);
+        return projectConfig;
+    }
 
     @Override public ProjectConfig param2po(ProjectConfigParam param) {
         ProjectConfig projectConfig = new ProjectConfig();
@@ -73,10 +73,10 @@ public class ProjectConfigConverter implements Param2POConverter<ProjectConfigPa
         return projectConfigBos;
     }
 
-    public void convertStatus(StatusCriteria statusCriteria){
-            LoginUser loginUser = SessionContext.getLoginUser();
-            statusCriteria.setModifiedUserName(loginUser.getUserName());
-            statusCriteria.setGmtModified(System.currentTimeMillis());
-            statusCriteria.setModifiedUserId(loginUser.getUserId());
+    public void convertStatus(StatusCriteria statusCriteria) {
+        LoginUser loginUser = SessionContext.getLoginUser();
+        statusCriteria.setModifiedUserName(loginUser.getUserName());
+        statusCriteria.setGmtModified(System.currentTimeMillis());
+        statusCriteria.setModifiedUserId(loginUser.getUserId());
     }
 }

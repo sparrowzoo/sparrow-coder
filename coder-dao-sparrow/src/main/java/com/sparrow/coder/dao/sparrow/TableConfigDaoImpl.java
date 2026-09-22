@@ -39,7 +39,13 @@ public class TableConfigDaoImpl extends ORMStrategy<TableConfig, Long> implement
     }
 
     private BooleanCriteria generateCriteria(TableConfigDBPagerQuery tableConfigQuery) {
-        BooleanCriteria booleanCriteria= BooleanCriteria.criteria(Criteria.field(TableConfig::getTableName).equal(tableConfigQuery.getTableName())).and(Criteria.field(TableConfig::getClassName).equal(tableConfigQuery.getClassName())).and(Criteria.field(TableConfig::getCreateUserId).equal(SessionContext.getLoginUser().getUserId()));if(tableConfigQuery.getStatus()!=null&&tableConfigQuery.getStatus()>=0) {booleanCriteria.and(Criteria.field(TableConfig::getStatus).equal(StatusRecord.valueOf(tableConfigQuery.getStatus())));} return booleanCriteria;
+        BooleanCriteria booleanCriteria = BooleanCriteria.criteria(Criteria.field(TableConfig::getTableName).equal(tableConfigQuery.getTableName()))
+            .and(Criteria.field(TableConfig::getClassName).equal(tableConfigQuery.getClassName()))
+            .and(Criteria.field(TableConfig::getCreateUserId).equal(SessionContext.getLoginUser().getUserId()));
+        if (tableConfigQuery.getStatus() != null && tableConfigQuery.getStatus() >= 0) {
+            booleanCriteria.and(Criteria.field(TableConfig::getStatus).equal(StatusRecord.valueOf(tableConfigQuery.getStatus())));
+        }
+        return booleanCriteria;
     }
 
     @Override public Long countTableConfig(TableConfigDBPagerQuery tableConfigPagerQuery) {

@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.sparrow.coder.domain.service.backend.placeholder.extension.dependency;
 
 import com.sparrow.protocol.dao.enums.ListDatasourceType;
@@ -20,10 +37,10 @@ public class DictionaryPlaceholderExtension extends AbstractPlaceholderExtension
         Map<String, String> placeHolder = tableContext.getPlaceHolder();
         List<ColumnDef> columnDefs = tableContext.getColumns();
         CoderTriple dictionaryTriple = new CoderTriple();
-        boolean isTableConfig=tableContext.getTableConfig().getTableName().equals("t_table_config");
+        boolean isTableConfig = tableContext.getTableConfig().getTableName().equals("t_table_config");
 
         for (ColumnDef columnDef : columnDefs) {
-            if (!isTableConfig&&ListDatasourceType.ENUM.getIdentity().equals(columnDef.getDatasourceType())) {
+            if (!isTableConfig && ListDatasourceType.ENUM.getIdentity().equals(columnDef.getDatasourceType())) {
                 dictionaryTriple.inject("@Inject\nprivate EnumsContainer businessEnumsContainer;");
                 dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",businessEnumsContainer.getEnums(\"%2$s\"));", columnDef.getPropertyName(), columnDef.getDatasourceParams()));
             }
@@ -39,7 +56,7 @@ public class DictionaryPlaceholderExtension extends AbstractPlaceholderExtension
                 dictionaryTriple.inject(String.format(" @Inject\n private %1$s %2$sService;", serviceClass, objectName));
                 dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",this.%2$sService.get%3$sKvs());\n", joinFieldName, objectName, joinClassName));
             }
-            if(tableContext.getEntityManager().getStatus()!=null){
+            if (tableContext.getEntityManager().getStatus() != null) {
                 dictionaryTriple.inject("@Inject\nprivate EnumsContainer coderEnumsContainer;");
                 dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",coderEnumsContainer.getEnums(\"%1$s\"));", EnumNames.STATUS_RECORD));
             }

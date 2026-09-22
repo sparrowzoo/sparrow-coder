@@ -18,11 +18,11 @@
 package com.sparrow.coder.protocol.query;
 
 import com.sparrow.protocol.pager.SimplePager;
-import java.util.Date;
 import lombok.Data;
+
 @Data
 public class UserExampleQuery extends SimplePager {
-   private String userName;
-private String chineseName;
-private Integer status;
+    private String userName;
+    private String chineseName;
+    private Integer status;
 }

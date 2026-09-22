@@ -18,29 +18,25 @@
 package com.sparrow.coder.protocol.param;
 
 import com.sparrow.protocol.Param;
-import com.sparrow.protocol.enums.StatusRecord;
 import lombok.Data;
-import java.time.*;
-
-
 
 @Data
 public class TableConfigParam implements Param {
     private Long id;
-private Long projectId;
-private String primaryKey;
-private String tableName;
-private String className;
-private String description;
-private Boolean locked;
-private Integer checkable;
-private Integer rowMenu;
-private Integer columnFilter;
-private Boolean statusCommand;
-private String columnConfigs;
-private Integer source;
-private String sourceCode;
-private Integer pageSize;
-private Boolean onlyAccessSelf;
+    private Long projectId;
+    private String primaryKey;
+    private String tableName;
+    private String className;
+    private String description;
+    private Boolean locked;
+    private Integer checkable;
+    private Integer rowMenu;
+    private Integer columnFilter;
+    private Boolean statusCommand;
+    private String columnConfigs;
+    private Integer source;
+    private String sourceCode;
+    private Integer pageSize;
+    private Boolean onlyAccessSelf;
 
 }

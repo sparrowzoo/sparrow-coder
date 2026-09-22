@@ -29,19 +29,19 @@ import jakarta.inject.*;
 
 
 @Named
-public class TableConfigAssemble{
+public class TableConfigAssemble {
 
     @Inject
     private BeanCopier beanCopier;
 
-     public TableConfigDTO boAssembleDTO(TableConfigBO bo) {
+    public TableConfigDTO boAssembleDTO(TableConfigBO bo) {
         TableConfigDTO tableConfig = new TableConfigDTO();
         beanCopier.copyProperties(bo, tableConfig);
         tableConfig.setStatus(bo.getStatus().getIdentity());
         return tableConfig;
     }
 
-     public List<TableConfigDTO> boListAssembleDTOList(List<TableConfigBO> list) {
+    public List<TableConfigDTO> boListAssembleDTOList(List<TableConfigBO> list) {
         if (CollectionsUtility.isNullOrEmpty(list)) {
             return Collections.emptyList();
         }

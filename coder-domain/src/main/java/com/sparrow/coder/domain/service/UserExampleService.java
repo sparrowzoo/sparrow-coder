@@ -76,7 +76,7 @@ public class UserExampleService {
     }
 
     public UserExampleBO getUserExample(Long userExampleId) throws BusinessException {
-         Asserts.isTrue(userExampleId==null, SparrowError.GLOBAL_PARAMETER_NULL);
+        Asserts.isTrue(userExampleId == null, SparrowError.GLOBAL_PARAMETER_NULL);
         return this.userExampleRepository.getUserExample(userExampleId);
     }
 

@@ -32,19 +32,19 @@ import java.util.List;
 
 
 @Named
-public class UserExampleAssemble{
+public class UserExampleAssemble {
 
     @Inject
     private BeanCopier beanCopier;
 
-     public UserExampleDTO boAssembleDTO(UserExampleBO bo) {
+    public UserExampleDTO boAssembleDTO(UserExampleBO bo) {
         UserExampleDTO userExample = new UserExampleDTO();
         beanCopier.copyProperties(bo, userExample);
         userExample.setStatus(bo.getStatus().getIdentity());
         return userExample;
     }
 
-     public List<UserExampleDTO> boListAssembleDTOList(List<UserExampleBO> list) {
+    public List<UserExampleDTO> boListAssembleDTOList(List<UserExampleBO> list) {
         if (CollectionsUtility.isNullOrEmpty(list)) {
             return Collections.emptyList();
         }

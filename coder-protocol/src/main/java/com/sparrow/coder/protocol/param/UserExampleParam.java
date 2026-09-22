@@ -18,24 +18,21 @@
 package com.sparrow.coder.protocol.param;
 
 import com.sparrow.protocol.Param;
-import com.sparrow.protocol.enums.StatusRecord;
 import lombok.Data;
-import java.time.*;
-
-
+import java.time.LocalDate;
 
 @Data
 public class UserExampleParam implements Param {
     private Long id;
-private String userName;
-private String chineseName;
-private LocalDate birthday;
-private String email;
-private String mobile;
-private String tel;
-private String idCard;
-private Integer gender;
-private Integer age;
-private Long projectId;
+    private String userName;
+    private String chineseName;
+    private LocalDate birthday;
+    private String email;
+    private String mobile;
+    private String tel;
+    private String idCard;
+    private Integer gender;
+    private Integer age;
+    private Long projectId;
 
 }
