@@ -4,7 +4,7 @@
 
 根据用户定义的 **PO 类**，一键生成符合企业级包规范的**后端代码**与**前端代码**（前后端分离），生成过程无需任何 AI 参与，纯模板 + 元数据驱动。
 
-> 生成的后台管理系统以 `react-next-admin`（位于 `sparrow-js` 前端工程内）为脚手架。
+> 生成的后台管理系统以 `sparrow-example` 为**后端脚手架**，以 `react-next-admin`（位于 `sparrow-js` 前端工程内）为**前端脚手架**。
 
 ---
 
@@ -69,7 +69,8 @@ public class UserExample extends PO {
 | [sparrow-starter](https://github.com/sparrowzoo/sparrow-starter) | Spring Boot 与 Sparrow 框架的整合 Starter |
 | [sparrow-file](https://github.com/sparrowzoo/sparrow-file) | 文件服务（`file-starter`） |
 | [sparrow-passport-ddd](https://github.com/sparrowzoo/sparrow-passport-ddd) | 认证框架（`passport-starter`） |
-| [sparrow-js](https://github.com/sparrowzoo/sparrow-js) | 前端工程，`react-next-admin` 为后台管理系统脚手架 |
+| [sparrow-example](https://github.com/sparrowzoo/sparrow-example) | 后端脚手架（后台代码模板） |
+| [sparrow-js](https://github.com/sparrowzoo/sparrow-js) | 前端工程，`react-next-admin` 为前端脚手架 |
 
 ---
 
@@ -98,11 +99,15 @@ git clone https://github.com/sparrowzoo/sparrow-starter.git
 git clone https://github.com/sparrowzoo/sparrow-file.git
 git clone https://github.com/sparrowzoo/sparrow-passport-ddd.git
 
-# 前端工程（含 react-next-admin 脚手架）
+# 前端工程（含 react-next-admin 前端脚手架）
 git clone https://github.com/sparrowzoo/sparrow-js.git
 
 # 本项目
 git clone https://github.com/sparrowzoo/sparrow-coder.git
+
+# 后端脚手架 sparrow-example（位于工作区根目录，与 sparrow 平级）
+cd ~/workspace
+git clone https://github.com/sparrowzoo/sparrow-example.git
 ```
 
 ### 4.2 按顺序编译安装依赖
