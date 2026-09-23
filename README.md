@@ -36,6 +36,8 @@
 | `com.sparrow.coder.po.Department` | 父表（部门） |
 | `com.sparrow.coder.po.UserExample` | 子表（用户），通过 `@ListDatasource(type = TABLE, params = "t_department")` 关联部门 |
 
+> **注意**：以上两个类（`Department`、`UserExample`）是**官方提供的示例**，仅作参考。生成业务代码时**不要直接使用**它们——请将其复制到你自己的 PO 包中，并把包名改为你的业务包名（例如 `com.yourcompany.po.Department`、`com.yourcompany.po.UserExample`）。
+
 ```java
 @Table(name = "t_user_example")
 @Data
@@ -212,6 +214,8 @@ npm run dev
 
 - `com.sparrow.coder.po.Department` —— 父表
 - `com.sparrow.coder.po.UserExample` —— 子表（父子关系示例）
+
+> **重要**：示例类**不能直接用于生成**。请将它们复制到你自己的 PO 包中，并将包名修改为你的业务包名（例如 `com.yourcompany.po.Department`、`com.yourcompany.po.UserExample`），再进行代码生成。
 
 PO 类通过 JPA 注解（`@Table` / `@Column` / `@ListDatasource`）描述表结构与字段展示元数据。
 
