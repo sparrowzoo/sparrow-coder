@@ -11,6 +11,7 @@ import SearchInput from "@/common/components/forms/search-input";
 import SearchSelect from "@/common/components/forms/search-select";
 import {PaginationState} from "@tanstack/table-core/src/features/RowPagination";
 import useNavigating from "@/common/hook/NavigatingHook";
+import {Search as SearchIcon} from "lucide-react";
 
 
 interface $persistence_class_nameQuery extends SimplePager{
@@ -50,12 +51,18 @@ export default function Search({table}: TableOperationProps<$persistence_class_n
     meta.searchHandler=searchHandler;
 
 
-    return (<div className="flex flex-row flex-wrap gap-4">
+    return (<div className="admin-search-bar flex flex-wrap items-center gap-3 rounded-lg bg-muted/40 p-3 [&>input]:w-full [&>input]:max-w-none sm:[&>input]:w-56">
   {/*<SearchInput value={User3Query?.chineseName||""}*/}
   {/*propertyName={"chineseName"} pageTranslate={pageTranslate}*/}
   {/*setSearchCondition={setUser3Query}/>*/}
-<SearchSelect propertyName={"status"} pageTranslate={pageTranslate} setSearchCondition={set$persistence_class_nameQuery} dictionary={(meta.result.data as PagerResult<$persistence_class_name>).dictionary['status']}/>
-            <Button onClick={() => searchHandler()} variant="ghost" className="ml-2">{globalTranslate('search')}</Button>
+            <label className="min-w-0 w-full sm:w-40 [&_button]:w-full">
+                <span className="sr-only">{pageTranslate("status")}</span>
+                <SearchSelect propertyName={"status"} pageTranslate={pageTranslate} setSearchCondition={set$persistence_class_nameQuery} dictionary={(meta.result.data as PagerResult<$persistence_class_name>).dictionary['status']}/>
+            </label>
+            <Button onClick={() => searchHandler()} className="w-full gap-2 px-5 sm:w-auto">
+                <SearchIcon className="size-4" aria-hidden="true"/>
+                {globalTranslate('search')}
+            </Button>
         </div>
     );
 }

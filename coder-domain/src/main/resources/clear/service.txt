@@ -60,6 +60,5 @@ public class $persistence_class_nameService {
          Asserts.isTrue($persistence_object_nameId==null, SparrowError.GLOBAL_PARAMETER_NULL);
         return this.$persistence_object_nameRepository.get$persistence_class_name($persistence_object_nameId);
     }
-
     $service_kvs
 }

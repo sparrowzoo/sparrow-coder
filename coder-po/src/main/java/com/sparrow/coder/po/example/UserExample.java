@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.sparrow.coder.po;
+package com.sparrow.coder.po.example;
 
 import com.sparrow.protocol.dao.ListDatasource;
 import com.sparrow.protocol.dao.PO;

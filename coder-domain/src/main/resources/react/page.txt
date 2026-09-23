@@ -46,25 +46,33 @@ export default function Page() {
         }
 
     if (!dataState) {
-        return <ThreeDotLoading/>
+        return (
+            <div className="admin-page admin-data-page space-y-3">
+                <div className="flex min-h-72 items-center justify-center rounded-xl border bg-card">
+                    <ThreeDotLoading/>
+                </div>
+            </div>
+        );
     }
     return (
-        <div className="w-full">
-            <DataTable<$persistence_class_name>
-                SearchComponent={Search}
-                OperationComponent={Operation}
-                tableName={"$persistence_class_name"}
-                primary={"id"}
-                i18n={true}
-                result={dataState}
-                columns={columns}
-                setData={setDataState}
-                EditComponent={EditPage}
-                deleteHandler={deleteHandler}
-                initHandler={init}
-                defaultPager={{pageIndex: 0, pageSize: -1}}
-                RowOperationComponents={[]}
-            ></DataTable>
+        <div className="admin-page admin-data-page space-y-3">
+            <div className="admin-table-panel min-w-0">
+                <DataTable<$persistence_class_name>
+                    SearchComponent={Search}
+                    OperationComponent={Operation}
+                    tableName={"$persistence_class_name"}
+                    primary={"id"}
+                    i18n={true}
+                    result={dataState}
+                    columns={columns}
+                    setData={setDataState}
+                    EditComponent={EditPage}
+                    deleteHandler={deleteHandler}
+                    initHandler={init}
+                    defaultPager={{pageIndex: 0, pageSize: -1}}
+                    RowOperationComponents={[]}
+                ></DataTable>
+            </div>
         </div>
     );
 }

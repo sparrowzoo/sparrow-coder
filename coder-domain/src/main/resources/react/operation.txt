@@ -30,12 +30,12 @@ export default function Operation({table}: TableOperationProps<$persistence_clas
         initHandler();
     }
 
-    return (<div className="flex justify-between gap-4">
+    return (<div className="flex flex-wrap items-center justify-start gap-2">
             <Dialog onOpenChange={setOpen} open={open}>
                 <DialogTrigger asChild>
                     <Button onClick={() => setOpen(true)}  variant="outline">{globalTranslate("add")}</Button>
                 </DialogTrigger>
-                <DialogContent className="w-[800px] sm:max-w-[625px]">
+                <DialogContent className="w-full max-w-[calc(100vw-2rem)] sm:max-w-2xl">
                      <AddPage table={table} callbackHandler={callbackHandler}/>
                 </DialogContent>
             </Dialog>

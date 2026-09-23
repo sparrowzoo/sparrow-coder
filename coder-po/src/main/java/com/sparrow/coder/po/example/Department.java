@@ -15,15 +15,28 @@
  * limitations under the License.
  */
 
-package com.sparrow.coder.dao;
+package com.sparrow.coder.po.example;
 
-import com.sparrow.protocol.dao.DaoSupport;
-import com.sparrow.coder.po.UserExample;
-import com.sparrow.coder.dao.query.UserExampleDBPagerQuery;
-import java.util.List;
+import com.sparrow.protocol.DisplayTextAccessor;
+import com.sparrow.protocol.dao.PO;
+import jakarta.persistence.*;
+import lombok.Data;
 
-public interface UserExampleDAO extends DaoSupport<UserExample, Long> {
-    List<UserExample> queryUserExamples(UserExampleDBPagerQuery userExamplePagerQuery);
+/**
+ * 注意implements DisplayTextAccessor 为自动提供列表搜索支持 必须添加
+ */
+@Table(name = "t_department")
+@Data
+public class Department extends PO implements DisplayTextAccessor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", columnDefinition = "int COMMENT 'ID'")
+    private Long id;
+    @Column(name = "name", nullable = false, columnDefinition = "varchar(32) COMMENT '部门名称'")
+    private String name;
 
-    Long countUserExample(UserExampleDBPagerQuery userExamplePagerQuery);
+    @Override
+    public String getDisplayText() {
+        return this.name;
+    }
 }

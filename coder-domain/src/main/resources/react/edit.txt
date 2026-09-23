@@ -66,13 +66,13 @@ export default function EditPage({cellContext,callbackHandler}: CellContextProps
 
 
     return (
-             <form className={"h-[calc(100vh-80px)] flex flex-col"} onSubmit={handleSubmit(onSubmit)}>
+             <form className="admin-form admin-form-wide" onSubmit={handleSubmit(onSubmit)}>
                         <DialogHeader>
                             <DialogTitle>{globalTranslate("edit")}</DialogTitle>
                             <DialogDescription>
                             </DialogDescription>
                         </DialogHeader>
-            <div className="min-h-0 flex-1 flex-col overflow-y-scroll">
+            <div className="admin-form-fields">
             $frontend_edit_form_items
              </div>
            <DialogFooter>
