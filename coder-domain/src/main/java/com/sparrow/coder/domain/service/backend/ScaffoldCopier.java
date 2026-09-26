@@ -45,7 +45,7 @@ public class ScaffoldCopier {
         ProjectConfigBO projectConfig = registry.getProject().getProjectConfig();
         String scaffoldHome = new FileNameBuilder(config.getWorkspace()).joint("sparrow-example").build();
 
-        String frontScaffoldHome = new FileNameBuilder(config.getWorkspace()).joint(config.getFrontProjectRoot()).joint("react-next-admin").build();
+        String frontScaffoldHome = new FileNameBuilder(config.getWorkspace()).joint(config.getFrontendProjectRoot()).joint("react-next-admin").build();
 
 
         File directory = new File(frontScaffoldHome);
