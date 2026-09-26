@@ -5,7 +5,7 @@ CREATE TABLE `t_project_config` (
  `frontend_name` varchar(50) default '' comment '前端项目名称'  NOT NULL,
  `chinese_name` varchar(50) default '' comment '项目中文名称'  NOT NULL,
  `i18n` tinyint(1) default 0 comment '是否支持国际化'  ,
- `description` text default '' comment '项目描述'  ,
+ `description` text null comment '项目描述'  ,
  `module_prefix` varchar(50) default '' comment '模块前缀'  NOT NULL,
  `architectures` varchar(50) default '' comment '代码架构'  ,
  `config` varchar(512) default '' comment '脚手架配置'  ,

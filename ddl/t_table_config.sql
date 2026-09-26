@@ -5,7 +5,7 @@ CREATE TABLE `t_table_config` (
  `primary_key` varchar(32) default '' comment '主键'  NOT NULL,
  `table_name` varchar(128)  default '' comment '表名'  NOT NULL,
  `class_name` varchar(128)  default '' comment '类名'  NOT NULL,
- `description` varchar(255)  default '' comment '描述'  NOT NULL,
+ `description` varchar(255)  null comment '描述'  NOT NULL,
  `locked` tinyint(1)  default 0 comment '是否锁定'  NOT NULL,
  `checkable` int  default 0 comment '选择'  NOT NULL,
  `row_menu` int  default 0 comment '行菜单'  NOT NULL,
