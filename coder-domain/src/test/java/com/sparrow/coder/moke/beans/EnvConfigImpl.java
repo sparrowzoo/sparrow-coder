@@ -10,7 +10,7 @@ import java.io.File;
 @Named
 @Slf4j
 public class EnvConfigImpl implements EnvConfig {
-    EnvConfigImpl() {
+    public EnvConfigImpl() {
         log.info("env config impl");
     }
 
@@ -19,6 +19,9 @@ public class EnvConfigImpl implements EnvConfig {
 
     @Value("${project_root}")
     private String projectRoot;
+
+    @Value("${front_project_root")
+    private String frontProjectRoot;
 
     @Value("${multi_user}")
     private Boolean multiUser;
@@ -35,6 +38,11 @@ public class EnvConfigImpl implements EnvConfig {
     @Override
     public String getProjectRoot() {
         return this.projectRoot.replace("/", File.separator);
+    }
+
+    @Override
+    public String getFrontProjectRoot() {
+        return this.frontProjectRoot;
     }
 
     @Override

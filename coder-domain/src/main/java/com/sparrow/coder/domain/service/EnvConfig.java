@@ -22,6 +22,8 @@ public interface EnvConfig {
 
     public String getProjectRoot();
 
+    public String getFrontProjectRoot();
+
     public Boolean getMultiUser();
 
     public String getHome(Long userId);

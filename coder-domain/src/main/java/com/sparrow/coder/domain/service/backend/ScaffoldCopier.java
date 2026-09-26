@@ -41,26 +41,20 @@ public class ScaffoldCopier {
     private static Logger logger = LoggerFactory.getLogger(ScaffoldCopier.class);
 
     private static void copyFrontend(TableConfigRegistry registry) {
+        EnvConfig config = registry.getProject().getEnvConfig();
         ProjectConfigBO projectConfig = registry.getProject().getProjectConfig();
-        String scaffoldHome = new FileNameBuilder(registry.getProject().getEnvConfig().getWorkspace())
-                .joint("sparrow-example").build();
+        String scaffoldHome = new FileNameBuilder(config.getWorkspace()).joint("sparrow-example").build();
 
-        String frontScaffoldHome = new FileNameBuilder(registry.getProject().getEnvConfig().getWorkspace())
-                .joint("sparrow")
-                .joint("sparrow-js")
-                .joint("react-next-admin").build();
+        String frontScaffoldHome = new FileNameBuilder(config.getWorkspace()).joint(config.getFrontProjectRoot()).joint("react-next-admin").build();
 
 
         File directory = new File(frontScaffoldHome);
         FolderFilter folderFilter = (sourceFile) -> {
             String fileName = sourceFile.replace(scaffoldHome, "");
-            if (fileName.equalsIgnoreCase(".gitignore")
-                    || fileName.equalsIgnoreCase(".env.development")
-                    || fileName.equalsIgnoreCase(".env.production")) {
+            if (fileName.equalsIgnoreCase(".gitignore") || fileName.equalsIgnoreCase(".env.development") || fileName.equalsIgnoreCase(".env.production")) {
                 return false;
             }
-            if (sourceFile.equalsIgnoreCase("node_modules")
-                    || sourceFile.equalsIgnoreCase("out")) {
+            if (sourceFile.equalsIgnoreCase("node_modules") || sourceFile.equalsIgnoreCase("out")) {
                 return true;
             }
 
@@ -76,12 +70,7 @@ public class ScaffoldCopier {
             String targetFileName = sourceFileName.replace(frontScaffoldHome, "");
             EnvConfig envConfig = registry.getProject().getEnvConfig();
             String home = envConfig.getHome(projectConfig.getCreateUserId());
-            String targetPath = new FileNameBuilder(envConfig.getWorkspace())
-                    .joint(envConfig.getProjectRoot())
-                    .joint(home)
-                    .joint(registry.getProject().getProjectConfig().getName())
-                    .joint("front")
-                    .joint(targetFileName).build();
+            String targetPath = new FileNameBuilder(envConfig.getWorkspace()).joint(envConfig.getProjectRoot()).joint(home).joint(registry.getProject().getProjectConfig().getName()).joint("front").joint(targetFileName).build();
             try {
                 FileUtility.getInstance().copy(sourceFileName, targetPath);
             } catch (Exception e) {
@@ -105,8 +94,7 @@ public class ScaffoldCopier {
 
     private static void copyBackend(TableConfigRegistry registry) {
         ProjectConfigBO projectConfig = registry.getProject().getProjectConfig();
-        String scaffoldHome = new FileNameBuilder(registry.getProject().getEnvConfig().getWorkspace())
-                .joint("sparrow-example").build();
+        String scaffoldHome = new FileNameBuilder(registry.getProject().getEnvConfig().getWorkspace()).joint("sparrow-example").build();
         File directory = new File(scaffoldHome);
         FolderFilter backendFolderFilter = (sourceFile) -> {
             String fileName = sourceFile.replace(scaffoldHome, "");
@@ -138,11 +126,7 @@ public class ScaffoldCopier {
             }
             EnvConfig envConfig = registry.getProject().getEnvConfig();
             String home = envConfig.getHome(projectConfig.getCreateUserId());
-            String targetPath = new FileNameBuilder(envConfig.getWorkspace())
-                    .joint(envConfig.getProjectRoot())
-                    .joint(home)
-                    .joint(registry.getProject().getProjectConfig().getName())
-                    .joint(targetFileName).build();
+            String targetPath = new FileNameBuilder(envConfig.getWorkspace()).joint(envConfig.getProjectRoot()).joint(home).joint(registry.getProject().getProjectConfig().getName()).joint(targetFileName).build();
             String content = null;
             //如果不需要parent 包裹，并且是pom.xml，则需要读admin/pom.xml的内容处理
             if (!projectConfig.getWrapWithParent() && targetFileName.equals(File.separator + "pom.xml")) {

@@ -36,7 +36,10 @@ public class DefaultEnvConfig implements EnvConfig {
 
     @Value("${project_root}")
     private String projectRoot;
-    
+
+    @Value("${front_project_root}")
+    private String frontProjectRoot;
+
     @Value("${multi_user}")
     private Boolean multiUser;
 
@@ -52,6 +55,11 @@ public class DefaultEnvConfig implements EnvConfig {
     @Override
     public String getProjectRoot() {
         return this.projectRoot.replace("/", File.separator);
+    }
+
+    @Override
+    public String getFrontProjectRoot() {
+        return this.frontProjectRoot;
     }
 
     @Override
