@@ -20,8 +20,8 @@ public class EnvConfigImpl implements EnvConfig {
     @Value("${project_root}")
     private String projectRoot;
 
-    @Value("${front_project_root")
-    private String frontProjectRoot;
+    @Value("${frontend_project_root")
+    private String frontendProjectRoot;
 
     @Value("${multi_user}")
     private Boolean multiUser;
@@ -41,8 +41,8 @@ public class EnvConfigImpl implements EnvConfig {
     }
 
     @Override
-    public String getFrontProjectRoot() {
-        return this.frontProjectRoot;
+    public String getFrontendProjectRoot() {
+        return this.frontendProjectRoot;
     }
 
     @Override

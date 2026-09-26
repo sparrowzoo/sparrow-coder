@@ -22,7 +22,7 @@ public interface EnvConfig {
 
     public String getProjectRoot();
 
-    public String getFrontProjectRoot();
+    public String getFrontendProjectRoot();
 
     public Boolean getMultiUser();
 
