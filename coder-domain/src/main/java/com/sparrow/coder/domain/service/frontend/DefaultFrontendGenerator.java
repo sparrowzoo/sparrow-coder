@@ -60,13 +60,13 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
     public String getTargetPhysicalPath(FrontendKey key) {
         ProjectConfigBO projectConfig = this.project.getProjectConfig();
         EnvConfig envConfig = project.getEnvConfig();
-        String projectName = projectConfig.getFrontendName();
+        String projectName = projectConfig.getName();
         String home = envConfig.getHome(projectConfig.getCreateUserId());
         return new FileNameBuilder(envConfig.getWorkspace())
                 .joint(envConfig.getProjectRoot())
                 .joint(home)
                 .joint(projectName)
-                .joint("front")
+                .joint(projectConfig.getFrontendName())
                 .joint(this.frontendArchAccessor.getPath(key))
                 .build();
     }

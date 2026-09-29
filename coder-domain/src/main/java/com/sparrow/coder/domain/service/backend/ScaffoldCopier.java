@@ -70,7 +70,7 @@ public class ScaffoldCopier {
             String targetFileName = sourceFileName.replace(frontScaffoldHome, "");
             EnvConfig envConfig = registry.getProject().getEnvConfig();
             String home = envConfig.getHome(projectConfig.getCreateUserId());
-            String targetPath = new FileNameBuilder(envConfig.getWorkspace()).joint(envConfig.getProjectRoot()).joint(home).joint(registry.getProject().getProjectConfig().getName()).joint("front").joint(targetFileName).build();
+            String targetPath = new FileNameBuilder(envConfig.getWorkspace()).joint(envConfig.getProjectRoot()).joint(home).joint(projectConfig.getName()).joint(projectConfig.getFrontendName()).joint(targetFileName).build();
             try {
                 FileUtility.getInstance().copy(sourceFileName, targetPath);
             } catch (Exception e) {
