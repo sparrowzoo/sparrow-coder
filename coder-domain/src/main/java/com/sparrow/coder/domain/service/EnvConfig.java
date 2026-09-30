@@ -17,17 +17,52 @@
 
 package com.sparrow.coder.domain.service;
 
+import com.sparrow.coder.domain.bo.ProjectConfigBO;
+import com.sparrow.io.file.FileNameBuilder;
+import com.sparrow.support.EnvironmentSupport;
+import com.sparrow.utility.StringUtility;
+
 public interface EnvConfig {
-    public String getWorkspace();
 
-    public String getProjectRoot();
+    /**
+     * 生成后脚手架的工作目录
+     *
+     * @return
+     */
+    public String getScaffoldWorkspace();
 
-    public String getFrontendProjectRoot();
+    /**
+     * 后端脚手架地址
+     *
+     * @return
+     */
+    public String getBackendScaffoldTemplateHome();
+
+    /**
+     * 前端脚手架地址
+     *
+     * @return
+     */
+    public String getFrontendScaffoldTemplateHome();
 
     public Boolean getMultiUser();
 
-    public String getHome(Long userId);
+    /**
+     * 用户的家目录 相对于脚手架workspace
+     *
+     * @param userId
+     * @return
+     */
+    public String getUserHome(Long userId);
 
     public Boolean overwrite();
+
+    public default String getProjectHome(ProjectConfigBO projectConfig) {
+        if (StringUtility.isNullOrEmpty(this.getScaffoldWorkspace())) {
+            return EnvironmentSupport.getInstance().getWorkspace(projectConfig.getName());
+        }
+        String userHome = this.getUserHome(projectConfig.getCreateUserId());
+        return new FileNameBuilder(this.getScaffoldWorkspace()).joint(userHome).joint(projectConfig.getName()).build();
+    }
 
 }

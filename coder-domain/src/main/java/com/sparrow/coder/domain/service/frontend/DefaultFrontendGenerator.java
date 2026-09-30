@@ -17,10 +17,6 @@
 
 package com.sparrow.coder.domain.service.frontend;
 
-import com.sparrow.core.spi.JsonFactory;
-import com.sparrow.io.file.FileNameBuilder;
-import com.sparrow.json.Json;
-import com.sparrow.utility.FileUtility;
 import com.sparrow.coder.domain.bo.ProjectBO;
 import com.sparrow.coder.domain.bo.ProjectConfigBO;
 import com.sparrow.coder.domain.bo.TableContext;
@@ -31,6 +27,10 @@ import com.sparrow.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrow.coder.domain.service.template.TemplateEngineerProvider;
 import com.sparrow.coder.enums.ArchitectureCategory;
 import com.sparrow.coder.enums.FrontendKey;
+import com.sparrow.core.spi.JsonFactory;
+import com.sparrow.io.file.FileNameBuilder;
+import com.sparrow.json.Json;
+import com.sparrow.utility.FileUtility;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -59,16 +59,8 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
     @Override
     public String getTargetPhysicalPath(FrontendKey key) {
         ProjectConfigBO projectConfig = this.project.getProjectConfig();
-        EnvConfig envConfig = project.getEnvConfig();
-        String projectName = projectConfig.getName();
-        String home = envConfig.getHome(projectConfig.getCreateUserId());
-        return new FileNameBuilder(envConfig.getWorkspace())
-                .joint(envConfig.getProjectRoot())
-                .joint(home)
-                .joint(projectName)
-                .joint(projectConfig.getFrontendName())
-                .joint(this.frontendArchAccessor.getPath(key))
-                .build();
+        EnvConfig envConfig = this.project.getEnvConfig();
+        return new FileNameBuilder(envConfig.getProjectHome(projectConfig)).joint(projectConfig.getFrontendName()).joint(this.frontendArchAccessor.getPath(key)).build();
     }
 
     @Override

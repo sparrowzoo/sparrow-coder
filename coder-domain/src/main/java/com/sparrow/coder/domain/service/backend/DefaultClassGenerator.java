@@ -17,12 +17,7 @@
 
 package com.sparrow.coder.domain.service.backend;
 
-import com.sparrow.io.file.FileNameBuilder;
-import com.sparrow.support.EnvironmentSupport;
-import com.sparrow.utility.FileUtility;
-import com.sparrow.utility.StringUtility;
 import com.sparrow.coder.domain.bo.ProjectBO;
-import com.sparrow.coder.domain.bo.ProjectConfigBO;
 import com.sparrow.coder.domain.bo.TableConfigBO;
 import com.sparrow.coder.domain.bo.TableContext;
 import com.sparrow.coder.domain.service.ArchitectureGenerator;
@@ -32,6 +27,10 @@ import com.sparrow.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrow.coder.domain.service.template.TemplateEngineerProvider;
 import com.sparrow.coder.enums.ArchitectureCategory;
 import com.sparrow.coder.enums.ClassKey;
+import com.sparrow.io.file.FileNameBuilder;
+import com.sparrow.support.EnvironmentSupport;
+import com.sparrow.utility.FileUtility;
+import com.sparrow.utility.StringUtility;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -68,13 +67,10 @@ public class DefaultClassGenerator implements ClassGenerator {
             String fullPackage = classPlaceholderGenerator.getPackage(classKey);
             path = new FileNameBuilder("src").joint("main").joint("java").joint(fullPackage.replace('.', File.separatorChar)).build();
         }
-        ProjectConfigBO projectConfig = this.project.getProjectConfig();
-        String projectName = projectConfig.getName();
         String parentModulePath = ClassKey.PO.equals(classKey) ? "" : this.project.getProjectConfig().getWrapWithParent() ? "admin" : "";
         String module = StringUtility.isNullOrEmpty(modulePath) ? "" : modulePath + File.separator;
-        String home = this.project.getEnvConfig().getHome(this.project.getProjectConfig().getCreateUserId());
         String className = this.classPlaceholderGenerator.getClassName(classKey);
-        String fullPhysicalPath = new FileNameBuilder(this.project.getEnvConfig().getWorkspace()).joint(this.project.getEnvConfig().getProjectRoot()).joint(home).joint(projectName).joint(parentModulePath).joint(module).joint(path).fileName(className).extension(extension).build();
+        String fullPhysicalPath = new FileNameBuilder(project.getEnvConfig().getProjectHome(project.getProjectConfig())).joint(parentModulePath).joint(module).joint(path).fileName(className).extension(extension).build();
         fullPhysicalPath = StringUtility.replace(fullPhysicalPath, tableContext.getPlaceHolder());
         if (!this.project.getProjectConfig().getWrapWithParent()) {
             fullPhysicalPath = fullPhysicalPath.replace("-admin", "");

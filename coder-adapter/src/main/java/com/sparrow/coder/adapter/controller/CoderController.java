@@ -161,18 +161,15 @@ public class CoderController {
         LoginUser loginUser = SessionContext.getLoginUser();
         Asserts.isTrue(!projectConfig.getCreateUserId().equals(loginUser.getUserId()), SparrowError.SYSTEM_PERMISSION_DENIED);
         EnvConfig envConfig = registry.getProject().getEnvConfig();
-        String home = envConfig.getHome(projectConfig.getCreateUserId());
+        String home = envConfig.getUserHome(projectConfig.getCreateUserId());
         String projectName = projectConfig.getName();
-        String targetPath = new FileNameBuilder(envConfig.getWorkspace()).joint(envConfig.getProjectRoot()).joint(home).joint(projectName).build();
+        String targetPath = new FileNameBuilder(envConfig.getScaffoldWorkspace()).joint(home).joint(projectName).build();
 
-        FolderFilter folderFilter = new FolderFilter() {
-            @Override
-            public Boolean filter(String sourceFile) {
-                if (sourceFile.endsWith("node_modules") || sourceFile.endsWith("out") || sourceFile.endsWith(".idea") || sourceFile.endsWith(".next") || sourceFile.endsWith("target")) {
-                    return true;
-                }
-                return false;
+        FolderFilter folderFilter = sourceFile -> {
+            if (sourceFile.endsWith("node_modules") || sourceFile.endsWith("out") || sourceFile.endsWith(".idea") || sourceFile.endsWith(".next") || sourceFile.endsWith("target")) {
+                return true;
             }
+            return false;
         };
 
         response.resetBuffer();

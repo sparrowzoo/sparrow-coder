@@ -99,7 +99,7 @@ public class DefaultCodeGenerator implements CodeGenerator {
     }
 
     @Override
-    public void initScaffold() {
+    public void initScaffold() throws IOException {
         ScaffoldCopier.copy(registry);
     }
 
@@ -107,10 +107,9 @@ public class DefaultCodeGenerator implements CodeGenerator {
     public void clear() {
         ProjectBO project = registry.getProject();
         EnvConfig envConfig = registry.getProject().getEnvConfig();
-        String home = envConfig.getHome(project.getProjectConfig().getCreateUserId());
+        String home = envConfig.getUserHome(project.getProjectConfig().getCreateUserId());
         String targetDirectoryPath =
-                new FileNameBuilder(envConfig.getWorkspace())
-                        .joint(envConfig.getProjectRoot())
+                new FileNameBuilder(envConfig.getScaffoldWorkspace())
                         .joint(home)
                         .joint(project.getProjectConfig().getName())
                         .build();

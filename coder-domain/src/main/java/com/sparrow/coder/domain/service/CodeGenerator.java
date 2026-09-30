@@ -25,7 +25,7 @@ import java.io.IOException;
 public interface CodeGenerator {
     void generate(String tableName) throws IOException, BusinessException;
 
-    void initScaffold();
+    void initScaffold() throws IOException;
 
     void clear();
 

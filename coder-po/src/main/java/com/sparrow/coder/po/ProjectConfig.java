@@ -31,6 +31,9 @@ public class ProjectConfig extends PO implements DisplayTextAccessor {
     private Long id;
     @Column(name = "name", nullable = false, columnDefinition = "varchar(50) default '' comment '项目名称'")
     private String name;
+    @Column(name = "full_base_package_name", nullable = false, columnDefinition = "varchar(128) default '' comment 'base package'")
+    private String fullBasePackageName;
+
     @Column(name = "frontend_name",nullable = false,columnDefinition = "varchar(50) default '' comment '前端项目名称'")
     private String frontendName;
     @Column(name = "chinese_name",nullable = false,  columnDefinition = "varchar(50) default '' comment '项目中文名称'")

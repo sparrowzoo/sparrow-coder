@@ -17,11 +17,10 @@
 
 package com.sparrow.coder.domain.bo;
 
+import com.sparrow.protocol.BO;
+import com.sparrow.protocol.DisplayTextAccessor;
 import com.sparrow.protocol.enums.StatusRecord;
-import com.sparrow.protocol.*;
-
-import java.time.*;
-
+import com.sparrow.utility.StringUtility;
 import lombok.Data;
 
 @Data
@@ -30,6 +29,7 @@ public class ProjectConfigBO implements BO, DisplayTextAccessor {
     private String name;
     private String frontendName;
     private String chineseName;
+    private String fullBasePackageName;
     private Boolean i18n;
     private String description;
     private String modulePrefix;
@@ -46,4 +46,11 @@ public class ProjectConfigBO implements BO, DisplayTextAccessor {
     private Boolean deleted;
     private StatusRecord status;
     private String displayText;
+
+    public String getFullBasePackageName() {
+        if (StringUtility.isNullOrEmpty(this.fullBasePackageName)) {
+            return "com.sparrow.example";
+        }
+        return this.fullBasePackageName;
+    }
 }

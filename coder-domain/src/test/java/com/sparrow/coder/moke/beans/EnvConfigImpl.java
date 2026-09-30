@@ -14,35 +14,35 @@ public class EnvConfigImpl implements EnvConfig {
         log.info("env config impl");
     }
 
-    @Value("${workspace}")
+    @Value("${scaffold_workspace:}")
     private String workspace;
 
-    @Value("${project_root}")
-    private String projectRoot;
+    @Value("${scaffold_backend_template_home:}")
+    private String backendScaffoldTemplateHome;
 
-    @Value("${frontend_project_root")
-    private String frontendProjectRoot;
+    @Value("${scaffold_frontend_template_home:")
+    private String frontendScaffoldTemplateHome;
 
-    @Value("${multi_user}")
+    @Value("${multi_user:false}")
     private Boolean multiUser;
 
-    @Value("${overwrite}")
+    @Value("${overwrite:true}")
     private Boolean overwrite;
 
 
     @Override
-    public String getWorkspace() {
-        return this.workspace.replace("/", File.separator);
+    public String getScaffoldWorkspace() {
+        return this.workspace;
     }
 
     @Override
-    public String getProjectRoot() {
-        return this.projectRoot.replace("/", File.separator);
+    public String getBackendScaffoldTemplateHome() {
+        return this.backendScaffoldTemplateHome;
     }
 
     @Override
-    public String getFrontendProjectRoot() {
-        return this.frontendProjectRoot;
+    public String getFrontendScaffoldTemplateHome() {
+        return this.frontendScaffoldTemplateHome;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class EnvConfigImpl implements EnvConfig {
     }
 
     @Override
-    public String getHome(Long userId) {
+    public String getUserHome(Long userId) {
         if (this.multiUser) {
             return userId + "";
         }

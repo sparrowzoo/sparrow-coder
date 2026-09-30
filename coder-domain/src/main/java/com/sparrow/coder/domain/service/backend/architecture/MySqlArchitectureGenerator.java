@@ -17,15 +17,15 @@
 
 package com.sparrow.coder.domain.service.backend.architecture;
 
-import com.sparrow.io.file.FileNameBuilder;
-import com.sparrow.orm.EntityManager;
-import com.sparrow.utility.FileUtility;
 import com.sparrow.coder.constant.ArchitectureNames;
 import com.sparrow.coder.domain.bo.ProjectConfigBO;
 import com.sparrow.coder.domain.service.AbstractArchitectureGenerator;
 import com.sparrow.coder.domain.service.EnvConfig;
 import com.sparrow.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrow.coder.enums.ArchitectureCategory;
+import com.sparrow.io.file.FileNameBuilder;
+import com.sparrow.orm.EntityManager;
+import com.sparrow.utility.FileUtility;
 import jakarta.inject.Named;
 
 import java.io.IOException;
@@ -35,17 +35,9 @@ public class MySqlArchitectureGenerator extends AbstractArchitectureGenerator {
     @Override
     public void generate(TableConfigRegistry registry, String tableName) throws IOException {
         EntityManager entityManager = registry.getTableContext(tableName).getEntityManager();
-        EnvConfig envConfig = registry.getProject().getEnvConfig();
         ProjectConfigBO projectConfig = registry.getProject().getProjectConfig();
-        String home = envConfig.getHome(projectConfig.getCreateUserId());
-        String fullPath = new FileNameBuilder(envConfig.getWorkspace())
-                .joint(envConfig.getProjectRoot())
-                .joint(home)
-                .joint(projectConfig.getName())
-                .joint("ddl")
-                .fileName(tableName)
-                .extension("sql")
-                .build();
+        EnvConfig envConfig = registry.getProject().getEnvConfig();
+        String fullPath = new FileNameBuilder(envConfig.getProjectHome(projectConfig)).joint("ddl").fileName(tableName).extension("sql").build();
         String sql = entityManager.getCreateDDL();
         System.err.println(sql);
         FileUtility.getInstance().writeFile(fullPath, sql);

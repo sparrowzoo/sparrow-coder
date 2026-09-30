@@ -7,6 +7,7 @@ CREATE TABLE `t_project_config` (
  `i18n` tinyint(1) default 0 comment '是否支持国际化'  ,
  `description` text null comment '项目描述'  ,
  `module_prefix` varchar(50) default '' comment '模块前缀'  NOT NULL,
+ `full_base_package_name` varchar(128) default '' comment 'base package'  ,
  `architectures` varchar(50) default '' comment '代码架构'  ,
  `config` varchar(512) default '' comment '脚手架配置'  ,
  `wrap_with_parent` tinyint(1) default 0 comment '是否使用父module'  ,
