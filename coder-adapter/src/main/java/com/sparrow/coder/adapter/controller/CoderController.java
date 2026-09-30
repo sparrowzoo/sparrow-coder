@@ -56,6 +56,11 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * 清除或者初始化脚手架 是读配置
+ * 用户下载后生成代码 不读配置，直接用户workspace即可
+ * 职责分离
+ */
 @RestController
 @RequestMapping("coder")
 @Tag(name = "CoderConfig", description = "CoderConfig")
