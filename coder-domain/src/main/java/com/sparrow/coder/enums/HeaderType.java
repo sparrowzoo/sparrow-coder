@@ -17,36 +17,40 @@
 
 package com.sparrow.coder.enums;
 
+import com.sparrow.coder.constant.EnumNames;
 import com.sparrow.protocol.EnumIdentityAccessor;
 import com.sparrow.protocol.EnumUniqueName;
-import com.sparrow.coder.constant.EnumNames;
 import lombok.Getter;
 
 @Getter
 @EnumUniqueName(name = EnumNames.HEADER_TYPE)
 public enum HeaderType implements EnumIdentityAccessor {
-    NORMAL("PlainTextHeader", "plain-text", false, false, "标准", 1),
-    NORMAL_SORT("NormalHeader", "normal", true, false, "标准(可排序)", 2),
-    NORMAL_FILTER("NormalHeader", "normal", false, false, "标准(可过滤)", 3),
-    NORMAL_SORT_FILTER("NormalHeader", "normal", true, true, "标准(可过滤,可排序)", 4),
-    CHECK_BOX("CheckboxHeader", "check-box", false, false, "选择", 5),
-    COLUMN_FILTER("ColumnFilter", "column-filter", false, false, "过滤", 6),
-    PLAIN_TEXT("PlainTextHeader", "plain-text", false, false, "操作", 9),
-    EMPTY("EmptyHeader", "empty", false, false, "空白", 10);
+    NORMAL(1, "PlainTextHeader", "plain-text", false, false, "标准", ""),
+    NORMAL_SORT(2, "NormalHeader", "normal", true, false, "标准(可排序)", ""),
+    NORMAL_FILTER(3, "NormalHeader", "normal", false, false, "标准(可过滤)", ""),
+    NORMAL_SORT_FILTER(4, "NormalHeader", "normal", true, true, "标准(可过滤,可排序)", ""),
+    CHECK_BOX(5, "CheckboxHeader", "check-box", false, false, "选择", "select"),
+    COLUMN_FILTER(6, "ColumnFilter", "column-filter", false, false, "过滤", "filter-column"),
+    MENU(9, "PlainTextHeader", "plain-text", false, false, "列菜单", "actions"),
+    TREE(10, "PlainTextHeader", "plain-text", false, false, "树型", ""),
+    EMPTY(99, "EmptyHeader", "empty", false, false, "空白", "");
+
     private String componentName;
     private String fileName;
     private Boolean sortable;
     private Boolean filterable;
     private String description;
     private Integer id;
+    private String specialId;
 
-    HeaderType(String componentName, String fileName, Boolean sortable, Boolean filterable, String description, Integer id) {
+    HeaderType(Integer id, String componentName, String fileName, Boolean sortable, Boolean filterable, String description, String specialId) {
         this.componentName = componentName;
         this.fileName = fileName;
         this.description = description;
         this.sortable = sortable;
         this.filterable = filterable;
         this.id = id;
+        this.specialId = specialId;
     }
 
 

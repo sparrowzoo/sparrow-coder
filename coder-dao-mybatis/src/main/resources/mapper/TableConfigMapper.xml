@@ -12,7 +12,7 @@
         <result column="checkable" property="checkable"/>
         <result column="row_menu" property="rowMenu"/>
         <result column="column_filter" property="columnFilter"/>
-        <result column="status_command" property="statusCommand"/>
+        <result column="is_tree" property="isTree"/>
         <result column="column_configs" property="columnConfigs"/>
         <result column="source" property="source"/>
         <result column="source_code" property="sourceCode"/>
@@ -65,7 +65,7 @@
                 #{checkable},
                 #{rowMenu},
                 #{columnFilter},
-                #{statusCommand},
+                #{isTree},
                 #{columnConfigs},
                 #{source},
                 #{sourceCode},
@@ -87,7 +87,7 @@
             `checkable`=#{checkable},
             `row_menu`=#{rowMenu},
             `column_filter`=#{columnFilter},
-            `status_command`=#{statusCommand},
+            `is_tree`=#{isTree},
             `column_configs`=#{columnConfigs},
             `page_size`=#{pageSize},
             `only_access_self`=#{onlyAccessSelf},

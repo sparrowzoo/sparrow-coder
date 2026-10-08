@@ -17,11 +17,10 @@
 
 package com.sparrow.coder.po;
 
-import com.sparrow.protocol.dao.ListDatasource;
+import com.sparrow.protocol.dao.InputDatasource;
 import com.sparrow.protocol.dao.PO;
-import com.sparrow.protocol.dao.enums.ListDatasourceType;
+import com.sparrow.protocol.dao.enums.DatasourceType;
 import jakarta.persistence.*;
-import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
@@ -32,7 +31,7 @@ public class TableConfig extends PO {
     @Column(name = "id", columnDefinition = "int COMMENT 'ID'")
     private Long id;
     @Column(name = "project_id", nullable = false, columnDefinition = "int comment '项目'")
-    @ListDatasource(type = ListDatasourceType.TABLE, params = "t_project_config")
+    @InputDatasource(type = DatasourceType.TABLE, params = "t_project_config")
     private Long projectId;
     @Column(name = "primary_key", updatable = false, nullable = false, columnDefinition = "varchar(32) default '' comment '主键'")
     private String primaryKey;
@@ -50,15 +49,10 @@ public class TableConfig extends PO {
     private Integer rowMenu;
     @Column(name = "column_filter", nullable = false, columnDefinition = "int  default 0 comment '列过滤器'")
     private Integer columnFilter;
-    @Column(name = "status_command", nullable = false, columnDefinition = "tinyint(1)  default 0 comment '是否显示状态命令'")
-    private Boolean statusCommand;
+    @Column(name = "is_tree", nullable = false, columnDefinition = "tinyint(1)  default 0 comment '是否为树'")
+    private Boolean isTree;
     @Column(name = "column_configs", columnDefinition = "text null comment '列配置'")
     private String columnConfigs;
-    @Column(name = "source", updatable = false, nullable = false, columnDefinition = "int default 0 not  null comment '类来源'")
-    @ListDatasource(type = ListDatasourceType.ENUM, params = "datasourceType")
-    private Integer source;
-    @Column(name = "source_code", updatable = false, columnDefinition = "text null comment '源代码'")
-    private String sourceCode;
     @Column(name = "page_size", nullable = false, columnDefinition = "int default 0 not  null comment '分页大小'")
     private Integer pageSize;
     @Column(name = "only_access_self", nullable = false, columnDefinition = "tinyint(2) default 0 not  null comment '只看自己'")

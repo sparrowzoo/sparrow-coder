@@ -32,10 +32,8 @@ public class TableConfigDTO implements DTO {
     private Integer checkable;
     private Integer rowMenu;
     private Integer columnFilter;
-    private Boolean statusCommand;
+    private Boolean isTree;
     private String columnConfigs;
-    private Integer source;
-    private String sourceCode;
     private Integer pageSize;
     private Boolean onlyAccessSelf;
     private String createUserName;

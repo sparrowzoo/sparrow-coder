@@ -38,7 +38,7 @@ public enum ControlType implements EnumIdentityAccessor {
     DATE_HHMMSS("ValidatableTime","validatable-time", "time", 13),
     CHECK_BOX("ValidatableInput","validatable-input", "checkbox", 14),
 //    FILE("validatable-upload", "file", 16),
-//    IMAGE("validatable-upload", "image", 19)
+    IMAGE("ValidatableImage", "validatable-image", "image",15)
     ;
 
 

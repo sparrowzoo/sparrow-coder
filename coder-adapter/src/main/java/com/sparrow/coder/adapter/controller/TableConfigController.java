@@ -17,27 +17,25 @@
 
 package com.sparrow.coder.adapter.controller;
 
-import com.sparrow.protocol.*;
-
-import java.util.*;
-
-import com.sparrow.protocol.pager.PagerResult;
-import com.sparrow.spring.container.EnumsContainer;
 import com.sparrow.coder.adapter.assemble.TableConfigAssemble;
 import com.sparrow.coder.domain.bo.TableConfigBO;
-import com.sparrow.coder.protocol.param.TableConfigParam;
-import com.sparrow.coder.domain.service.registry.ValidatorRegistry;
-import com.sparrow.coder.protocol.query.TableConfigQuery;
-import com.sparrow.coder.protocol.dto.TableConfigDTO;
+import com.sparrow.coder.domain.service.ProjectConfigService;
 import com.sparrow.coder.domain.service.TableConfigService;
-
+import com.sparrow.coder.domain.service.registry.ValidatorRegistry;
+import com.sparrow.coder.protocol.dto.TableConfigDTO;
+import com.sparrow.coder.protocol.param.TableConfigParam;
+import com.sparrow.coder.protocol.query.TableConfigQuery;
+import com.sparrow.coder.utils.DefaultColumnsDefCreator;
+import com.sparrow.protocol.BusinessException;
+import com.sparrow.protocol.ListRecordTotalBO;
+import com.sparrow.protocol.pager.PagerResult;
+import com.sparrow.spring.container.EnumsContainer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
 import org.springframework.web.bind.annotation.*;
-import com.sparrow.coder.domain.service.ProjectConfigService;
 
-import com.sparrow.coder.utils.DefaultColumnsDefCreator;
+import java.util.Set;
 
 
 @RestController
@@ -59,6 +57,7 @@ public class TableConfigController {
     @PostMapping("search.json")
     @Operation(method = "搜索")
     public PagerResult<TableConfigDTO> search(@RequestBody TableConfigQuery tableConfigQuery) {
+        tableConfigQuery.allPageSize();
         ListRecordTotalBO<TableConfigBO> tableConfigListTotalRecord = this.tableConfigService.queryTableConfig(tableConfigQuery);
         PagerResult<TableConfigDTO> pagerResult = this.tableConfigAssemble.assemblePager(tableConfigListTotalRecord, tableConfigQuery);
         pagerResult.putDictionary("status", coderEnumsContainer.getEnums("status"));

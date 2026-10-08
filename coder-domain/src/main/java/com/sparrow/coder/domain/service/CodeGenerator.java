@@ -17,13 +17,14 @@
 
 package com.sparrow.coder.domain.service;
 
+import com.sparrow.coder.protocol.enums.CoderError;
 import com.sparrow.protocol.BusinessException;
 import com.sparrow.coder.domain.service.registry.TableConfigRegistry;
 
 import java.io.IOException;
 
 public interface CodeGenerator {
-    void generate(String tableName) throws IOException, BusinessException;
+    CoderError generate(String tableName) throws IOException, BusinessException;
 
     void initScaffold() throws IOException;
 

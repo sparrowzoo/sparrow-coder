@@ -17,14 +17,6 @@
 
 package com.sparrow.coder.domain.service.frontend.placeholder.extension;
 
-import com.sparrow.coder.enums.ArchitectureCategory;
-import com.sparrow.coder.enums.PlaceholderKey;
-import com.sparrow.orm.EntityManager;
-import com.sparrow.orm.Field;
-import com.sparrow.protocol.dao.enums.ListDatasourceType;
-import com.sparrow.protocol.enums.StatusRecord;
-import com.sparrow.utility.CollectionsUtility;
-import com.sparrow.utility.StringUtility;
 import com.sparrow.coder.domain.bo.ColumnDef;
 import com.sparrow.coder.domain.bo.ProjectBO;
 import com.sparrow.coder.domain.bo.TableContext;
@@ -35,8 +27,15 @@ import com.sparrow.coder.domain.service.frontend.generator.column.ColumnGenerato
 import com.sparrow.coder.domain.service.registry.ColumnGeneratorRegistry;
 import com.sparrow.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrow.coder.domain.service.registry.ValidatorRegistry;
-import com.sparrow.coder.enums.*;
+import com.sparrow.coder.enums.ArchitectureCategory;
+import com.sparrow.coder.enums.PlaceholderKey;
 import com.sparrow.coder.utils.JavaTsTypeConverter;
+import com.sparrow.orm.EntityManager;
+import com.sparrow.orm.Field;
+import com.sparrow.protocol.dao.enums.DatasourceType;
+import com.sparrow.protocol.enums.StatusRecord;
+import com.sparrow.utility.CollectionsUtility;
+import com.sparrow.utility.StringUtility;
 import jakarta.inject.Named;
 
 import java.util.ArrayList;
@@ -80,7 +79,7 @@ public class SearchPlaceholderExtension extends AbstractPlaceholderExtension {
                 continue;
             }
             if (columnDef.getShowInSearch()) {
-                if (columnDef.getDatasourceType().equals(ListDatasourceType.ENUM.getIdentity())) {
+                if (columnDef.getDatasourceType().equals(DatasourceType.ENUM.getIdentity())) {
                     frontQueryFields.add(String.format("%2$s: %1$s;", "number", field.getPropertyName()));
                     frontSearchItems.add(String.format("<SearchSelect propertyName={\"%1$s\"} pageTranslate={pageTranslate} setSearchCondition={set%2$sQuery} dictionary={meta.result.data.dictionary['%1$s']}/>", field.getPropertyName(), persistenceClassName));
                 } else {

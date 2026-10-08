@@ -61,7 +61,9 @@ public class CodeGenerator {
                         "[(${test})]      -- 不转义示例\n" +
                         "\n" +
                         "===== 条件表达式 =====\n" +
-                        "[# th:if=\"${className == 'String'}\"] className 是 String[/]\n" +
+                        "[# th:if=\"${className == 'String2'}\"] className \n" +
+                        "是 String[/]\n" +
+                        "这里是正常内容 你要正常显示" +
                         "[# th:if=\"${className == 'Integer'}\"] className 是 Integer[/]\n" +
                         "[# th:unless=\"${className == 'String'}\"] className 不是 String[/]\n" +
                         "三元: [(${className == 'String'} ? '是String' : '不是String')]\n" +

@@ -17,8 +17,8 @@
 
 package com.sparrow.coder.domain.service.frontend.validate.react;
 
-import com.sparrow.utility.StringUtility;
 import com.sparrow.coder.domain.bo.validate.DigitalValidator;
+import com.sparrow.utility.StringUtility;
 import jakarta.inject.Named;
 
 @Named
@@ -46,5 +46,10 @@ public class DigitalValidatorMessageGenerator extends AbstractValidatorMessageGe
     @Override
     public DigitalValidator defaultValidator() {
         return DigitalValidator.DIGITAL_VALIDATOR;
+    }
+
+    @Override
+    public int getOrder() {
+        return 20;
     }
 }

@@ -45,6 +45,14 @@ public interface EnvConfig {
      */
     public String getFrontendScaffoldTemplateHome();
 
+    /**
+     * 指定的前端项目地址 不指定则在当前项目中
+     * 脚手架生成时 会在当前项目中生成前端代码
+     * 实际生成代码时，会读该配置，用户可能会迁移前端目录
+     * @return
+     */
+    public String getScaffoldFrontendHome();
+
     public Boolean getMultiUser();
 
     /**

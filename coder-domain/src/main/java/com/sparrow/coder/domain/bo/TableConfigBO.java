@@ -17,13 +17,13 @@
 
 package com.sparrow.coder.domain.bo;
 
+import com.sparrow.protocol.BO;
 import com.sparrow.protocol.enums.StatusRecord;
-import com.sparrow.protocol.*;
-import java.time.*;
 import lombok.Data;
+
 @Data
-public class TableConfigBO implements BO
-{ private Long id;
+public class TableConfigBO implements BO {
+    private Long id;
     private Long projectId;
     private String primaryKey;
     private String tableName;
@@ -33,10 +33,8 @@ public class TableConfigBO implements BO
     private Integer checkable;
     private Integer rowMenu;
     private Integer columnFilter;
-    private Boolean statusCommand;
+    private Boolean isTree;
     private String columnConfigs;
-    private Integer source;
-    private String sourceCode;
     private Integer pageSize;
     private Boolean onlyAccessSelf;
     private String createUserName;

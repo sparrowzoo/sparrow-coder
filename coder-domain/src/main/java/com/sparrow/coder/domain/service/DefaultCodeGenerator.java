@@ -17,19 +17,19 @@
 
 package com.sparrow.coder.domain.service;
 
+import com.sparrow.coder.domain.CoderDomainRegistry;
 import com.sparrow.coder.domain.bo.*;
+import com.sparrow.coder.domain.service.backend.ScaffoldCopier;
+import com.sparrow.coder.domain.service.registry.TableConfigRegistry;
+import com.sparrow.coder.protocol.enums.CoderError;
+import com.sparrow.coder.protocol.query.TableConfigQuery;
+import com.sparrow.coder.utils.ConfigUtils;
 import com.sparrow.context.SessionContext;
 import com.sparrow.exception.Asserts;
 import com.sparrow.io.file.FileNameBuilder;
 import com.sparrow.protocol.BusinessException;
 import com.sparrow.protocol.enums.StatusRecord;
 import com.sparrow.utility.FileUtility;
-import com.sparrow.coder.domain.CoderDomainRegistry;
-import com.sparrow.coder.domain.service.backend.ScaffoldCopier;
-import com.sparrow.coder.domain.service.registry.TableConfigRegistry;
-import com.sparrow.coder.protocol.enums.CoderError;
-import com.sparrow.coder.protocol.query.TableConfigQuery;
-import com.sparrow.coder.utils.ConfigUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -55,6 +55,7 @@ public class DefaultCodeGenerator implements CodeGenerator {
         TableConfigQuery tableConfigQuery = new TableConfigQuery();
         tableConfigQuery.setProjectId(registry.getProject().getProjectConfig().getId());
         tableConfigQuery.setStatus(StatusRecord.ENABLE.getIdentity());
+        tableConfigQuery.allPageSize();
         List<TableConfigBO> tableConfigs = domainRegistry.getTableConfigRepository().queryTableConfigs(tableConfigQuery);
 
         for (TableConfigBO tableConfigBO : tableConfigs) {
@@ -79,7 +80,7 @@ public class DefaultCodeGenerator implements CodeGenerator {
 
 
     @Override
-    public void generate(String tableName) throws IOException, BusinessException {
+    public CoderError generate(String tableName) throws IOException, BusinessException {
         TableContext context = registry.getTableContext(tableName);
         if (context == null) {
             throw new IllegalArgumentException("table " + tableName + " not found");
@@ -87,7 +88,7 @@ public class DefaultCodeGenerator implements CodeGenerator {
         Asserts.isTrue(!context.getProject().getProjectConfig().getCreateUserId().equals(SessionContext.getLoginUser().getUserId()), CoderError.NOT_SELF_PROJECT);
         if (context.getTableConfig().getLocked()) {
             log.info("table {} is locked, skip generate", context.getTableConfig().getTableName());
-            //return;
+            return CoderError.TABLE_LOCKED;
         }
         ProjectArchsBO architectures = registry.getProject().getArchitectures();
         for (String architectureCategory : architectures.getArchs().keySet()) {
@@ -96,6 +97,7 @@ public class DefaultCodeGenerator implements CodeGenerator {
                 architectureGenerator.generate(registry, tableName);
             }
         }
+        return null;
     }
 
     @Override

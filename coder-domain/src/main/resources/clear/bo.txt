@@ -1,4 +1,4 @@
-overwrite
+
 package $package_bo;
 
 import com.sparrow.protocol.enums.StatusRecord;
@@ -7,4 +7,11 @@ import java.time.*;
 import lombok.Data;
 @Data
 public class $persistence_class_nameBO implements BO
-    $get_sets
+ [# th:if="${isAssignableDisplayText}"], DisplayTextAccessor[/]
+ [# th:if="${ctx.tableConfig.isTree}"], TreeItemAccessor[/]
+{
+  $get_sets
+  [# th:if="${isAssignableDisplayText}"]private String displayText;[/]
+  [# th:if="${ctx.tableConfig.isTree}"]private Boolean hasChildren;[/]
+}
+

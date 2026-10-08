@@ -1,4 +1,3 @@
-overwrite
 "use client";
 
 import * as React from "react";
@@ -42,8 +41,16 @@ export default function Page() {
       const deleteHandler= (id: number) => {
             $persistence_class_nameApi.delete(id, errorTranslate,Navigations.redirectToLogin).then(()=>{
                 toast.success(globalTranslate("delete")+globalTranslate("operation-success"));
+                init();
             }).catch(()=>{});
         }
+
+        [# th:if="${ctx.tableConfig.isTree}"]
+        const childrenHandler = async (row) => {
+                        const result = await $persistence_class_nameApi.search({parentId: row.id});
+                        return result.data.list;
+                };
+        [/]
 
     if (!dataState) {
         return (
@@ -69,6 +76,7 @@ export default function Page() {
                     EditComponent={EditPage}
                     deleteHandler={deleteHandler}
                     initHandler={init}
+                    [# th:if="${ctx.tableConfig.isTree}"]loadSubRows={childrenHandler}[/]
                     defaultPager={{pageIndex: 0, pageSize: -1}}
                     RowOperationComponents={[]}
                 ></DataTable>

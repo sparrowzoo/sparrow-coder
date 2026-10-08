@@ -1,4 +1,4 @@
-overwrite
+
 package $package_controller;
 
 import com.sparrow.protocol.*;
@@ -74,4 +74,4 @@ public class $persistence_class_nameController {
     public Integer disable$persistence_class_name(@RequestBody Set<Long> ids) throws BusinessException {
        return  this.$persistence_object_nameService.disable$persistence_class_name(ids);
     }
-    }
+}

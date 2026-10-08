@@ -45,6 +45,10 @@ public class DefaultEnvConfig implements EnvConfig {
     @Value("${overwrite:true}")
     private Boolean overwrite;
 
+    @Value("${scaffold_frontend_home:}")
+    private String scaffoldFrontendHome;
+
+
 
     @Override
     public String getScaffoldWorkspace() {
@@ -60,6 +64,12 @@ public class DefaultEnvConfig implements EnvConfig {
     public String getFrontendScaffoldTemplateHome() {
         return this.frontendScaffoldTemplateHome;
     }
+
+    @Override
+    public String getScaffoldFrontendHome() {
+        return this.scaffoldFrontendHome;
+    }
+
     @Override
     public Boolean getMultiUser() {
         return this.multiUser;

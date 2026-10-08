@@ -1,4 +1,4 @@
-overwrite
+
 "use client";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {valibotResolver} from "@hookform/resolvers/valibot";
@@ -9,15 +9,11 @@ import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizo
 import toast from "react-hot-toast";
 import * as v from "valibot";
 import {useTranslations} from "next-intl";
-import {ValidatableDate} from "@/common/components/forms/validatable-date";
-import {ValidatableTextarea} from "@/common/components/forms/validatable-textarea";
-import {ValidatableInput} from "@/common/components/forms/validatable-input";
 import {TableOperationProps,MyTableMeta} from "@/common/lib/table/DataTableProperty";
 import {$persistence_class_name} from "@/components/$persistence_object_by_horizontal/columns";
 import useNavigating from "@/common/hook/NavigatingHook";
-import {ValidatableSelect} from "@/common/components/forms/validatable-select";
 import {PagerResult} from "@/common/lib/protocol/Result";
-
+$frontend_edit_import
 
 
 
@@ -54,6 +50,7 @@ export default function Page({callbackHandler,table}: TableOperationProps<$persi
             errors,
             isSubmitted
         },
+        setError
     } = useForm<FormData>({
         //相当于v.parse
         resolver: valibotResolver(

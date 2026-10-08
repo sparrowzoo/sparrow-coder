@@ -17,12 +17,12 @@
 
 package com.sparrow.coder.domain.service.frontend.validate.react;
 
-import com.sparrow.utility.StringUtility;
 import com.sparrow.coder.domain.bo.validate.RegexValidator;
+import com.sparrow.utility.StringUtility;
 import jakarta.inject.Named;
 
 @Named
-public class RegexValidatorMessageGenerator extends AbstractValidatorMessageGenerator<RegexValidator> {
+public  class RegexValidatorMessageGenerator extends AbstractValidatorMessageGenerator<RegexValidator> {
 
     //https://www.66zan.cn/regexdso/
     @Override
@@ -44,5 +44,10 @@ public class RegexValidatorMessageGenerator extends AbstractValidatorMessageGene
     @Override
     public RegexValidator defaultValidator() {
         return RegexValidator.REGEX_VALIDATOR;
+    }
+
+    @Override
+    public int getOrder() {
+        return 40;
     }
 }

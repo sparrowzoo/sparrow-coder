@@ -1,4 +1,4 @@
-overwrite
+
 import Fetcher from "@/common/lib/Fetcher";
 import {IDENTITY} from "@/common/lib/protocol/Identity";
 import Result from "@/common/lib/protocol/Result";
@@ -53,7 +53,7 @@ export default class $persistence_class_nameApi {
         ): Promise<Result> {
             const body = JSON.stringify([id]);
             return Fetcher.post({
-                                        url: "$persistence_object_by_slash/delete.json",
+                                        url: "/$persistence_object_by_slash/delete.json",
                                         body,
                                         translator,
                                         redirectToLogin: redirectToLogin

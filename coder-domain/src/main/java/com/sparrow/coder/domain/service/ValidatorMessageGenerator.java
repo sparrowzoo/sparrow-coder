@@ -18,8 +18,9 @@
 package com.sparrow.coder.domain.service;
 
 import com.sparrow.coder.domain.bo.validate.Validator;
+import org.springframework.core.Ordered;
 
-public interface ValidatorMessageGenerator<T extends Validator> {
+public interface ValidatorMessageGenerator<T extends Validator> extends Ordered {
     String generateConfig(String propertyName,
                           T validator);
 

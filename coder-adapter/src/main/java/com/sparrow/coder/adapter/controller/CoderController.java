@@ -19,30 +19,31 @@ package com.sparrow.coder.adapter.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.sparrow.cg.impl.DynamicCompiler;
-import com.sparrow.coder.domain.bo.ProjectConfigBO;
-import com.sparrow.coder.domain.service.registry.TableConfigRegistry;
-import com.sparrow.context.SessionContext;
-import com.sparrow.exception.Asserts;
-import com.sparrow.io.FolderFilter;
-import com.sparrow.io.file.FileNameBuilder;
-import com.sparrow.orm.SparrowEntityManager;
-import com.sparrow.protocol.BusinessException;
-import com.sparrow.protocol.LoginUser;
 import com.sparrow.coder.constant.DefaultSpecialColumnIndex;
 import com.sparrow.coder.domain.CoderDomainRegistry;
+import com.sparrow.coder.domain.bo.ProjectConfigBO;
 import com.sparrow.coder.domain.service.CodeGenerator;
 import com.sparrow.coder.domain.service.DefaultCodeGenerator;
 import com.sparrow.coder.domain.service.EnvConfig;
 import com.sparrow.coder.domain.service.TableConfigService;
-import com.sparrow.coder.enums.CodeSource;
+import com.sparrow.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrow.coder.protocol.enums.CoderError;
 import com.sparrow.coder.protocol.param.LocalClassParam;
 import com.sparrow.coder.protocol.param.SourceCodeParam;
 import com.sparrow.coder.protocol.param.TableConfigParam;
 import com.sparrow.coder.protocol.query.ProjectTablesQuery;
 import com.sparrow.coder.utils.DefaultColumnsDefCreator;
+import com.sparrow.context.SessionContext;
+import com.sparrow.exception.Asserts;
+import com.sparrow.io.FolderFilter;
+import com.sparrow.io.file.FileNameBuilder;
+import com.sparrow.lang.joiner.StringJoiner;
+import com.sparrow.orm.SparrowEntityManager;
+import com.sparrow.protocol.BusinessException;
+import com.sparrow.protocol.LoginUser;
 import com.sparrow.protocol.constant.SparrowError;
 import com.sparrow.protocol.dao.PO;
+import com.sparrow.utility.CollectionsUtility;
 import com.sparrow.utility.CompressUtility;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
@@ -55,6 +56,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 清除或者初始化脚手架 是读配置
@@ -97,10 +100,8 @@ public class CoderController {
         tableConfigParam.setCheckable(DefaultSpecialColumnIndex.CHECK);
         tableConfigParam.setRowMenu(DefaultSpecialColumnIndex.ROW_MENU);
         tableConfigParam.setColumnFilter(DefaultSpecialColumnIndex.COLUMN_FILTER);
-        tableConfigParam.setStatusCommand(true);
+        tableConfigParam.setIsTree(false);
         tableConfigParam.setColumnConfigs(JSON.toJSONString(DefaultColumnsDefCreator.create(tableConfigParam.getClassName())));
-        tableConfigParam.setSource(CodeSource.INNER.getIdentity());
-        tableConfigParam.setSourceCode("");
         tableConfigParam.setOnlyAccessSelf(true);
         tableConfigParam.setPageSize(10);
         this.tableConfigService.saveTableConfig(tableConfigParam);
@@ -120,10 +121,8 @@ public class CoderController {
         tableConfigParam.setCheckable(DefaultSpecialColumnIndex.CHECK);
         tableConfigParam.setRowMenu(DefaultSpecialColumnIndex.ROW_MENU);
         tableConfigParam.setColumnFilter(DefaultSpecialColumnIndex.COLUMN_FILTER);
-        tableConfigParam.setStatusCommand(true);
+        tableConfigParam.setIsTree(false);
         tableConfigParam.setColumnConfigs(JSON.toJSONString(DefaultColumnsDefCreator.create(tableConfigParam.getClassName())));
-        tableConfigParam.setSource(CodeSource.SOURCE_CODE.getIdentity());
-        tableConfigParam.setSourceCode(sourceCodeParam.getSourceCode());
         tableConfigParam.setPageSize(10);
         tableConfigParam.setOnlyAccessSelf(true);
         this.tableConfigService.saveTableConfig(tableConfigParam);
@@ -152,8 +151,15 @@ public class CoderController {
     @PostMapping("generate.json")
     public void generate(@RequestBody ProjectTablesQuery projectTablesQuery) throws IOException, BusinessException {
         CodeGenerator generator = new DefaultCodeGenerator(projectTablesQuery.getProjectId(), envConfig, domainRegistry);
+        List<Object> errorTable = new ArrayList<>();
         for (String tableName : projectTablesQuery.getTableNames()) {
-            generator.generate(tableName);
+            CoderError coderError = generator.generate(tableName);
+            if (coderError != null) {
+                errorTable.add(tableName);
+            }
+        }
+        if (!CollectionsUtility.isNullOrEmpty(errorTable)) {
+            throw new BusinessException(CoderError.TABLE_LOCKED, "tableNames", new StringJoiner(errorTable).join());
         }
     }
 

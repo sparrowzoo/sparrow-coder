@@ -23,6 +23,7 @@ import lombok.Getter;
 
 @Getter
 public enum CoderError implements ErrorSupport {
+    TABLE_LOCKED(false, CoderModule.CODER, "06", "table is locked!"),
     CLASS_CAN_NOT_ASSIGNABLE_PO(false, CoderModule.CODER, "05", "po class must assignable from  PO"),
     CLASS_NOT_CONTAINS_PO(false, CoderModule.CODER, "04", "po class name must contains '.po'"),
     NOT_SELF_PROJECT(false, CoderModule.CODER, "03", "can't generate other's project"),

@@ -41,4 +41,9 @@ public class StringValidatorMessageGenerator extends AbstractValidatorMessageGen
     public StringValidator defaultValidator() {
         return StringValidator.STRING_VALIDATOR;
     }
+
+    @Override
+    public int getOrder() {
+        return 10;
+    }
 }

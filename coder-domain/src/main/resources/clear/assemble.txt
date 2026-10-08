@@ -1,4 +1,3 @@
-overwrite
 package $package_assemble;
 
 import com.sparrow.protocol.ListRecordTotalBO;

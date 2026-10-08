@@ -20,7 +20,14 @@ package com.sparrow.coder.domain.bo.validate;
 import java.util.Map;
 
 public interface Validator {
+    public static final String DIGITAL = "digital";
+    public static final String STRING = "string";
+    public static final String FLOAT = "float";
+    public static final String SIGNED_DIGITAL = "signedDigital";
+
+
     void setI18n(Boolean i18n);
+
     Boolean getI18n();
 
     Boolean getAllowEmpty();

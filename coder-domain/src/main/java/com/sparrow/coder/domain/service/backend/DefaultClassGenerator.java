@@ -18,7 +18,6 @@
 package com.sparrow.coder.domain.service.backend;
 
 import com.sparrow.coder.domain.bo.ProjectBO;
-import com.sparrow.coder.domain.bo.TableConfigBO;
 import com.sparrow.coder.domain.bo.TableContext;
 import com.sparrow.coder.domain.service.ArchitectureGenerator;
 import com.sparrow.coder.domain.service.MybatisEntityManager;
@@ -98,10 +97,7 @@ public class DefaultClassGenerator implements ClassGenerator {
     public void generate(ClassKey classKey, TableConfigRegistry registry) throws IOException {
         String licensed = FileUtility.getInstance().readFileContent(File.separator + "Licensed.txt");
         String content;
-        if (classKey.equals(ClassKey.PO)) {
-            TableConfigBO tableConfig = tableContext.getTableConfig();
-            content = tableConfig.getSourceCode();
-        } else if (classKey.equals(ClassKey.DAO_MYBATIS)) {
+        if (classKey.equals(ClassKey.DAO_MYBATIS)) {
             try {
                 MybatisEntityManager mybatisEntityManager = new MybatisEntityManager(Class.forName(tableContext.getTableConfig().getClassName()));
                 mybatisEntityManager.init();
@@ -117,13 +113,8 @@ public class DefaultClassGenerator implements ClassGenerator {
         String fullPhysicalPath = this.getClassPhysicalPath(classKey);
         File file = new File(fullPhysicalPath);
         if (file.exists()) {
-            if (!content.startsWith("overwrite")) {
-                log.info("file [{}] already exists, skip generate", fullPhysicalPath);
-                return;
-            }
             log.info("file [{}] already exists, overwrite it", fullPhysicalPath);
         }
-        content = content.replaceFirst("overwrite", "");
         if (!classKey.equals(ClassKey.DAO_MYBATIS)) {
             content = licensed + "\n" + content;
         }

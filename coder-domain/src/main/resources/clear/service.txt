@@ -1,8 +1,9 @@
-overwrite
+
 package $package_service;
 
 import com.sparrow.exception.Asserts;
 import com.sparrow.protocol.*;
+import com.sparrow.protocol.pager.SimplePager;
 import java.util.*;
 import jakarta.inject.*;
 import com.sparrow.protocol.constant.SparrowError;
@@ -47,6 +48,12 @@ public class $persistence_class_nameService {
         return query$persistence_class_name(null);
     }
 
+        [# th:if="${ctx.tableConfig.isTree}"]
+     public ListRecordTotalBO<$persistence_class_nameBO> query$persistence_class_name($persistence_class_nameQuery $persistence_object_nameQuery) {
+                List<$persistence_class_nameBO> $persistence_object_nameBoList = this.$persistence_object_nameRepository.queryChildren($persistence_object_nameQuery);
+                return new ListRecordTotalBO<>($persistence_object_nameBoList, SimplePager.NO_SPLIT_PAGE);
+        }[/]
+    [# th:unless="${var}"]
     public ListRecordTotalBO<$persistence_class_nameBO> query$persistence_class_name($persistence_class_nameQuery $persistence_object_nameQuery) {
         Long totalRecord = this.$persistence_object_nameRepository.get$persistence_class_nameCount($persistence_object_nameQuery);
         List<$persistence_class_nameBO> $persistence_object_nameBoList = null;
@@ -55,6 +62,11 @@ public class $persistence_class_nameService {
         }
         return new ListRecordTotalBO<>($persistence_object_nameBoList, totalRecord);
     }
+    [/]
+
+
+
+
 
     public $persistence_class_nameBO get$persistence_class_name(Long $persistence_object_nameId) throws BusinessException {
          Asserts.isTrue($persistence_object_nameId==null, SparrowError.GLOBAL_PARAMETER_NULL);

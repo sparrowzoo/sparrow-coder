@@ -1,4 +1,4 @@
-overwrite
+
 package $package_dao;
 
 import com.sparrow.protocol.dao.DaoSupport;
@@ -10,4 +10,9 @@ public interface $persistence_class_nameDAO extends DaoSupport<$persistence_clas
     List<$persistence_class_name> query$persistence_class_names($persistence_class_nameDBPagerQuery $persistence_object_namePagerQuery);
 
     Long count$persistence_class_name($persistence_class_nameDBPagerQuery $persistence_object_namePagerQuery);
+    [# th:if="${ctx.tableConfig.isTree}"]
+    List<$persistence_class_name> queryChildren(Long parentId);
+    Set<Long> getParentIdsHavingChildren(Collection<Long> parentIds);
+    [/]
+
 }

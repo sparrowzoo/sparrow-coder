@@ -1,4 +1,4 @@
-overwrite
+
 package $package_repository;
 import $package_bo.$persistence_class_nameBO;
 import $package_param.$persistence_class_nameParam;
@@ -23,5 +23,8 @@ public interface $persistence_class_nameRepository {
     List<$persistence_class_nameBO> query$persistence_class_names($persistence_class_nameQuery $persistence_object_nameQuery);
 
     Long get$persistence_class_nameCount($persistence_class_nameQuery $persistence_object_nameQuery);
+    [# th:if="${ctx.tableConfig.isTree}"]
+    List<$persistence_class_nameBO> queryChildren($persistence_class_nameQuery $persistence_object_nameQuery);
+    [/]
 
 }

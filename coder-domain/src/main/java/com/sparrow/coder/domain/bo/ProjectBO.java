@@ -21,12 +21,14 @@ import com.sparrow.coder.domain.service.ArchitectureGenerator;
 import com.sparrow.coder.domain.service.EnvConfig;
 import com.sparrow.coder.enums.ArchitectureCategory;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 @Data
+@NoArgsConstructor
 public class ProjectBO {
 
     public ProjectBO(ProjectConfigBO projectConfig, Properties scaffoldConfig, EnvConfig envConfig) {

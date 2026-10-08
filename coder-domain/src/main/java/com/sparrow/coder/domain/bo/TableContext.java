@@ -34,10 +34,12 @@ import com.sparrow.coder.domain.service.frontend.FrontendGenerator;
 import com.sparrow.coder.domain.service.frontend.FrontendPlaceholderGenerator;
 import com.sparrow.coder.utils.DefaultColumnsDefCreator;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.*;
 
 @Data
+@NoArgsConstructor
 public class TableContext {
     private ProjectBO project;
     private List<ColumnDef> columns;

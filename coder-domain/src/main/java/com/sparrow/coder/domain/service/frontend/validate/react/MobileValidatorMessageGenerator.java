@@ -17,8 +17,8 @@
 
 package com.sparrow.coder.domain.service.frontend.validate.react;
 
-import com.sparrow.utility.StringUtility;
 import com.sparrow.coder.domain.bo.validate.RegexValidator;
+import com.sparrow.utility.StringUtility;
 import jakarta.inject.Named;
 
 @Named
@@ -37,5 +37,10 @@ public class MobileValidatorMessageGenerator extends RegexValidatorMessageGenera
         RegexValidator validator = RegexValidator.REGEX_VALIDATOR.create();
         validator.setFormatMessage("请输入正确的手机号码");
         return validator;
+    }
+
+    @Override
+    public int getOrder() {
+        return 70;
     }
 }

@@ -27,15 +27,13 @@ import java.util.Map;
 public class DigitalValidator implements Validator, Cloneable<DigitalValidator> {
     public static final DigitalValidator DIGITAL_VALIDATOR = new DigitalValidator();
 
-    public static final String NAME = "digital";
-
     static {
         DIGITAL_VALIDATOR.setAllowEmpty(false);
         DIGITAL_VALIDATOR.setCategory(DigitalCategory.INTEGER);
         DIGITAL_VALIDATOR.setEmptyMessage("不允许为空");
         DIGITAL_VALIDATOR.setMinValueMessage("不允许小于%s");
         DIGITAL_VALIDATOR.setMaxValueMessage("不允许大于%s");
-        DIGITAL_VALIDATOR.setDigitalMessage("请输入正确的数字");
+        DIGITAL_VALIDATOR.setDigitalMessage("请输入正确的正整数");
     }
 
     private Boolean i18n;

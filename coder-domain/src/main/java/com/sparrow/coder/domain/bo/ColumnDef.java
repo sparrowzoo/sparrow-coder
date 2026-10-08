@@ -17,16 +17,20 @@
 
 package com.sparrow.coder.domain.bo;
 
+import com.sparrow.coder.domain.bo.validate.Validator;
+import com.sparrow.coder.domain.service.frontend.generator.column.ColumnConfig;
 import com.sparrow.coder.enums.CellType;
-import com.sparrow.coder.enums.ColumnType;
 import com.sparrow.coder.enums.HeaderType;
 import com.sparrow.coder.enums.SearchType;
 import com.sparrow.protocol.POJO;
-import com.sparrow.protocol.dao.enums.ListDatasourceType;
-import com.sparrow.coder.domain.bo.validate.Validator;
-import com.sparrow.coder.enums.*;
-import jakarta.persistence.*;
+import com.sparrow.protocol.dao.enums.DatasourceType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Table;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Data
 @Table(name = "column_def")
@@ -66,8 +70,6 @@ public class ColumnDef implements POJO {
     private Integer datasourceType;
     @Column(name = "datasource_params", columnDefinition = "varchar(255) comment '数据源参数'")
     private String datasourceParams;
-    @Column(name = "column_type", updatable = false, columnDefinition = "int comment '列类型'")
-    private Integer columnType;
     @Column(name = "header_type", columnDefinition = "int comment '表头类型'")
     private Integer headerType;
     @Column(name = "cell_type", columnDefinition = "int comment '单元格类型'")
@@ -98,7 +100,7 @@ public class ColumnDef implements POJO {
         this.setSearchType(SearchType.EQUAL.getIdentity());
         this.setValidateType(null);
         this.setValidator(null);
-        this.setDatasourceType(ListDatasourceType.NULL.getIdentity());
+        this.setDatasourceType(DatasourceType.NULL.getIdentity());
         this.setDatasourceParams("");
         this.setControlType(null);
         this.setReadOnly(true);
@@ -106,8 +108,7 @@ public class ColumnDef implements POJO {
 
     public static ColumnDef createRowMenu(int sort) {
         ColumnDef columnDef = new ColumnDef();
-        columnDef.setColumnType(ColumnType.ACTION.getIdentity());
-        columnDef.setHeaderType(HeaderType.NORMAL.getIdentity());
+        columnDef.setHeaderType(HeaderType.MENU.getIdentity());
         columnDef.setCellType(CellType.OPERATION.getIdentity());
         columnDef.setPropertyName("actions");
         columnDef.setChineseName("操作");
@@ -118,7 +119,6 @@ public class ColumnDef implements POJO {
 
     public static ColumnDef createFilter(int sort) {
         ColumnDef columnDef = new ColumnDef();
-        columnDef.setColumnType(ColumnType.FILTER.getIdentity());
         columnDef.setHeaderType(HeaderType.COLUMN_FILTER.getIdentity());
         columnDef.setCellType(null);
         columnDef.setPropertyName("filter");
@@ -130,7 +130,6 @@ public class ColumnDef implements POJO {
 
     public static ColumnDef createCheckBox(int sort) {
         ColumnDef columnDef = new ColumnDef();
-        columnDef.setColumnType(ColumnType.CHECK.getIdentity());
         columnDef.setHeaderType(HeaderType.CHECK_BOX.getIdentity());
         columnDef.setCellType(CellType.CHECK_BOX.getIdentity());
         columnDef.setPropertyName("check-box");
@@ -139,13 +138,19 @@ public class ColumnDef implements POJO {
         return columnDef;
     }
 
+    public Boolean isFloat() {
+        if (this.javaType == null) {
+            return false;
+        }
+        return this.javaType.equals("java.lang.Double") ||
+                this.javaType.equals("java.lang.Float");
+    }
+
     public Boolean isNumber() {
         if (this.javaType == null) {
             return false;
         }
         return this.javaType.equals("java.lang.Integer") ||
-                this.javaType.equals("java.lang.Long") ||
-                this.javaType.equals("java.lang.Double") ||
-                this.javaType.equals("java.lang.Float");
+                this.javaType.equals("java.lang.Long");
     }
 }

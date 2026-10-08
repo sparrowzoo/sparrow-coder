@@ -19,8 +19,10 @@ package com.sparrow.coder.domain.service.frontend.validate.react;
 
 import com.sparrow.coder.domain.bo.validate.NoneValidator;
 import jakarta.inject.Named;
+import org.springframework.core.annotation.Order;
 
 @Named
+@Order(0)
 public class NullableValidatorMessageGenerator extends AbstractValidatorMessageGenerator<NoneValidator> {
 
     //https://www.66zan.cn/regexdso/
@@ -41,5 +43,10 @@ public class NullableValidatorMessageGenerator extends AbstractValidatorMessageG
     @Override
     public NoneValidator defaultValidator() {
         return new NoneValidator(String.class.getName());
+    }
+
+    @Override
+    public int getOrder() {
+        return 0;
     }
 }

@@ -31,6 +31,7 @@ import com.sparrow.core.spi.JsonFactory;
 import com.sparrow.io.file.FileNameBuilder;
 import com.sparrow.json.Json;
 import com.sparrow.utility.FileUtility;
+import com.sparrow.utility.StringUtility;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -60,7 +61,11 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
     public String getTargetPhysicalPath(FrontendKey key) {
         ProjectConfigBO projectConfig = this.project.getProjectConfig();
         EnvConfig envConfig = this.project.getEnvConfig();
-        return new FileNameBuilder(envConfig.getProjectHome(projectConfig)).joint(projectConfig.getFrontendName()).joint(this.frontendArchAccessor.getPath(key)).build();
+        String scaffoldFrontendHome = envConfig.getScaffoldFrontendHome();
+        if (StringUtility.isNullOrEmpty(scaffoldFrontendHome)) {
+            return new FileNameBuilder(envConfig.getProjectHome(projectConfig)).joint(projectConfig.getFrontendName()).joint(this.frontendArchAccessor.getPath(key)).build();
+        }
+        return new FileNameBuilder(scaffoldFrontendHome).joint(projectConfig.getFrontendName()).joint(this.frontendArchAccessor.getPath(key)).build();
     }
 
     @Override
@@ -77,26 +82,19 @@ public class DefaultFrontendGenerator implements FrontendGenerator {
     @Override
     public void generate(FrontendKey key, TableConfigRegistry registry) throws IOException {
         String content = null;
-        boolean allowSkip = false;
         if (key.equals(FrontendKey.MESSAGE)) {
             content = toi18nMessage();
         } else if (key.equals(FrontendKey.MESSAGE_FILE_LIST)) {
             content = toi18nMessageFileList();
         } else {
-            allowSkip = true;
             content = readTemplateContent(key);
             content = this.templateEngineer.generate(content.trim(), tableContext, registry);
         }
         String fullPhysicalPath = this.getTargetPhysicalPath(key);
         File file = new File(fullPhysicalPath);
         if (file.exists()) {
-            if (allowSkip && !content.startsWith("overwrite")) {
-                log.info("file [{}] already exists, skip generate", fullPhysicalPath);
-                return;
-            }
             log.info("file [{}] already exists, overwrite it", fullPhysicalPath);
         }
-        content = content.replaceFirst("overwrite", "");
         log.info("generate file name is [{}]", fullPhysicalPath);
         if (project.getEnvConfig().overwrite()) {
             FileUtility.getInstance().writeFile(fullPhysicalPath, content);

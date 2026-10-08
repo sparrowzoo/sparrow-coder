@@ -17,14 +17,12 @@
 
 package com.sparrow.coder.domain.service.registry;
 
+import com.sparrow.coder.domain.service.ValidatorMessageGenerator;
 import com.sparrow.protocol.KeyValue;
 import com.sparrow.utility.ClassUtility;
-import com.sparrow.coder.domain.service.ValidatorMessageGenerator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ValidatorRegistry {
 
@@ -48,7 +46,7 @@ public class ValidatorRegistry {
         String namespace = packageName.substring(packageName.lastIndexOf(".") + 1);
         String validatorName = ClassUtility.getBeanNameByClass(validatorMessageGenerator.getClass(), ValidatorMessageGenerator.class);
         if (!this.registry.containsKey(namespace)) {
-            this.registry.putIfAbsent(namespace, new HashMap<>());
+            this.registry.putIfAbsent(namespace, new LinkedHashMap<>());
         }
         this.registry.get(namespace).put(validatorName, validatorMessageGenerator);
     }
@@ -68,10 +66,9 @@ public class ValidatorRegistry {
 
     public List<KeyValue<String, String>> getValidatorNames(String namespace) {
         Map<String, ValidatorMessageGenerator> validators = this.registry.get(namespace);
-        List<KeyValue<String, String>> list = new ArrayList<>();
-        for (String validatorName : validators.keySet()) {
-            list.add(new KeyValue<>(validatorName, validatorName));
-        }
-        return list;
+        return validators.entrySet().stream()
+                .sorted(Comparator.comparingInt(entry -> entry.getValue().getOrder()))
+                .map(entry -> new KeyValue<>(entry.getKey(), entry.getKey()))
+                .collect(Collectors.toList());
     }
 }

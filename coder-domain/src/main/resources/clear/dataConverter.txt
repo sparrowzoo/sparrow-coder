@@ -1,4 +1,4 @@
-overwrite
+
 package $package_data_converter;
 
 import com.sparrow.protocol.LoginUser;

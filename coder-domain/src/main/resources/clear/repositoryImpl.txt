@@ -1,4 +1,4 @@
-overwrite
+
 package $package_repository_impl;
 
 import com.sparrow.protocol.dao.StatusCriteria;
@@ -62,4 +62,20 @@ public class $persistence_class_nameRepositoryImpl implements $persistence_class
     @Override public Long get$persistence_class_nameCount($persistence_class_nameQuery $persistence_object_nameQuery) {
         return this.$persistence_object_nameDao.count$persistence_class_name(this.$persistence_object_nameConverter.toDbPagerQuery($persistence_object_nameQuery));
     }
+
+    [# th:if="${ctx.tableConfig.isTree}"]
+    @Override public List<$persistence_class_nameBO> queryChildren($persistence_class_nameQuery $persistence_object_nameQuery) {
+        List<$persistence_class_name> children = this.$persistence_object_nameDao.queryChildren(this.$persistence_object_nameConverter.toDbPagerQuery($persistence_object_nameQuery));
+        if (children.isEmpty()) {
+            return Collections.emptyList();
+        }
+        Set<Long> childIds = children.stream().map($persistence_class_name::getId).collect(Collectors.toSet());
+        Set<Long> parentIdsWithChildren = this.$persistence_object_nameDao.getParentIdsHavingChildren(childIds);
+        return children.stream().map($persistence_object_name -> {
+            $persistence_class_nameBO $persistence_object_nameBO = this.$persistence_object_nameConverter.po2bo($persistence_object_name);
+            $persistence_class_nameBO.setHasChildren(parentIdsWithChildren.contains($persistence_object_name.getId()));
+            return $persistence_object_nameBO;
+        }).collect(Collectors.toList());
+    }
+    [/]
 }

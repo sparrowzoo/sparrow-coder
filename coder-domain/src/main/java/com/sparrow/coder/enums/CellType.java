@@ -30,7 +30,9 @@ public enum CellType implements EnumIdentityAccessor {
     TREE("TreeCell", "tree", "树形", 2),
     OPERATION("OperationCell", "operation", "命令操作", 3),
     CHECK_BOX("CheckBoxCell", "check-box", "选择", 4),
-    CURRENCY("CurrencyCell", "currency", "货币", 5);
+    CURRENCY("CurrencyCell", "currency", "货币", 5),
+    IMAGE("ImageCell", "image", "图片", 7);
+
 
     private String componentName;
     private String fileName;

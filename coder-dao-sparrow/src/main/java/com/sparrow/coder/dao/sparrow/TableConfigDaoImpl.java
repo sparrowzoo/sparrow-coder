@@ -22,6 +22,7 @@ import com.sparrow.orm.template.impl.ORMStrategy;
 import com.sparrow.coder.dao.TableConfigDAO;
 import com.sparrow.coder.dao.query.TableConfigDBPagerQuery;
 import com.sparrow.coder.po.TableConfig;
+
 import java.util.List;
 
 import com.sparrow.context.SessionContext;
@@ -31,7 +32,8 @@ import jakarta.inject.Named;
 
 @Named
 public class TableConfigDaoImpl extends ORMStrategy<TableConfig, Long> implements TableConfigDAO {
-    @Override public List<TableConfig> queryTableConfigs(TableConfigDBPagerQuery pagerTableConfigQuery) {
+    @Override
+    public List<TableConfig> queryTableConfigs(TableConfigDBPagerQuery pagerTableConfigQuery) {
         SearchCriteria searchCriteria = new SearchCriteria(pagerTableConfigQuery);
         searchCriteria.setWhere(this.generateCriteria(pagerTableConfigQuery));
         searchCriteria.setOrderCriteria(OrderCriteria.desc(TableConfig::getId));
@@ -40,15 +42,17 @@ public class TableConfigDaoImpl extends ORMStrategy<TableConfig, Long> implement
 
     private BooleanCriteria generateCriteria(TableConfigDBPagerQuery tableConfigQuery) {
         BooleanCriteria booleanCriteria = BooleanCriteria.criteria(Criteria.field(TableConfig::getTableName).equal(tableConfigQuery.getTableName()))
-            .and(Criteria.field(TableConfig::getClassName).equal(tableConfigQuery.getClassName()))
-            .and(Criteria.field(TableConfig::getCreateUserId).equal(SessionContext.getLoginUser().getUserId()));
+                .and(Criteria.field(TableConfig::getClassName).equal(tableConfigQuery.getClassName()))
+                .and(Criteria.field(TableConfig::getProjectId).equal(tableConfigQuery.getProjectId()))
+                .and(Criteria.field(TableConfig::getCreateUserId).equal(SessionContext.getLoginUser().getUserId()));
         if (tableConfigQuery.getStatus() != null && tableConfigQuery.getStatus() >= 0) {
             booleanCriteria.and(Criteria.field(TableConfig::getStatus).equal(StatusRecord.valueOf(tableConfigQuery.getStatus())));
         }
         return booleanCriteria;
     }
 
-    @Override public Long countTableConfig(TableConfigDBPagerQuery tableConfigPagerQuery) {
+    @Override
+    public Long countTableConfig(TableConfigDBPagerQuery tableConfigPagerQuery) {
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.setWhere(this.generateCriteria(tableConfigPagerQuery));
         return this.getCount(searchCriteria);

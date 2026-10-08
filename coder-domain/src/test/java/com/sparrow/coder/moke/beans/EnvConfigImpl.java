@@ -29,6 +29,9 @@ public class EnvConfigImpl implements EnvConfig {
     @Value("${overwrite:true}")
     private Boolean overwrite;
 
+    @Value("${scaffold_frontend_home:}")
+    private String scaffoldFrontendHome;
+
 
     @Override
     public String getScaffoldWorkspace() {
@@ -43,6 +46,11 @@ public class EnvConfigImpl implements EnvConfig {
     @Override
     public String getFrontendScaffoldTemplateHome() {
         return this.frontendScaffoldTemplateHome;
+    }
+
+    @Override
+    public String getScaffoldFrontendHome() {
+        return this.scaffoldFrontendHome;
     }
 
     @Override

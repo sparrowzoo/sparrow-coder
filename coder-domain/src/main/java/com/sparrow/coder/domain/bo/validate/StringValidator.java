@@ -23,8 +23,6 @@ import java.util.Map;
 
 @Data
 public class StringValidator implements Validator, Cloneable<StringValidator> {
-    public static final String NAME = "string";
-
     public static final StringValidator STRING_VALIDATOR = new StringValidator();
     static {
         STRING_VALIDATOR.setEmptyMessage("不允许为空");

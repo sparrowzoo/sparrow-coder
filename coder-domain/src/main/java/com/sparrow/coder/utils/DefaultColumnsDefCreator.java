@@ -18,22 +18,19 @@
 package com.sparrow.coder.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.sparrow.coder.constant.DefaultSpecialColumnIndex;
+import com.sparrow.coder.domain.bo.ColumnDef;
+import com.sparrow.coder.domain.bo.validate.*;
 import com.sparrow.coder.enums.*;
+import com.sparrow.coder.protocol.dto.TableConfigDTO;
 import com.sparrow.core.spi.JsonFactory;
 import com.sparrow.json.Json;
 import com.sparrow.orm.EntityManager;
 import com.sparrow.orm.Field;
 import com.sparrow.orm.SparrowEntityManager;
-import com.sparrow.protocol.dao.ListDatasource;
-import com.sparrow.protocol.dao.enums.ListDatasourceType;
+import com.sparrow.protocol.dao.InputDatasource;
+import com.sparrow.protocol.dao.enums.DatasourceType;
 import com.sparrow.utility.StringUtility;
-import com.sparrow.coder.constant.DefaultSpecialColumnIndex;
-import com.sparrow.coder.domain.bo.ColumnDef;
-import com.sparrow.coder.domain.bo.validate.DigitalValidator;
-import com.sparrow.coder.domain.bo.validate.NoneValidator;
-import com.sparrow.coder.domain.bo.validate.RegexValidator;
-import com.sparrow.coder.domain.bo.validate.StringValidator;
-import com.sparrow.coder.protocol.dto.TableConfigDTO;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
@@ -86,29 +83,23 @@ public class DefaultColumnsDefCreator {
             columnDef.setDefaultValue("");
             columnDef.setSearchType(SearchType.EQUAL.getIdentity());
             columnDef.setValidateType(null);
-            columnDef.setDatasourceType(ListDatasourceType.NULL.getIdentity());
+            columnDef.setDatasourceType(DatasourceType.NULL.getIdentity());
             columnDef.setDatasourceParams("");
-            if (field.getListDatasource() != null) {
-                ListDatasource listDatasource = field.getListDatasource();
-                columnDef.setDatasourceType(listDatasource.type().getIdentity());
-                columnDef.setDatasourceParams(listDatasource.params());
-            }
-
-            columnDef.setColumnType(ColumnType.NORMAL.getIdentity());
             columnDef.setHeaderType(HeaderType.NORMAL.getIdentity());
             columnDef.setCellType(CellType.NORMAL.getIdentity());
-            if (columnDef.getPropertyName().equals("gmtCreate") ||
-                    columnDef.getPropertyName().equals("gmtModified")) {
+            if (columnDef.getPropertyName().equals("gmtCreate") || columnDef.getPropertyName().equals("gmtModified")) {
                 columnDef.setCellType(CellType.UNIX_TIMESTAMP.getIdentity());
             }
             if (entityManager.getPrimary() != null && columnDef.getPropertyName().equals(entityManager.getPrimary().getPropertyName())) {
                 columnDef.setControlType(ControlType.INPUT_HIDDEN.getIdentity());
-
             } else {
                 if (columnDef.isNumber()) {
-                    columnDef.setValidateType(DigitalValidator.NAME);
+                    columnDef.setDefaultValue("0");
+                    columnDef.setValidateType(Validator.SIGNED_DIGITAL);
+                } else if (columnDef.isFloat()) {
+                    columnDef.setValidateType(Validator.FLOAT);
                 } else if (!columnDef.getAllowNull() && columnDef.getJavaType().equals(String.class.getName())) {
-                    columnDef.setValidateType(StringValidator.NAME);
+                    columnDef.setValidateType(Validator.STRING);
                 }
                 if (isTextArea(field)) {
                     columnDef.setShowInList(false);
@@ -117,6 +108,19 @@ public class DefaultColumnsDefCreator {
                     columnDef.setControlType(ControlType.TEXT_AREA.getIdentity());
                 } else {
                     columnDef.setControlType(JavaTypeController.getByJavaType(columnDef.getJavaType()).getControlTypes()[0].getIdentity());
+                }
+            }
+
+            if (field.getInputDatasource() != null) {
+                InputDatasource inputDatasource = field.getInputDatasource();
+                columnDef.setDatasourceType(inputDatasource.type().getIdentity());
+                columnDef.setDatasourceParams(inputDatasource.params());
+                if (DatasourceType.TABLE.equals(field.getInputDatasource().type()) ||
+                        DatasourceType.ENUM.equals(field.getInputDatasource().type()) ||
+                        DatasourceType.DICTIONARY.equals(field.getInputDatasource().type())
+                ) {
+                    columnDef.setDefaultValue(inputDatasource.defaultValue());
+                    columnDef.setControlType(ControlType.SELECT.getIdentity());
                 }
             }
             columnDefs.add(columnDef);
@@ -141,8 +145,7 @@ public class DefaultColumnsDefCreator {
     }
 
     private static boolean isTextArea(Field field) {
-        if (field.getColumnDefinition().contains("text") ||
-                field.getColumnDefinition().contains("varchar(512)")) {
+        if (field.getColumnDefinition().contains("text") || field.getColumnDefinition().contains("varchar(512)")) {
             return true;
         }
         return false;
@@ -210,32 +213,40 @@ public class DefaultColumnsDefCreator {
     }
 
     private static List<ColumnDef> resetColumns(String className, List<ColumnDef> columnDefs) {
-        Map<String, ColumnDef> allColumnMap = columnDefs.stream().collect(Collectors.toMap(ColumnDef::getPropertyName, c -> c));
+        Map<String, ColumnDef> columnMapOfDB = columnDefs.stream().collect(Collectors.toMap(ColumnDef::getPropertyName, c -> c));
         List<ColumnDef> defaultColumnsOfClass = DefaultColumnsDefCreator.create(className, false);
         Map<String, ColumnDef> defaultColumnMap = new HashMap<>();
         //如果数据库不存在则新增配置
         for (ColumnDef defaultColumn : defaultColumnsOfClass) {
             defaultColumnMap.put(defaultColumn.getPropertyName(), defaultColumn);
-            if (!allColumnMap.containsKey(defaultColumn.getPropertyName())) {
-                allColumnMap.put(defaultColumn.getPropertyName(), defaultColumn);
+            if (!columnMapOfDB.containsKey(defaultColumn.getPropertyName())) {
+                columnMapOfDB.put(defaultColumn.getPropertyName(), defaultColumn);
             }
         }
-        Iterator<Map.Entry<String, ColumnDef>> columnDefIterator = allColumnMap.entrySet().iterator();
-        while (columnDefIterator.hasNext()) {
-            Map.Entry<String, ColumnDef> currentColumnEntry = columnDefIterator.next();
+        Iterator<Map.Entry<String, ColumnDef>> columnDefITOfDB = columnMapOfDB.entrySet().iterator();
+        while (columnDefITOfDB.hasNext()) {
+            Map.Entry<String, ColumnDef> currentColumnEntry = columnDefITOfDB.next();
             //如果列被移除，则直接删除
             if (!defaultColumnMap.containsKey(currentColumnEntry.getKey())) {
-                columnDefIterator.remove();
+                columnDefITOfDB.remove();
                 continue;
             }
             ColumnDef currentColumn = currentColumnEntry.getValue();
             ColumnDef defaultColumn = defaultColumnMap.get(currentColumn.getPropertyName());
             //如果存在，则需要更新
-            currentColumn.setDatasourceType(defaultColumn.getDatasourceType());
-            currentColumn.setDatasourceParams(defaultColumn.getDatasourceParams());
             currentColumn.setJavaType(defaultColumn.getJavaType());
+            if (defaultColumn.getDatasourceType() != null) {
+                currentColumn.setDatasourceType(defaultColumn.getDatasourceType());
+                currentColumn.setDatasourceParams(defaultColumn.getDatasourceParams());
+                if (DatasourceType.TABLE.getIdentity().equals(defaultColumn.getDatasourceType()) ||
+                        DatasourceType.ENUM.getIdentity().equals(defaultColumn.getDatasourceType()) ||
+                        DatasourceType.DICTIONARY.getIdentity().equals(defaultColumn.getDatasourceType())
+                ) {
+                    currentColumn.setControlType(ControlType.SELECT.getIdentity());
+                }
+            }
         }
-        List<ColumnDef> newColumnDefs = new ArrayList<>(allColumnMap.values());
+        List<ColumnDef> newColumnDefs = new ArrayList<>(columnMapOfDB.values());
         newColumnDefs.sort(Comparator.comparingInt(ColumnDef::getSort));
         return newColumnDefs;
     }

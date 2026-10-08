@@ -10,7 +10,7 @@ CREATE TABLE `t_table_config` (
  `checkable` int  default 0 comment '选择'  NOT NULL,
  `row_menu` int  default 0 comment '行菜单'  NOT NULL,
  `column_filter` int  default 0 comment '列过滤器'  NOT NULL,
- `status_command` tinyint(1)  default 0 comment '是否显示状态命令'  NOT NULL,
+ `is_tree` tinyint(1)  default 0 comment '是否为树'  NOT NULL,
  `column_configs` text null comment '列配置'  ,
  `source` int default 0 not  null comment '类来源'  NOT NULL,
  `source_code` text null comment '源代码'  ,

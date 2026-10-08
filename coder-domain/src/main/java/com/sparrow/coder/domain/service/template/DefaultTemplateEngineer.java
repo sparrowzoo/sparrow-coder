@@ -47,7 +47,7 @@ public class DefaultTemplateEngineer implements TemplateEngineer {
     public String generate(String template, TableContext context, TableConfigRegistry registry) {
         String content = StringUtility.replace(template, context.getPlaceHolder());
         Context ctx = new Context();
-        ctx.setVariable("ctx", content);
+        ctx.setVariable("ctx", context);
         ctx.setVariable("registry", registry);
         Map<String, String> map = context.getPlaceHolder();
         for (String key : map.keySet()) {

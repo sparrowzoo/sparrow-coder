@@ -46,7 +46,7 @@ public class ScaffoldCopier {
         EnvConfig config = registry.getProject().getEnvConfig();
         ProjectConfigBO projectConfig = registry.getProject().getProjectConfig();
         String backendScaffoldHome = new FileNameBuilder(config.getBackendScaffoldTemplateHome()).joint("sparrow-example").build();
-        String frontScaffoldHome = new FileNameBuilder(config.getFrontendScaffoldTemplateHome()).joint("sparrow-js").joint("react-next-admin").build();
+        String frontScaffoldHome = new FileNameBuilder(config.getFrontendScaffoldTemplateHome()).joint("sparrow-js").joint("sparrow-coder").build();
 
 
         File directory = new File(frontScaffoldHome);
@@ -66,8 +66,8 @@ public class ScaffoldCopier {
             return false;
         };
         FileCopier folderCopier = sourceFileName -> {
-            //sourceFileName: /{home}/sparrow/sparrow-js/react-next-admin/package.js
-            //scaffoldHome: /{home}/sparrow/sparrow-js/react-next-admin
+            //sourceFileName: /{home}/sparrow/sparrow-js/sparrow-coder/package.js
+            //scaffoldHome: /{home}/sparrow/sparrow-js/sparrow-coder
             String targetFileName = sourceFileName.replace(frontScaffoldHome, "");
             String targetPath = new FileNameBuilder(config.getProjectHome(projectConfig)).joint(projectConfig.getFrontendName()).joint(targetFileName).build();
             try {

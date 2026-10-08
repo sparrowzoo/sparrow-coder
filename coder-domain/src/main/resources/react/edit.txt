@@ -1,4 +1,4 @@
-overwrite
+
 "use client";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {valibotResolver} from "@hookform/resolvers/valibot";
@@ -8,16 +8,12 @@ import {DialogClose, DialogDescription, DialogFooter, DialogHeader, DialogTitle}
 import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizontal";
 import {$persistence_class_name} from "@/components/$persistence_object_by_horizontal/columns";
 import toast from "react-hot-toast";
-import {ValidatableTextarea} from "@/common/components/forms/validatable-textarea";
-import {ValidatableInput} from "@/common/components/forms/validatable-input";
-import {ValidatableDate} from "@/common/components/forms/validatable-date";
 import {useTranslations} from "next-intl";
 import * as v from "valibot";
 import {CellContextProps,MyTableMeta} from "@/common/lib/table/DataTableProperty";
 import useNavigating from "@/common/hook/NavigatingHook";
-import {ValidatableSelect} from "@/common/components/forms/validatable-select";
 import {PagerResult} from "@/common/lib/protocol/Result";
-
+$frontend_edit_import
 
 
 export default function EditPage({cellContext,callbackHandler}: CellContextProps<$persistence_class_name>) {

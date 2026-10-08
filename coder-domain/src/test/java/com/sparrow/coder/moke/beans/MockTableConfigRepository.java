@@ -1,8 +1,5 @@
 package com.sparrow.coder.moke.beans;
 
-import com.sparrow.coder.enums.*;
-import com.sparrow.protocol.dao.enums.ListDatasourceType;
-import com.sparrow.utility.StringUtility;
 import com.sparrow.coder.domain.bo.ColumnDef;
 import com.sparrow.coder.domain.bo.TableConfigBO;
 import com.sparrow.coder.domain.bo.TableContext;
@@ -14,6 +11,8 @@ import com.sparrow.coder.enums.*;
 import com.sparrow.coder.protocol.param.TableConfigParam;
 import com.sparrow.coder.protocol.query.TableConfigQuery;
 import com.sparrow.coder.repository.TableConfigRepository;
+import com.sparrow.protocol.dao.enums.DatasourceType;
+import com.sparrow.utility.StringUtility;
 import jakarta.inject.Named;
 
 import java.util.ArrayList;
@@ -64,11 +63,10 @@ public class MockTableConfigRepository implements TableConfigRepository {
     private ColumnDef getColumnDef(String propertyName,
                                    String tableClassName,
                                    String chineseName,
-                                   ColumnType columnType,
                                    HeaderType headerType,
                                    CellType cellType,
                                    ControlType controlType,
-                                   ListDatasourceType dataSourceType,
+                                   DatasourceType dataSourceType,
                                    Boolean enableHiding,
                                    Boolean showInList,
                                    String validateType,
@@ -78,7 +76,6 @@ public class MockTableConfigRepository implements TableConfigRepository {
         columnDef.setPropertyName(propertyName);
         columnDef.setChineseName(chineseName);
         columnDef.setCellType(cellType.getIdentity());
-        columnDef.setColumnType(columnType.getIdentity());
         columnDef.setHeaderType(headerType.getIdentity());
         columnDef.setControlType(controlType.getIdentity());
         columnDef.setDatasourceType(dataSourceType.getIdentity());
@@ -105,10 +102,7 @@ public class MockTableConfigRepository implements TableConfigRepository {
         tableConfig.setCheckable(1);
         tableConfig.setRowMenu(99);
         tableConfig.setColumnFilter(100);
-        tableConfig.setStatusCommand(false);
         tableConfig.setColumnConfigs("");
-        tableConfig.setSource(CodeSource.INNER.getIdentity());
-        tableConfig.setSourceCode("");
         tableConfig.setCreateUserId(0L);
         tableConfig.setModifiedUserId(0L);
         tableConfig.setGmtCreate(0L);
@@ -135,10 +129,7 @@ public class MockTableConfigRepository implements TableConfigRepository {
         tableConfig.setCheckable(1);
         tableConfig.setRowMenu(99);
         tableConfig.setColumnFilter(100);
-        tableConfig.setStatusCommand(false);
 
-        tableConfig.setSource(CodeSource.INNER.getIdentity());
-        tableConfig.setSourceCode("");
         tableConfig.setCreateUserId(0L);
         tableConfig.setModifiedUserId(0L);
         tableConfig.setGmtCreate(0L);
@@ -160,10 +151,7 @@ public class MockTableConfigRepository implements TableConfigRepository {
         projectTable.setCheckable(1);
         projectTable.setRowMenu(99);
         projectTable.setColumnFilter(100);
-        projectTable.setStatusCommand(false);
         projectTable.setColumnConfigs("");
-        projectTable.setSource(CodeSource.INNER.getIdentity());
-        projectTable.setSourceCode("");
         projectTable.setCreateUserId(0L);
         projectTable.setModifiedUserId(0L);
         projectTable.setGmtCreate(0L);
@@ -184,10 +172,7 @@ public class MockTableConfigRepository implements TableConfigRepository {
         columnConfig.setCheckable(-1);
         columnConfig.setRowMenu(-1);
         columnConfig.setColumnFilter(-1);
-        columnConfig.setStatusCommand(false);
         columnConfig.setColumnConfigs("");
-        columnConfig.setSource(CodeSource.INNER.getIdentity());
-        columnConfig.setSourceCode("");
         columnConfig.setCreateUserId(0L);
         columnConfig.setModifiedUserId(0L);
         columnConfig.setGmtCreate(0L);

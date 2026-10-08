@@ -1,4 +1,4 @@
-overwrite
+
 package $package_dao_impl;
 
 import com.sparrow.orm.query.*;
@@ -6,7 +6,7 @@ import com.sparrow.orm.template.impl.ORMStrategy;
 import $package_dao.$persistence_class_nameDAO;
 import $package_pager_query.$persistence_class_nameDBPagerQuery;
 import $package_po.$persistence_class_name;
-import java.util.List;
+import java.util.*;
 import jakarta.inject.Named;
 import com.sparrow.protocol.*;
 import com.sparrow.context.SessionContext;
@@ -31,4 +31,38 @@ public class $persistence_class_nameDaoImpl extends ORMStrategy<$persistence_cla
         searchCriteria.setWhere(this.generateCriteria($persistence_object_namePagerQuery));
         return this.getCount(searchCriteria);
     }
+
+
+     [# th:if="${ctx.tableConfig.isTree}"]
+                @Override
+                public List<$persistence_class_name> queryChildren($persistence_class_nameDBPagerQuery $persistence_object_namePagerQuery) {
+                    SearchCriteria searchCriteria = new SearchCriteria();
+                    searchCriteria.setWhere(
+                        BooleanCriteria.criteria(Criteria.field($persistence_class_name::getParentId).equal($persistence_object_namePagerQuery.getParentId()))
+                            .and(Criteria.field($persistence_class_name::getStatus).equal($persistence_object_namePagerQuery.getStatus())));
+                    searchCriteria.addOrderCriteria(OrderCriteria.asc($persistence_class_name::getSort));
+                    searchCriteria.addOrderCriteria(OrderCriteria.asc($persistence_class_name::getId));
+                    return this.getList(searchCriteria);
+                }
+
+            @Override
+            public Set<Long> getParentIdsHavingChildren(Collection<Long> parentIds) {
+                if (parentIds == null || parentIds.isEmpty()) {
+                    return Collections.emptySet();
+                }
+                SearchCriteria searchCriteria = new SearchCriteria();
+                CriteriaField parentIdField = Criteria.field($persistence_class_name::getParentId).getField();
+                searchCriteria.setFields(parentIdField.getAlias() + "." + parentIdField.getName());
+                searchCriteria.setDistinct(true);
+                searchCriteria.setWhere(
+                    BooleanCriteria.criteria(Criteria.field($persistence_class_name::getParentId).in(parentIds))
+                        .and(Criteria.field($persistence_class_name::getStatus).equal(StatusRecord.ENABLE)));
+                Set<Object> rawParentIds = this.firstList(searchCriteria);
+                Set<Long> parentIdsWithChildren = new HashSet<>(rawParentIds.size());
+                for (Object rawParentId : rawParentIds) {
+                    parentIdsWithChildren.add(((Number) rawParentId).longValue());
+                }
+                return parentIdsWithChildren;
+            }
+        [/]
 }

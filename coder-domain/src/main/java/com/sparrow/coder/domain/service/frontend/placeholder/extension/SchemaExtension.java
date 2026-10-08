@@ -17,6 +17,7 @@
 
 package com.sparrow.coder.domain.service.frontend.placeholder.extension;
 
+import com.sparrow.coder.enums.HeaderType;
 import com.sparrow.utility.CollectionsUtility;
 import com.sparrow.coder.domain.bo.ColumnDef;
 import com.sparrow.coder.domain.bo.ProjectBO;
@@ -29,7 +30,6 @@ import com.sparrow.coder.domain.service.ValidatorMessageGenerator;
 import com.sparrow.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrow.coder.domain.service.registry.ValidatorRegistry;
 import com.sparrow.coder.enums.ArchitectureCategory;
-import com.sparrow.coder.enums.ColumnType;
 import com.sparrow.coder.enums.PlaceholderKey;
 import jakarta.inject.Named;
 
@@ -61,10 +61,10 @@ public class SchemaExtension extends AbstractPlaceholderExtension {
             if (!columnDef.getShowInEdit()) {
                 continue;
             }
-            ColumnType columnType = ColumnType.getById(columnDef.getColumnType());
-            if (ColumnType.ACTION.equals(columnType) ||
-                    ColumnType.CHECK.equals(columnType) ||
-                    ColumnType.FILTER.equals(columnType)
+            HeaderType headerType = HeaderType.getById(columnDef.getHeaderType());
+            if (HeaderType.MENU.equals(headerType) ||
+                    HeaderType.CHECK_BOX.equals(headerType) ||
+                    HeaderType.COLUMN_FILTER.equals(headerType)
             ) {
                 continue;
             }

@@ -17,7 +17,6 @@
 
 package com.sparrow.coder.domain.service.backend.placeholder.extension.dependency;
 
-import com.sparrow.protocol.dao.enums.ListDatasourceType;
 import com.sparrow.coder.constant.EnumNames;
 import com.sparrow.coder.domain.bo.CoderTriple;
 import com.sparrow.coder.domain.bo.ColumnDef;
@@ -25,6 +24,7 @@ import com.sparrow.coder.domain.bo.TableContext;
 import com.sparrow.coder.domain.service.AbstractPlaceholderExtension;
 import com.sparrow.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrow.coder.enums.PlaceholderKey;
+import com.sparrow.protocol.dao.enums.DatasourceType;
 import jakarta.inject.Named;
 
 import java.util.List;
@@ -38,13 +38,15 @@ public class DictionaryPlaceholderExtension extends AbstractPlaceholderExtension
         List<ColumnDef> columnDefs = tableContext.getColumns();
         CoderTriple dictionaryTriple = new CoderTriple();
         boolean isTableConfig = tableContext.getTableConfig().getTableName().equals("t_table_config");
+        String currentServiceClass = tableContext.getPlaceHolder().get(PlaceholderKey.$class_service.name());
+
 
         for (ColumnDef columnDef : columnDefs) {
-            if (!isTableConfig && ListDatasourceType.ENUM.getIdentity().equals(columnDef.getDatasourceType())) {
+            if (!isTableConfig && DatasourceType.ENUM.getIdentity().equals(columnDef.getDatasourceType())) {
                 dictionaryTriple.inject("@Inject\nprivate EnumsContainer businessEnumsContainer;");
                 dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",businessEnumsContainer.getEnums(\"%2$s\"));", columnDef.getPropertyName(), columnDef.getDatasourceParams()));
             }
-            if (ListDatasourceType.TABLE.getIdentity().equals(columnDef.getDatasourceType())) {
+            if (DatasourceType.TABLE.getIdentity().equals(columnDef.getDatasourceType())) {
                 String joinTableName = columnDef.getDatasourceParams();
                 TableContext joinTableContext = registry.getTableContext(joinTableName);
                 String joinServicePackage = joinTableContext.getPlaceHolder().get(PlaceholderKey.$package_service.name());
@@ -52,8 +54,10 @@ public class DictionaryPlaceholderExtension extends AbstractPlaceholderExtension
                 String joinClassName = joinTableContext.getPlaceHolder().get(PlaceholderKey.$persistence_class_name.name());
                 String objectName = joinTableContext.getPlaceHolder().get(PlaceholderKey.$persistence_object_name.name());
                 String joinFieldName = columnDef.getPropertyName();
-                dictionaryTriple.addImport(String.format("import %1$s.%2$s;\n", joinServicePackage, serviceClass));
-                dictionaryTriple.inject(String.format(" @Inject\n private %1$s %2$sService;", serviceClass, objectName));
+                if (!currentServiceClass.equalsIgnoreCase(serviceClass)) {
+                    dictionaryTriple.addImport(String.format("import %1$s.%2$s;\n", joinServicePackage, serviceClass));
+                    dictionaryTriple.inject(String.format(" @Inject\n private %1$s %2$sService;", serviceClass, objectName));
+                }
                 dictionaryTriple.code(String.format("pagerResult.putDictionary(\"%1$s\",this.%2$sService.get%3$sKvs());\n", joinFieldName, objectName, joinClassName));
             }
             if (tableContext.getEntityManager().getStatus() != null) {

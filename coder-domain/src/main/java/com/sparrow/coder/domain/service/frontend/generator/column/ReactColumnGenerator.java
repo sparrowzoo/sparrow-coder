@@ -17,15 +17,14 @@
 
 package com.sparrow.coder.domain.service.frontend.generator.column;
 
-import com.sparrow.lang.joiner.StringJoiner;
-import com.sparrow.utility.StringUtility;
 import com.sparrow.coder.constant.ArchitectureNames;
 import com.sparrow.coder.domain.bo.ColumnDef;
 import com.sparrow.coder.domain.bo.ProjectBO;
 import com.sparrow.coder.enums.CellType;
-import com.sparrow.coder.enums.ColumnType;
 import com.sparrow.coder.enums.ControlType;
 import com.sparrow.coder.enums.HeaderType;
+import com.sparrow.lang.joiner.StringJoiner;
+import com.sparrow.utility.StringUtility;
 import jakarta.inject.Named;
 
 import java.util.ArrayList;
@@ -46,13 +45,27 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
      */
     @Override
     public String column(ColumnDef columnDef, ProjectBO project) {
+        ColumnConfig config = new ColumnConfig();
+        HeaderType headerType = HeaderType.getById(columnDef.getHeaderType());
+        if (headerType != null) {
+            config.setId(headerType.getSpecialId());
+            config.setAccessorKey(columnDef.getPropertyName());
+            config.setHeader(this.getHeader(columnDef));
+        }
+        config.setEnableHiding(columnDef.getEnableHidden());
+        config.setCell(this.getCell(columnDef));
+
         List<String> columnDefList = new ArrayList<>();
-        columnDefList.add(this.renderColumnType(columnDef));
-        columnDefList.add(this.renderHeader(columnDef, project));
-        columnDefList.add(this.renderCell(columnDef));
-        columnDefList.add(String.format("enableHiding: %s", columnDef.getEnableHidden()));
-        String columns = new StringJoiner(",\n",columnDefList).join();
-        return String.format("{\n%s\n}",columns);
+        if (!StringUtility.isNullOrEmpty(config.getId())) {
+            columnDefList.add(String.format(" id: \"%s\"", config.getId()));
+        } else if (!StringUtility.isNullOrEmpty(config.getAccessorKey())) {
+            columnDefList.add(String.format(" accessorKey: \"%s\"", config.getAccessorKey()));
+        }
+        columnDefList.add(String.format("header: %s", config.getHeader()));
+        columnDefList.add(String.format("cell:%s", config.getCell()));
+        columnDefList.add(String.format("enableHiding: %s", config.isEnableHiding()));
+        String columns = new StringJoiner(",\n", columnDefList).join();
+        return String.format("{\n%s\n}", columns);
     }
 
     @Override
@@ -79,9 +92,10 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
      */
     @Override
     public String edit(ColumnDef columnDef, ProjectBO project, Boolean add) {
-        if (columnDef.getColumnType().equals(ColumnType.ACTION.getIdentity()) ||
-                columnDef.getColumnType().equals(ColumnType.CHECK.getIdentity()) ||
-                columnDef.getColumnType().equals(ColumnType.FILTER.getIdentity())
+
+        if (HeaderType.MENU.getIdentity().equals(columnDef.getHeaderType()) ||
+                HeaderType.CHECK_BOX.getIdentity().equals(columnDef.getHeaderType()) ||
+                HeaderType.COLUMN_FILTER.getIdentity().equals(columnDef.getHeaderType())
         ) {
             return "";
         }
@@ -101,9 +115,27 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
                             "pageTranslate={pageTranslate} " +
                             "%2$s" +
                             "setValue={setValue}\n" +
+                            "errorMessage={errors.%1$s?.message}\n" +
+                            "isSubmitted={isSubmitted}\n" +
+                            "setError={setError}\n" +
                             "fieldPropertyName={\"%1$s\"}/>",
                     columnDef.getPropertyName(),
                     this.defaultValue(columnDef, add));
+        }
+
+        if (columnDef.getControlType().equals(ControlType.IMAGE.getIdentity())) {
+            return String.format("""
+                            <ValidatableImage readonly={false} %2$s
+                                                              pathType={"%3$s"}
+                                                              setValue={setValue}
+                                                              isSubmitted={isSubmitted}
+                                                              pageTranslate={pageTranslate}
+                                                              errorMessage={errors.%1$s?.message}                                  \
+                            fieldPropertyName={"%1$s"}/>
+                            """,
+                    columnDef.getPropertyName(),
+                    this.defaultValue(columnDef, add),
+                    columnDef.getDatasourceParams());
         }
 
         if (columnDef.getControlType().equals(ControlType.DATE.getIdentity())) {
@@ -150,7 +182,7 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
 
     private String defaultValue(ColumnDef columnDef, Boolean add) {
         if (add) {
-            return "";
+            return String.format("defaultValue={\"%s\"}", columnDef.getDefaultValue());
         }
         if (columnDef.getControlType().equals(ControlType.CHECK_BOX.getIdentity())) {
             return String.format("defaultChecked={original.%s}", columnDef.getPropertyName());
@@ -180,101 +212,66 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
     }
 
 
-    public String renderColumnType(ColumnDef columnDef) {
-        ColumnType columnType = ColumnType.getById(columnDef.getColumnType());
-        switch (columnType) {
-            case ACTION:
-                return " id: \"actions\"";
-            case FILTER:
-                return " id: \"filter-column\"";
-            case TREE:
-                return " id: \"expander\"";
-            case CHECK:
-                return " id: \"select\"";
-            case NORMAL:
-                return String.format(" accessorKey: \"%s\"", columnDef.getPropertyName());
-            default:
-                return "";
-        }
-    }
-
-    public String renderHeader(ColumnDef columnDef, ProjectBO project) {
+    private String getHeader(ColumnDef columnDef) {
         HeaderType headerType = HeaderType.getById(columnDef.getHeaderType());
         if (headerType == null) {
-            return "header:''";
+            return "";
         }
         String columnTitle = columnDef.getChineseName();
-        if (ColumnType.CHECK.getId().equals(columnDef.getColumnType())) {
-            return "header: CheckboxHeader";
-        }
-        if (ColumnType.FILTER.getId().equals(columnDef.getColumnType())) {
-            return "header: ColumnFilter()";
-
-        }
-        if (ColumnType.TREE.getId().equals(columnDef.getColumnType())) {
-            return "header:\"\"";
-        }
-        if (ColumnType.ACTION.getId().equals(columnDef.getColumnType())) {
-            return String.format("header: PlainTextHeader({columnTitle: \"%1$s\"} as ColumnOperationProps)", columnTitle);
-        }
-        switch (headerType) {
-            case CHECK_BOX:
-                return "header: CheckboxHeader";
-            case EMPTY:
-                return "header: EmptyHeader";
-            case COLUMN_FILTER:
-                return "header: ColumnFilter";
-            case PLAIN_TEXT:
-            case NORMAL:
-                return String.format("header: PlainTextHeader({columnTitle: \"%1$s\"} as ColumnOperationProps)", columnTitle);
-            case NORMAL_FILTER:
-            case NORMAL_SORT:
-            case NORMAL_SORT_FILTER:
-                return String.format("header: NormalHeader({\n" +
-                                "            showSort: %1$s,\n" +
-                                "            showFilter: %2$s,\n" +
-                                "            columnTitle: \"%3$s\",\n" +
-                                "        } as ColumnOperationProps)%4$s",
-                        headerType.getSortable(),
-                        headerType.getFilterable(),
-                        columnTitle,
-                        headerType.getSortable() ? ",\nfilterFn: filterFns.includesString" : "");
-            default:
-                return "header:''";
-        }
+        return switch (headerType) {
+            case CHECK_BOX, EMPTY -> headerType.getComponentName();
+            case COLUMN_FILTER -> headerType.getComponentName() + "()";
+            case MENU, NORMAL,TREE ->
+                    String.format("PlainTextHeader({columnTitle: \"%1$s\"} as ColumnOperationProps)", columnTitle);
+            case NORMAL_FILTER, NORMAL_SORT, NORMAL_SORT_FILTER -> String.format("NormalHeader({\n" +
+                            "            showSort: %1$s,\n" +
+                            "            showFilter: %2$s,\n" +
+                            "            columnTitle: \"%3$s\",\n" +
+                            "        } as ColumnOperationProps)%4$s",
+                    headerType.getSortable(),
+                    headerType.getFilterable(),
+                    columnTitle,
+                    headerType.getSortable() ? ",\nfilterFn: filterFns.includesString" : "");
+            default -> "''";
+        };
     }
 
-    public String renderCell(ColumnDef columnDef) {
-        if (columnDef.getColumnType().equals(ColumnType.FILTER.getIdentity())) {
-            return "cell:\"\"";
+    private String getCell(ColumnDef columnDef) {
+        HeaderType headerType = HeaderType.getById(columnDef.getHeaderType());
+
+        if (HeaderType.COLUMN_FILTER.equals(headerType)) {
+            return "\"\"";
         }
-        if (columnDef.getColumnType().equals(ColumnType.CHECK.getIdentity())) {
-            return "cell:" + CellType.CHECK_BOX.getComponentName();
+        if (HeaderType.CHECK_BOX.equals(headerType)) {
+            columnDef.setCellType(CellType.CHECK_BOX.getIdentity());
+            return CellType.CHECK_BOX.getComponentName();
         }
-        if (columnDef.getColumnType().equals(ColumnType.TREE.getIdentity())) {
-            return String.format("cell: %1$s(\"%2$ss\")", CellType.TREE.getComponentName(), columnDef.getPropertyName());
+        if (HeaderType.TREE.equals(headerType)) {
+            columnDef.setCellType(CellType.TREE.getIdentity());
+            return String.format(" %1$s(\"%2$s\")", CellType.TREE.getComponentName(), columnDef.getPropertyName());
         }
-        if (columnDef.getColumnType().equals(ColumnType.ACTION.getIdentity())) {
-            return "cell:\"Actions\"";
+        if (HeaderType.MENU.equals(headerType)) {
+            columnDef.setCellType(CellType.OPERATION.getIdentity());
+            return "'Actions'";
         }
         CellType cellType = CellType.getById(columnDef.getCellType());
         if (cellType == null) {
-            return "cell:''";
+            return "''";
         }
-        String columnName = columnDef.getPropertyName();
         switch (cellType) {
             case TREE:
             case NORMAL:
             case UNIX_TIMESTAMP:
-                return String.format("cell: %1$s(\"%2$s\")", cellType.getComponentName(), columnDef.getPropertyName());
+            case IMAGE:
+                return String.format(" %1$s(\"%2$s\")", cellType.getComponentName(), columnDef.getPropertyName());
             case CHECK_BOX:
-                return "cell: " + CellType.CHECK_BOX.getComponentName();
+                return CellType.CHECK_BOX.getComponentName();
             case CURRENCY:
-                return String.format("cell: %3$s(\"%1$s\", \"%2$s\")", columnName, "USD", CellType.CURRENCY.getComponentName());
+                return String.format(" %3$s(\"%1$s\", \"%2$s\")", columnDef.getPropertyName(), "USD", CellType.CURRENCY.getComponentName());
             case OPERATION:
-                return "cell:\"Actions\"";
+                return "\"Actions\"";
             default:
-                return "cell:''";
+                return "''";
         }
     }
 }
