@@ -67,4 +67,14 @@ public enum HeaderType implements EnumIdentityAccessor {
         }
         return null;
     }
+
+    public static Boolean isFilter(HeaderType headerType) {
+        return HeaderType.NORMAL_SORT.equals(headerType) ||
+                HeaderType.NORMAL_FILTER.equals(headerType) ||
+                HeaderType.NORMAL_SORT_FILTER.equals(headerType);
+    }
+
+    public static Boolean isFilter(Integer id) {
+        return isFilter(getById(id));
+    }
 }

@@ -47,11 +47,10 @@ public class MybatisEntityManager extends AbstractEntityManagerAdapter {
         this.generateDelete();
         this.generateGetEntity();
         String parameterType = "com.sparrow.protocol.dao.StatusCriteria";
-        String modifiedCondition =
-                "`modified_user_name`=#{modifiedUserName},\n" +
-                        " `modified_user_id`=#{modifiedUserId},\n" +
-                        " `gmt_modified`=#{gmtModified}";
-        this.generateChangeStatus(parameterType, modifiedCondition);
+        String modifiedCondition = "`modified_user_name`=#{modifiedUserName},\n" + " `modified_user_id`=#{modifiedUserId},\n" + " `gmt_modified`=#{gmtModified}";
+        if (this.status != null) {
+            this.generateChangeStatus(parameterType, modifiedCondition);
+        }
         xml.append("</mapper>");
     }
 
@@ -124,7 +123,7 @@ public class MybatisEntityManager extends AbstractEntityManagerAdapter {
             autoGenerateConfig = String.format(" useGeneratedKeys=\"true\" keyColumn=\"%1$s\" keyProperty=\"%2$s\"", this.primary.getColumnName(), this.primary.getPropertyName());
         }
 
-        xml.append(String.format("<insert id=\"insert\" parameterType=\"%1$s\" %2$s>\n", this.className,autoGenerateConfig));
+        xml.append(String.format("<insert id=\"insert\" parameterType=\"%1$s\" %2$s>\n", this.className, autoGenerateConfig));
         xml.append(this.insert);
         xml.append("</insert>");
     }

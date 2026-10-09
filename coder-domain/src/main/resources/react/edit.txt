@@ -10,24 +10,25 @@ import {$persistence_class_name} from "@/components/$persistence_object_by_horiz
 import toast from "react-hot-toast";
 import {useTranslations} from "next-intl";
 import * as v from "valibot";
-import {CellContextProps,MyTableMeta} from "@/common/lib/table/DataTableProperty";
+import {CellContextProps[# th:if="${isContainsSelect}"],MyTableMeta[/]} from "@/common/lib/table/DataTableProperty";
 import useNavigating from "@/common/hook/NavigatingHook";
-import {PagerResult} from "@/common/lib/protocol/Result";
+[# th:if="${isContainsSelect}"]import {PagerResult} from "@/common/lib/protocol/Result";[/]
 $frontend_edit_import
 
 
 export default function EditPage({cellContext,callbackHandler}: CellContextProps<$persistence_class_name>) {
      const globalTranslate = useTranslations("GlobalForm");
-        const errorTranslate = useTranslations("$persistence_class_name.ErrorMessage")
+        const errorTranslate = useTranslations("ErrorMessage")
         const pageTranslate = useTranslations("$persistence_class_name")
         const validateTranslate = useTranslations("$persistence_class_name.validate")
         const FormSchema = crateScheme(validateTranslate);
         type FormData = v.InferOutput<typeof FormSchema>;
         const original = cellContext.row.original;
         const  Navigations=useNavigating();
+        [# th:if="${isContainsSelect}"]
         const meta = cellContext.table.options.meta as MyTableMeta<$persistence_class_name>;
-       const pageResult=(meta.result.data as PagerResult<$persistence_class_name>)
-
+        const pageResult=(meta.result.data as PagerResult<$persistence_class_name>)
+        [/]
 
 
 
@@ -45,8 +46,10 @@ export default function EditPage({cellContext,callbackHandler}: CellContextProps
     const {
         register,
         handleSubmit,
-                setValue,
-
+        [# th:if="${isManualSetValue}"]
+        setValue,
+        setError,
+        [/]
         formState: {
             errors,
             isSubmitted

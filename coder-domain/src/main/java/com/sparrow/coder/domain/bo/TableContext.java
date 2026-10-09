@@ -17,13 +17,6 @@
 
 package com.sparrow.coder.domain.bo;
 
-import com.sparrow.authenticator.enums.AuthenticatorError;
-import com.sparrow.core.spi.JsonFactory;
-import com.sparrow.json.Json;
-import com.sparrow.orm.EntityManager;
-import com.sparrow.orm.SparrowEntityManager;
-import com.sparrow.protocol.constant.SparrowError;
-import com.sparrow.utility.StringUtility;
 import com.sparrow.coder.domain.service.backend.ClassGenerator;
 import com.sparrow.coder.domain.service.backend.ClassPlaceholderGenerator;
 import com.sparrow.coder.domain.service.backend.DefaultClassGenerator;
@@ -33,6 +26,11 @@ import com.sparrow.coder.domain.service.frontend.DefaultFrontendPlaceholder;
 import com.sparrow.coder.domain.service.frontend.FrontendGenerator;
 import com.sparrow.coder.domain.service.frontend.FrontendPlaceholderGenerator;
 import com.sparrow.coder.utils.DefaultColumnsDefCreator;
+import com.sparrow.core.spi.JsonFactory;
+import com.sparrow.json.Json;
+import com.sparrow.orm.EntityManager;
+import com.sparrow.orm.SparrowEntityManager;
+import com.sparrow.utility.StringUtility;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -65,20 +63,12 @@ public class TableContext {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        this.initErrorMessage();
         this.classPlaceholderGenerator = new DefaultClassPlaceholder(project, this);
         this.classGenerator = new DefaultClassGenerator(project, this);
         this.frontendPlaceholderGenerator = new DefaultFrontendPlaceholder(project, this);
         this.frontendGenerator = new DefaultFrontendGenerator(project, this);
     }
 
-    public void initErrorMessage() {
-        i18nMap.putIfAbsent("ErrorMessage", new HashMap<>());
-        Map<String, String> errorMessages = (Map<String, String>) i18nMap.get("ErrorMessage");
-        errorMessages.put(SparrowError.SYSTEM_SERVER_ERROR.name().toLowerCase(), "系统错误，请稍侯再试...");
-        errorMessages.put(SparrowError.GLOBAL_PARAMETER_NULL.name().toLowerCase(), "参数不能为空...");
-        errorMessages.put(AuthenticatorError.USER_NOT_LOGIN.name().toLowerCase(), "用户未登录 请先登录...");
-    }
 
     public Map<String, String> getValidateI18nMap(String propertyName) {
         i18nMap.putIfAbsent("validate", new HashMap<>());

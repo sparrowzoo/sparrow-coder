@@ -11,8 +11,8 @@ import $package_param.$persistence_class_nameParam;
 import $package_repository.$persistence_class_nameRepository;
 import $package_query.$persistence_class_nameQuery;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 import jakarta.inject.*;
 
 @Named
@@ -70,10 +70,10 @@ public class $persistence_class_nameRepositoryImpl implements $persistence_class
             return Collections.emptyList();
         }
         Set<Long> childIds = children.stream().map($persistence_class_name::getId).collect(Collectors.toSet());
-        Set<Long> parentIdsWithChildren = this.$persistence_object_nameDao.getParentIdsHavingChildren(childIds);
+        Set<Long> parentIdsWithChildren = this.$persistence_object_nameDao.getParentIdsHavingChildren(childIds,StatusRecord.valueOf($persistence_object_nameQuery.getStatus()));
         return children.stream().map($persistence_object_name -> {
             $persistence_class_nameBO $persistence_object_nameBO = this.$persistence_object_nameConverter.po2bo($persistence_object_name);
-            $persistence_class_nameBO.setHasChildren(parentIdsWithChildren.contains($persistence_object_name.getId()));
+            $persistence_object_nameBO.setHasChildren(parentIdsWithChildren.contains($persistence_object_name.getId()));
             return $persistence_object_nameBO;
         }).collect(Collectors.toList());
     }

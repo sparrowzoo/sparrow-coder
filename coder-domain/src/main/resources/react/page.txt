@@ -6,6 +6,9 @@ import {columns, $persistence_class_name} from "@/components/$persistence_object
 import {DataTable} from "@/common/components/table/data-table";
 import Search from "@/components/$persistence_object_by_horizontal/search";
 import Operation from "@/components/$persistence_object_by_horizontal/operation";
+[# th:if="${ctx.tableConfig.isTree}"]
+import AddPage from "@/components/$persistence_object_by_horizontal/add";
+[/]
 import EditPage from "@/components/$persistence_object_by_horizontal/edit";
 import ThreeDotLoading from "@/common/components/ThreeDotLoading";
 import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizontal";
@@ -47,11 +50,10 @@ export default function Page() {
 
         [# th:if="${ctx.tableConfig.isTree}"]
         const childrenHandler = async (row) => {
-                        const result = await $persistence_class_nameApi.search({parentId: row.id});
+                        const result = await $persistence_class_nameApi.search({parentId: row.id}, errorTranslate, Navigations.redirectToLogin);
                         return result.data.list;
                 };
         [/]
-
     if (!dataState) {
         return (
             <div className="admin-page admin-data-page space-y-3">
@@ -78,7 +80,13 @@ export default function Page() {
                     initHandler={init}
                     [# th:if="${ctx.tableConfig.isTree}"]loadSubRows={childrenHandler}[/]
                     defaultPager={{pageIndex: 0, pageSize: -1}}
-                    RowOperationComponents={[]}
+                    RowOperationComponents={[[# th:if="${ctx.tableConfig.isTree}"]
+                                            {
+                                                component: AddPage,
+                                                displayText: globalTranslate("add-child"),
+                                                pop: true
+                                             }
+                                            [/]]}
                 ></DataTable>
             </div>
         </div>

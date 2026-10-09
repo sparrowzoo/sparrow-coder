@@ -126,14 +126,14 @@ public class DefaultColumnsDefCreator {
             columnDefs.add(columnDef);
         }
         for (int i = 0; i < columnDefs.size(); i++) {
-            columnDefs.get(i).setSort(i);
+            columnDefs.get(i).setSort((i + 1) * 10);
         }
         return columnDefs;
     }
 
     public static void fillTableLevelColumn(List<ColumnDef> columnDefs, String tableClassName) {
         List<ColumnDef> persistentColumns = create(tableClassName, true);
-        int sort = 100;
+        int sort = 1000;
         for (ColumnDef columnDef : persistentColumns) {
             columnDef.setSort(sort++);
         }

@@ -37,16 +37,14 @@ public class $persistence_class_nameDaoImpl extends ORMStrategy<$persistence_cla
                 @Override
                 public List<$persistence_class_name> queryChildren($persistence_class_nameDBPagerQuery $persistence_object_namePagerQuery) {
                     SearchCriteria searchCriteria = new SearchCriteria();
-                    searchCriteria.setWhere(
-                        BooleanCriteria.criteria(Criteria.field($persistence_class_name::getParentId).equal($persistence_object_namePagerQuery.getParentId()))
-                            .and(Criteria.field($persistence_class_name::getStatus).equal($persistence_object_namePagerQuery.getStatus())));
+                    searchCriteria.setWhere(this.generateCriteria($persistence_object_namePagerQuery));
                     searchCriteria.addOrderCriteria(OrderCriteria.asc($persistence_class_name::getSort));
                     searchCriteria.addOrderCriteria(OrderCriteria.asc($persistence_class_name::getId));
                     return this.getList(searchCriteria);
                 }
 
             @Override
-            public Set<Long> getParentIdsHavingChildren(Collection<Long> parentIds) {
+            public Set<Long> getParentIdsHavingChildren(Collection<Long> parentIds,StatusRecord statusRecord) {
                 if (parentIds == null || parentIds.isEmpty()) {
                     return Collections.emptySet();
                 }
@@ -54,9 +52,14 @@ public class $persistence_class_nameDaoImpl extends ORMStrategy<$persistence_cla
                 CriteriaField parentIdField = Criteria.field($persistence_class_name::getParentId).getField();
                 searchCriteria.setFields(parentIdField.getAlias() + "." + parentIdField.getName());
                 searchCriteria.setDistinct(true);
-                searchCriteria.setWhere(
-                    BooleanCriteria.criteria(Criteria.field($persistence_class_name::getParentId).in(parentIds))
-                        .and(Criteria.field($persistence_class_name::getStatus).equal(StatusRecord.ENABLE)));
+
+                BooleanCriteria booleanCriteria = BooleanCriteria.criteria(Criteria.field($persistence_class_name::getParentId).in(parentIds));
+                        if (statusRecord != null) {
+                            booleanCriteria.and(Criteria.field($persistence_class_name::getStatus).equal(statusRecord));
+                        }
+
+                searchCriteria.setWhere(booleanCriteria);
+
                 Set<Object> rawParentIds = this.firstList(searchCriteria);
                 Set<Long> parentIdsWithChildren = new HashSet<>(rawParentIds.size());
                 for (Object rawParentId : rawParentIds) {

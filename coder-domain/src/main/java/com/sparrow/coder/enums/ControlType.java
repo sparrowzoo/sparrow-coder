@@ -17,29 +17,28 @@
 
 package com.sparrow.coder.enums;
 
+import com.sparrow.coder.constant.EnumNames;
 import com.sparrow.protocol.EnumIdentityAccessor;
 import com.sparrow.protocol.EnumUniqueName;
-import com.sparrow.coder.constant.EnumNames;
 import lombok.Getter;
 
 @Getter
 @EnumUniqueName(name = EnumNames.CONTROL_TYPE)
 public enum ControlType implements EnumIdentityAccessor {
-    INPUT_TEXT("ValidatableInput","validatable-input", "text", 1),
-    LABEL("ValidatableInput","validatable-input", "label", 2),
-    //    LINK("lnk", "link", 3),
-    INPUT_HIDDEN("ValidatableInput","validatable-input", "hidden", 4),
-    INPUT_PASSWORD("ValidatableInput","validatable-input", "password", 5),
-    TEXT_AREA("ValidatableTextarea","validatable-textarea", "textarea", 6),
-    SELECT("ValidatableSelect","validatable-select", "select", 7),
+    INPUT_TEXT("ValidatableInput", "validatable-input", "text", 1),
+    LABEL("ValidatableInput", "validatable-input", "label", 2),
+    INPUT_HIDDEN("ValidatableInput", "validatable-input", "hidden", 4),
+    INPUT_PASSWORD("ValidatableInput", "validatable-input", "password", 5),
+    TEXT_AREA("ValidatableTextarea", "validatable-textarea", "textarea", 6),
+    SELECT("ValidatableSelect", "validatable-select", "select", 7),
     //    CODE("validatable-editor", "code", 10),
 //    EDITOR("validatable-editor", "editor", 11),
-    DATE("ValidatableDate","validatable-date", "date", 12),
-    DATE_HHMMSS("ValidatableTime","validatable-time", "time", 13),
-    CHECK_BOX("ValidatableInput","validatable-input", "checkbox", 14),
-//    FILE("validatable-upload", "file", 16),
-    IMAGE("ValidatableImage", "validatable-image", "image",15)
-    ;
+    DATE("ValidatableDate", "validatable-date", "date", 12),
+    DATE_HHMMSS("ValidatableTime", "validatable-time", "time", 13),
+    CHECK_BOX("ValidatableInput", "validatable-input", "checkbox", 14),
+    //    FILE("validatable-upload", "file", 16),
+    TREE("validatable-tree", "tree", "div", 16),
+    IMAGE("ValidatableImage", "validatable-image", "image", 15);
 
 
     private final String component;
@@ -48,7 +47,7 @@ public enum ControlType implements EnumIdentityAccessor {
     private Integer id;
 
 
-    ControlType(String component,String fileName, String inputType, Integer id) {
+    ControlType(String component, String fileName, String inputType, Integer id) {
         this.fileName = fileName;
         this.component = component;
         this.inputType = inputType;

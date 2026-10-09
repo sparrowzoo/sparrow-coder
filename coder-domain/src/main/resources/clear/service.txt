@@ -3,12 +3,12 @@ package $package_service;
 
 import com.sparrow.exception.Asserts;
 import com.sparrow.protocol.*;
+import com.sparrow.protocol.constant.*;
+import com.sparrow.protocol.enums.StatusRecord;
+import $package_bo.$persistence_class_nameBO;
 import com.sparrow.protocol.pager.SimplePager;
 import java.util.*;
 import jakarta.inject.*;
-import com.sparrow.protocol.constant.SparrowError;
-import com.sparrow.protocol.enums.StatusRecord;
-import $package_bo.$persistence_class_nameBO;
 import $package_repository.$persistence_class_nameRepository;
 import $package_param.$persistence_class_nameParam;
 import $package_query.$persistence_class_nameQuery;
@@ -48,20 +48,21 @@ public class $persistence_class_nameService {
         return query$persistence_class_name(null);
     }
 
-        [# th:if="${ctx.tableConfig.isTree}"]
+    [# th:if="${ctx.tableConfig.isTree}"]
      public ListRecordTotalBO<$persistence_class_nameBO> query$persistence_class_name($persistence_class_nameQuery $persistence_object_nameQuery) {
                 List<$persistence_class_nameBO> $persistence_object_nameBoList = this.$persistence_object_nameRepository.queryChildren($persistence_object_nameQuery);
-                return new ListRecordTotalBO<>($persistence_object_nameBoList, SimplePager.NO_SPLIT_PAGE);
-        }[/]
-    [# th:unless="${var}"]
-    public ListRecordTotalBO<$persistence_class_nameBO> query$persistence_class_name($persistence_class_nameQuery $persistence_object_nameQuery) {
-        Long totalRecord = this.$persistence_object_nameRepository.get$persistence_class_nameCount($persistence_object_nameQuery);
-        List<$persistence_class_nameBO> $persistence_object_nameBoList = null;
-        if (totalRecord > 0) {
-            $persistence_object_nameBoList = this.$persistence_object_nameRepository.query$persistence_class_names($persistence_object_nameQuery);
+                return new ListRecordTotalBO<>($persistence_object_nameBoList, Constant.LONG_ALL);
         }
-        return new ListRecordTotalBO<>($persistence_object_nameBoList, totalRecord);
-    }
+    [/]
+    [# th:unless="${ctx.tableConfig.isTree}"]
+        public ListRecordTotalBO<$persistence_class_nameBO> query$persistence_class_name($persistence_class_nameQuery $persistence_object_nameQuery) {
+            Long totalRecord = this.$persistence_object_nameRepository.get$persistence_class_nameCount($persistence_object_nameQuery);
+            List<$persistence_class_nameBO> $persistence_object_nameBoList = null;
+            if (totalRecord > 0) {
+                $persistence_object_nameBoList = this.$persistence_object_nameRepository.query$persistence_class_names($persistence_object_nameQuery);
+            }
+            return new ListRecordTotalBO<>($persistence_object_nameBoList, totalRecord);
+        }
     [/]
 
 

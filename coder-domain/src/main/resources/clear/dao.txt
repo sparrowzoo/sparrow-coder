@@ -4,15 +4,17 @@ package $package_dao;
 import com.sparrow.protocol.dao.DaoSupport;
 import $package_po.$persistence_class_name;
 import $package_pager_query.$persistence_class_nameDBPagerQuery;
-import java.util.List;
-
+import java.util.*;
+[# th:if="${ctx.tableConfig.isTree}"]
+import com.sparrow.protocol.enums.StatusRecord;
+[/]
 public interface $persistence_class_nameDAO extends DaoSupport<$persistence_class_name, Long> {
     List<$persistence_class_name> query$persistence_class_names($persistence_class_nameDBPagerQuery $persistence_object_namePagerQuery);
 
     Long count$persistence_class_name($persistence_class_nameDBPagerQuery $persistence_object_namePagerQuery);
     [# th:if="${ctx.tableConfig.isTree}"]
-    List<$persistence_class_name> queryChildren(Long parentId);
-    Set<Long> getParentIdsHavingChildren(Collection<Long> parentIds);
+    List<$persistence_class_name> queryChildren($persistence_class_nameDBPagerQuery $persistence_object_namePagerQuery);
+    Set<Long> getParentIdsHavingChildren(Collection<Long> parentIds,StatusRecord statusRecord);
     [/]
 
 }

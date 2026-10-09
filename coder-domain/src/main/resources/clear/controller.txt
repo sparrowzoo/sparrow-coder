@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
 import org.springframework.web.bind.annotation.*;
+[# th:if="${ctx.tableConfig.isTree}"]import com.sparrow.protocol.constant.Constant;[/]
 $dictionary_import
 
 
@@ -35,6 +36,11 @@ public class $persistence_class_nameController {
     @PostMapping("search.json")
     @Operation(method="搜索")
     public PagerResult<$persistence_class_nameDTO> search(@RequestBody $persistence_class_nameQuery $persistence_object_nameQuery) {
+        [# th:if="${ctx.tableConfig.isTree}"]
+           if ($persistence_object_nameQuery.getParentId() == null) {
+               $persistence_object_nameQuery.setParentId(Constant.LONG_DEFAULT_OPTION_KEY);
+           }
+        [/]
         ListRecordTotalBO<$persistence_class_nameBO> $persistence_object_nameListTotalRecord = this.$persistence_object_nameService.query$persistence_class_name($persistence_object_nameQuery);
         PagerResult<$persistence_class_nameDTO> pagerResult =this.$persistence_object_nameAssemble.assemblePager($persistence_object_nameListTotalRecord, $persistence_object_nameQuery);
         $dictionaries

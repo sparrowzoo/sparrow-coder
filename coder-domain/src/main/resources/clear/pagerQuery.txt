@@ -1,8 +1,8 @@
 
 package $package_pager_query;
 
-import com.sparrow.protocol.enums.StatusRecord;
 import com.sparrow.protocol.dao.DatabasePagerQuery;
+[# th:if="${ctx.tableConfig.isTree}"]import com.sparrow.protocol.constant.Constant;[/]
 import java.util.Date;
 import lombok.Data;
 @Data
@@ -10,12 +10,6 @@ public class $persistence_class_nameDBPagerQuery extends DatabasePagerQuery {
    $search_fields
    [# th:if="${ctx.tableConfig.isTree}"]
    private Long parentId;
-   public Long getParentId() {
-           if (parentId == null) {
-               return -1L;
-           }
-           return this.parentId;
-   }
    [/]
 
    public $persistence_class_nameDBPagerQuery() {}

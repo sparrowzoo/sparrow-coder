@@ -18,7 +18,6 @@
 package com.sparrow.coder.domain.bo;
 
 import com.sparrow.coder.domain.bo.validate.Validator;
-import com.sparrow.coder.domain.service.frontend.generator.column.ColumnConfig;
 import com.sparrow.coder.enums.CellType;
 import com.sparrow.coder.enums.HeaderType;
 import com.sparrow.coder.enums.SearchType;
@@ -27,10 +26,6 @@ import com.sparrow.protocol.dao.enums.DatasourceType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Table;
 import lombok.Data;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @Data
 @Table(name = "column_def")

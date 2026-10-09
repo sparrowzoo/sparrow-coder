@@ -1,14 +1,15 @@
 
 import Fetcher from "@/common/lib/Fetcher";
 import {IDENTITY} from "@/common/lib/protocol/Identity";
-import Result from "@/common/lib/protocol/Result";
+import Result, {PagerResult} from "@/common/lib/protocol/Result";
+import {$persistence_class_name} from "@/components/$persistence_object_by_horizontal/columns";
 
 export default class $persistence_class_nameApi {
     public static search(
         query: object,
         translator: (key: string) => string,
         redirectToLogin:()=>void
-    ): Promise<Result> {
+    ): Promise<Result<PagerResult<$persistence_class_name>>> {
         const body = JSON.stringify(query);
         return Fetcher.post({
             url: "/$persistence_object_by_slash/search.json",

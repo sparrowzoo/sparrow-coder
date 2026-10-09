@@ -3,9 +3,7 @@ package $package_repository;
 import $package_bo.$persistence_class_nameBO;
 import $package_param.$persistence_class_nameParam;
 import $package_query.$persistence_class_nameQuery;
-import java.util.List;
-import java.util.Set;
-
+import java.util.*;
 
 
 

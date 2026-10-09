@@ -20,10 +20,12 @@ package com.sparrow.coder.domain.service.frontend.generator.column;
 import com.sparrow.coder.constant.ArchitectureNames;
 import com.sparrow.coder.domain.bo.ColumnDef;
 import com.sparrow.coder.domain.bo.ProjectBO;
+import com.sparrow.coder.domain.bo.TableContext;
 import com.sparrow.coder.enums.CellType;
 import com.sparrow.coder.enums.ControlType;
 import com.sparrow.coder.enums.HeaderType;
 import com.sparrow.lang.joiner.StringJoiner;
+import com.sparrow.protocol.constant.Constant;
 import com.sparrow.utility.StringUtility;
 import jakarta.inject.Named;
 
@@ -91,103 +93,57 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
      * @return
      */
     @Override
-    public String edit(ColumnDef columnDef, ProjectBO project, Boolean add) {
+    public String edit(ColumnDef columnDef, ProjectBO project, TableContext tableContext, Boolean add) {
 
-        if (HeaderType.MENU.getIdentity().equals(columnDef.getHeaderType()) ||
-                HeaderType.CHECK_BOX.getIdentity().equals(columnDef.getHeaderType()) ||
-                HeaderType.COLUMN_FILTER.getIdentity().equals(columnDef.getHeaderType())
-        ) {
+        if (HeaderType.MENU.getIdentity().equals(columnDef.getHeaderType()) || HeaderType.CHECK_BOX.getIdentity().equals(columnDef.getHeaderType()) || HeaderType.COLUMN_FILTER.getIdentity().equals(columnDef.getHeaderType())) {
             return "";
         }
         if (columnDef.getControlType().equals(ControlType.INPUT_HIDDEN.getIdentity())) {
-            return String.format("<ValidatableInput %3$s {...register(\"%1$s\")}\n" +
-                            "                                  type={\"%2$s\"}\n" +
-                            "                                  fieldPropertyName={\"%1$s\"}/>",
-                    columnDef.getPropertyName(),
-                    ControlType.getControlType(columnDef.getControlType()).getInputType(),
-                    this.defaultValue(columnDef, add)
-            );
+            return String.format("<ValidatableInput %3$s {...register(\"%1$s\")} type={\"%2$s\"} fieldPropertyName={\"%1$s\"}/>", columnDef.getPropertyName(), ControlType.getControlType(columnDef.getControlType()).getInputType(), this.defaultValue(columnDef, tableContext, add));
         }
 
         if (columnDef.getControlType().equals(ControlType.SELECT.getIdentity())) {
-            return String.format("<ValidatableSelect " +
-                            "dictionary={pageResult.dictionary[\"%1$s\"]} " +
-                            "pageTranslate={pageTranslate} " +
-                            "%2$s" +
-                            "setValue={setValue}\n" +
-                            "errorMessage={errors.%1$s?.message}\n" +
-                            "isSubmitted={isSubmitted}\n" +
-                            "setError={setError}\n" +
-                            "fieldPropertyName={\"%1$s\"}/>",
-                    columnDef.getPropertyName(),
-                    this.defaultValue(columnDef, add));
+            return String.format("<ValidatableSelect dictionary={pageResult.dictionary[\"%1$s\"]} pageTranslate={pageTranslate} %2$s setValue={setValue} errorMessage={errors.%1$s?.message} isSubmitted={isSubmitted} setError={setError} fieldPropertyName={\"%1$s\"}/>", columnDef.getPropertyName(), this.defaultValue(columnDef, tableContext, add));
         }
 
         if (columnDef.getControlType().equals(ControlType.IMAGE.getIdentity())) {
             return String.format("""
-                            <ValidatableImage readonly={false} %2$s
-                                                              pathType={"%3$s"}
-                                                              setValue={setValue}
-                                                              isSubmitted={isSubmitted}
-                                                              pageTranslate={pageTranslate}
-                                                              errorMessage={errors.%1$s?.message}                                  \
-                            fieldPropertyName={"%1$s"}/>
-                            """,
-                    columnDef.getPropertyName(),
-                    this.defaultValue(columnDef, add),
-                    columnDef.getDatasourceParams());
+                    <ValidatableImage readonly={false} %2$s
+                                                      pathType={"%3$s"}
+                                                      setValue={setValue}
+                                                      isSubmitted={isSubmitted}
+                                                      pageTranslate={pageTranslate}
+                                                      errorMessage={errors.%1$s?.message}                                  \
+                    fieldPropertyName={"%1$s"}/>
+                    """, columnDef.getPropertyName(), this.defaultValue(columnDef, tableContext, add), columnDef.getDatasourceParams());
         }
 
         if (columnDef.getControlType().equals(ControlType.DATE.getIdentity())) {
-            return String.format("<ValidatableDate readonly={false} fieldPropertyName={\"%1$s\"}\n" +
-                            "                                 setValue={setValue}\n" +
-                            "                                 pageTranslate={pageTranslate} %2$s/>",
-                    columnDef.getPropertyName(),
-                    this.defaultValue(columnDef, add));
+            return String.format("<ValidatableDate readonly={false} fieldPropertyName={\"%1$s\"} setValue={setValue} pageTranslate={pageTranslate} %2$s/>", columnDef.getPropertyName(), this.defaultValue(columnDef, tableContext, add));
         }
 
         String message = "";
-        if (!StringUtility.isNullOrEmpty(columnDef.getValidateType()) &&
-                !columnDef.getValidateType().equals("nullableValidatorMessageGenerator")) {
+        if (!StringUtility.isNullOrEmpty(columnDef.getValidateType()) && !columnDef.getValidateType().equals("nullableValidatorMessageGenerator")) {
             message = String.format("errorMessage={errors.%1$s?.message}", columnDef.getPropertyName());
         }
 
         if (columnDef.getControlType().equals(ControlType.TEXT_AREA.getIdentity())) {
-            return String.format("<ValidatableTextarea className={\"w-80 h-60\"} readonly={%4$s} %3$s {...register(\"%1$s\")}\n" +
-                            "                                  isSubmitted={isSubmitted}\n" +
-                            "                                  pageTranslate={pageTranslate}\n" +
-                            "                                  %2$s" +
-                            "                                  fieldPropertyName={\"%1$s\"}/>",
-                    columnDef.getPropertyName(),
-                    message,
-                    this.defaultValue(columnDef, add),
-                    columnDef.getReadOnly() != null && columnDef.getReadOnly()
-            );
+            return String.format("<ValidatableTextarea className={\"w-80 h-60\"} readonly={%4$s} %3$s {...register(\"%1$s\")} isSubmitted={isSubmitted} pageTranslate={pageTranslate}%2$s fieldPropertyName={\"%1$s\"}/>", columnDef.getPropertyName(), message, this.defaultValue(columnDef, tableContext, add), columnDef.getReadOnly() != null && columnDef.getReadOnly());
         }
-
-
-        return String.format("<ValidatableInput readonly={%5$s} %4$s {...register(\"%1$s\")}\n" +
-                        "                                  type={\"%2$s\"}\n" +
-                        "                                  isSubmitted={isSubmitted}\n" +
-                        "                                  pageTranslate={pageTranslate}\n" +
-                        "                                  %3$s" +
-                        "                                  fieldPropertyName={\"%1$s\"}/>",
-                columnDef.getPropertyName(),
-                ControlType.getControlType(columnDef.getControlType()).getInputType(),
-                message,
-                this.defaultValue(columnDef, add),
-                columnDef.getReadOnly() != null && columnDef.getReadOnly()
-        );
+        return String.format("<ValidatableInput readonly={%5$s} %4$s {...register(\"%1$s\")} type={\"%2$s\"} isSubmitted={isSubmitted} pageTranslate={pageTranslate} %3$s fieldPropertyName={\"%1$s\"}/>", columnDef.getPropertyName(), ControlType.getControlType(columnDef.getControlType()).getInputType(), message, this.defaultValue(columnDef, tableContext, add), columnDef.getReadOnly() != null && columnDef.getReadOnly());
     }
 
-    private String defaultValue(ColumnDef columnDef, Boolean add) {
+    private String defaultValue(ColumnDef columnDef, TableContext tableContext, Boolean add) {
+        if (add && tableContext.getTableConfig().getIsTree() && columnDef.getPropertyName().equals("parentId")) {
+            return String.format(" defaultValue={String(original ? original.id :%s)} ", Constant.DEFAULT_OPTION_KEY);
+        }
         if (add) {
-            return String.format("defaultValue={\"%s\"}", columnDef.getDefaultValue());
+            return String.format("defaultValue={\"%s\"} ", columnDef.getDefaultValue());
         }
         if (columnDef.getControlType().equals(ControlType.CHECK_BOX.getIdentity())) {
-            return String.format("defaultChecked={original.%s}", columnDef.getPropertyName());
+            return String.format("defaultChecked={original.%s} ", columnDef.getPropertyName());
         }
-        return String.format("defaultValue={original.%s}", columnDef.getPropertyName());
+        return String.format("defaultValue={String(original.%s)} ", columnDef.getPropertyName());
     }
 
     @Override
@@ -218,22 +174,24 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
             return "";
         }
         String columnTitle = columnDef.getChineseName();
-        return switch (headerType) {
-            case CHECK_BOX, EMPTY -> headerType.getComponentName();
-            case COLUMN_FILTER -> headerType.getComponentName() + "()";
-            case MENU, NORMAL,TREE ->
-                    String.format("PlainTextHeader({columnTitle: \"%1$s\"} as ColumnOperationProps)", columnTitle);
-            case NORMAL_FILTER, NORMAL_SORT, NORMAL_SORT_FILTER -> String.format("NormalHeader({\n" +
-                            "            showSort: %1$s,\n" +
-                            "            showFilter: %2$s,\n" +
-                            "            columnTitle: \"%3$s\",\n" +
-                            "        } as ColumnOperationProps)%4$s",
-                    headerType.getSortable(),
-                    headerType.getFilterable(),
-                    columnTitle,
-                    headerType.getSortable() ? ",\nfilterFn: filterFns.includesString" : "");
-            default -> "''";
-        };
+        if (StringUtility.isNullOrEmpty(columnTitle)) {
+            columnTitle = columnDef.getPropertyName().toUpperCase();
+        }
+        switch (headerType) {
+            case CHECK_BOX, EMPTY -> {
+                return headerType.getComponentName();
+            }
+            case COLUMN_FILTER -> {
+                return headerType.getComponentName() + "()";
+            }
+            case MENU, NORMAL, TREE -> {
+                return String.format("PlainTextHeader({columnTitle: \"%1$s\"} as ColumnOperationProps)", columnTitle);
+            }
+            case NORMAL_FILTER, NORMAL_SORT, NORMAL_SORT_FILTER -> {
+                return String.format("NormalHeader({showSort: %1$s,showFilter: %2$s,columnTitle: \"%3$s\"} as ColumnOperationProps)%4$s", headerType.getSortable(), headerType.getFilterable(), columnTitle, headerType.getSortable() ? ",\nfilterFn: filterFns.includesString" : "");
+            }
+        }
+        return "''";
     }
 
     private String getCell(ColumnDef columnDef) {

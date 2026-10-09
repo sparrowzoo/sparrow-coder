@@ -58,7 +58,6 @@ public class KVServiceExtension extends AbstractPlaceholderExtension {
                         "        %2$sQuery.setPageSize(-1);\n" +
                         "        List<%1$sBO> %2$sBoList = this.%2$sRepository.query%1$ss(%2$sQuery);\n" +
                         "        List<KeyValue<Integer, String>> %2$sKvs = new ArrayList<>(%2$sBoList.size());\n" +
-                        "        %2$sKvs.add(new KeyValue<>(-1, \"请选择[默认不限]\"));\n" +
                         "        for (%1$sBO %2$sBO : %2$sBoList) {\n" +
                         "            %2$sKvs.add(new KeyValue<>(%2$sBO.getId().intValue(), %2$sBO.getDisplayText()));\n" +
                         "        }\n" +

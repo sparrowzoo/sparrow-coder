@@ -19,6 +19,7 @@ package com.sparrow.coder.domain.service.frontend.generator.column;
 
 import com.sparrow.coder.domain.bo.ColumnDef;
 import com.sparrow.coder.domain.bo.ProjectBO;
+import com.sparrow.coder.domain.bo.TableContext;
 import com.sparrow.coder.enums.CellType;
 import com.sparrow.coder.enums.HeaderType;
 
@@ -29,7 +30,7 @@ public interface ColumnGenerator {
 
     String importEdit(ColumnDef columnDef,ProjectBO project);
 
-    String edit(ColumnDef columnDef,ProjectBO project,Boolean add);
+    String edit(ColumnDef columnDef, ProjectBO project, TableContext tableContext, Boolean add);
 
     String importHeader(HeaderType headerType,ProjectBO project);
 

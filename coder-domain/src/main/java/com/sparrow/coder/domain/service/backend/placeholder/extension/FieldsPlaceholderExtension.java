@@ -35,8 +35,8 @@ public class FieldsPlaceholderExtension extends AbstractPlaceholderExtension {
         Map<String, String> placeHolder = tableContext.getPlaceHolder();
         EntityManager entityManager = tableContext.getEntityManager();
         Map<String, Field> fields = entityManager.getPropertyFieldMap();
-        boolean isAssignableDisplayText = entityManager.isAssignableFromDisplayText();
-        tableContext.getVariables().put("isAssignableDisplayText", isAssignableDisplayText);
+
+
         StringBuilder fieldBuild = new StringBuilder();
         StringBuilder fieldDtoBuild = new StringBuilder();
         StringBuilder paramFieldBuild = new StringBuilder();

@@ -17,7 +17,6 @@
 
 package com.sparrow.coder.domain.service.frontend.placeholder.extension;
 
-import com.sparrow.utility.CollectionsUtility;
 import com.sparrow.coder.domain.bo.ColumnDef;
 import com.sparrow.coder.domain.bo.ProjectBO;
 import com.sparrow.coder.domain.bo.TableContext;
@@ -28,6 +27,7 @@ import com.sparrow.coder.domain.service.registry.ColumnGeneratorRegistry;
 import com.sparrow.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrow.coder.enums.ArchitectureCategory;
 import com.sparrow.coder.enums.PlaceholderKey;
+import com.sparrow.utility.CollectionsUtility;
 import jakarta.inject.Named;
 
 import java.util.*;
@@ -56,12 +56,12 @@ public class UpsertFormExtension extends AbstractPlaceholderExtension {
         Set<String> imports = new HashSet<>();
         Map<String, Object> columnI18nMap = tableContext.getI18nMap();
         for (ColumnDef columnDef : columnDefs) {
+            columnI18nMap.put(columnDef.getPropertyName(), columnDef.getChineseName());
             if (columnDef.getShowInEdit()) {
                 imports.add(columnGenerator.importEdit(columnDef, project));
-                addFormItems.add(columnGenerator.edit(columnDef, project, true));
-                editFormItems.add(columnGenerator.edit(columnDef, project, false));
+                addFormItems.add(columnGenerator.edit(columnDef, project, tableContext, true));
+                editFormItems.add(columnGenerator.edit(columnDef, project, tableContext, false));
             }
-            columnI18nMap.put(columnDef.getPropertyName(), columnDef.getChineseName());
         }
         String addFormItemStr = String.join("\n", addFormItems);
         String editFormItemStr = String.join("\n", editFormItems);

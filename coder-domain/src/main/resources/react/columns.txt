@@ -1,6 +1,5 @@
 
-import {ColumnDef, filterFns} from "@tanstack/react-table";
-import * as React from "react";
+import {ColumnDef[# th:if="${isFilterColumn}"], filterFns[/]} from "@tanstack/react-table";
 import {BasicData, ColumnOperationProps} from "@/common/lib/table/DataTableProperty";
 $frontend_column_import
 

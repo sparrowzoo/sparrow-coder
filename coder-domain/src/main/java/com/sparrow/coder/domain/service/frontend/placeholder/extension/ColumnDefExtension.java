@@ -17,7 +17,7 @@
 
 package com.sparrow.coder.domain.service.frontend.placeholder.extension;
 
-import com.sparrow.utility.CollectionsUtility;
+import com.sparrow.coder.constant.ContextVariablesKeys;
 import com.sparrow.coder.domain.bo.ColumnDef;
 import com.sparrow.coder.domain.bo.ProjectBO;
 import com.sparrow.coder.domain.bo.TableContext;
@@ -30,6 +30,11 @@ import com.sparrow.coder.enums.ArchitectureCategory;
 import com.sparrow.coder.enums.CellType;
 import com.sparrow.coder.enums.HeaderType;
 import com.sparrow.coder.enums.PlaceholderKey;
+import com.sparrow.orm.EntityManager;
+import com.sparrow.protocol.TreeItemAccessor;
+import com.sparrow.protocol.dao.PO;
+import com.sparrow.protocol.dao.enums.DatasourceType;
+import com.sparrow.utility.CollectionsUtility;
 import jakarta.inject.Named;
 
 import java.util.ArrayList;
@@ -58,10 +63,34 @@ public class ColumnDefExtension extends AbstractPlaceholderExtension {
         Map<String, String> placeholder = tableContext.getPlaceHolder();
         List<String> columns = new ArrayList<>();
         HashMap<String, String> imports = new HashMap<>();
+
+        EntityManager entityManager = tableContext.getEntityManager();
+        Class<?> entityClass = entityManager.getEntityClass();
+        boolean isAssignableDisplayText = entityManager.isAssignableFromDisplayText();
+        boolean isAssignablePO = PO.class.isAssignableFrom(entityClass);
+        boolean isAssignableTreeItem = TreeItemAccessor.class.isAssignableFrom(entityClass);
+
+        tableContext.getVariables().put(ContextVariablesKeys.IS_ASSIGNABLE_DISPLAY_TEXT, isAssignableDisplayText);
+        tableContext.getVariables().put(ContextVariablesKeys.IS_ASSIGNABLE_PO, isAssignablePO);
+        tableContext.getVariables().put(ContextVariablesKeys.IS_ASSIGNABLE_TREE_ITEM, isAssignableTreeItem);
+
+
         for (ColumnDef columnDef : columnDefs) {
+            if (columnDef.getShowInEdit()) {
+                if (DatasourceType.isList(columnDef.getDatasourceType())) {
+                    tableContext.getVariables().put(ContextVariablesKeys.IS_CONTAINS_SELECT, true);
+                }
+                if (columnDef.getDatasourceType() != null && columnDef.getDatasourceType() > 0) {
+                    tableContext.getVariables().put(ContextVariablesKeys.IS_MANUAL_SET_VALUE, true);
+                }
+                if (HeaderType.isFilter(columnDef.getHeaderType())) {
+                    tableContext.getVariables().put(ContextVariablesKeys.IS_FILTER_COLUMN, true);
+                }
+            }
             if (!columnDef.getShowInList()) {
                 continue;
             }
+
             columns.add(columnGenerator.column(columnDef, project));
 
             if (columnDef.getHeaderType() != null) {
@@ -73,7 +102,7 @@ public class ColumnDefExtension extends AbstractPlaceholderExtension {
 
             if (columnDef.getCellType() != null) {
                 CellType cellType = CellType.getById(columnDef.getCellType());
-                if (cellType != null && !imports.containsKey(cellType.getComponentName())) {
+                if (cellType != null && !CellType.OPERATION.equals(cellType) && !imports.containsKey(cellType.getComponentName())) {
                     imports.put(cellType.getComponentName(), columnGenerator.importCell(cellType, project));
                 }
             }
@@ -81,7 +110,7 @@ public class ColumnDefExtension extends AbstractPlaceholderExtension {
         String importStr = String.join("\n", imports.values());
         String className = tableContext.getEntityManager().getSimpleClassName();
         String frontColumnDefs = columnGenerator.columnDefs(className, columns);
-        placeholder.put(PlaceholderKey.$frontend_column_import.name(),importStr);
+        placeholder.put(PlaceholderKey.$frontend_column_import.name(), importStr);
         placeholder.put(PlaceholderKey.$frontend_column_defs.name(), frontColumnDefs);
     }
 }

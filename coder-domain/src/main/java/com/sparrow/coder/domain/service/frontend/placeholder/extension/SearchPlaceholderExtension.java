@@ -17,6 +17,7 @@
 
 package com.sparrow.coder.domain.service.frontend.placeholder.extension;
 
+import com.sparrow.coder.constant.ContextVariablesKeys;
 import com.sparrow.coder.domain.bo.ColumnDef;
 import com.sparrow.coder.domain.bo.ProjectBO;
 import com.sparrow.coder.domain.bo.TableContext;
@@ -79,18 +80,21 @@ public class SearchPlaceholderExtension extends AbstractPlaceholderExtension {
                 continue;
             }
             if (columnDef.getShowInSearch()) {
-                if (columnDef.getDatasourceType().equals(DatasourceType.ENUM.getIdentity())) {
+                if (DatasourceType.isList(columnDef.getDatasourceType())) {
+                    tableContext.getVariables().put(ContextVariablesKeys.IS_CONTAINS_SEARCH_SELECT, true);
                     frontQueryFields.add(String.format("%2$s: %1$s;", "number", field.getPropertyName()));
-                    frontSearchItems.add(String.format("<SearchSelect propertyName={\"%1$s\"} pageTranslate={pageTranslate} setSearchCondition={set%2$sQuery} dictionary={meta.result.data.dictionary['%1$s']}/>", field.getPropertyName(), persistenceClassName));
+                    frontSearchItems.add(String.format("<SearchSelect propertyName={\"%1$s\"} pageTranslate={pageTranslate} setSearchCondition={set%2$sQuery} dictionary={pagerResult.dictionary['%1$s']}/>", field.getPropertyName(), persistenceClassName));
                 } else {
+                    tableContext.getVariables().put(ContextVariablesKeys.IS_CONTAINS_SEARCH_INPUT, true);
                     frontQueryFields.add(String.format("%2$s: %1$s;", JavaTsTypeConverter.toTsType(field.getType()), field.getPropertyName()));
                     frontSearchItems.add(String.format("<SearchInput value={%1$sQuery?.%2$s||\"\"} \n" + "propertyName={\"%2$s\"} pageTranslate={pageTranslate} \n" + "setSearchCondition={set%3$sQuery}/>", persistenceObjectName, field.getPropertyName(), persistenceClassName));
                 }
             }
 
             if (field.getType().equals(StatusRecord.class)) {
+                tableContext.getVariables().put(ContextVariablesKeys.IS_CONTAINS_SEARCH_SELECT, true);
                 frontQueryFields.add(String.format("%2$s: %1$s;", "number", field.getPropertyName()));
-                frontSearchItems.add(String.format("<SearchSelect propertyName={\"%1$s\"} pageTranslate={pageTranslate} setSearchCondition={set%2$sQuery} dictionary={meta.result.data.dictionary['%1$s']}/>", field.getPropertyName(), persistenceClassName));
+                frontSearchItems.add(String.format("<SearchSelect propertyName={\"%1$s\"} pageTranslate={pageTranslate} setSearchCondition={set%2$sQuery} dictionary={pagerResult.dictionary['%1$s']}/>", field.getPropertyName(), persistenceClassName));
             }
         }
         placeholder.put(PlaceholderKey.$frontend_search_items.name(), String.join("\n", frontSearchItems));

@@ -3,22 +3,18 @@ import * as React from "react";
 import {useState} from "react";
 import {$persistence_class_name} from "@/components/$persistence_object_by_horizontal/columns";
 import {MyTableMeta,SimplePager, TableOperationProps} from "@/common/lib/table/DataTableProperty";
-import {PagerResult} from "@/common/lib/protocol/Result";
 import {Button} from "@/components/ui/button";
 import $persistence_class_nameApi from "@/api/auto/$persistence_object_by_horizontal";
 import {useTranslations} from "next-intl";
-import SearchInput from "@/common/components/forms/search-input";
+[# th:if="${isContainsSearchInput}"]import SearchInput from "@/common/components/forms/search-input";[/]
 import SearchSelect from "@/common/components/forms/search-select";
 import {PaginationState} from "@tanstack/table-core/src/features/RowPagination";
 import useNavigating from "@/common/hook/NavigatingHook";
 import {Search as SearchIcon} from "lucide-react";
-
+[# th:if="${isContainsSearchSelect}"]import {PagerResult} from "@/common/lib/protocol/Result";[/]
 
 interface $persistence_class_nameQuery extends SimplePager{
-    name: string;
-frontendName: string;
-chineseName: string;
-status: number;
+    $frontend_query_fields
 }
 
 export default function Search({table}: TableOperationProps<$persistence_class_name>) {
@@ -27,21 +23,27 @@ export default function Search({table}: TableOperationProps<$persistence_class_n
     const pageTranslate = useTranslations("$persistence_class_name")
     const globalTranslate = useTranslations("GlobalForm");
     const setDataState = meta.setData;
-    const [$persistence_class_nameQuery, set$persistence_class_nameQuery] = useState<$persistence_class_nameQuery>({} as $persistence_class_nameQuery)
+    const [$persistence_object_nameQuery, set$persistence_class_nameQuery] = useState<$persistence_class_nameQuery>({} as $persistence_class_nameQuery)
     const  Navigations=useNavigating();
+    [# th:if="${isContainsSearchSelect}"]
+    const pagerResult = meta.result.data as PagerResult<$persistence_class_name>
+    [/]
+
 
     if (setDataState == null) {
         return <>setDataState is not defined</>
     }
 
     const searchHandler = (page?: PaginationState) => {
+            meta.removeExpansionKey();
+
             if (!page) {
                 page = {pageIndex: 0, pageSize: table.getState().pagination.pageSize}
                 table.setPagination(page);
             }
-            $persistence_class_nameQuery.pageNo = page?.pageIndex;
-            $persistence_class_nameQuery.pageSize = page?.pageSize;
-            $persistence_class_nameApi.search($persistence_class_nameQuery, errorTranslate,Navigations.redirectToLogin).then(
+            $persistence_object_nameQuery.pageNo = page?.pageIndex;
+            $persistence_object_nameQuery.pageSize = page?.pageSize;
+            $persistence_class_nameApi.search($persistence_object_nameQuery, errorTranslate,Navigations.redirectToLogin).then(
                 (res) => {
                     setDataState(res)
                 }
@@ -52,13 +54,7 @@ export default function Search({table}: TableOperationProps<$persistence_class_n
 
 
     return (<div className="admin-search-bar flex flex-wrap items-center gap-3 rounded-lg bg-muted/40 p-3 [&>input]:w-full [&>input]:max-w-none sm:[&>input]:w-56">
-  {/*<SearchInput value={User3Query?.chineseName||""}*/}
-  {/*propertyName={"chineseName"} pageTranslate={pageTranslate}*/}
-  {/*setSearchCondition={setUser3Query}/>*/}
-            <label className="min-w-0 w-full sm:w-40 [&_button]:w-full">
-                <span className="sr-only">{pageTranslate("status")}</span>
-                <SearchSelect propertyName={"status"} pageTranslate={pageTranslate} setSearchCondition={set$persistence_class_nameQuery} dictionary={(meta.result.data as PagerResult<$persistence_class_name>).dictionary['status']}/>
-            </label>
+            $frontend_search_items
             <Button onClick={() => searchHandler()} className="w-full gap-2 px-5 sm:w-auto">
                 <SearchIcon className="size-4" aria-hidden="true"/>
                 {globalTranslate('search')}
