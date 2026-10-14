@@ -62,9 +62,6 @@ public class DefaultClassPlaceholder implements ClassPlaceholderGenerator {
         if (packageName == null) {
             return "";
         }
-        if (!this.project.getProjectConfig().getWrapWithParent()) {
-            packageName = packageName.replaceAll("admin.", "");
-        }
         String poPackage = this.tableContext.getPoPackage();
         return fileUtility.replacePath(poPackage, ClassKey.PO.name(), packageName, Symbol.DOT);
     }

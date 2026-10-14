@@ -16,7 +16,7 @@ import useNavigating from "@/common/hook/NavigatingHook";
 
 export default function Operation({table}: TableOperationProps<$persistence_class_name>) {
     const globalTranslate = useTranslations("GlobalForm");
-    const errorTranslate = useTranslations("$persistence_class_name.ErrorMessage")
+    const errorTranslate = useTranslations("ErrorMessage")
     const [open, setOpen] = React.useState(false);
     const meta=table.options.meta as MyTableMeta<$persistence_class_name>;
     const  Navigations=useNavigating();

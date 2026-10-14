@@ -32,7 +32,6 @@ public class ProjectConfigDTO implements DTO, DisplayTextAccessor {
     private String modulePrefix;
     private String architectures;
     private String config;
-    private Boolean wrapWithParent;
     private String fullBasePackageName;
     private String scaffold;
     private String createUserName;

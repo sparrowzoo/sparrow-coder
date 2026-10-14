@@ -10,7 +10,6 @@ CREATE TABLE `t_project_config` (
  `full_base_package_name` varchar(128) default '' comment 'base package'  ,
  `architectures` varchar(50) default '' comment '代码架构'  ,
  `config` varchar(512) default '' comment '脚手架配置'  ,
- `wrap_with_parent` tinyint(1) default 0 comment '是否使用父module'  ,
  `scaffold` varchar(50) default '' comment '脚手架'  ,
  `create_user_name` varchar(64)  DEFAULT '' COMMENT '创建人'  NOT NULL,
  `create_user_id` int(11) UNSIGNED  DEFAULT 0 COMMENT '创建人ID'  NOT NULL,

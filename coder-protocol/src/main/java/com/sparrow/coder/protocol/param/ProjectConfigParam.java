@@ -32,7 +32,6 @@ public class ProjectConfigParam implements Param {
     private String modulePrefix;
     private String architectures;
     private String config;
-    private Boolean wrapWithParent;
     private String scaffold;
 
 }

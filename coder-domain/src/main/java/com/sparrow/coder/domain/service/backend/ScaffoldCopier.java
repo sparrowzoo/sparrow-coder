@@ -24,10 +24,9 @@ import com.sparrow.io.FileCopier;
 import com.sparrow.io.FolderFilter;
 import com.sparrow.io.file.FileNameBuilder;
 import com.sparrow.utility.FileUtility;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ClassPathUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,8 +38,8 @@ import java.io.IOException;
  * 2. 对应的artifactId 替换为指定的名字
  * 3. 依赖他的所有的pom 也需要替换
  */
+@Slf4j
 public class ScaffoldCopier {
-    private static Logger logger = LoggerFactory.getLogger(ScaffoldCopier.class);
 
     private static void copyFrontend(TableConfigRegistry registry) {
         EnvConfig config = registry.getProject().getEnvConfig();
@@ -78,7 +77,7 @@ public class ScaffoldCopier {
         };
         String[] directoryList = directory.list();
         if (directoryList == null || directoryList.length == 0) {
-            logger.error("directory [{}] is empty", backendScaffoldHome);
+            log.error("directory [{}] is empty", backendScaffoldHome);
             return;
         }
         for (String childDirectory : directoryList) {
@@ -91,16 +90,20 @@ public class ScaffoldCopier {
         }
     }
 
-    private static void copyBackend(TableConfigRegistry registry) throws IOException {
+    private static void copyBackend(TableConfigRegistry registry, Boolean admin) throws IOException {
         ProjectConfigBO projectConfig = registry.getProject().getProjectConfig();
-        String scaffoldTemplate = new FileNameBuilder(registry.getProject().getEnvConfig().getBackendScaffoldTemplateHome()).joint("sparrow-example").build();
+        //如果复制的是admin 则全部脚手架一起复制包括bom pom.xml 如果只是server 则源从admin下的结构开始复制
+        String adminPackage = admin ? "" : "admin";
+        String scaffoldTemplate = new FileNameBuilder(registry.getProject().getEnvConfig().getBackendScaffoldTemplateHome()).joint("sparrow-example").joint(adminPackage).build();
         File directory = new File(scaffoldTemplate);
         EnvConfig envConfig = registry.getProject().getEnvConfig();
         String[] exampleClazzArray = new String[]{"Department.java", "UserExample.java",};
 
         FolderFilter backendFolderFilter = (sourceFile) -> {
-            //如果是target文件夹，跳过
-            if (sourceFile.contains("target") || sourceFile.equalsIgnoreCase("target")) {
+            //先过滤非法文件夹
+            if (sourceFile.contains("target") ||
+                    sourceFile.equalsIgnoreCase(".DS_Store") ||
+                    sourceFile.contains(".idea")) {
                 return true;
             }
 
@@ -110,24 +113,15 @@ public class ScaffoldCopier {
                 return false;
             }
             String fileName = sourceFile.substring(fileIndex + 1);
-            if (fileName.contains("Department")) {
-                logger.info("");
-            }
+
             if (ArrayUtils.contains(exampleClazzArray, fileName)) {
                 return true;
             }
-            //说明是正常的目录
             if (fileName.equalsIgnoreCase(".gitignore")) {
                 return false;
             }
-            //如果是隐藏文件夹，跳过
-            if (sourceFile.startsWith(".")) {
-                return true;
-            }
-            if (projectConfig.getWrapWithParent()) {
-                return false;
-            }
-            if (fileName.equalsIgnoreCase("pom.xml")) {
+            //如果是隐藏文件，跳过
+            if (fileName.startsWith(".")) {
                 return true;
             }
             return false;
@@ -136,18 +130,16 @@ public class ScaffoldCopier {
             //sourceFileName: /{home}/sparrow-example/bom/pom.xml
             //scaffoldHome: /{home}/sparrow-example
             String targetFileName = sourceFileName.replace(scaffoldTemplate, "").replace("example", projectConfig.getModulePrefix());
-            if (!projectConfig.getWrapWithParent()) {
-                targetFileName = targetFileName.replace("admin" + File.separator, "");
+            String targetPath = null;
+            if (admin) {
+                targetPath = new FileNameBuilder(envConfig.getProjectHome(projectConfig)).joint(targetFileName).build();
+            } else {
                 targetFileName = targetFileName.replace("admin-", "");
+                targetPath = new FileNameBuilder(envConfig.getProjectHome(projectConfig)).joint("server").joint(targetFileName).build();
             }
-            String targetPath = new FileNameBuilder(envConfig.getProjectHome(projectConfig)).joint(targetFileName).build();
             String content = FileUtility.getInstance().readFileContent(sourceFileName);
-            //如果不需要parent 包裹，并且是pom.xml，则需要读admin/pom.xml的内容处理
-            if (!projectConfig.getWrapWithParent() && targetFileName.equals(File.separator + "pom.xml")) {
-                content = content.replaceAll("<!--po-->", "<module>" + projectConfig.getModulePrefix() + "-po</module>");
-            }
             content = content.replaceAll("example", projectConfig.getModulePrefix());
-            if (!projectConfig.getWrapWithParent()) {
+            if (!admin) {
                 content = content.replaceAll(".admin", "");
             }
             content = content.replace("${base_package}", projectConfig.getFullBasePackageName());
@@ -159,7 +151,7 @@ public class ScaffoldCopier {
         };
         String[] directoryList = directory.list();
         if (directoryList == null || directoryList.length == 0) {
-            logger.error("directory [{}] is empty", scaffoldTemplate);
+            log.error("directory [{}] is empty", scaffoldTemplate);
             return;
         }
         for (String childDirectory : directoryList) {
@@ -174,6 +166,9 @@ public class ScaffoldCopier {
         String poPackagePath = ClassPathUtils.packageToPath(poPackageFullName);
 
 
+        if (!admin) {
+            return;
+        }
         for (String exampleClazz : exampleClazzArray) {
             String sourceFile = new FileNameBuilder(scaffoldTemplate).joint("example-po").joint("src").joint("main").joint("java").joint("example").joint(exampleClazz).build();
             String sourceContent = FileUtility.getInstance().readFileContent(sourceFile);
@@ -184,7 +179,8 @@ public class ScaffoldCopier {
     }
 
     public static void copy(TableConfigRegistry registry) throws IOException {
-        copyBackend(registry);
+        copyBackend(registry, true);
+        copyBackend(registry, false);
         copyFrontend(registry);
     }
 }

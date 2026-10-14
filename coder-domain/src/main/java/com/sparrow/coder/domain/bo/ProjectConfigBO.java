@@ -35,7 +35,6 @@ public class ProjectConfigBO implements BO, DisplayTextAccessor {
     private String modulePrefix;
     private String architectures;
     private String config;
-    private Boolean wrapWithParent;
     private String scaffold;
     private String createUserName;
     private Long createUserId;

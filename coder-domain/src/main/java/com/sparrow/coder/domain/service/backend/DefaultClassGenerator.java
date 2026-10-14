@@ -66,14 +66,10 @@ public class DefaultClassGenerator implements ClassGenerator {
             String fullPackage = classPlaceholderGenerator.getPackage(classKey);
             path = new FileNameBuilder("src").joint("main").joint("java").joint(fullPackage.replace('.', File.separatorChar)).build();
         }
-        String parentModulePath = ClassKey.PO.equals(classKey) ? "" : this.project.getProjectConfig().getWrapWithParent() ? "admin" : "";
         String module = StringUtility.isNullOrEmpty(modulePath) ? "" : modulePath + File.separator;
         String className = this.classPlaceholderGenerator.getClassName(classKey);
-        String fullPhysicalPath = new FileNameBuilder(project.getEnvConfig().getProjectHome(project.getProjectConfig())).joint(parentModulePath).joint(module).joint(path).fileName(className).extension(extension).build();
+        String fullPhysicalPath = new FileNameBuilder(project.getEnvConfig().getProjectHome(project.getProjectConfig())).joint("admin").joint(module).joint(path).fileName(className).extension(extension).build();
         fullPhysicalPath = StringUtility.replace(fullPhysicalPath, tableContext.getPlaceHolder());
-        if (!this.project.getProjectConfig().getWrapWithParent()) {
-            fullPhysicalPath = fullPhysicalPath.replace("-admin", "");
-        }
         return fullPhysicalPath;
     }
 
