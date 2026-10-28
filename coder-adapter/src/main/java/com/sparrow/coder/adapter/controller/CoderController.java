@@ -26,8 +26,10 @@ import com.sparrow.coder.domain.service.CodeGenerator;
 import com.sparrow.coder.domain.service.DefaultCodeGenerator;
 import com.sparrow.coder.domain.service.EnvConfig;
 import com.sparrow.coder.domain.service.TableConfigService;
+import com.sparrow.coder.domain.service.TableCreationService;
 import com.sparrow.coder.domain.service.registry.TableConfigRegistry;
 import com.sparrow.coder.protocol.enums.CoderError;
+import com.sparrow.coder.protocol.dto.CreateTableResult;
 import com.sparrow.coder.protocol.param.LocalClassParam;
 import com.sparrow.coder.protocol.param.SourceCodeParam;
 import com.sparrow.coder.protocol.param.TableConfigParam;
@@ -76,6 +78,9 @@ public class CoderController {
 
     @Inject
     private CoderDomainRegistry domainRegistry;
+
+    @Inject
+    private TableCreationService tableCreationService;
 
     @PostMapping("init-by-local.json")
     public void localInit(@RequestBody LocalClassParam className) throws BusinessException {
@@ -163,6 +168,22 @@ public class CoderController {
         }
     }
 
+
+    @PostMapping("generate-ddl.json")
+    public void generateDdl(@RequestBody ProjectTablesQuery projectTablesQuery) throws IOException, BusinessException {
+        CodeGenerator generator = new DefaultCodeGenerator(projectTablesQuery.getProjectId(), envConfig, domainRegistry);
+        for (String tableName : projectTablesQuery.getTableNames()) {
+            generator.generateDDL(tableName);
+        }
+    }
+
+
+    @PostMapping("create-tables.json")
+    public List<CreateTableResult> createTables(@RequestBody ProjectTablesQuery query) throws BusinessException {
+        LoginUser loginUser = SessionContext.getLoginUser();
+        return tableCreationService.createTables(query.getProjectId(), query.getTableNames(),
+                loginUser == null ? null : loginUser.getUserId());
+    }
 
     @PostMapping("zip-download.json")
     public void zipDownload(@RequestBody ProjectTablesQuery projectTablesQuery, HttpServletResponse response) throws IOException, BusinessException {

@@ -20,7 +20,9 @@ package com.sparrow.coder.domain.service;
 import com.sparrow.coder.domain.CoderDomainRegistry;
 import com.sparrow.coder.domain.bo.*;
 import com.sparrow.coder.domain.service.backend.ScaffoldCopier;
+import com.sparrow.coder.domain.service.backend.architecture.MySqlArchitectureGenerator;
 import com.sparrow.coder.domain.service.registry.TableConfigRegistry;
+import com.sparrow.coder.enums.ArchitectureCategory;
 import com.sparrow.coder.protocol.enums.CoderError;
 import com.sparrow.coder.protocol.query.TableConfigQuery;
 import com.sparrow.coder.utils.ConfigUtils;
@@ -78,6 +80,20 @@ public class DefaultCodeGenerator implements CodeGenerator {
         }
     }
 
+    @Override
+    public void generateDDL(String tableName) throws IOException, BusinessException {
+        TableContext context = registry.getTableContext(tableName);
+        if (context == null) {
+            throw new IllegalArgumentException("table " + tableName + " not found");
+        }
+        Asserts.isTrue(!context.getProject().getProjectConfig().getCreateUserId().equals(SessionContext.getLoginUser().getUserId()), CoderError.NOT_SELF_PROJECT);
+        ProjectArchsBO architectures = registry.getProject().getArchitectures();
+        ArchitectureGenerator architectureGenerator = architectures.getArch(ArchitectureCategory.DATABASE.getName());
+        if (architectureGenerator != null) {
+            architectureGenerator.generate(registry, tableName);
+        }
+    }
+
 
     @Override
     public CoderError generate(String tableName) throws IOException, BusinessException {
@@ -94,6 +110,10 @@ public class DefaultCodeGenerator implements CodeGenerator {
         for (String architectureCategory : architectures.getArchs().keySet()) {
             ArchitectureGenerator architectureGenerator = architectures.getArch(architectureCategory);
             if (architectureGenerator != null) {
+                if (architectureGenerator instanceof MySqlArchitectureGenerator) {
+                    log.info("skip mysql ");
+                    continue;
+                }
                 architectureGenerator.generate(registry, tableName);
             }
         }

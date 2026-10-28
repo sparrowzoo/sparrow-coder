@@ -34,7 +34,6 @@ public class MockProjectConfigRepository implements ProjectConfigRepository {
     @Override
     public ProjectConfigBO getProjectConfig(Long projectConfigId) {
         ProjectConfigBO projectConfig = new ProjectConfigBO();
-        projectConfig.setWrapWithParent(false);
         projectConfig.setFrontendName("sparrow-coder");
         projectConfig.setChineseName("代码生成器模拟");
         projectConfig.setModulePrefix("coder");

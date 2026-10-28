@@ -28,7 +28,7 @@ public class ValidatorRegistry {
 
     /**
      * key: namespace
-     * value: Map<validatorName, ValidatorMessageGenerator>
+     * value: {@code Map<validatorName, ValidatorMessageGenerator>}
      */
     private Map<String, Map<String, ValidatorMessageGenerator>> registry;
 

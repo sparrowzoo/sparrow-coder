@@ -81,13 +81,15 @@ public class ReactColumnGenerator extends AbstractColumnGenerator {
 
 
     /**
-     * <ValidatableInput {...register("name")}
+     * <pre>
+     * &lt;ValidatableInput {...register("name")}
      * type={"text"}
      * isSubmitted={isSubmitted}
      * pageTranslate={pageTranslate}
      * validateTranslate={validateTranslate}
      * errorMessage={errors.name?.message}
      * fieldPropertyName={"name"}/>
+     * </pre>
      *
      * @param columnDef
      * @return

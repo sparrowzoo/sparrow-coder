@@ -26,6 +26,8 @@ import java.io.IOException;
 public interface CodeGenerator {
     CoderError generate(String tableName) throws IOException, BusinessException;
 
+    void generateDDL(String tableName) throws IOException, BusinessException;
+
     void initScaffold() throws IOException;
 
     void clear();
