@@ -17,13 +17,6 @@
 
 package com.sparrow.coder.domain.service;
 
-import com.alibaba.druid.DbType;
-import com.alibaba.druid.sql.SQLUtils;
-import com.alibaba.druid.sql.ast.SQLExpr;
-import com.alibaba.druid.sql.ast.SQLStatement;
-import com.alibaba.druid.sql.ast.expr.SQLIdentifierExpr;
-import com.alibaba.druid.sql.ast.statement.SQLCreateTableStatement;
-import com.alibaba.druid.sql.ast.statement.SQLDropTableStatement;
 import com.sparrow.coder.domain.bo.ProjectConfigBO;
 import com.sparrow.coder.protocol.dto.CreateTableResult;
 import com.sparrow.coder.protocol.dto.CreateTableResult.Status;
@@ -107,17 +100,17 @@ public class TableCreationService {
             if (!ddlDirectory.startsWith(projectHome.toRealPath()) || !script.startsWith(ddlDirectory)) {
                 return new CreateTableResult(tableName, Status.FAILED, "INVALID_DDL");
             }
-            String ddl = Files.readString(script, StandardCharsets.UTF_8);
-            SQLCreateTableStatement create = parseCreateTable(ddl, tableName);
-            // Execute only the validated CREATE statement; generated scripts also contain DROP TABLE.
+            String ddl = Files.readString(script, StandardCharsets.UTF_8).stripLeading();
+            // The generator prepends DROP TABLE; keep the existing create-only behavior.
+            if (ddl.startsWith("DROP TABLE IF EXISTS ")) {
+                ddl = ddl.substring(ddl.indexOf(';') + 1).stripLeading();
+            }
             try (Statement statement = connection.createStatement()) {
-                statement.execute(SQLUtils.toSQLString(create, DbType.mysql));
+                statement.execute(ddl);
             }
             return new CreateTableResult(tableName, Status.CREATED, "CREATED");
         } catch (NoSuchFileException e) {
             return new CreateTableResult(tableName, Status.FAILED, "DDL_NOT_FOUND");
-        } catch (IllegalArgumentException e) {
-            return new CreateTableResult(tableName, Status.FAILED, "INVALID_DDL");
         } catch (SQLException e) {
             // Another request may have created the same table after the metadata check.
             if (e.getErrorCode() == 1050 || "42S01".equals(e.getSQLState())) {
@@ -146,34 +139,4 @@ public class TableCreationService {
         return false;
     }
 
-    private SQLCreateTableStatement parseCreateTable(String ddl, String tableName) {
-        SQLCreateTableStatement create = null;
-        List<SQLStatement> statements;
-        try {
-            statements = SQLUtils.parseStatements(ddl, DbType.mysql);
-        } catch (RuntimeException e) {
-            throw new IllegalArgumentException("Invalid DDL", e);
-        }
-        for (SQLStatement statement : statements) {
-            if (statement instanceof SQLDropTableStatement drop && drop.getTableSources().size() == 1
-                    && matchesTable(drop.getTableSources().getFirst().getExpr(), tableName)) {
-                continue;
-            }
-            if (!(statement instanceof SQLCreateTableStatement candidate) || create != null
-                    || !matchesTable(candidate.getName(), tableName) || candidate.getSelect() != null
-                    || candidate.getLike() != null || candidate.isTemporary() || candidate.isReplace()
-                    || candidate.getTableElementList().isEmpty()) {
-                throw new IllegalArgumentException("Only CREATE TABLE for the selected table is allowed");
-            }
-            create = candidate;
-        }
-        if (create == null) {
-            throw new IllegalArgumentException("Missing CREATE TABLE");
-        }
-        return create;
-    }
-
-    private boolean matchesTable(SQLExpr name, String tableName) {
-        return name instanceof SQLIdentifierExpr identifier && tableName.equals(SQLUtils.normalize(identifier.getName()));
-    }
 }

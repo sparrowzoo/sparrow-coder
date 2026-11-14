@@ -25,7 +25,7 @@ import com.sparrow.coder.po.TableConfig;
 
 import java.util.List;
 
-import com.sparrow.context.SessionContext;
+import com.sparrow.protocol.context.SessionContext;
 import com.sparrow.protocol.enums.StatusRecord;
 import jakarta.inject.Named;
 

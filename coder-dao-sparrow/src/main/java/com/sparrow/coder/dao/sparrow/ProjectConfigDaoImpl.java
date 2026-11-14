@@ -24,7 +24,7 @@ import com.sparrow.coder.dao.query.ProjectConfigDBPagerQuery;
 import com.sparrow.coder.po.ProjectConfig;
 import java.util.List;
 
-import com.sparrow.context.SessionContext;
+import com.sparrow.protocol.context.SessionContext;
 import com.sparrow.protocol.enums.StatusRecord;
 import jakarta.inject.Named;
 
